@@ -5,13 +5,13 @@
 * Latest date : 05/22/2016
 */
 
+*/
 
 #pragma once
 
 
 /*
 	Preprocessor version
-*/
 // Be careful to use this : Destroying sequence
 #define SINGLETON( typeName )\
 	static typeName* Get( )\
