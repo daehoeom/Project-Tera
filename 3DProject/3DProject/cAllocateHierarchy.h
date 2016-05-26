@@ -46,7 +46,6 @@ public:
 		LPD3DXSKININFO pSkinInfo,
 		LPD3DXMESHCONTAINER *ppNewMeshContainer) override;
 
-	
 	STDMETHOD(DestroyFrame)(THIS_ LPD3DXFRAME pFrameToFree) override;
 
 	STDMETHOD(DestroyMeshContainer)(THIS_ LPD3DXMESHCONTAINER pMeshContainerToFree) override;

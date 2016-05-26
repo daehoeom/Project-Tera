@@ -2,17 +2,24 @@
 #include "cMainGame.h"
 #include "cCamera.h"
 #include "cGrid.h"
+#include "cSkinnedMesh.h"
 
-cMainGame::cMainGame() :
-	m_pGrid(NULL)
+cMainGame::cMainGame() 
+	: m_pGrid(NULL)
+	, m_pMesh(NULL)
 {
 	m_pGrid = new cGrid;
 	m_pGrid->Setup();
+
+	m_pMesh = new cSkinnedMesh("./Zealot/", "zealot.X");
+	m_pMesh->SetRandomTrackPosition();
+	m_pMesh->SetPosition(D3DXVECTOR3(0, 0, 0));
 }
 
 cMainGame::~cMainGame()
 {
 	SAFE_DELETE(m_pGrid);
+	SAFE_DELETE(m_pMesh);
 }
 
 void cMainGame::Update()
@@ -34,6 +41,12 @@ void cMainGame::Render()
 	{
 		m_pGrid->Render();
 	}
+
+	/*if (m_pMesh)
+	{
+		m_pMesh->UpdateAndRender();
+	}*/
+
 	g_pD3DDevice->EndScene();
 
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
