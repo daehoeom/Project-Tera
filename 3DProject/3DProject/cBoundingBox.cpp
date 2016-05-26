@@ -2,15 +2,20 @@
 #include "cBoundingBox.h"
 
 
-cBoundingBox::cBoundingBox()
+cBoundingBox::cBoundingBox( const char* name )
 	: m_pBox(NULL)
 	 ,m_bWireDraw(false)
 	 ,m_vMin(0, 0,0)
 	 ,m_vMax(0, 0, 0)
-	 ,GameObject(cBoundingBox())
+	 ,GameObject( name )
 {
 	D3DXMatrixIdentity(&m_matWorld);
 	ZeroMemory(&stMtl, sizeof(D3DMATERIAL9));
+}
+
+cBoundingBox::cBoundingBox( const char * name ) :
+	GameObject( name )
+{
 }
 
 cBoundingBox::~cBoundingBox()

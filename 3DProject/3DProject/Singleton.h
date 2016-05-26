@@ -5,7 +5,6 @@
 * Latest date : 05/22/2016
 */
 
-*/
 
 #pragma once
 
@@ -36,7 +35,7 @@ class ISingleton
 //	friend class TSingletonGuard;
 
 private:
-	virtual void Release( ) {};
+	virtual void Release( ) {}
 };
 
 template <class _Ty>

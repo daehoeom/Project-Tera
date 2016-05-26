@@ -2,12 +2,12 @@
 #include "cSkinnedMeshManager.h"
 
 
-cSkinnedMeshManager::cSkinnedMeshManager(void)
+cSkinnedMeshManager::cSkinnedMeshManager( )
 {
 }
 
 
-cSkinnedMeshManager::~cSkinnedMeshManager(void)
+cSkinnedMeshManager::~cSkinnedMeshManager( )
 {
 }
 

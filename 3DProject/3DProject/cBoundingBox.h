@@ -12,7 +12,7 @@ class cBoundingBox
 	D3DXVECTOR3			m_vMin;
 	D3DXVECTOR3			m_vMax;
 public:
-	cBoundingBox();
+	cBoundingBox( const char* name );
 	~cBoundingBox();
 
 	void Setup(D3DXVECTOR3* vMin, D3DXVECTOR3* vMax);
