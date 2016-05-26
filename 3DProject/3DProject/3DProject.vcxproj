@@ -20,7 +20,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -41,6 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -50,7 +52,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -80,14 +82,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DProject.h" />
-    <ClInclude Include="addf.h" />
+    <ClInclude Include="cAllocateHierarchy.h" />
+    <ClInclude Include="cCamera.h" />
+    <ClInclude Include="cDeviceManager.h" />
+    <ClInclude Include="cGrid.h" />
+    <ClInclude Include="cKeyManager.h" />
+    <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="cTextureManager.h" />
+    <ClInclude Include="cTimeManager.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DProject.cpp" />
-    <ClCompile Include="addf.cpp" />
+    <ClCompile Include="cAllocateHierarchy.cpp" />
+    <ClCompile Include="cCamera.cpp" />
+    <ClCompile Include="cDeviceManager.cpp" />
+    <ClCompile Include="cGrid.cpp" />
+    <ClCompile Include="cKeyManager.cpp" />
+    <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="cTextureManager.cpp" />
+    <ClCompile Include="cTimeManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

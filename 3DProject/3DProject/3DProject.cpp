@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "3DProject.h"
+#include "cMainGame.h"
 
 #define MAX_LOADSTRING 100
 
@@ -10,6 +11,8 @@
 HINSTANCE hInst;								// 현재 인스턴스입니다.
 TCHAR szTitle[MAX_LOADSTRING];					// 제목 표시줄 텍스트입니다.
 TCHAR szWindowClass[MAX_LOADSTRING];			// 기본 창 클래스 이름입니다.
+HWND		g_hWnd;
+cMainGame*	g_pMainGame;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -40,17 +43,36 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 		return FALSE;
 	}
 
+	g_pMainGame = new cMainGame;
+	g_pMainGame->Setup();
+
 	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_MY3DPROJECT));
 
 	// 기본 메시지 루프입니다.
-	while (GetMessage(&msg, NULL, 0, 0))
+	while (true)
 	{
-		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			if (msg.message == WM_QUIT)
+			{
+				break;
+			}
+			else
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+		}
+		else
+		{
+			// 업데이트 하고 그림 그린다.
+			g_pMainGame->Update();
+			g_pMainGame->Render();
 		}
 	}
+
+	if (g_pMainGame)
+		delete g_pMainGame;
 
 	return (int) msg.wParam;
 }
@@ -107,6 +129,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
+   g_hWnd = hWnd;
+
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
@@ -125,6 +149,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	if (g_pMainGame)
+	{
+		g_pMainGame->WndProc(hWnd, message, wParam, lParam);
+	}
+
 	int wmId, wmEvent;
 	PAINTSTRUCT ps;
 	HDC hdc;
@@ -151,6 +180,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		hdc = BeginPaint(hWnd, &ps);
 		// TODO: 여기에 그리기 코드를 추가합니다.
 		EndPaint(hWnd, &ps);
+		break;
+	case WM_KEYDOWN:
+		switch (wParam)
+		{
+		case VK_ESCAPE:
+			PostMessage(hWnd, WM_DESTROY, 0, 0);
+			break;
+		}
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
