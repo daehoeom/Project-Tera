@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "IAction.h"
 
-
-
 IAction::IAction( ) :
 	m_isActive( false ),
 	m_owner( nullptr ),

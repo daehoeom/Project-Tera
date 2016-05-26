@@ -83,6 +83,8 @@
   <ItemGroup>
     <ClInclude Include="3DProject.h" />
     <ClInclude Include="cAllocateHierarchy.h" />
+    <ClInclude Include="cBoundingBox.h" />
+    <ClInclude Include="cBoundingSphere.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="cGrid.h" />
@@ -100,6 +102,8 @@
   <ItemGroup>
     <ClCompile Include="3DProject.cpp" />
     <ClCompile Include="cAllocateHierarchy.cpp" />
+    <ClCompile Include="cBoundingBox.cpp" />
+    <ClCompile Include="cBoundingSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cGrid.cpp" />
