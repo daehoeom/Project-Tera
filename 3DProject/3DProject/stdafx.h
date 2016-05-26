@@ -179,3 +179,4 @@ public: virtual void Set##funName(varType var){\
 #include "cTimeManager.h"
 #include "cTextureManager.h"
 #include "cKeyManager.h"
+#include "cSkinnedMeshManager.h"

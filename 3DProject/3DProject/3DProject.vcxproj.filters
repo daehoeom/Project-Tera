@@ -101,6 +101,12 @@
     <ClInclude Include="cBoundingSphere.h">
       <Filter>BoundingObject</Filter>
     </ClInclude>
+    <ClInclude Include="cSkinnedMesh.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkinnedMeshManager.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -150,6 +156,12 @@
     </ClCompile>
     <ClCompile Include="cBoundingSphere.cpp">
       <Filter>BoundingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkinnedMeshManager.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkinnedMesh.cpp">
+      <Filter>Misc\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
