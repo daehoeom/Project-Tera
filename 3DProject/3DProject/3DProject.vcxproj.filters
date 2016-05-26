@@ -33,6 +33,9 @@
     <Filter Include="Manager\Interface">
       <UniqueIdentifier>{a9241077-7e10-491f-a64a-cac3beffd00a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BoundingObject">
+      <UniqueIdentifier>{083c0eec-c5f6-4334-8fed-04abd05fb489}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -92,6 +95,12 @@
     <ClInclude Include="Singleton.h">
       <Filter>Manager\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="cBoundingBox.h">
+      <Filter>BoundingObject</Filter>
+    </ClInclude>
+    <ClInclude Include="cBoundingSphere.h">
+      <Filter>BoundingObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -135,6 +144,12 @@
     </ClCompile>
     <ClCompile Include="cMainGame.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="cBoundingBox.cpp">
+      <Filter>BoundingObject</Filter>
+    </ClCompile>
+    <ClCompile Include="cBoundingSphere.cpp">
+      <Filter>BoundingObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
