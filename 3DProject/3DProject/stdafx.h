@@ -21,6 +21,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include <unordered_map>
 #include <bitset>
 #include <initializer_list>
 #include <array>

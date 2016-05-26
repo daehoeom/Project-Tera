@@ -1,11 +1,9 @@
 // Copyright 2014 Jun-ho Cha
 
 #pragma once
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include "GameObject.h"
 #include "Singleton.h"
+#include "GameObject.h"
+
 
 class ObjectManager : 
 	public TSingleton<ObjectManager>
@@ -18,14 +16,13 @@ public:
 
 public:
 	void Update( float fElapsedTime );
-	void Render( );
 
-	void AddObject( GameObject* pObject );
-	GameObject* FindObject( const std::string& key );
+	void AddObject( class GameObject* pObject );
+	class GameObject* FindObject( const std::string& key );
 	void DeleteObject( const std::string& key );
 
-	iterator begin( ) { return m_objMap.begin( ); }
-	iterator end( ) { return m_objMap.end( ); }
+	iterator begin( );
+	iterator end( );
 
 protected:
 	ObjectManager( );
@@ -34,3 +31,29 @@ protected:
 private:
 	ObjectMap m_objMap;
 };
+
+inline void ObjectManager::AddObject(
+	GameObject* obj )
+{
+	m_objMap.insert( std::make_pair( obj->GetName( ), obj ) );
+}
+
+inline GameObject* ObjectManager::FindObject( const std::string& key )
+{
+	return m_objMap[key];
+}
+
+inline void ObjectManager::DeleteObject( const std::string& key )
+{
+	m_objMap.erase( key );
+}
+
+inline ObjectManager::iterator ObjectManager::begin( )
+{
+	return m_objMap.begin( );
+}
+
+inline ObjectManager::iterator ObjectManager::end( )
+{
+	return m_objMap.end( );
+}

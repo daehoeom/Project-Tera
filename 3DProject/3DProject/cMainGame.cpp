@@ -6,18 +6,14 @@
 cMainGame::cMainGame() :
 	m_pGrid(NULL)
 {
+	m_pGrid = new cGrid;
+	m_pGrid->Setup();
 }
 
 
 cMainGame::~cMainGame()
 {
 	SAFE_DELETE(m_pGrid);
-}
-
-void cMainGame::Setup()
-{
-	m_pGrid = new cGrid;
-	m_pGrid->Setup();
 }
 
 void cMainGame::Update()
