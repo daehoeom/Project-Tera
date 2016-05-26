@@ -1,14 +1,18 @@
 #pragma once
+#include "Singleton.h"
 
-#define g_pTimeManager cTimeManager::GetInstance()
+#define g_pTimeManager cTimeManager::Get()
 
-class cTimeManager
+class cTimeManager :
+	public TSingleton<cTimeManager>
 {
-	SINGLETONE(cTimeManager);
-
 private:
 	DWORD m_dwLastUpdateTime;
 	DWORD m_dwDeltaTime;
+
+protected:
+	cTimeManager( );
+	virtual ~cTimeManager( );
 
 public:
 	void Update();

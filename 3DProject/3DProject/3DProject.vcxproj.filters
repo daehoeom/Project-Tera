@@ -23,9 +23,15 @@
     <Filter Include="PrecompiledHeader">
       <UniqueIdentifier>{72748f13-0690-40bc-929f-48e39be6ba1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility">
+    <Filter Include="Misc">
+      <UniqueIdentifier>{d62bd5b6-27ab-4818-8361-154432e05002}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc\Utility">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Manager\Interface">
+      <UniqueIdentifier>{a9241077-7e10-491f-a64a-cac3beffd00a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +81,16 @@
       <Filter>PrecompiledHeader</Filter>
     </ClInclude>
     <ClInclude Include="cAllocateHierarchy.h">
-      <Filter>Utility</Filter>
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="shared_comptr.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="unique_comptr.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Manager\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +104,7 @@
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="cAllocateHierarchy.cpp">
-      <Filter>Utility</Filter>
+      <Filter>Misc\Utility</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Object</Filter>

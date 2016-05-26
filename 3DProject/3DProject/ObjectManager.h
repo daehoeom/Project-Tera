@@ -5,9 +5,10 @@
 #include <vector>
 #include <unordered_map>
 #include "GameObject.h"
+#include "Singleton.h"
 
-
-class ObjectManager final
+class ObjectManager : 
+	public TSingleton<ObjectManager>
 {
 	using ObjectMap = std::unordered_map<std::string, GameObject*>;
 	
@@ -16,8 +17,6 @@ public:
 	using const_iterator = ObjectMap::const_iterator;
 
 public:
-	SINGLETONE( ObjectManager )
-
 	void Update( float fElapsedTime );
 	void Render( );
 
@@ -27,6 +26,10 @@ public:
 
 	iterator begin( ) { return m_objMap.begin( ); }
 	iterator end( ) { return m_objMap.end( ); }
+
+protected:
+	ObjectManager( );
+	virtual ~ObjectManager( );
 
 private:
 	ObjectMap m_objMap;

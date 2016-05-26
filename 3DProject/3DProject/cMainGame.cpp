@@ -3,34 +3,26 @@
 #include "cCamera.h"
 #include "cGrid.h"
 
-cMainGame::cMainGame()
-	: m_pCamera(NULL)
-	, m_pGrid(NULL)
+cMainGame::cMainGame() :
+	m_pGrid(NULL)
 {
 }
 
 
 cMainGame::~cMainGame()
 {
-	SAFE_DELETE(m_pCamera);
 	SAFE_DELETE(m_pGrid);
 }
 
 void cMainGame::Setup()
 {
-	m_pCamera = new cCamera;
-	m_pCamera->Setup();
-
 	m_pGrid = new cGrid;
 	m_pGrid->Setup();
 }
 
 void cMainGame::Update()
 {
-	if (m_pCamera)
-	{
-		m_pCamera->Update(NULL);
-	}
+	Camera::Get()->Update(NULL);
 }
 
 void cMainGame::Render()
@@ -54,8 +46,5 @@ void cMainGame::Render()
 
 void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	if (m_pCamera)
-	{
-		m_pCamera->WndProc(hWnd, message, wParam, lParam);
-	}
+	Camera::Get()->WndProc(hWnd, message, wParam, lParam);
 }
