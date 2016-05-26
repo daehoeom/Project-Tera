@@ -7,7 +7,6 @@
 
 
 #pragma once
-#include "../../Config/Build.h"
 
 
 namespace tgon
@@ -15,7 +14,7 @@ namespace tgon
 
 
 template <typename _Ty>
-class TGON_API shared_comptr
+class shared_comptr
 {
 	using ComptrType = _Ty;
 
