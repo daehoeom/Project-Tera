@@ -90,9 +90,12 @@
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="cTimeManager.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="IAction.h" />
+    <ClInclude Include="IController.h" />
+    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DProject.cpp" />
@@ -104,6 +107,10 @@
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="cTimeManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="IAction.cpp" />
+    <ClCompile Include="IController.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
