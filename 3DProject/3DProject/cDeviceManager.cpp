@@ -2,7 +2,7 @@
 #include "cDeviceManager.h"
 
 
-cDeviceManager::cDeviceManager(void)
+cDeviceManager::cDeviceManager()
 	: m_pD3D(NULL)
 	, m_pD3DDevice(NULL)
 {
@@ -54,7 +54,7 @@ cDeviceManager::cDeviceManager(void)
 }
 
 
-cDeviceManager::~cDeviceManager(void)
+cDeviceManager::~cDeviceManager()
 {
 }
 

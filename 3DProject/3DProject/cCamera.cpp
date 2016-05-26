@@ -2,7 +2,7 @@
 #include "cCamera.h"
 
 
-cCamera::cCamera(void)
+Camera::Camera(void)
 	: m_vEye(0, 0, -5)
 	, m_vUp(0, 1, 0)
 	, m_vLookAt(0, 0, 0)
@@ -11,23 +11,19 @@ cCamera::cCamera(void)
 	, m_fRotY(0.0f)
 	, m_fDist(15)
 {
-}
-
-
-cCamera::~cCamera(void)
-{
-}
-
-void cCamera::Setup()
-{
 	RECT rc;
-	GetClientRect(g_hWnd, &rc);
+	GetClientRect( g_hWnd, &rc );
 	D3DXMATRIXA16 matProj;
-	D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI / 4.0f, rc.right / (float)rc.bottom, 1, 3000);
-	g_pD3DDevice->SetTransform(D3DTS_PROJECTION, &matProj);
+	D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4.0f, rc.right / ( float )rc.bottom, 1, 3000 );
+	g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
 }
 
-void cCamera::Update(D3DXVECTOR3* pTarget/* = NULL*/)
+
+Camera::~Camera(void)
+{
+}
+
+void Camera::Update(D3DXVECTOR3* pTarget/* = NULL*/)
 {
 	m_vEye = D3DXVECTOR3(0, 0, -m_fDist);
 	D3DXMATRIXA16 matRotX, matRotY;
@@ -46,7 +42,7 @@ void cCamera::Update(D3DXVECTOR3* pTarget/* = NULL*/)
 	g_pD3DDevice->SetTransform(D3DTS_VIEW, &matView);
 }
 
-void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+void Camera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{

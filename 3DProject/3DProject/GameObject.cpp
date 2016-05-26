@@ -13,12 +13,12 @@ GameObject::GameObject( const std::string& objName ) :
 	m_angle( 0.f, 0.f, 0.f ),
 	m_scale( 1.f, 1.f, 1.f )
 {
-	ObjectManager::GetInstance( )->AddObject( this );
+	ObjectManager::Get()->AddObject( this );
 }
 
 GameObject::~GameObject( )
 {
-	ObjectManager::GetInstance( )->DeleteObject( this->GetName( ));
+	ObjectManager::Get()->DeleteObject( this->GetName());
 }
 
 void GameObject::Update( float tickTime )
@@ -28,13 +28,15 @@ void GameObject::Update( float tickTime )
 		actionElem.second->Update( tickTime );
 	}
 
-	if ( this->GetController( ) )
-		this->GetController( )->Update( tickTime );
+	if ( this->GetController())
+	{
+		this->GetController()->Update( tickTime );
+	}
 }
 
 void GameObject::SetAction( IAction* action )
 {
-	m_actionMap[action->GetIdentifier( )] = action;
+	m_actionMap[action->GetIdentifier()] = action;
 	action->SetDelegate( this );
 	action->SetOwner( this );
 }
