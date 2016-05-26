@@ -4,7 +4,7 @@ class cGrid;
 
 class cMainGame
 {
-	cGrid*		m_pGrid;
+	cGrid* m_pGrid;
 
 public:
 	cMainGame();

@@ -10,7 +10,6 @@ cMainGame::cMainGame() :
 	m_pGrid->Setup();
 }
 
-
 cMainGame::~cMainGame()
 {
 	SAFE_DELETE(m_pGrid);
