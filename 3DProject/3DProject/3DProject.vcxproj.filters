@@ -107,6 +107,13 @@
     <ClInclude Include="cSkinnedMeshManager.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cParticle_Base.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cParticle_Firework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -161,6 +168,12 @@
       <Filter>Misc\Utility</Filter>
     </ClCompile>
     <ClCompile Include="cSkinnedMesh.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cParticle_Base.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cParticle_Firework.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
   </ItemGroup>

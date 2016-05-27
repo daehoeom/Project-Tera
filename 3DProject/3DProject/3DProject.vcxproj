@@ -90,6 +90,8 @@
     <ClInclude Include="cGrid.h" />
     <ClInclude Include="cKeyManager.h" />
     <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="cParticle_Base.h" />
+    <ClInclude Include="cParticle_Firework.h" />
     <ClInclude Include="cSkinnedMesh.h" />
     <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cTextureManager.h" />
@@ -98,6 +100,7 @@
     <ClInclude Include="IAction.h" />
     <ClInclude Include="IController.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
     <ClInclude Include="Singleton.h" />
@@ -114,6 +117,8 @@
     <ClCompile Include="cGrid.cpp" />
     <ClCompile Include="cKeyManager.cpp" />
     <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="cParticle_Base.cpp" />
+    <ClCompile Include="cParticle_Firework.cpp" />
     <ClCompile Include="cSkinnedMesh.cpp" />
     <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cTextureManager.cpp" />

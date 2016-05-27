@@ -13,6 +13,7 @@ class cBoundingBox
 	D3DXVECTOR3			m_vMax;
 
 public:
+	cBoundingBox();
 	cBoundingBox( const char* name );
 	~cBoundingBox();
 
