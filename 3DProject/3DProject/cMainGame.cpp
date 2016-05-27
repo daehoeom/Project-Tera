@@ -42,10 +42,10 @@ void cMainGame::Render()
 		m_pGrid->Render();
 	}
 
-	/*if (m_pMesh)
+	if (m_pMesh)
 	{
 		m_pMesh->UpdateAndRender();
-	}*/
+	}
 
 	g_pD3DDevice->EndScene();
 

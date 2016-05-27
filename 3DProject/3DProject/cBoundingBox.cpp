@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "cBoundingBox.h"
 
+cBoundingBox::cBoundingBox() 
+	:GameObject(cBoundingBox())
+{
+
+}
 
 cBoundingBox::cBoundingBox( const char* name )
 	: m_pBox(NULL)
@@ -13,10 +18,7 @@ cBoundingBox::cBoundingBox( const char* name )
 	ZeroMemory(&stMtl, sizeof(D3DMATERIAL9));
 }
 
-cBoundingBox::cBoundingBox( const char * name ) :
-	GameObject( name )
-{
-}
+
 
 cBoundingBox::~cBoundingBox()
 {
