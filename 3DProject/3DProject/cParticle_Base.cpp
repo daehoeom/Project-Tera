@@ -4,11 +4,11 @@
 
 cParticle_Base::cParticle_Base()
 	: m_fSize(0.f)
-	, m_pVertexBuffer(NULL)
-	, m_pTexture(NULL)
-	, m_dwVbBatchSize(0)
+	, m_pVertexBuffer(nullptr)
+	, m_pTexture(nullptr)
+	, m_dwVbBatchSize(512)
 	, m_dwVbOffset(0)
-	, m_dwVbSize(0)
+	, m_dwVbSize(2048)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 }
@@ -28,7 +28,10 @@ void cParticle_Base::Setup(char* szFullPath)
 	hr = g_pD3DDevice->CreateVertexBuffer(
 		m_dwVbSize * sizeof(Particle),
 		D3DUSAGE_DYNAMIC | D3DUSAGE_POINTS | D3DUSAGE_WRITEONLY,
-		Particle::FVF, D3DPOOL_DEFAULT, &m_pVertexBuffer, NULL);
+		Particle::FVF,
+		D3DPOOL_DEFAULT,
+		&m_pVertexBuffer, 0
+		);
 
 	if (FAILED(hr))
 	{

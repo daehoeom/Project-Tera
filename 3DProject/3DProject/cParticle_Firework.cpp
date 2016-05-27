@@ -3,14 +3,16 @@
 
 
 cParticle_Firework::cParticle_Firework(D3DXVECTOR3& _origin, int numParticles)
+	: m_vOrigin(_origin)
+	, m_fRadius(100.f)
+	, m_fBombTime(2.f)
 {
-	/*origin = _origin;
-	size = 0.9f;
+	m_fSize = 0.9f;
 
 	for (int i = 0; i < numParticles; i++)
 	{
 		AddParticle();
-	}*/
+	}
 }
 
 
@@ -42,14 +44,14 @@ void cParticle_Firework::Update()
 void cParticle_Firework::ResetParticle(ParticleAttribute& attribute)
 {
 	attribute.isAlive = true;
-	attribute.pos = origin;
+	attribute.pos = m_vOrigin;
 
 	D3DXVECTOR3 min = D3DXVECTOR3(-1.0f, -1.0f, -1.0f);
 	D3DXVECTOR3 max = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
 	cRandomUtil::GetVector(attribute.velocity, min, max);
 	D3DXVec3Normalize(&attribute.velocity, &attribute.velocity);
 
-	attribute.velocity *= radius;
+	attribute.velocity *= m_fRadius;
 
 	attribute.age = 0.0f;
 
@@ -58,24 +60,24 @@ void cParticle_Firework::ResetParticle(ParticleAttribute& attribute)
 		cRandomUtil::GetFloat(1.0f),
 		1.0f);
 
-	attribute.lifeTime = bombTime;
+	attribute.lifeTime = m_fBombTime;
 
 }
 
 void cParticle_Firework::PreRender()
 {
-	//Particle_Base::PreRender();
+	cParticle_Base::PreRender();
 
-	//GameManager::GetDevice()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
-	//GameManager::GetDevice()->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	g_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+	g_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
-	////z-buffer 읽기만 하고 쓰기는 금지
-	//GameManager::GetDevice()->SetRenderState(D3DRS_ZWRITEENABLE, false);
+	//z-buffer 읽기만 하고 쓰기는 금지
+	g_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
 }
 
 void cParticle_Firework::PostRender()
 {
-	/*Particle_Base::PostRender();
+	cParticle_Base::PostRender();
 
-	GameManager::GetDevice()->SetRenderState(D3DRS_ZWRITEENABLE, true);*/
+	g_pD3DDevice->SetRenderState(D3DRS_ZWRITEENABLE, true);
 }

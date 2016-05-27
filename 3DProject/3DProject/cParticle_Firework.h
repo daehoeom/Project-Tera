@@ -6,9 +6,9 @@ class cParticle_Firework :
 
 {
 protected:
-	D3DXVECTOR3 origin;
-	float radius = 100.0f;
-	float bombTime = 2.0f;
+	D3DXVECTOR3				m_vOrigin;
+	float					m_fRadius;
+	float					m_fBombTime;
 
 	void PreRender() override;
 	void PostRender() override;

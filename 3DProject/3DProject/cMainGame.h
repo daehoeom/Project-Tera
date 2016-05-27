@@ -2,11 +2,12 @@
 
 class cGrid;
 class cSkinnedMesh;
+class cParticle_Firework;
 
 class cMainGame
 {
 	cGrid*			m_pGrid;
-	cSkinnedMesh*	m_pMesh;
+	cParticle_Firework* m_pFire;
 public:
 	cMainGame();
 	~cMainGame();

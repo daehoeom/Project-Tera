@@ -3,28 +3,38 @@
 #include "cCamera.h"
 #include "cGrid.h"
 #include "cSkinnedMesh.h"
+#include "cParticle_Firework.h"
 
 cMainGame::cMainGame() 
 	: m_pGrid(NULL)
-	, m_pMesh(NULL)
+	, m_pFire(NULL)
 {
+	cRandomUtil::Setup();
+
 	m_pGrid = new cGrid;
 	m_pGrid->Setup();
-
-	m_pMesh = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¸ö_°ø°Ý.X");
-	m_pMesh->SetRandomTrackPosition();
-	m_pMesh->SetPosition(D3DXVECTOR3(0, 0, 0));
+	
+	if (m_pFire == nullptr)
+	{
+		m_pFire = new cParticle_Firework(D3DXVECTOR3(-15, 20, 100), 6000);
+		m_pFire->Setup("fireworks_flare.bmp");
+	}
 }
 
 cMainGame::~cMainGame()
 {
 	SAFE_DELETE(m_pGrid);
-	SAFE_DELETE(m_pMesh);
+	SAFE_DELETE(m_pFire);
 }
 
 void cMainGame::Update()
 {
 	Camera::Get()->Update(NULL);
+
+	if (m_pFire)
+	{
+		m_pFire->Update();
+	}
 
 	g_pTimeManager->Update();
 }
@@ -44,9 +54,9 @@ void cMainGame::Render()
 		m_pGrid->Render();
 	}
 
-	if (m_pMesh)
+	if (m_pFire)
 	{
-		m_pMesh->UpdateAndRender();
+		m_pFire->Render();
 	}
 
 	g_pD3DDevice->EndScene();

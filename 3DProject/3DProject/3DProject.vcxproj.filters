@@ -104,17 +104,21 @@
     <ClInclude Include="cSkinnedMesh.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cSkinnedMeshManager.h">
-      <Filter>Misc\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
     <ClInclude Include="cParticle_Base.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cParticle_Firework.h" />
-    <ClInclude Include="cRandomUtil.h" />
+    <ClInclude Include="cParticle_Firework.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cRandomUtil.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cSkinnedMeshManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -165,9 +169,6 @@
     <ClCompile Include="cBoundingSphere.cpp">
       <Filter>BoundingObject</Filter>
     </ClCompile>
-    <ClCompile Include="cSkinnedMeshManager.cpp">
-      <Filter>Misc\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="cSkinnedMesh.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
@@ -179,6 +180,9 @@
     </ClCompile>
     <ClCompile Include="cRandomUtil.cpp">
       <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cSkinnedMeshManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
