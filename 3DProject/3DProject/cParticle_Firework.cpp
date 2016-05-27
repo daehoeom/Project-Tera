@@ -44,21 +44,21 @@ void cParticle_Firework::ResetParticle(ParticleAttribute& attribute)
 	attribute.isAlive = true;
 	attribute.pos = origin;
 
-	/*D3DXVECTOR3 min = D3DXVECTOR3(-1.0f, -1.0f, -1.0f);
+	D3DXVECTOR3 min = D3DXVECTOR3(-1.0f, -1.0f, -1.0f);
 	D3DXVECTOR3 max = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
-	RandomUtil::GetVector(attribute.velocity, min, max);
+	cRandomUtil::GetVector(attribute.velocity, min, max);
 	D3DXVec3Normalize(&attribute.velocity, &attribute.velocity);
 
 	attribute.velocity *= radius;
 
 	attribute.age = 0.0f;
 
-	attribute.color = D3DXCOLOR(RandomUtil::GetFloat(1.0f),
-		RandomUtil::GetFloat(1.0f),
-		RandomUtil::GetFloat(1.0f),
+	attribute.color = D3DXCOLOR(cRandomUtil::GetFloat(1.0f),
+		cRandomUtil::GetFloat(1.0f),
+		cRandomUtil::GetFloat(1.0f),
 		1.0f);
 
-	attribute.lifeTime = bombTime;*/
+	attribute.lifeTime = bombTime;
 
 }
 

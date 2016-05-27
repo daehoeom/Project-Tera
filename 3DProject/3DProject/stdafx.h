@@ -181,3 +181,4 @@ public: virtual void Set##funName(varType var){\
 #include "cKeyManager.h"
 #include "cSkinnedMeshManager.h"
 #include "Particle.h"
+#include "cRandomUtil.h"

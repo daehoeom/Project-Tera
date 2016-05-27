@@ -92,6 +92,7 @@
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cParticle_Base.h" />
     <ClInclude Include="cParticle_Firework.h" />
+    <ClInclude Include="cRandomUtil.h" />
     <ClInclude Include="cSkinnedMesh.h" />
     <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cTextureManager.h" />
@@ -119,6 +120,7 @@
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cParticle_Base.cpp" />
     <ClCompile Include="cParticle_Firework.cpp" />
+    <ClCompile Include="cRandomUtil.cpp" />
     <ClCompile Include="cSkinnedMesh.cpp" />
     <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cTextureManager.cpp" />

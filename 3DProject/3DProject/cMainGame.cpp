@@ -11,7 +11,7 @@ cMainGame::cMainGame()
 	m_pGrid = new cGrid;
 	m_pGrid->Setup();
 
-	m_pMesh = new cSkinnedMesh("./Zealot/", "zealot.X");
+	m_pMesh = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¸ö_°ø°Ý.X");
 	m_pMesh->SetRandomTrackPosition();
 	m_pMesh->SetPosition(D3DXVECTOR3(0, 0, 0));
 }
@@ -25,6 +25,8 @@ cMainGame::~cMainGame()
 void cMainGame::Update()
 {
 	Camera::Get()->Update(NULL);
+
+	g_pTimeManager->Update();
 }
 
 void cMainGame::Render()

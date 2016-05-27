@@ -114,6 +114,7 @@
       <Filter>Misc\Utility</Filter>
     </ClInclude>
     <ClInclude Include="cParticle_Firework.h" />
+    <ClInclude Include="cRandomUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -174,6 +175,9 @@
       <Filter>Misc\Utility</Filter>
     </ClCompile>
     <ClCompile Include="cParticle_Firework.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cRandomUtil.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
   </ItemGroup>
