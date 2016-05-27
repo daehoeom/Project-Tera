@@ -11,6 +11,7 @@ class cBoundingBox
 	bool				m_bWireDraw;
 	D3DXVECTOR3			m_vMin;
 	D3DXVECTOR3			m_vMax;
+
 public:
 	cBoundingBox();
 	cBoundingBox( const char* name );
