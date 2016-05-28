@@ -8,6 +8,8 @@
 cMainGame::cMainGame() 
 	: m_pGrid(NULL)
 	, m_pFire(NULL)
+	, m_pBody(NULL)
+	, m_pHead(NULL)
 {
 	cRandomUtil::Setup();
 
@@ -18,6 +20,20 @@ cMainGame::cMainGame()
 	{
 		m_pFire = new cParticle_Firework(D3DXVECTOR3(-15, 20, 100), 6000);
 		m_pFire->Setup("fireworks_flare.bmp");
+	}
+
+	if (m_pBody == nullptr)
+	{
+		m_pBody = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¸ö_°ø°Ý.X");
+		m_pBody->SetPosition(D3DXVECTOR3(0, 0, 0));
+		m_pBody->SetRandomTrackPosition();
+	}
+
+	if (m_pHead == nullptr)
+	{
+		m_pHead = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¾ó±¼_°ø°Ý.X");
+		m_pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
+		m_pHead->SetRandomTrackPosition();
 	}
 }
 
@@ -31,12 +47,12 @@ void cMainGame::Update()
 {
 	Camera::Get()->Update(NULL);
 
-	if (m_pFire)
-	{
-		m_pFire->Update();
-	}
+	//if (m_pFire)
+	//{
+	//	m_pFire->Update();
+	//}
 
-	g_pTimeManager->Update();
+	//g_pTimeManager->Update();
 }
 
 void cMainGame::Render()
@@ -54,10 +70,17 @@ void cMainGame::Render()
 		m_pGrid->Render();
 	}
 
-	if (m_pFire)
+	/*if (m_pFire)
 	{
 		m_pFire->Render();
-	}
+	}*/
+
+	m_pBody->UpdateAndRender();
+
+	D3DXMATRIXA16 matR, matT, matWorld;
+	D3DXMatrixRotationX(&matR, D3DX_PI / 2.f);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matR);
+	m_pHead->UpdateAndRender();
 
 	g_pD3DDevice->EndScene();
 

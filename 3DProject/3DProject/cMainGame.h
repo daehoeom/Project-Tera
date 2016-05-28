@@ -8,6 +8,8 @@ class cMainGame
 {
 	cGrid*			m_pGrid;
 	cParticle_Firework* m_pFire;
+	cSkinnedMesh*	m_pBody;
+	cSkinnedMesh*   m_pHead;
 public:
 	cMainGame();
 	~cMainGame();
