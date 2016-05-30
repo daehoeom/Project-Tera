@@ -1,9 +1,8 @@
 #pragma once
-
 #include "GameObject.h"
 
 class cBoundingBox 
-	:public GameObject
+	: public GameObject
 {
 	LPD3DXMESH			m_pBox;
 	D3DXMATRIXA16		m_matWorld;
@@ -24,4 +23,3 @@ public:
 	D3DXVECTOR3 GetMinimum() { return m_vMin; }
 	D3DXVECTOR3 GetMaximum(){ return m_vMax; }
 };
-

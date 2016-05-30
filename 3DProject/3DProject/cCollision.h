@@ -6,8 +6,8 @@ class cBoundingSphere;
 class cCollision
 {
 public:
-	cCollision();
-	~cCollision();
+	cCollision() = delete;
+	~cCollision() = delete;
 
 	static bool IsSphereToSphere(
 		cBoundingSphere& s1, cBoundingSphere& s2);
