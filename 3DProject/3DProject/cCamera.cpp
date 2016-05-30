@@ -2,7 +2,7 @@
 #include "cCamera.h"
 
 
-Camera::Camera(void)
+cCamera::cCamera(void)
 	: m_vEye(0, 0, -5)
 	, m_vUp(0, 1, 0)
 	, m_vLookAt(0, 0, 0)
@@ -19,11 +19,11 @@ Camera::Camera(void)
 }
 
 
-Camera::~Camera(void)
+cCamera::~cCamera(void)
 {
 }
 
-void Camera::Update(D3DXVECTOR3* pTarget/* = NULL*/)
+void cCamera::Update(D3DXVECTOR3* pTarget/* = NULL*/)
 {
 	m_vEye = D3DXVECTOR3(0, 100, -m_fDist);
 	D3DXMATRIXA16 matRotX, matRotY;
@@ -42,7 +42,7 @@ void Camera::Update(D3DXVECTOR3* pTarget/* = NULL*/)
 	g_pD3DDevice->SetTransform(D3DTS_VIEW, &matView);
 }
 
-void Camera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{

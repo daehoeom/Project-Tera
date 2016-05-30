@@ -21,6 +21,7 @@ cMainGame::cMainGame( )
 	cRandomUtil::Setup();
 	cDeviceManager::Get( );
 	cTimeManager::Get( );
+	cCamera::Get( );
 	cSkinnedMeshManager::Get( );
 	cKeyManager::Get( );
 	cObjectManager::Get( );
@@ -52,7 +53,7 @@ cMainGame::~cMainGame()
 
 void cMainGame::Update()
 {
-	Camera::Get()->Update(NULL);
+	cCamera::Get()->Update(NULL);
 
 	m_player.Update( );
 
@@ -100,5 +101,5 @@ void cMainGame::Render()
 
 void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	Camera::Get()->WndProc(hWnd, message, wParam, lParam);
+	cCamera::Get()->WndProc(hWnd, message, wParam, lParam);
 }
