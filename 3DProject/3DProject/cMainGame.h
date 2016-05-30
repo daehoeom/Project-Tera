@@ -20,8 +20,8 @@ private:
 	cPlayer				m_player;
 	cGrid*				m_pGrid;
 	cParticle_Firework* m_pFire;
-	cSkinnedMesh*		m_pBody;
-	cSkinnedMesh*		m_pHead;
+	cSkinnedMesh*		m_pEneny;
 	cSkyBox*			m_pSkyBox;
+
 };
 

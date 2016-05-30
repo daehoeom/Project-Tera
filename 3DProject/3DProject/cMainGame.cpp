@@ -9,8 +9,7 @@
 cMainGame::cMainGame( )
 	: m_pGrid(NULL)
 	, m_pFire(NULL)
-	, m_pBody(NULL)
-	, m_pHead(NULL)
+	, m_pEneny(NULL)
 {
 
 	/*
@@ -36,18 +35,12 @@ cMainGame::cMainGame( )
 		m_pFire->Setup("fireworks_flare.bmp");
 	}
 
-	if (m_pBody == nullptr)
-	{
-		m_pBody = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¸ö_°ø°Ý.X");
-		m_pBody->SetPosition(D3DXVECTOR3(0, 0, 0));
-		m_pBody->SetRandomTrackPosition();
-	}
 
-	if (m_pHead == nullptr)
+	if (m_pEneny == nullptr)
 	{
-		m_pHead = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¾ó±¼_°ø°Ý.X");
-		m_pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
-		m_pHead->SetRandomTrackPosition();
+		m_pEneny = new cSkinnedMesh("./LongTusk/", "LongTusk_Idle.X");
+		m_pEneny->SetPosition(D3DXVECTOR3(0, 0, 0));
+		m_pEneny->SetRandomTrackPosition();
 	}
 }
 
@@ -55,6 +48,7 @@ cMainGame::~cMainGame()
 {
 	SAFE_DELETE(m_pGrid);
 	SAFE_DELETE(m_pFire);
+	SAFE_DELETE(m_pEneny);
 }
 
 void cMainGame::Update()
@@ -70,7 +64,9 @@ void cMainGame::Update()
 	//	m_pFire->Update();
 	//}
 
-	//g_pTimeManager->Update();
+	g_pTimeManager->Update();
+
+	
 }
 
 void cMainGame::Render()
@@ -96,12 +92,7 @@ void cMainGame::Render()
 		m_pFire->Render();
 	}*/
 
-	m_pBody->UpdateAndRender();
-
-	D3DXMATRIXA16 matR, matT, matWorld;
-	D3DXMatrixRotationX(&matR, D3DX_PI / 2.f);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matR);
-	m_pHead->UpdateAndRender();
+	m_pEneny->UpdateAndRender();
 
 	g_pD3DDevice->EndScene();
 
