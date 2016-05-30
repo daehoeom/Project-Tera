@@ -9,7 +9,6 @@ cRandomUtil::cRandomUtil()
 	srand((unsigned int)time(nullptr));
 }
 
-
 cRandomUtil::~cRandomUtil()
 {
 }

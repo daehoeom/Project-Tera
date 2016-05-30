@@ -1,25 +1,27 @@
 #pragma once
-#include "GameObject.h"
+#include "ICollider.h"
 
 class cBoundingBox 
-	: public GameObject
+	: public ICollider
 {
-	LPD3DXMESH			m_pBox;
-	D3DXMATRIXA16		m_matWorld;
-	D3DMATERIAL9		stMtl;
-	bool				m_bWireDraw;
-	D3DXVECTOR3			m_vMin;
-	D3DXVECTOR3			m_vMax;
+public:
+	cBoundingBox( class GameObject* owner );
+	virtual ~cBoundingBox();
+
+	void Setup( D3DXVECTOR3* vMin, D3DXVECTOR3* vMax );
+	virtual void Update() override;
+	virtual void Render() override;
+	
+	virtual void IsCollised( );
 
 public:
-	cBoundingBox();
-	cBoundingBox( const char* name );
-	~cBoundingBox();
+	const D3DXVECTOR3& GetMinimum() { return m_vMin; }
+	const D3DXVECTOR3& GetMaximum() { return m_vMax; }
 
-	void Setup(D3DXVECTOR3* vMin, D3DXVECTOR3* vMax);
-	void Update(D3DXMATRIXA16* matWorld);
-	void Render();
+private:
+	LPD3DXMESH	m_pBox;
+	bool		m_bWireDraw;
+	D3DXVECTOR3	m_vMin;
+	D3DXVECTOR3	m_vMax;
 
-	D3DXVECTOR3 GetMinimum() { return m_vMin; }
-	D3DXVECTOR3 GetMaximum(){ return m_vMax; }
 };

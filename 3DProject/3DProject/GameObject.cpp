@@ -13,6 +13,7 @@ GameObject::GameObject( const std::string& objName ) :
 	m_angle( 0.f, 0.f, 0.f ),
 	m_scale( 1.f, 1.f, 1.f )
 {
+	D3DXMatrixIdentity( &m_matWorld );
 	ObjectManager::Get()->AddObject( this );
 }
 

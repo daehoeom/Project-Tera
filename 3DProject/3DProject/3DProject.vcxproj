@@ -100,6 +100,7 @@
     <ClInclude Include="cTimeManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="IAction.h" />
+    <ClInclude Include="ICollider.h" />
     <ClInclude Include="IController.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Particle.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="cTimeManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IAction.cpp" />
+    <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="IController.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="stdafx.cpp">

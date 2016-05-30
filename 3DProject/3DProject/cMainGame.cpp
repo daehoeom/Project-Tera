@@ -10,6 +10,7 @@ cMainGame::cMainGame()
 	, m_pFire(NULL)
 	, m_pBody(NULL)
 	, m_pHead(NULL)
+	, 
 {
 	cRandomUtil::Setup();
 
@@ -35,6 +36,10 @@ cMainGame::cMainGame()
 		m_pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
 		m_pHead->SetRandomTrackPosition();
 	}
+
+	//boundingBox1.Setup( );
+	//boundingBox1.Setup( &D3DXVECTOR3( -1.f , -1.f,-1.f ),
+	//	&D3DXVECTOR3( 1.f, 1.f, 1.f ));
 }
 
 cMainGame::~cMainGame()
@@ -46,6 +51,8 @@ cMainGame::~cMainGame()
 void cMainGame::Update()
 {
 	Camera::Get()->Update(NULL);
+
+	//boundingBox1.Update( NULL);
 
 	//if (m_pFire)
 	//{
@@ -64,6 +71,7 @@ void cMainGame::Render()
 		1.0f, 0);
 
 	g_pD3DDevice->BeginScene();
+
 
 	if (m_pGrid)
 	{
