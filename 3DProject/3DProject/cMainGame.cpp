@@ -4,20 +4,14 @@
 #include "cGrid.h"
 #include "cSkinnedMesh.h"
 #include "cParticle_Firework.h"
-
+#include "cSkyBox.h"
 
 cMainGame::cMainGame( )
 	: m_pGrid(NULL)
 	, m_pFire(NULL)
 	, m_pEneny(NULL)
+	, m_pSkyBox(NULL)
 {
-
-	/*
-		WARNING! & TODO:
-		All of managers ( e.g. singleton object ) 
-		must be initialized from here.
-	*/
-
 	cRandomUtil::Setup();
 	cDeviceManager::Get( );
 	cTimeManager::Get( );
@@ -38,9 +32,15 @@ cMainGame::cMainGame( )
 
 	if (m_pEneny == nullptr)
 	{
-		m_pEneny = new cSkinnedMesh("./LongTusk/", "LongTusk_Idle.X");
+		m_pEneny = new cSkinnedMesh("./DyingGhillieDhu/", "DyingGhillieDhu_Idle.X");
 		m_pEneny->SetPosition(D3DXVECTOR3(0, 0, 0));
 		m_pEneny->SetRandomTrackPosition();
+	}
+
+	if (m_pSkyBox == nullptr)
+	{
+		m_pSkyBox = new cSkyBox;
+		m_pSkyBox->Setup();
 	}
 }
 
@@ -91,6 +91,11 @@ void cMainGame::Render()
 	{
 		m_pFire->Render();
 	}*/
+
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Render();
+	}
 
 	m_pEneny->UpdateAndRender();
 

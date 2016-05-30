@@ -39,8 +39,11 @@ LPDIRECT3DTEXTURE9 cTextureManager::GetTexture(std::string szFullPath)
 
 void cTextureManager::Destroy()
 {
-	for each(auto it in m_mapTexture)
+	if (m_mapTexture.size() != 0)
 	{
-		SAFE_RELEASE(it.second);
+		for each(auto it in m_mapTexture)
+		{
+			SAFE_RELEASE(it.second);
+		}
 	}
 }

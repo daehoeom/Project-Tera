@@ -22,14 +22,14 @@ void cSkyBox::Setup()
 		ST_PT_VERTEX::FVF, D3DPOOL_MANAGED, &m_pVertexBuffer, NULL);
 
 	D3DXVECTOR3 vertex[8];
-	vertex[0] = D3DXVECTOR3(-100.0f, -100.0f, -100.0f);
-	vertex[1] = D3DXVECTOR3(-100.0f, -100.0f, 100.0f);
-	vertex[2] = D3DXVECTOR3(100.0f, -100.0f, 100.0f);
-	vertex[3] = D3DXVECTOR3(100.0f, -100.0f, -100.0f);
-	vertex[4] = D3DXVECTOR3(-100.0f, 100.0f, -100.0f);
-	vertex[5] = D3DXVECTOR3(-100.0f, 100.0f, 100.0f);
-	vertex[6] = D3DXVECTOR3(100.0f, 100.0f, 100.0f);
-	vertex[7] = D3DXVECTOR3(100.0f, 100.0f, -100.0f);
+	vertex[0] = D3DXVECTOR3(-512.0f, -512.0f, -512.0f);
+	vertex[1] = D3DXVECTOR3(-512.0f, -512.0f, 512.0f);
+	vertex[2] = D3DXVECTOR3(512.0f, -512.0f, 512.0f);
+	vertex[3] = D3DXVECTOR3(512.0f, -512.0f, -512.0f);
+	vertex[4] = D3DXVECTOR3(-512.0f, 512.0f, -512.0f);
+	vertex[5] = D3DXVECTOR3(-512.0f, 512.0f, 512.0f);
+	vertex[6] = D3DXVECTOR3(512.0f, 512.0f, 512.0f);
+	vertex[7] = D3DXVECTOR3(512.0f, 512.0f, -512.0f);
 
 	float uBase = 0.25f;
 	float vBase = 0.34f;

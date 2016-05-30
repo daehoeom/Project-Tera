@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "cAllocateHierarchy.h"
 
 
@@ -68,15 +68,6 @@ STDMETHODIMP cAllocateHierarchy::CreateMeshContainer(THIS_ LPCSTR Name,
 		std::string sFullPath = m_sDirectory + sFilename;
 		LPDIRECT3DTEXTURE9 pTex = g_pTextureManager->GetTexture(sFullPath);
 		pBoneMesh->vecTexture.push_back(pTex);
-	}
-
-	if (pMeshData && D3DXMESHTYPE_MESH == pMeshData->Type)
-	{
-		pBoneMesh->MeshData.Type = pMeshData->Type;
-		pBoneMesh->MeshData.pMesh = pMeshData->pMesh;
-		pMeshData->pMesh->GetAttributeTable(0, &pBoneMesh->dwNumSubset);
-
-		pMeshData->pMesh->AddRef();
 	}
 
 	// 이펙트 무시
