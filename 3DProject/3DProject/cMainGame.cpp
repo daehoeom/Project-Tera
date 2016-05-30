@@ -14,7 +14,7 @@ cMainGame::cMainGame( )
 	
 	m_grid.reset( new cGrid );
 
-	//m_enemy.reset( new cSkinnedMesh("./LongTusk/", "LongTusk_Idle.X" ));
+	m_enemy.reset( new cSkinnedMesh("./LongTusk/", "LongTusk_Idle.X" ));
 	//m_enemy->SetRandomTrackPosition();
 }
 
