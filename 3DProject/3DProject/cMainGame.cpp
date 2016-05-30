@@ -2,41 +2,73 @@
 #include "cMainGame.h"
 #include "cCamera.h"
 #include "cGrid.h"
-#include "cSkyBox.h"
+#include "cSkinnedMesh.h"
+#include "cParticle_Firework.h"
 
-cMainGame::cMainGame() 
+
+cMainGame::cMainGame( )
 	: m_pGrid(NULL)
-	, m_pSkyBox(NULL)
+	, m_pFire(NULL)
+	, m_pBody(NULL)
+	, m_pHead(NULL)
 {
+
+	/*
+		WARNING! & TODO:
+		All of managers ( e.g. singleton object ) 
+		must be initialized from here.
+	*/
+
 	cRandomUtil::Setup();
+	cDeviceManager::Get( );
+	cTimeManager::Get( );
+	cSkinnedMeshManager::Get( );
+	cKeyManager::Get( );
+	cObjectManager::Get( );
+
 
 	m_pGrid = new cGrid;
 	m_pGrid->Setup();
 	
-	if (m_pSkyBox == nullptr)
+	if (m_pFire == nullptr)
 	{
-		m_pSkyBox = new cSkyBox;
-		m_pSkyBox->Setup();
+		m_pFire = new cParticle_Firework(D3DXVECTOR3(-15, 20, 100), 6000);
+		m_pFire->Setup("fireworks_flare.bmp");
+	}
+
+	if (m_pBody == nullptr)
+	{
+		m_pBody = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¸ö_°ø°Ý.X");
+		m_pBody->SetPosition(D3DXVECTOR3(0, 0, 0));
+		m_pBody->SetRandomTrackPosition();
+	}
+
+	if (m_pHead == nullptr)
+	{
+		m_pHead = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¾ó±¼_°ø°Ý.X");
+		m_pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
+		m_pHead->SetRandomTrackPosition();
 	}
 }
 
 cMainGame::~cMainGame()
 {
 	SAFE_DELETE(m_pGrid);
-	SAFE_DELETE(m_pSkyBox);
+	SAFE_DELETE(m_pFire);
 }
 
 void cMainGame::Update()
 {
 	Camera::Get()->Update(NULL);
 
+	//boundingBox1.Update( NULL);
 
-	if (m_pSkyBox)
-	{
-		m_pSkyBox->Update();
-	}
+	//if (m_pFire)
+	//{
+	//	m_pFire->Update();
+	//}
 
-	g_pTimeManager->Update();
+	//g_pTimeManager->Update();
 }
 
 void cMainGame::Render()
@@ -49,15 +81,25 @@ void cMainGame::Render()
 
 	g_pD3DDevice->BeginScene();
 
+
 	if (m_pGrid)
 	{
 		m_pGrid->Render();
 	}
 
-	if (m_pSkyBox)
+	m_player.Render( );
+
+	/*if (m_pFire)
 	{
-		m_pSkyBox->Render();
-	}
+		m_pFire->Render();
+	}*/
+
+	m_pBody->UpdateAndRender();
+
+	D3DXMATRIXA16 matR, matT, matWorld;
+	D3DXMatrixRotationX(&matR, D3DX_PI / 2.f);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matR);
+	m_pHead->UpdateAndRender();
 
 	g_pD3DDevice->EndScene();
 

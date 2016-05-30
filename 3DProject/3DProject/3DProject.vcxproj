@@ -104,9 +104,11 @@
     <ClInclude Include="cTimeManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="IAction.h" />
+    <ClInclude Include="ICollider.h" />
     <ClInclude Include="IController.h" />
-    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
     <ClInclude Include="Singleton.h" />
@@ -137,8 +139,10 @@
     <ClCompile Include="cTimeManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IAction.cpp" />
+    <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="IController.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="cObjectManager.cpp" />
+    <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
