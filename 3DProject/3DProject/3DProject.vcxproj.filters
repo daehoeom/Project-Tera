@@ -121,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="cCollision.h" />
     <ClInclude Include="cSkyBox.h" />
+    <ClInclude Include="cFrustumCulling.h" />
+    <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="cBody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -190,6 +193,15 @@
       <Filter>Misc\Utility</Filter>
     </ClCompile>
     <ClCompile Include="cSkyBox.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cFrustumCulling.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayer.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cBody.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
   </ItemGroup>

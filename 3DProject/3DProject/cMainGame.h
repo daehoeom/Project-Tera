@@ -7,11 +7,8 @@ class cSkyBox;
 
 class cMainGame
 {
-	cGrid*			m_pGrid;
-	cParticle_Firework* m_pFire;
-	cSkinnedMesh*	m_pBody;
-	cSkinnedMesh*   m_pHead;
-	cSkyBox*		m_pSkyBox;
+	cGrid*					m_pGrid;	//그리드
+	cSkyBox*				m_pSkyBox;	//스카이박스
 
 public:
 	cMainGame();

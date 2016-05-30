@@ -70,6 +70,15 @@ STDMETHODIMP cAllocateHierarchy::CreateMeshContainer(THIS_ LPCSTR Name,
 		pBoneMesh->vecTexture.push_back(pTex);
 	}
 
+	if (pMeshData && D3DXMESHTYPE_MESH == pMeshData->Type)
+	{
+		pBoneMesh->MeshData.Type = pMeshData->Type;
+		pBoneMesh->MeshData.pMesh = pMeshData->pMesh;
+		pMeshData->pMesh->GetAttributeTable(0, &pBoneMesh->dwNumSubset);
+
+		pMeshData->pMesh->AddRef();
+	}
+
 	// ÀÌÆåÆ® ¹«½Ã
 	pBoneMesh->pEffects = NULL;
 
