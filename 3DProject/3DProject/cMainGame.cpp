@@ -4,12 +4,14 @@
 #include "cGrid.h"
 #include "cSkinnedMesh.h"
 #include "cParticle_Firework.h"
+#include "cSkyBox.h"
 
 cMainGame::cMainGame() 
 	: m_pGrid(NULL)
 	, m_pFire(NULL)
 	, m_pBody(NULL)
 	, m_pHead(NULL)
+	, m_pSkyBox(NULL)
 {
 	cRandomUtil::Setup();
 
@@ -35,6 +37,12 @@ cMainGame::cMainGame()
 		m_pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
 		m_pHead->SetRandomTrackPosition();
 	}
+	
+	if (m_pSkyBox == nullptr)
+	{
+		m_pSkyBox = new cSkyBox;
+		m_pSkyBox->Setup();
+	}
 }
 
 cMainGame::~cMainGame()
@@ -52,7 +60,12 @@ void cMainGame::Update()
 	//	m_pFire->Update();
 	//}
 
-	//g_pTimeManager->Update();
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Update();
+	}
+
+	g_pTimeManager->Update();
 }
 
 void cMainGame::Render()
@@ -68,6 +81,11 @@ void cMainGame::Render()
 	if (m_pGrid)
 	{
 		m_pGrid->Render();
+	}
+
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Render();
 	}
 
 	/*if (m_pFire)

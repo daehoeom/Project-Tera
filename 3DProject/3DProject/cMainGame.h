@@ -3,6 +3,7 @@
 class cGrid;
 class cSkinnedMesh;
 class cParticle_Firework;
+class cSkyBox;
 
 class cMainGame
 {
@@ -10,6 +11,8 @@ class cMainGame
 	cParticle_Firework* m_pFire;
 	cSkinnedMesh*	m_pBody;
 	cSkinnedMesh*   m_pHead;
+	cSkyBox*		m_pSkyBox;
+
 public:
 	cMainGame();
 	~cMainGame();
