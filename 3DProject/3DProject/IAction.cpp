@@ -19,7 +19,7 @@ void IAction::Start( )
 	this->SetActive( true );
 }
 
-void IAction::Update( float tickTime )
+void IAction::Update( )
 {
 }
 

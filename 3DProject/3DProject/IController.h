@@ -7,7 +7,7 @@ public:
 	virtual ~IController( ) = 0;
 
 public:
-	virtual void Update( float tickTime ) = 0;
+	virtual void Update( ) = 0;
 
 public:
 	void SetOwner( class GameObject* owner );

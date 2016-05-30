@@ -61,6 +61,8 @@ void cMainGame::Update()
 {
 	Camera::Get()->Update(NULL);
 
+	m_player.Update( );
+
 	//boundingBox1.Update( NULL);
 
 	//if (m_pFire)

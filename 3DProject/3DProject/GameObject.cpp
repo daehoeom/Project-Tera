@@ -27,12 +27,12 @@ void GameObject::Update( )
 {
 	for ( auto& actionElem : m_actionMap )
 	{
-		actionElem.second->Update( g_pTimeManager->GetDeltaTime( ));
+		actionElem.second->Update( );
 	}
 
 	if ( this->GetController())
 	{
-		this->GetController()->Update( g_pTimeManager->GetDeltaTime( ));
+		this->GetController()->Update( );
 	}
 }
 
@@ -40,7 +40,8 @@ void GameObject::Render( )
 {
 }
 
-void GameObject::SetAction( IAction* action )
+void GameObject::SetAction( 
+	IAction* action )
 {
 	m_actionMap[action->GetIdentifier()] = action;
 	action->SetDelegate( this );
@@ -58,7 +59,8 @@ const std::unique_ptr<ICollider>& GameObject::GetCollider( )
 	return m_collider;
 }
 
-void GameObject::SetController( IController * controller )
+void GameObject::SetController( 
+	IController* controller )
 {
 	m_controller.reset( controller);
 }

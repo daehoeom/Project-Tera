@@ -18,7 +18,7 @@ public:
 	virtual ~IAction( );
 
 	virtual void Start( );
-	virtual void Update( float tickTime );
+	virtual void Update( );
 
 	void SetOwner( GameObject* owner );
 	GameObject* GetOwner( );
