@@ -3,9 +3,9 @@
 class ICollisionDelegate
 {
 public:
-	virtual bool OnCollisionEnter( ) = 0;
-	virtual bool OnCollisionStay( ) = 0;
-	virtual bool OnCollisionLeave( ) = 0;
+	virtual bool OnCollisionEnter( ) { return false; }
+	virtual bool OnCollisionStay( ) { return false; }
+	virtual bool OnCollisionLeave( ) { return false; }
 };
 
 class ICollider

@@ -93,6 +93,7 @@
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cParticle_Base.h" />
     <ClInclude Include="cParticle_Firework.h" />
+    <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cRandomUtil.h" />
     <ClInclude Include="cSkinnedMesh.h" />
     <ClInclude Include="cSkinnedMeshManager.h" />
@@ -103,8 +104,9 @@
     <ClInclude Include="IAction.h" />
     <ClInclude Include="ICollider.h" />
     <ClInclude Include="IController.h" />
-    <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
     <ClInclude Include="Singleton.h" />
@@ -124,6 +126,7 @@
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cParticle_Base.cpp" />
     <ClCompile Include="cParticle_Firework.cpp" />
+    <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
     <ClCompile Include="cSkinnedMesh.cpp" />
     <ClCompile Include="cSkinnedMeshManager.cpp" />
@@ -134,7 +137,8 @@
     <ClCompile Include="IAction.cpp" />
     <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="IController.cpp" />
-    <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="cObjectManager.cpp" />
+    <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

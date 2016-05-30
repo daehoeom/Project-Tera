@@ -1,4 +1,5 @@
 #pragma once
+#include "cPlayer.h"
 
 class cGrid;
 class cSkinnedMesh;
@@ -7,19 +8,20 @@ class cSkyBox;
 
 class cMainGame
 {
-	cGrid*			m_pGrid;
-	cParticle_Firework* m_pFire;
-	cSkinnedMesh*	m_pBody;
-	cSkinnedMesh*   m_pHead;
-	cSkyBox*		m_pSkyBox;
-
 public:
-	cMainGame();
-	~cMainGame();
+	cMainGame( );
+	~cMainGame( );
 
-	void Update();
-	void Render();
+	void Update( );
+	void Render( );
+	void WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 
-	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+private:
+	cPlayer				m_player;
+	cGrid*				m_pGrid;
+	cParticle_Firework* m_pFire;
+	cSkinnedMesh*		m_pBody;
+	cSkinnedMesh*		m_pHead;
+	cSkyBox*			m_pSkyBox;
 };
 

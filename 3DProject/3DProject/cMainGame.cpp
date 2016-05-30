@@ -5,13 +5,27 @@
 #include "cSkinnedMesh.h"
 #include "cParticle_Firework.h"
 
-cMainGame::cMainGame() 
+
+cMainGame::cMainGame( )
 	: m_pGrid(NULL)
 	, m_pFire(NULL)
 	, m_pBody(NULL)
 	, m_pHead(NULL)
 {
+
+	/*
+		WARNING! & TODO:
+		All of managers ( e.g. singleton object ) 
+		must be initialized from here.
+	*/
+
 	cRandomUtil::Setup();
+	cDeviceManager::Get( );
+	cTimeManager::Get( );
+	cSkinnedMeshManager::Get( );
+	cKeyManager::Get( );
+	cObjectManager::Get( );
+
 
 	m_pGrid = new cGrid;
 	m_pGrid->Setup();
@@ -35,10 +49,6 @@ cMainGame::cMainGame()
 		m_pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
 		m_pHead->SetRandomTrackPosition();
 	}
-
-	//boundingBox1.Setup( );
-	//boundingBox1.Setup( &D3DXVECTOR3( -1.f , -1.f,-1.f ),
-	//	&D3DXVECTOR3( 1.f, 1.f, 1.f ));
 }
 
 cMainGame::~cMainGame()
@@ -76,6 +86,8 @@ void cMainGame::Render()
 	{
 		m_pGrid->Render();
 	}
+
+	m_player.Render( );
 
 	/*if (m_pFire)
 	{

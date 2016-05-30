@@ -5,8 +5,8 @@
 #include "GameObject.h"
 
 
-class ObjectManager : 
-	public TSingleton<ObjectManager>
+class cObjectManager : 
+	public TSingleton<cObjectManager>
 {
 	using ObjectMap = std::unordered_map<std::string, GameObject*>;
 	
@@ -15,7 +15,7 @@ public:
 	using const_iterator = ObjectMap::const_iterator;
 
 public:
-	void Update( float fElapsedTime );
+	void Update( );
 
 	void AddObject( class GameObject* pObject );
 	class GameObject* FindObject( const std::string& key );
@@ -25,35 +25,35 @@ public:
 	iterator end( );
 
 protected:
-	ObjectManager( );
-	virtual ~ObjectManager( );
+	cObjectManager( );
+	virtual ~cObjectManager( );
 
 private:
 	ObjectMap m_objMap;
 };
 
-inline void ObjectManager::AddObject(
+inline void cObjectManager::AddObject(
 	GameObject* obj )
 {
 	m_objMap.insert( std::make_pair( obj->GetName( ), obj ) );
 }
 
-inline GameObject* ObjectManager::FindObject( const std::string& key )
+inline GameObject* cObjectManager::FindObject( const std::string& key )
 {
 	return m_objMap[key];
 }
 
-inline void ObjectManager::DeleteObject( const std::string& key )
+inline void cObjectManager::DeleteObject( const std::string& key )
 {
 	m_objMap.erase( key );
 }
 
-inline ObjectManager::iterator ObjectManager::begin( )
+inline cObjectManager::iterator cObjectManager::begin( )
 {
 	return m_objMap.begin( );
 }
 
-inline ObjectManager::iterator ObjectManager::end( )
+inline cObjectManager::iterator cObjectManager::end( )
 {
 	return m_objMap.end( );
 }

@@ -183,6 +183,7 @@ public: virtual void Set##funName(varType var){\
 #include "cDeviceManager.h"
 #include "cTimeManager.h"
 #include "cTextureManager.h"
+#include "cObjectManager.h"
 #include "cKeyManager.h"
 #include "cSkinnedMeshManager.h"
 #include "Particle.h"

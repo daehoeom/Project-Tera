@@ -4,15 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-cRandomUtil::cRandomUtil()
-{
-	srand((unsigned int)time(nullptr));
-}
-
-cRandomUtil::~cRandomUtil()
-{
-}
-
 void cRandomUtil::Setup()
 {
 	srand((unsigned int)time(nullptr));

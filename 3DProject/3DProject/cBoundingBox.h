@@ -5,10 +5,11 @@ class cBoundingBox
 	: public ICollider
 {
 public:
-	cBoundingBox( class GameObject* owner );
+	cBoundingBox( class GameObject* owner, 
+				  const D3DXVECTOR3& vMin, 
+				  const D3DXVECTOR3& vMax );
 	virtual ~cBoundingBox();
 
-	void Setup( D3DXVECTOR3* vMin, D3DXVECTOR3* vMax );
 	virtual void Update() override;
 	virtual void Render() override;
 

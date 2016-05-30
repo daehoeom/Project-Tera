@@ -10,7 +10,8 @@ public:
 	GameObject( const std::string& objName );
 	virtual ~GameObject( );
 
-	virtual void Update( float tickTime );
+	virtual void Update( );
+	virtual void Render( );
 
 public:
 	/*
@@ -37,12 +38,15 @@ public:
 	void SetActive( bool isActive );
 	bool IsActive( ) const;
 	
+	// Collider
 	void SetCollider( class ICollider* collider );
-	ICollider* GetCollider( );
-
+	const std::unique_ptr<ICollider>& GetCollider( );
+	
+	// Controller
 	void SetController( class IController* controller );
-	class IController* GetController( );
+	const std::unique_ptr<IController>& GetController( );
 
+	// Action
 	void SetAction( class IAction* action );
 	template <typename T> T* GetAction( )
 	{
@@ -61,8 +65,8 @@ private:
 	D3DXVECTOR3 m_scale;
 	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
-	class ICollider* m_collider;
-	class IController* m_controller;
+	std::unique_ptr<class ICollider> m_collider;
+	std::unique_ptr<class IController> m_controller;
 	bool m_isActive;
 	std::map<std::uintptr_t, class IAction*> m_actionMap;
 };
@@ -127,7 +131,7 @@ inline const D3DXVECTOR3& GameObject::GetScale( ) const
 	return m_scale;
 }
 
-inline const std::string & GameObject::GetName( ) const
+inline const std::string& GameObject::GetName( ) const
 {
 	return m_objName;
 }
@@ -137,7 +141,7 @@ inline const D3DXMATRIXA16 GameObject::GetWorld( ) const
 	return m_matWorld;
 }
 
-inline IController * GameObject::GetController( )
+inline const std::unique_ptr<IController>& GameObject::GetController( )
 {
 	return m_controller;
 }
