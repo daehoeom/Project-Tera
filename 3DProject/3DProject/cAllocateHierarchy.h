@@ -15,6 +15,7 @@ struct ST_BONE_MESH : public D3DXMESHCONTAINER
 	D3DXMATRIXA16**			ppBoneMatrixPtrs;		// 이 메쉬에 영향을 주는 프레임'들'의 월드매트릭스 포인터 배열
 	D3DXMATRIXA16*			pBoneOffsetMatrices;	// 원본 메쉬를 로컬스페이스로 보내는 매트릭스들.
 
+	DWORD					dwNumSubset;
 	DWORD					dwNumPaletteEntries;
 	DWORD					dwMaxNumFaceInfls;
 	DWORD					dwNumAttrGroups;

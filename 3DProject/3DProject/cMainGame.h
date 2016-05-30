@@ -9,12 +9,12 @@ class cSkyBox;
 class cMainGame
 {
 public:
-	cMainGame( );
-	~cMainGame( );
+	cMainGame();
+	~cMainGame();
 
-	void Update( );
-	void Render( );
-	void WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
+	void Update();
+	void Render();
+	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
 	cPlayer				m_player;
