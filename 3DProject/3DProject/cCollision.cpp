@@ -4,15 +4,6 @@
 #include "cBoundingSphere.h"
 
 
-cCollision::cCollision()
-{
-}
-
-
-cCollision::~cCollision()
-{
-}
-
 bool cCollision::IsSphereToSphere(cBoundingSphere& s1, cBoundingSphere& s2)
 {
 	bool result = false;
