@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ICollider.h"
 
+
 ICollider::ICollider( GameObject* owner ) :
 	m_owner( owner ),
 #ifdef _DEBUG
@@ -33,3 +34,5 @@ void ICollider::PostRender( )
 		g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 	}
 }
+
+

@@ -1,9 +1,9 @@
 #pragma once
-#include "IAction.h"
 #include "ICollider.h"
+#include "cFSM.h"
 
-class GameObject : 
-	public IActionDelegate,
+class GameObject :
+	public cFSM,
 	public ICollisionDelegate
 {
 public:
@@ -40,18 +40,7 @@ public:
 	
 	// Collider
 	void SetCollider( class ICollider* collider );
-	const std::unique_ptr<ICollider>& GetCollider( );
-	
-	// Controller
-	void SetController( class IController* controller );
-	const std::unique_ptr<IController>& GetController( );
-
-	// Action
-	void SetAction( class IAction* action );
-	template <typename T> T* GetAction( )
-	{
-		return reinterpret_cast<T*>( m_actionMap[T::GetIdentifierStatic()] );
-	}
+	ICollider* GetCollider( );
 	
 	const std::string& GetName( ) const;
 	const D3DXMATRIXA16 GetWorld( ) const;
@@ -65,8 +54,7 @@ private:
 	D3DXVECTOR3 m_scale;
 	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
-	std::unique_ptr<class ICollider> m_collider;
-	std::unique_ptr<class IController> m_controller;
+	class ICollider* m_collider;
 	bool m_isActive;
 	std::map<std::uintptr_t, class IAction*> m_actionMap;
 };
@@ -139,11 +127,6 @@ inline const std::string& GameObject::GetName( ) const
 inline const D3DXMATRIXA16 GameObject::GetWorld( ) const
 {
 	return m_matWorld;
-}
-
-inline const std::unique_ptr<IController>& GameObject::GetController( )
-{
-	return m_controller;
 }
 
 inline bool GameObject::IsActive( ) const

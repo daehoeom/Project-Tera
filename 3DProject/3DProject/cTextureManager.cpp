@@ -9,6 +9,10 @@ cTextureManager::cTextureManager()
 
 cTextureManager::~cTextureManager()
 {
+	for ( auto& elem : m_mapTexture )
+	{
+		SAFE_RELEASE( elem.second );
+	}
 }
 
 LPDIRECT3DTEXTURE9 cTextureManager::GetTexture(char* szFullPath)
@@ -35,15 +39,4 @@ LPDIRECT3DTEXTURE9 cTextureManager::GetTexture(std::string szFullPath)
 	}
 
 	return m_mapTexture[szFullPath];
-}
-
-void cTextureManager::Destroy()
-{
-	if (m_mapTexture.size() != 0)
-	{
-		for each(auto it in m_mapTexture)
-		{
-			SAFE_RELEASE(it.second);
-		}
-	}
 }

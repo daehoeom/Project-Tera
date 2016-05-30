@@ -28,11 +28,11 @@ cSkinnedMesh* cSkinnedMeshManager::GetSkinnedMesh(char* szFolder, char* szFile)
 
 void cSkinnedMeshManager::Destroy()
 {
-	if (m_mapSkinnedMesh.size() != 0)
+	if ( m_mapSkinnedMesh.size( ) != 0 )
 	{
-		for each(auto it in m_mapSkinnedMesh)
+		for (auto& elem : m_mapSkinnedMesh)
 		{
-			it.second->Destroy();
+			elem.second->Destroy();
 		}
 	}
 }

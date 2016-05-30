@@ -22,6 +22,7 @@
 #include <set>
 #include <map>
 #include <unordered_map>
+#include <functional>
 #include <bitset>
 #include <initializer_list>
 #include <array>
@@ -187,4 +188,5 @@ public: virtual void Set##funName(varType var){\
 #include "cKeyManager.h"
 #include "cSkinnedMeshManager.h"
 #include "Particle.h"
+#include "cCamera.h"
 #include "cRandomUtil.h"

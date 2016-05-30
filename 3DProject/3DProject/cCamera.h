@@ -1,16 +1,16 @@
 #pragma once
 #include "Singleton.h"
 
-class Camera : 
-	public TSingleton<Camera>
+class cCamera : 
+	public TSingleton<cCamera>
 {
 public:
 	void Update(D3DXVECTOR3* pTarget = NULL);
 	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
-	Camera( );
-	~Camera( );
+	cCamera( );
+	~cCamera( );
 
 private:
 	D3DXVECTOR3	m_vEye;

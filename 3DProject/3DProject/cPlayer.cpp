@@ -1,17 +1,16 @@
 #include "stdafx.h"
 #include "cPlayer.h"
 
-#include "cPlayerController.h"
 #include "cBoundingBox.h"
-
+#include "cPlayerState.h"
 
 cPlayer::cPlayer( ) :
 	GameObject( "Player" )
 {
-	this->SetController( new cPlayerController( this ));
+	this->AddState( eFSMState::kIdle, new cPlayerIdleState( this ));
+	this->SetCollider( new cBoundingBox( this, D3DXVECTOR3( -1.f,-1.f,-1.f ), D3DXVECTOR3( 1.f, 1.f, 1.f )));
 
-	this->SetCollider( new cBoundingBox( this,
-		D3DXVECTOR3( -1.f,-1.f,-1.f ), D3DXVECTOR3( 1.f, 1.f, 1.f )));
+	this->TranslateState( eFSMState::kIdle );
 }
 
 cPlayer::~cPlayer( )
@@ -27,5 +26,8 @@ void cPlayer::Render( )
 {
 	__super::Render( );
 
-	this->GetCollider( )->Render( );
+	if ( this->GetCollider( ) )
+	{
+		this->GetCollider( )->Render( );
+	}
 }

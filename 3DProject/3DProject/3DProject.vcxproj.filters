@@ -25,40 +25,41 @@
     </Filter>
     <Filter Include="Misc\Utility">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <Extensions>
+      </Extensions>
     </Filter>
     <Filter Include="Manager\Interface">
       <UniqueIdentifier>{a9241077-7e10-491f-a64a-cac3beffd00a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Collider">
+    <Filter Include="Object\FSM">
+      <UniqueIdentifier>{943c9244-7c90-4514-ae9c-ceef73fe38e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Player">
+      <UniqueIdentifier>{bbea4c93-5d81-4071-94af-6ea73b4c8911}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Monster">
+      <UniqueIdentifier>{b76b8d2c-06aa-4a88-9623-f41a65838032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Building">
+      <UniqueIdentifier>{f9783b53-e1b1-467e-8c2e-291892be59ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Camera">
+      <UniqueIdentifier>{84e81b48-dd14-44bb-96e0-3038707c1b4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Abstract">
+      <UniqueIdentifier>{8136d43f-a3f6-4571-b1a9-58c073dd6594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Abstract\Collider">
       <UniqueIdentifier>{083c0eec-c5f6-4334-8fed-04abd05fb489}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Controller">
-      <UniqueIdentifier>{35a424cb-c5b2-4e22-9628-e41f3ec8512c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Collider\Interface">
+    <Filter Include="Object\Abstract\Collider\Interface">
       <UniqueIdentifier>{51da7a26-107c-4fda-8455-33af7fc5f65a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Controller\Interface">
-      <UniqueIdentifier>{3eb366af-4e41-46e2-92f4-7cd5718f8df7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="IAction.h">
-      <Filter>Action</Filter>
-    </ClInclude>
-    <ClInclude Include="cGrid.h">
-      <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="cCamera.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="cKeyManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -93,10 +94,10 @@
       <Filter>Manager\Interface</Filter>
     </ClInclude>
     <ClInclude Include="cBoundingBox.h">
-      <Filter>Object\Collider</Filter>
+      <Filter>Object\Abstract\Collider</Filter>
     </ClInclude>
     <ClInclude Include="cBoundingSphere.h">
-      <Filter>Object\Collider</Filter>
+      <Filter>Object\Abstract\Collider</Filter>
     </ClInclude>
     <ClInclude Include="cSkinnedMesh.h">
       <Filter>Misc\Utility</Filter>
@@ -120,13 +121,7 @@
       <Filter>Misc\Utility</Filter>
     </ClInclude>
     <ClInclude Include="ICollider.h">
-      <Filter>Object\Collider\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="IController.h">
-      <Filter>Object\Controller\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkyBox.h">
-      <Filter>Object</Filter>
+      <Filter>Object\Abstract\Collider\Interface</Filter>
     </ClInclude>
     <ClInclude Include="cObjectManager.h">
       <Filter>Manager</Filter>
@@ -134,15 +129,30 @@
     <ClInclude Include="shared_comptr.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cPlayerController.h">
-      <Filter>Object\Controller</Filter>
+    <ClInclude Include="cSkyBox.h">
+      <Filter>Object\Building</Filter>
     </ClInclude>
-    <ClInclude Include="cFrustumCulling.h" />
     <ClInclude Include="cPlayer.h">
-      <Filter>Object</Filter>
+      <Filter>Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="cBody.h">
-      <Filter>Object</Filter>
+    <ClInclude Include="cGrid.h">
+      <Filter>Object\Building</Filter>
+    </ClInclude>
+    <ClInclude Include="cCamera.h">
+      <Filter>Object\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Object\Abstract</Filter>
+    </ClInclude>
+    <ClInclude Include="cFrustumCulling.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cBody.h" />
+    <ClInclude Include="cFSM.h">
+      <Filter>Object\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayerState.h">
+      <Filter>Object\FSM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -158,18 +168,6 @@
     <ClCompile Include="cAllocateHierarchy.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="IAction.cpp">
-      <Filter>Action</Filter>
-    </ClCompile>
-    <ClCompile Include="cCamera.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="cGrid.cpp">
-      <Filter>Object</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>PrecompiledHeader</Filter>
     </ClCompile>
@@ -183,10 +181,10 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="cBoundingBox.cpp">
-      <Filter>Object\Collider</Filter>
+      <Filter>Object\Abstract\Collider</Filter>
     </ClCompile>
     <ClCompile Include="cBoundingSphere.cpp">
-      <Filter>Object\Collider</Filter>
+      <Filter>Object\Abstract\Collider</Filter>
     </ClCompile>
     <ClCompile Include="cSkinnedMesh.cpp">
       <Filter>Misc\Utility</Filter>
@@ -206,26 +204,35 @@
     <ClCompile Include="cCollision.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="cSkyBox.cpp">
-      <Filter>Misc\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="ICollider.cpp">
-      <Filter>Object\Collider\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="IController.cpp">
-      <Filter>Object\Controller\Interface</Filter>
+      <Filter>Object\Abstract\Collider\Interface</Filter>
     </ClCompile>
     <ClCompile Include="cObjectManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="cPlayerController.cpp">
-      <Filter>Object\Controller</Filter>
-    </ClCompile>
     <ClCompile Include="cFrustumCulling.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="cSkyBox.cpp">
+      <Filter>Object\Building</Filter>
+    </ClCompile>
     <ClCompile Include="cPlayer.cpp">
-      <Filter>Object</Filter>
+      <Filter>Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="cGrid.cpp">
+      <Filter>Object\Building</Filter>
+    </ClCompile>
+    <ClCompile Include="cCamera.cpp">
+      <Filter>Object\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Object\Abstract</Filter>
+    </ClCompile>
+    <ClCompile Include="cFSM.cpp">
+      <Filter>Object\FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayerState.cpp">
+      <Filter>Object\FSM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +246,9 @@
     </Image>
     <Image Include="3DProject.ico">
       <Filter>Resource</Filter>
+    </Image>
+    <Image Include="fireworks_flare.bmp">
+      <Filter>Object\FSM</Filter>
     </Image>
   </ItemGroup>
 </Project>

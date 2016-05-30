@@ -56,23 +56,21 @@ cDeviceManager::cDeviceManager()
 
 cDeviceManager::~cDeviceManager()
 {
-}
-
-void cDeviceManager::Destroy()
-{
-	SAFE_RELEASE(m_pD3D);
+	SAFE_RELEASE( m_pD3D );
 	//SAFE_RELEASE(m_pD3DDevice);
 
 
-	if (m_pD3DDevice)
+	if ( m_pD3DDevice )
 	{
-		ULONG ul = m_pD3DDevice->Release();
+		ULONG ul = m_pD3DDevice->Release( );
+
 		/*#ifdef _DEBUG*/
-		assert(ul == 0 && "디바이스를 이용하여 생성한 객체 중 소멸되지 않은 객체가 있습니다.");
+		assert( ul == 0 && "디바이스를 이용하여 생성한 객체 중 소멸되지 않은 객체가 있습니다." );
+		
+
 		/*#endif*/
 
 	}
-
 }
 
 LPDIRECT3DDEVICE9 cDeviceManager::GetDevice()

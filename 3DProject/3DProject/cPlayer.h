@@ -1,7 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-class cPlayer : public GameObject
+class cPlayer : 
+	public GameObject
 {
 public:
 	cPlayer( );

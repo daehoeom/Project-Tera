@@ -9,7 +9,6 @@ class cDeviceManager :
 {
 public:
 	LPDIRECT3DDEVICE9 GetDevice();
-	void Destroy();
 
 private:
 	LPDIRECT3D9			m_pD3D;

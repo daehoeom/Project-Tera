@@ -1,20 +1,9 @@
 #include "StdAfx.h"
 #include "cGrid.h"
 
-cGrid::cGrid(void)
+cGrid::cGrid( int nLine /*= 30*/, float fInterval /*= 1.0f*/ )
 	: m_pVB(NULL)
 	, m_nNumLine(0)
-{
-}
-
-
-cGrid::~cGrid(void)
-{
-	SAFE_RELEASE(m_pVB);
-
-}
-
-void cGrid::Setup(int nLine /*= 30*/, float fInterval /*= 1.0f*/)
 {
 	std::vector<ST_PC_VERTEX>	vecVertex;
 
@@ -73,6 +62,13 @@ void cGrid::Setup(int nLine /*= 30*/, float fInterval /*= 1.0f*/)
 	m_pVB->Lock(0, 0, (LPVOID*)&pV, 0);
 	memcpy(pV, &vecVertex[0], vecVertex.size() * sizeof(ST_PC_VERTEX));
 	m_pVB->Unlock();
+
+}
+
+
+cGrid::~cGrid(void)
+{
+	SAFE_RELEASE(m_pVB);
 
 }
 

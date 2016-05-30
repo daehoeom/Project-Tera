@@ -77,6 +77,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 			g_pMainGame->Render();
 		}
 	}
+
+	g_pMainGame.reset( nullptr );
 	
 	return (int) msg.wParam;
 }
