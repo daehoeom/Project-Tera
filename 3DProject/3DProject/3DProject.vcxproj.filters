@@ -141,6 +141,9 @@
     <ClInclude Include="cPlayer.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="cBody.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
