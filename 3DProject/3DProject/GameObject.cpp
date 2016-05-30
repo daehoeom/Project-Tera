@@ -18,6 +18,7 @@ GameObject::GameObject( const std::string& objName ) :
 
 GameObject::~GameObject( )
 {
+	delete m_collider;
 	//ObjectManager::Get()->DeleteObject( this->GetName());
 }
 
@@ -32,11 +33,11 @@ void GameObject::Render( )
 
 void GameObject::SetCollider( ICollider* collider )
 {
-	m_collider.reset( collider );
+	m_collider = collider;
 	collider->SetOwner( this );
 }
 
-const std::unique_ptr<ICollider>& GameObject::GetCollider( )
+ICollider* GameObject::GetCollider( )
 {
 	return m_collider;
 }

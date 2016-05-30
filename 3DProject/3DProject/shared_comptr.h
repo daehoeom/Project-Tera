@@ -9,10 +9,6 @@
 #pragma once
 
 
-namespace tgon
-{
-
-
 template <typename _Ty>
 class shared_comptr
 {
@@ -153,4 +149,3 @@ private:
 };
 
 
-}

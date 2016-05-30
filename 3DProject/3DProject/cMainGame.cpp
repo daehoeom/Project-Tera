@@ -1,72 +1,35 @@
 #include "stdafx.h"
 #include "cMainGame.h"
-#include "cCamera.h"
+
 #include "cGrid.h"
 #include "cSkinnedMesh.h"
-#include "cParticle_Firework.h"
+#include "cPlayer.h"
 
 
 cMainGame::cMainGame( )
-	: m_pGrid(NULL)
-	, m_pFire(NULL)
-	, m_pEneny(NULL)
 {
+	this->SetupManagers( );
 
-	/*
-		WARNING! & TODO:
-		All of managers ( e.g. singleton object ) 
-		must be initialized from here.
-	*/
-
-	cRandomUtil::Setup();
-	cDeviceManager::Get( );
-	cTimeManager::Get( );
-	cCamera::Get( );
-	cSkinnedMeshManager::Get( );
-	cKeyManager::Get( );
-	cObjectManager::Get( );
-
-
-	m_pGrid = new cGrid;
+	m_player.reset( new cPlayer );
 	
-	if (m_pFire == nullptr)
-	{
-		m_pFire = new cParticle_Firework(D3DXVECTOR3(-15, 20, 100), 6000);
-		m_pFire->Setup("fireworks_flare.bmp");
-	}
+	m_grid.reset( new cGrid );
 
-
-	if (m_pEneny == nullptr)
-	{
-		m_pEneny = new cSkinnedMesh("./LongTusk/", "LongTusk_Idle.X");
-		m_pEneny->SetPosition(D3DXVECTOR3(0, 0, 0));
-		m_pEneny->SetRandomTrackPosition();
-	}
+	//m_enemy.reset( new cSkinnedMesh("./LongTusk/", "LongTusk_Idle.X" ));
+	//m_enemy->SetRandomTrackPosition();
 }
 
 cMainGame::~cMainGame()
 {
-	SAFE_DELETE(m_pGrid);
-	SAFE_DELETE(m_pFire);
-	SAFE_DELETE(m_pEneny);
 }
 
 void cMainGame::Update()
 {
 	cCamera::Get()->Update(NULL);
-
-	m_player.Update( );
-
-	//boundingBox1.Update( NULL);
-
-	//if (m_pFire)
-	//{
-	//	m_pFire->Update();
-	//}
+	
+	if ( m_player )
+		m_player->Update( );
 
 	g_pTimeManager->Update();
-
-	
 }
 
 void cMainGame::Render()
@@ -79,27 +42,38 @@ void cMainGame::Render()
 
 	g_pD3DDevice->BeginScene();
 
-
-	if (m_pGrid)
-	{
-		m_pGrid->Render();
-	}
-
-	m_player.Render( );
-
-	/*if (m_pFire)
-	{
-		m_pFire->Render();
-	}*/
-
-	m_pEneny->UpdateAndRender();
+	if ( m_grid )
+		m_grid->Render( );
+	if ( m_player )
+		m_player->Render( );
+	if( m_enemy )
+		m_enemy->UpdateAndRender();
 
 	g_pD3DDevice->EndScene();
-
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }
 
 void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	cCamera::Get()->WndProc(hWnd, message, wParam, lParam);
+}
+
+void cMainGame::SetupManagers( )
+{
+	/*
+		WARNING! & TODO:
+		All of managers ( e.g. singleton object ) 
+		must be initialized from here.
+	*/
+
+	cDeviceManager::Get( );
+	// Must be called after cDeviceManager initialized
+	cCamera::Get( );
+	cSkinnedMeshManager::Get( );
+	cTextureManager::Get( );
+	// Etc
+	cRandomUtil::Setup();
+	cTimeManager::Get( );
+	cKeyManager::Get( );
+	cObjectManager::Get( );
 }

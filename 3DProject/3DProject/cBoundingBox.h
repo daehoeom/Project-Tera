@@ -1,5 +1,7 @@
 #pragma once
 #include "ICollider.h"
+#include "shared_comptr.h"
+
 
 class cBoundingBox 
 	: public ICollider
@@ -18,9 +20,9 @@ public:
 	const D3DXVECTOR3& GetMaximum() { return m_vMax; }
 
 private:
-	LPD3DXMESH	m_pBox;
-	bool		m_bWireDraw;
-	D3DXVECTOR3	m_vMin;
-	D3DXVECTOR3	m_vMax;
+	shared_comptr<ID3DXMesh>	m_pBox;
+	bool						m_bWireDraw;
+	D3DXVECTOR3					m_vMin;
+	D3DXVECTOR3					m_vMax;
 
 };

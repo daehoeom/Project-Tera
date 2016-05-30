@@ -26,5 +26,8 @@ void cPlayer::Render( )
 {
 	__super::Render( );
 
-	this->GetCollider( )->Render( );
+	if ( this->GetCollider( ) )
+	{
+		this->GetCollider( )->Render( );
+	}
 }
