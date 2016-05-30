@@ -10,7 +10,6 @@ cMainGame::cMainGame()
 	, m_pFire(NULL)
 	, m_pBody(NULL)
 	, m_pHead(NULL)
-	, 
 {
 	cRandomUtil::Setup();
 

@@ -11,8 +11,6 @@ public:
 	void Setup( D3DXVECTOR3* vMin, D3DXVECTOR3* vMax );
 	virtual void Update() override;
 	virtual void Render() override;
-	
-	virtual void IsCollised( );
 
 public:
 	const D3DXVECTOR3& GetMinimum() { return m_vMin; }

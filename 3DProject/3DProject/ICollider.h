@@ -21,9 +21,8 @@ public:
 
 	void SetDebugRender( bool isDebugRender ) { m_isDebugRender = isDebugRender; }
 	bool IsDebugRender( ) const { return m_isDebugRender; }
-	virtual bool IsCollised( ) const = 0;
 
-protected:
+	void SetOwner( class GameObject* owner ) { m_owner = owner; }
 	class GameObject* GetOwner( ) { return m_owner; }
 
 private:

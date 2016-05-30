@@ -37,6 +37,9 @@ public:
 	void SetActive( bool isActive );
 	bool IsActive( ) const;
 	
+	void SetCollider( class ICollider* collider );
+	ICollider* GetCollider( );
+
 	void SetController( class IController* controller );
 	class IController* GetController( );
 
@@ -58,6 +61,7 @@ private:
 	D3DXVECTOR3 m_scale;
 	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
+	class ICollider* m_collider;
 	class IController* m_controller;
 	bool m_isActive;
 	std::map<std::uintptr_t, class IAction*> m_actionMap;

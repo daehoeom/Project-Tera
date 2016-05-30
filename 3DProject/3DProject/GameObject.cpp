@@ -3,7 +3,7 @@
 
 #include "ObjectManager.h"
 #include "IController.h"
-
+#include "ICollider.h"
 
 GameObject::GameObject( const std::string& objName ) :
 	m_objName( objName ),
@@ -40,6 +40,17 @@ void GameObject::SetAction( IAction* action )
 	m_actionMap[action->GetIdentifier()] = action;
 	action->SetDelegate( this );
 	action->SetOwner( this );
+}
+
+void GameObject::SetCollider( ICollider * collider )
+{
+	m_collider = collider;
+	collider->SetOwner( this );
+}
+
+ICollider * GameObject::GetCollider( )
+{
+	return m_collider;
 }
 
 void GameObject::SetController( IController * controller )
