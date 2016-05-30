@@ -6,7 +6,7 @@
 
 
 cPlayer::cPlayer( ) :
-	GameObject( "Game" )
+	GameObject( "Player" )
 {
 	this->SetController( new cPlayerController( this ));
 

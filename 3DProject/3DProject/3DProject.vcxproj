@@ -83,7 +83,6 @@
   <ItemGroup>
     <ClInclude Include="3DProject.h" />
     <ClInclude Include="cAllocateHierarchy.h" />
-    <ClInclude Include="cBody.h" />
     <ClInclude Include="cBoundingBox.h" />
     <ClInclude Include="cBoundingSphere.h" />
     <ClInclude Include="cCamera.h" />
@@ -118,7 +117,6 @@
   <ItemGroup>
     <ClCompile Include="3DProject.cpp" />
     <ClCompile Include="cAllocateHierarchy.cpp" />
-    <ClCompile Include="cBody.cpp" />
     <ClCompile Include="cBoundingBox.cpp" />
     <ClCompile Include="cBoundingSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
