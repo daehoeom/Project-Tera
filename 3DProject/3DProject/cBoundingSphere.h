@@ -1,25 +1,22 @@
 #pragma once
+#include "ICollider.h"
 
-#include "GameObject.h"
-
-class cBoundingSphere : public GameObject
+class cBoundingSphere : 
+	public ICollider
 {
-	LPD3DXMESH		sphereMesh;
-	D3DMATERIAL9	stMtl;
-	D3DXMATRIXA16	m_matWorld;
-	bool			m_bWireDraw;		//와이어 프레임으로 그릴 것인지?
-	float			m_fRadius;
-
 public:
-	cBoundingSphere();
-	~cBoundingSphere();
+	cBoundingSphere( class GameObject* owner );
+	virtual ~cBoundingSphere();
 
 	void Setup(D3DXVECTOR3* vCenter, float radius);
-	void Update(D3DXMATRIXA16* matWorld);
-	void Render();
-	bool SetWireDraw(bool isDraw) { m_bWireDraw = isDraw; }
+	virtual void Update() override;
+	virtual void Render() override;
 
-	float GetRadius() { return m_fRadius; }
-	void SetRadius(float radius) { m_fRadius = radius; }
+	float GetRadius( ) const { return m_fRadius; }
+	void SetRadius( float radius ) { m_fRadius = radius; }
+
+private:
+	LPD3DXMESH	sphereMesh;
+	float		m_fRadius;
 };
 

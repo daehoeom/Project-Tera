@@ -5,33 +5,42 @@
 #include "cSkinnedMesh.h"
 #include "cParticle_Firework.h"
 
-cMainGame::cMainGame() 
-	: m_pGrid(NULL)
-	, m_pFire(NULL)
-	, m_pBody(NULL)
-	, m_pHead(NULL)
-{
-	cRandomUtil::Setup();
 
-	m_pGrid = new cGrid;
-	m_pGrid->Setup();
+cMainGame::cMainGame( )
+{
+
+	/*
+		WARNING! & TODO:
+		All of managers ( e.g. singleton object ) 
+		must be initialized from here.
+	*/
+
+	cRandomUtil::Setup();
+	cDeviceManager::Get( );
+	cTimeManager::Get( );
+	cSkinnedMeshManager::Get( );
+	cKeyManager::Get( );
+	cObjectManager::Get( );
+
+
+	m_pGrid.reset( new cGrid );
 	
 	if (m_pFire == nullptr)
 	{
-		m_pFire = new cParticle_Firework(D3DXVECTOR3(-15, 20, 100), 6000);
+		m_pFire.reset( new cParticle_Firework(D3DXVECTOR3(-15, 20, 100), 6000));
 		m_pFire->Setup("fireworks_flare.bmp");
 	}
 
 	if (m_pBody == nullptr)
 	{
-		m_pBody = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¸ö_°ø°Ý.X");
+		m_pBody.reset( new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¸ö_°ø°Ý.X"));
 		m_pBody->SetPosition(D3DXVECTOR3(0, 0, 0));
 		m_pBody->SetRandomTrackPosition();
 	}
 
 	if (m_pHead == nullptr)
 	{
-		m_pHead = new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¾ó±¼_°ø°Ý.X");
+		m_pHead.reset( new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¾ó±¼_°ø°Ý.X"));
 		m_pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
 		m_pHead->SetRandomTrackPosition();
 	}
@@ -39,13 +48,21 @@ cMainGame::cMainGame()
 
 cMainGame::~cMainGame()
 {
-	SAFE_DELETE(m_pGrid);
-	SAFE_DELETE(m_pFire);
+	cObjectManager::Get( );
+	cKeyManager::Get( );
+	cSkinnedMeshManager::Get( )->Destroy( );
+	cTimeManager::Get( );
+	cDeviceManager::Get( )->Destroy( );
+	cRandomUtil::Setup( );
 }
 
 void cMainGame::Update()
 {
 	Camera::Get()->Update(NULL);
+
+	m_player.Update( );
+
+	//boundingBox1.Update( NULL);
 
 	//if (m_pFire)
 	//{
@@ -65,9 +82,11 @@ void cMainGame::Render()
 
 	g_pD3DDevice->BeginScene();
 
-	if (m_pGrid)
+	m_player.Render( );
+
+	if ( m_pGrid )
 	{
-		m_pGrid->Render();
+		m_pGrid->Render( );
 	}
 
 	/*if (m_pFire)

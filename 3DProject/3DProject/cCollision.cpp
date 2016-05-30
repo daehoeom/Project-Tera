@@ -3,21 +3,13 @@
 #include "cBoundingBox.h"
 #include "cBoundingSphere.h"
 
-
-cCollision::cCollision()
-{
-}
-
-
-cCollision::~cCollision()
-{
-}
+#include "GameObject.h"
 
 bool cCollision::IsSphereToSphere(cBoundingSphere& s1, cBoundingSphere& s2)
 {
 	bool result = false;
 
-	D3DXVECTOR3 dv = s1.GetPosition() - s2.GetPosition();
+	D3DXVECTOR3 dv = s1.GetOwner( )->GetPosition() - s2.GetOwner( )->GetPosition();
 	float d = D3DXVec3LengthSq(&dv);
 	float rSum = (s1.GetRadius() + s2.GetRadius()) * (s1.GetRadius() + s2.GetRadius());
 
@@ -34,39 +26,39 @@ bool cCollision::IsBoxToSphere(cBoundingBox& box, cBoundingSphere& s)
 	float distance = 0.f;
 	float diff = 0.f;
 
-	if (s.GetPosition().x < box.GetMinimum().x)
+	if (s.GetOwner( )->GetPosition().x < box.GetMinimum().x)
 	{
-		diff = box.GetMinimum().x - s.GetPosition().x;
+		diff = box.GetMinimum().x - s.GetOwner( )->GetPosition().x;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetPosition().x > box.GetMaximum().x)
+	else if (s.GetOwner( )->GetPosition().x > box.GetMaximum().x)
 	{
-		diff = s.GetPosition().x - box.GetMaximum().x;
+		diff = s.GetOwner( )->GetPosition().x - box.GetMaximum().x;
 		distance += (diff * diff);
 	}
 
-	if (s.GetPosition().y < box.GetMinimum().y)
+	if (s.GetOwner( )->GetPosition().y < box.GetMinimum().y)
 	{
 		diff = box.GetMinimum().y - box.GetMaximum().y;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetPosition().y > box.GetMaximum().y)
+	else if (s.GetOwner( )->GetPosition().y > box.GetMaximum().y)
 	{
-		diff = s.GetPosition().y - box.GetMaximum().y;
+		diff = s.GetOwner( )->GetPosition().y - box.GetMaximum().y;
 		distance += (diff * diff);
 	}
 
-	if (s.GetPosition().z < box.GetMinimum().z)
+	if (s.GetOwner( )->GetPosition().z < box.GetMinimum().z)
 	{
-		diff = box.GetMinimum().z - s.GetPosition().z;
+		diff = box.GetMinimum().z - s.GetOwner( )->GetPosition().z;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetPosition().z > box.GetMaximum().z)
+	else if (s.GetOwner( )->GetPosition().z > box.GetMaximum().z)
 	{
-		diff = s.GetPosition().z - box.GetMaximum().z;
+		diff = s.GetOwner( )->GetPosition().z - box.GetMaximum().z;
 		distance += (diff * diff);
 	}
 

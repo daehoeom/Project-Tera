@@ -9,7 +9,7 @@ Camera::Camera(void)
 	, m_isLButtonDown(false)
 	, m_fRotX(0.0f)
 	, m_fRotY(0.0f)
-	, m_fDist(15)
+	, m_fDist(500)
 {
 	RECT rc;
 	GetClientRect( g_hWnd, &rc );
@@ -25,7 +25,7 @@ Camera::~Camera(void)
 
 void Camera::Update(D3DXVECTOR3* pTarget/* = NULL*/)
 {
-	m_vEye = D3DXVECTOR3(0, 0, -m_fDist);
+	m_vEye = D3DXVECTOR3(0, 100, -m_fDist);
 	D3DXMATRIXA16 matRotX, matRotY;
 	D3DXMatrixRotationX(&matRotX, m_fRotX);
 	D3DXMatrixRotationY(&matRotY, m_fRotY);

@@ -1,76 +1,102 @@
 #pragma once
-#include "IAction.h"
+#include "ICollider.h"
+#include "cFSM.h"
 
-class GameObject : 
-	public IActionDelegate
+class GameObject :
+	public cFSM,
+	public ICollisionDelegate
 {
 public:
 	GameObject( const std::string& objName );
 	virtual ~GameObject( );
 
-	virtual void Update( float tickTime );
+	virtual void Update( );
+	virtual void Render( );
 
 public:
+	/*
+		Transform
+	*/
+	// Position
 	void SetPosition( const D3DXVECTOR3& pos );
 	void Move( const D3DXVECTOR3& pos );
+	const D3DXVECTOR3& GetPosition( ) const;
+
+	// Roatation
 	void SetAngle( const D3DXVECTOR3& rot );
 	void Rotate( const D3DXVECTOR3& rot );
+	const D3DXVECTOR3& GetAngle( ) const;
+	
+	// Scale
 	void SetScale( const D3DXVECTOR3& scale );
 	void Scale( const D3DXVECTOR3& scale );
-	void SetActive( bool isActive );
-	void SetAction( class IAction* action );
-	void SetController( class IController* controller );
-
-	const D3DXVECTOR3& GetPosition( ) const;
-	const D3DXVECTOR3& GetAngle( ) const;
 	const D3DXVECTOR3& GetScale( ) const;
-	const std::string& GetName( ) const;
-	class IController* GetController( );
+	
+	/*
+		State & Component
+	*/
+	void SetActive( bool isActive );
 	bool IsActive( ) const;
 	
-	template <typename T> T* GetAction( )
-	{
-		return reinterpret_cast<T*>( m_actionMap[T::GetIdentifierStatic()] );
-	}
+	// Collider
+	void SetCollider( class ICollider* collider );
+	const std::unique_ptr<ICollider>& GetCollider( );
+	
+	const std::string& GetName( ) const;
+	const D3DXMATRIXA16 GetWorld( ) const;
 
 private:
-	std::map<unsigned int, class IAction*> m_actionMap;
-	class IController* m_controller;
+	void UpdateWorld( );
+
+private:
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_angle;
 	D3DXVECTOR3 m_scale;
+	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
+	std::unique_ptr<class ICollider> m_collider;
 	bool m_isActive;
+	std::map<std::uintptr_t, class IAction*> m_actionMap;
 };
 
 inline void GameObject::SetPosition( const D3DXVECTOR3& pos )
 {
 	m_pos = pos;
+	m_matWorld._41 = pos.x;
+	m_matWorld._42 = pos.y;
+	m_matWorld._43 = pos.z;
 }
 
 inline void GameObject::Move( const D3DXVECTOR3& pos )
 {
 	m_pos += pos;
+	m_matWorld._41 += pos.x;
+	m_matWorld._42 += pos.y;
+	m_matWorld._43 += pos.z;
 }
 
 inline void GameObject::SetAngle( const D3DXVECTOR3& rot )
 {
 	m_angle = rot;
+	this->UpdateWorld( );
 }
 
 inline void GameObject::Rotate( const D3DXVECTOR3& rot )
 {
 	m_angle += rot;
+	this->UpdateWorld( );
 }
 
 inline void GameObject::SetScale( const D3DXVECTOR3& scale )
 {
 	m_scale = scale;
+	this->UpdateWorld( );
 }
 
 inline void GameObject::Scale( const D3DXVECTOR3& scale )
 {
 	m_scale += scale;
+	this->UpdateWorld( );
 }
 
 inline void GameObject::SetActive( bool isActive )
@@ -93,17 +119,34 @@ inline const D3DXVECTOR3& GameObject::GetScale( ) const
 	return m_scale;
 }
 
-inline const std::string & GameObject::GetName( ) const
+inline const std::string& GameObject::GetName( ) const
 {
 	return m_objName;
 }
 
-inline IController * GameObject::GetController( )
+inline const D3DXMATRIXA16 GameObject::GetWorld( ) const
 {
-	return m_controller;
+	return m_matWorld;
 }
 
 inline bool GameObject::IsActive( ) const
 {
 	return m_isActive;
+}
+
+inline void GameObject::UpdateWorld( )
+{
+	D3DXMATRIXA16 matScale;
+	D3DXMatrixScaling( &matScale, m_scale.x, m_scale.y, m_scale.z );
+	
+	D3DXMATRIXA16 matRot, matRotX, matRotY, matRotZ;
+	D3DXMatrixRotationX( &matRotX, m_angle.x );
+	D3DXMatrixRotationY( &matRotY, m_angle.y );
+	D3DXMatrixRotationZ( &matRotZ, m_angle.z );
+	matRot = matRotX * matRotY * matRotZ;
+
+	D3DXMATRIXA16 matTrans;
+	D3DXMatrixTranslation( &matTrans, m_pos.x, m_pos.y, m_pos.z );
+
+	m_matWorld = matScale * matRot * matTrans;
 }

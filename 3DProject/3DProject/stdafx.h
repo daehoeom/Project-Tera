@@ -22,6 +22,7 @@
 #include <set>
 #include <map>
 #include <unordered_map>
+#include <functional>
 #include <bitset>
 #include <initializer_list>
 #include <array>
@@ -77,6 +78,11 @@ struct ST_PT_VERTEX
 	D3DXVECTOR3 p;
 	D3DXVECTOR2 t;
 	enum { FVF = D3DFVF_XYZ | D3DFVF_TEX1, };
+
+	ST_PT_VERTEX() { }
+	ST_PT_VERTEX(D3DXVECTOR3 _v, D3DXVECTOR2 _t)
+		:p(_v), t(_t)
+	{}
 };
 
 struct ST_PN_VERTEX
@@ -178,6 +184,7 @@ public: virtual void Set##funName(varType var){\
 #include "cDeviceManager.h"
 #include "cTimeManager.h"
 #include "cTextureManager.h"
+#include "cObjectManager.h"
 #include "cKeyManager.h"
 #include "cSkinnedMeshManager.h"
 #include "Particle.h"
