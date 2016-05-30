@@ -77,6 +77,11 @@ struct ST_PT_VERTEX
 	D3DXVECTOR3 p;
 	D3DXVECTOR2 t;
 	enum { FVF = D3DFVF_XYZ | D3DFVF_TEX1, };
+
+	ST_PT_VERTEX() { }
+	ST_PT_VERTEX(D3DXVECTOR3 _v, D3DXVECTOR2 _t)
+		:p(_v), t(_t)
+	{}
 };
 
 struct ST_PN_VERTEX
