@@ -27,7 +27,6 @@ cMainGame::cMainGame( )
 
 
 	m_pGrid = new cGrid;
-	m_pGrid->Setup();
 	
 	if (m_pFire == nullptr)
 	{
