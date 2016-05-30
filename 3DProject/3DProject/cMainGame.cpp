@@ -7,6 +7,9 @@
 
 
 cMainGame::cMainGame( )
+	: m_pGrid(NULL)
+	, m_pFire(NULL)
+	, m_pEneny(NULL)
 {
 
 	/*
@@ -23,37 +26,29 @@ cMainGame::cMainGame( )
 	cObjectManager::Get( );
 
 
-	m_pGrid.reset( new cGrid );
+	m_pGrid = new cGrid;
+	m_pGrid->Setup();
 	
 	if (m_pFire == nullptr)
 	{
-		m_pFire.reset( new cParticle_Firework(D3DXVECTOR3(-15, 20, 100), 6000));
+		m_pFire = new cParticle_Firework(D3DXVECTOR3(-15, 20, 100), 6000);
 		m_pFire->Setup("fireworks_flare.bmp");
 	}
 
-	if (m_pBody == nullptr)
-	{
-		m_pBody.reset( new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¸ö_°ø°Ý.X"));
-		m_pBody->SetPosition(D3DXVECTOR3(0, 0, 0));
-		m_pBody->SetRandomTrackPosition();
-	}
 
-	if (m_pHead == nullptr)
+	if (m_pEneny == nullptr)
 	{
-		m_pHead.reset( new cSkinnedMesh("./¿¤¸°/", "¿¤¸°_¾ó±¼_°ø°Ý.X"));
-		m_pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
-		m_pHead->SetRandomTrackPosition();
+		m_pEneny = new cSkinnedMesh("./LongTusk/", "LongTusk_Idle.X");
+		m_pEneny->SetPosition(D3DXVECTOR3(0, 0, 0));
+		m_pEneny->SetRandomTrackPosition();
 	}
 }
 
 cMainGame::~cMainGame()
 {
-	cObjectManager::Get( );
-	cKeyManager::Get( );
-	cSkinnedMeshManager::Get( )->Destroy( );
-	cTimeManager::Get( );
-	cDeviceManager::Get( )->Destroy( );
-	cRandomUtil::Setup( );
+	SAFE_DELETE(m_pGrid);
+	SAFE_DELETE(m_pFire);
+	SAFE_DELETE(m_pEneny);
 }
 
 void cMainGame::Update()
@@ -69,7 +64,9 @@ void cMainGame::Update()
 	//	m_pFire->Update();
 	//}
 
-	//g_pTimeManager->Update();
+	g_pTimeManager->Update();
+
+	
 }
 
 void cMainGame::Render()
@@ -82,24 +79,20 @@ void cMainGame::Render()
 
 	g_pD3DDevice->BeginScene();
 
-	m_player.Render( );
 
-	if ( m_pGrid )
+	if (m_pGrid)
 	{
-		m_pGrid->Render( );
+		m_pGrid->Render();
 	}
+
+	m_player.Render( );
 
 	/*if (m_pFire)
 	{
 		m_pFire->Render();
 	}*/
 
-	m_pBody->UpdateAndRender();
-
-	D3DXMATRIXA16 matR, matT, matWorld;
-	D3DXMatrixRotationX(&matR, D3DX_PI / 2.f);
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matR);
-	m_pHead->UpdateAndRender();
+	m_pEneny->UpdateAndRender();
 
 	g_pD3DDevice->EndScene();
 
