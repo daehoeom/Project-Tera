@@ -20,6 +20,11 @@ void AbstractWindow::Setup( )
 	m_myWndHandle = this->SetupWindowComponents( );
 }
 
+AbstractWindow * AbstractWindow::GetOwner( )
+{
+	return m_owner;
+}
+
 void AbstractWindow::GetSize( int * width, int * height )
 {
 	RECT rt;
@@ -36,4 +41,9 @@ void AbstractWindow::GetPosition( int * x, int * y )
 
 	*x = rt.left;
 	*y = rt.top;
+}
+
+std::vector<AbstractWindow*>& AbstractWindow::GetChildRepo( )
+{
+	return m_childRepo;
 }

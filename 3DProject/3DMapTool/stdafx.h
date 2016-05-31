@@ -13,6 +13,8 @@
 #include <tchar.h>
 #include <d3d9.h>
 #include <d3dx9.h>
+#include <CommCtrl.h>
+#include <shellapi.h>
 
 // C++ 런타임 헤더 파일입니다.
 #include <cstdlib>
@@ -25,6 +27,11 @@
 #include <vector>
 #include <cassert>
 
+// CommCtrl
+#pragma comment( lib, "uxtheme" )
+#pragma comment( lib, "comctl32" )
+
+// D3DX
 #pragma comment( lib, "d3d9.lib")
 #ifdef _DEBUG
 #	pragma comment( lib, "d3dx9d.lib")
@@ -37,20 +44,14 @@
 
 enum
 {
-	MainWindowX = 0, // Not used ( because of middle showing )
-	MainWindowY = 0, // Not used ( because of middle showing )
-	MainWindowWidth = 800,
-	MainWindowHeight = 800,
+	MainWindowWidth = 1000,
+	MainWindowHeight = 1000,
 
-	HierarchyWindowX = MainWindowWidth, // Follow parent's
-	HierarchyWindowY = MainWindowY, // Follow parent's
-	HierarchyWindowWidth = HierarchyWindowX+200,
-	HierarchyWindowHeight = HierarchyWindowY+(MainWindowHeight/2),	// Follow parent's
+	HierarchyWindowWidth = 300,
+	HierarchyWindowHeight = MainWindowHeight/2,	// Follow parent's
 
-	InspectorWindowX = 0,
-	InspectorWindowY = 0,
-	InspectorWindowWidth = 0,
-	InspectorWindowHeight = 0,
+	InspectorWindowWidth = HierarchyWindowWidth,
+	InspectorWindowHeight = MainWindowHeight/2,
 };
 
 

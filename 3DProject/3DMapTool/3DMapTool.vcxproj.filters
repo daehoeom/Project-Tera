@@ -75,6 +75,12 @@
     <ClInclude Include="AbstractWindow.h">
       <Filter>hpp\Window</Filter>
     </ClInclude>
+    <ClInclude Include="InspectorWindow.h">
+      <Filter>hpp\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchyWindow.h">
+      <Filter>hpp\Window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cDeviceManager.cpp">
@@ -90,6 +96,12 @@
       <Filter>cpp\Main</Filter>
     </ClCompile>
     <ClCompile Include="AbstractWindow.cpp">
+      <Filter>cpp\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchyWindow.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorWindow.cpp">
       <Filter>cpp\Window</Filter>
     </ClCompile>
   </ItemGroup>
