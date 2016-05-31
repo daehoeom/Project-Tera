@@ -61,7 +61,7 @@ cPlayer::cPlayer( ) :
 	m_pRunHair->Setup("./¿¤¸°", "¿¤¸°_Çì¾î_´Þ¸®±â.X");
 }
 
-cPlayer::~cPlayer( )
+cPlayer::~cPlayer()
 {
 }
 
