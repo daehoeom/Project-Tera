@@ -9,6 +9,7 @@ class cTextureManager :
 public:
 	LPDIRECT3DTEXTURE9 GetTexture(char* szFullPath);
 	LPDIRECT3DTEXTURE9 GetTexture(std::string sFullPath);
+	void Destroy();
 
 protected:
 	cTextureManager( );

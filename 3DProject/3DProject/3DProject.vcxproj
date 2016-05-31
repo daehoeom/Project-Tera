@@ -89,9 +89,11 @@
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cCollision.h" />
     <ClInclude Include="cDeviceManager.h" />
+    <ClInclude Include="cFace.h" />
     <ClInclude Include="cFrustumCulling.h" />
     <ClInclude Include="cFSM.h" />
     <ClInclude Include="cGrid.h" />
+    <ClInclude Include="cHair.h" />
     <ClInclude Include="cKeyManager.h" />
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cParticle_Base.h" />
@@ -99,8 +101,6 @@
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cPlayerState.h" />
     <ClInclude Include="cRandomUtil.h" />
-    <ClInclude Include="cSkinnedMesh.h" />
-    <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cSkyBox.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="cTimeManager.h" />
@@ -117,14 +117,17 @@
   <ItemGroup>
     <ClCompile Include="3DProject.cpp" />
     <ClCompile Include="cAllocateHierarchy.cpp" />
+    <ClCompile Include="cBody.cpp" />
     <ClCompile Include="cBoundingBox.cpp" />
     <ClCompile Include="cBoundingSphere.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cCollision.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
+    <ClCompile Include="cFace.cpp" />
     <ClCompile Include="cFrustumCulling.cpp" />
     <ClCompile Include="cFSM.cpp" />
     <ClCompile Include="cGrid.cpp" />
+    <ClCompile Include="cHair.cpp" />
     <ClCompile Include="cKeyManager.cpp" />
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cParticle_Base.cpp" />
@@ -132,8 +135,6 @@
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cPlayerState.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
-    <ClCompile Include="cSkinnedMesh.cpp" />
-    <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="cTimeManager.cpp" />

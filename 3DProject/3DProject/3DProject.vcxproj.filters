@@ -99,9 +99,6 @@
     <ClInclude Include="cBoundingSphere.h">
       <Filter>Object\Abstract\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="cSkinnedMesh.h">
-      <Filter>Misc\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
@@ -113,9 +110,6 @@
     </ClInclude>
     <ClInclude Include="cRandomUtil.h">
       <Filter>Misc\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="cSkinnedMeshManager.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="cCollision.h">
       <Filter>Misc\Utility</Filter>
@@ -147,13 +141,15 @@
     <ClInclude Include="cFrustumCulling.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cBody.h" />
     <ClInclude Include="cFSM.h">
       <Filter>Object\FSM</Filter>
     </ClInclude>
     <ClInclude Include="cPlayerState.h">
       <Filter>Object\FSM</Filter>
     </ClInclude>
+    <ClInclude Include="cBody.h" />
+    <ClInclude Include="cHair.h" />
+    <ClInclude Include="cFace.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -186,9 +182,6 @@
     <ClCompile Include="cBoundingSphere.cpp">
       <Filter>Object\Abstract\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="cSkinnedMesh.cpp">
-      <Filter>Misc\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="cParticle_Base.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
@@ -197,9 +190,6 @@
     </ClCompile>
     <ClCompile Include="cRandomUtil.cpp">
       <Filter>Misc\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="cSkinnedMeshManager.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="cCollision.cpp">
       <Filter>Misc\Utility</Filter>
@@ -234,6 +224,9 @@
     <ClCompile Include="cPlayerState.cpp">
       <Filter>Object\FSM</Filter>
     </ClCompile>
+    <ClCompile Include="cBody.cpp" />
+    <ClCompile Include="cHair.cpp" />
+    <ClCompile Include="cFace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

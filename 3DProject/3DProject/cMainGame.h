@@ -15,8 +15,7 @@ private:
 
 private:
 	std::shared_ptr<class cPlayer>		m_player;
-	std::shared_ptr<class cGrid>		m_grid;
-	std::shared_ptr<class cSkinnedMesh>	m_enemy;
+	std::shared_ptr<class cGrid>		m_pGrid;
 	std::shared_ptr<class cSkyBox>		m_pSkyBox;
 
 };

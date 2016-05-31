@@ -1,37 +1,35 @@
 #include "stdafx.h"
-#include "cBody.h"
+#include "cFace.h"
 #include "cAllocateHierarchy.h"
 
 
-cBody::cBody()
+cFace::cFace()
 	: m_pAlloc(nullptr)
 	, m_pFrameRoot(nullptr)
 	, m_pMesh(nullptr)
 	, m_pBuffer(nullptr)
 	, m_ft(0.1f)
 {
-	D3DXMatrixIdentity(&m_matNeckTM);
-	D3DXMatrixIdentity(&m_matRootTM);
 }
 
-cBody::~cBody()
+
+cFace::~cFace()
 {
 	D3DXFrameDestroy(m_pFrameRoot, m_pAlloc);
-	//m_pAlloc->DestroyFrame(m_pFrame);
 	SAFE_DELETE(m_pAlloc);
 	SAFE_RELEASE(m_pMesh);
 }
 
-void cBody::Setup(char* FolderName, char* FileName)
+void cFace::Setup(char* szFolder, char* szFile)
 {
-	std::string folder = (std::string)FolderName;
-	std::string file = (std::string)FileName;
+	std::string folder = (std::string)szFolder;
+	std::string file = (std::string)szFile;
 
 	m_pAlloc = new cAllocateHierarchy;
 
-	m_pAlloc->SetFolder(folder);
+	m_pAlloc->SetFolder(szFolder);
 
-	m_sPath = folder + std::string("/") + file;
+	m_sPath = szFolder + std::string("/") + szFile;
 
 	HRESULT hr = D3DXLoadMeshHierarchyFromX(m_sPath.c_str(),
 		D3DXMESH_MANAGED,
@@ -45,34 +43,27 @@ void cBody::Setup(char* FolderName, char* FileName)
 
 	D3DXMATRIX matW;
 	D3DXMatrixIdentity(&matW);
-
 }
-void cBody::Update()
+
+void cFace::Update()
 {
 	m_pAnimControl->AdvanceTime(0.0075f, NULL);
-	GetNeckWorld(m_pFrameRoot, nullptr);
+
+	D3DXMATRIX matW;
+	matW = m_matNeckTM;
+	SetupWorldMatrix(m_pFrameRoot, &matW);
+
 	UpdateSkinnedMesh(m_pFrameRoot);
 }
-void cBody::Render()
-{
-	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
-	g_pD3DDevice->LightEnable(0, true);
-	
-	ST_BONE* pBone = (ST_BONE*)m_pFrameRoot;
-	RecursiveFrameRender(pBone, &pBone->CombinedTransformationMatrix);
-	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-	g_pD3DDevice->SetTexture(0, nullptr);
-}
-void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
+
+void cFace::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	D3DXMATRIX matW;
 	D3DXMatrixIdentity(&matW);
 
 	matW = pFrame->TransformationMatrix * (*pParentWorldTM);
-
 	pBone->CombinedTransformationMatrix = matW;
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &pBone->CombinedTransformationMatrix);
 
 	if (pBone->pMeshContainer)
 	{
@@ -82,12 +73,9 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 		{
 			g_pD3DDevice->SetTexture(0, pBoneMesh->vecTexture[i]);
 			g_pD3DDevice->SetMaterial(&pBoneMesh->vecMaterial[i]);
-			g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 			pBoneMesh->MeshData.pMesh->DrawSubset(i);
-			g_pD3DDevice->SetTexture(0, NULL);
 		}
 	}
-
 	//자식
 	if (pFrame->pFrameFirstChild)
 	{
@@ -100,7 +88,7 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 	}
 }
 
-void cBody::SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent)
+void cFace::SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	pBone->CombinedTransformationMatrix = pBone->TransformationMatrix;
@@ -120,20 +108,11 @@ void cBody::SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent)
 	}
 }
 
-void cBody::SetupBoneMatrixPtrs(D3DXFRAME* pFrame)
+void cFace::SetupBoneMatrixPtrs(D3DXFRAME* pFrame)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
 
-	// 각 프레임의 메시 컨테이너에 있는 pSkinInfo를 이용하여 영향받는 모든 
-	// 프레임의 매트릭스를 ppBoneMatrixPtrs에 연결한다.
-
-	// pSkinInfo->GetNumBones() 으로 영향받는 본의 개수를 찾음.
-	// pSkinInfo->GetBoneName(i) 로 i번 프레임의 이름을 찾음
-	// D3DXFrameFind(루트 프레임, 프레임 이름) 로 프레임을 찾음.
-	// 찾아서 월드매트릭스를 걸어줘라.
-
-	//재귀적으로 모든 프레임에 대해서 실행.
 	if (pBoneMesh)
 	{
 		if (pBoneMesh->pSkinInfo)
@@ -146,6 +125,7 @@ void cBody::SetupBoneMatrixPtrs(D3DXFRAME* pFrame)
 				sBoneName = pBoneMesh->pSkinInfo->GetBoneName(i);
 				ST_BONE* pFindedBone = (ST_BONE*)D3DXFrameFind(m_pFrameRoot, sBoneName.c_str());
 				pBoneMesh->ppBoneMatrixPtrs[i] = &pFindedBone->CombinedTransformationMatrix;
+				//pTargetBone->matWorldTM = pTargetBone->TransformationMatrix * ((ST_BONE*)m_pFrameRoot)->matWorldTM;
 			}
 		}
 	}
@@ -159,11 +139,10 @@ void cBody::SetupBoneMatrixPtrs(D3DXFRAME* pFrame)
 	}
 }
 
-void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
+void cFace::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
-
 
 	if (pBoneMesh)
 	{
@@ -172,10 +151,9 @@ void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 		{
 			pBoneMesh->pCurrentBoneMatrices[i] = pBoneMesh->pBoneOffsetMatrices[i] * (*pBoneMesh->ppBoneMatrixPtrs[i]);
 		}
-
 		BYTE* src = NULL;
 		BYTE* dest = NULL;
-		//D3DXVECTOR3* dest = NULL;
+
 		pBoneMesh->pOrigMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&src);
 		pBoneMesh->MeshData.pMesh->LockVertexBuffer(0, (void**)&dest);
 
@@ -183,6 +161,8 @@ void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 		pBoneMesh->pSkinInfo->UpdateSkinnedMesh(
 			pBoneMesh->pCurrentBoneMatrices, NULL, src, dest);
 
+		pBoneMesh->MeshData.pMesh->UnlockVertexBuffer();
+		pBoneMesh->pOrigMesh->UnlockVertexBuffer();
 	}
 	if (pBone->pFrameSibling)
 	{
@@ -192,44 +172,14 @@ void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 	{
 		UpdateSkinnedMesh(pBone->pFrameFirstChild);
 	}
-
-}
-void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
-{
-	ST_BONE* pBone = (ST_BONE*)pFrame;
-	D3DXMATRIXA16 matW;
-	D3DXMatrixIdentity(&matW);
-	if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Bip01-Neck"))
-	{
-		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
-		m_matNeckTM = pBone->CombinedTransformationMatrix;
-		//D3DXMatrixRotationX(&m_matNeckTM, D3DXToRadian(90));
-	}
-	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Bip01-Head"))
-	{
-		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
-		m_matHairTM = pBone->CombinedTransformationMatrix;
-		//D3DXMatrixRotationX(&m_matNeckTM, D3DXToRadian(90));
-	}
-	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Dummy_root"))
-	{
-		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
-		m_matRootTM = pBone->CombinedTransformationMatrix;
-		//D3DXMatrixRotationX(&m_matNeckTM, D3DXToRadian(90));
-	}
-	//-180 180 180
-	if (pFrame->pFrameSibling)
-	{
-		GetNeckWorld(pFrame->pFrameSibling, &pBone->CombinedTransformationMatrix);
-	}
-	if (pFrame->pFrameFirstChild)
-	{
-		GetNeckWorld(pFrame->pFrameFirstChild, &pBone->CombinedTransformationMatrix);
-	}
 }
 
-
-LPD3DXFRAME& cBody::GetFrameRoot()
+void cFace::Render()
 {
-	return this->m_pFrameRoot;
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	g_pD3DDevice->LightEnable(0, true);
+	ST_BONE* pBone = (ST_BONE*)m_pFrameRoot;
+	RecursiveFrameRender(pBone, &pBone->CombinedTransformationMatrix);
+	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+	g_pD3DDevice->SetTexture(0, nullptr);
 }

@@ -158,6 +158,30 @@ struct ST_SIZE
 	ST_SIZE(float w, float h) : fWidth(w), fHeight(h) {}
 };
 
+enum PlayerState
+{
+	player_IDLE,
+	player_RUN,
+	player_ATTACK
+};
+
+struct ST_BONE : public D3DXFRAME
+{
+	D3DXMATRIXA16 CombinedTransformationMatrix;
+};
+
+struct ST_BONE_MESH : public D3DXMESHCONTAINER
+{
+	std::vector<LPDIRECT3DTEXTURE9> vecTexture;
+	std::vector<D3DMATERIAL9>		vecMaterial;
+
+	DWORD							dwNumSubset;			
+	LPD3DXMESH						pOrigMesh;				//원본메쉬
+	D3DXMATRIX**					ppBoneMatrixPtrs;		//이 메쉬에 영향을 주는 프레임'들'의 월드매트릭스 포인터 계열
+	D3DXMATRIX*						pBoneOffsetMatrices;	//원본 메수를 로컬스페이스로 보내는 매트릭스들
+	D3DXMATRIX*						pCurrentBoneMatrices;	//각 본의 계산된 월드매트릭스
+};
+
 extern HWND		g_hWnd;
 
 #define SYNTHESIZE(varType, varName, funName)\
@@ -186,7 +210,6 @@ public: virtual void Set##funName(varType var){\
 #include "cTextureManager.h"
 #include "cObjectManager.h"
 #include "cKeyManager.h"
-#include "cSkinnedMeshManager.h"
 #include "Particle.h"
 #include "cCamera.h"
 #include "cRandomUtil.h"

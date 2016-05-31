@@ -1,47 +1,50 @@
 #pragma once
-
 class cAllocateHierarchy;
 struct ST_BONE_MESH;
 
 class cBody
 {
+	//X파일
+	cAllocateHierarchy*			m_pAlloc;
+	LPD3DXFRAME					m_pFrameRoot;
+	LPD3DXFRAME					m_pFrameRootOrigin;
+
+	//string						
+	std::string						m_sPath;
+	LPD3DXANIMATIONCONTROLLER	m_pAnimControl;
+
+	LPD3DXMESH					m_pMesh;
+	LPD3DXBUFFER				m_pBuffer;
+	std::vector<LPDIRECT3DTEXTURE9>	m_vecTexture;
+	float						m_ft;
+
+public:
+
+	D3DXMATRIX					m_matNeckTM;
+	D3DXMATRIX					m_matHairTM;
+	D3DXMATRIX					m_matRootTM;
+
+
 public:
 	cBody();
 	~cBody();
-
-	void Setup(char* szFullPath);
+	void Setup(char* FolderName, char* FileName);
 	void Update();
 	void Render();
-	void RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIXA16* pParentWorldTM);
-	void SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIXA16* pMatParent);
-	void SetupBoneMatrixPtrs(D3DXFRAME* pFrame);
-	void UpdateSkinnedMesh(D3DXFRAME* pFrame);
-	void GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIXA16* pParentTM);
-	void CalcCollisionSphere(ST_BONE_MESH* pBoneMesh);
-	void RenderCollisionSphere(ST_BONE_MESH* pBoneMesh);
-	LPD3DXFRAME& GetFrameRoot();
-	
-public:
-	D3DXMATRIXA16						m_matNeckTM;
-	D3DXMATRIXA16						m_matHairTM;
-	D3DXMATRIXA16						m_matRootTM;
+	void RecursiveFrameRender(D3DXFRAME* pParent, D3DXMATRIX* pParentWorldTM);
+	void cBody::SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent);
+	void cBody::SetupBoneMatrixPtrs(D3DXFRAME* pFrame);
+	void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame);
+	void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM);
+	LPD3DXFRAME& cBody::GetFrameRoot();
 
-private:
-	//X파일
-	cAllocateHierarchy*					m_pAlloc;
-	LPD3DXFRAME							m_pFrameRoot;
-	LPD3DXFRAME							m_pFrameRootOrigin;
+	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
+	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }
 
-	//string		
-	std::string							m_pPath;			//파일 경로
-	LPD3DXANIMATIONCONTROLLER			m_pAnimControl;		//애니메이션 컨트롤러
+	void SetHairTM(D3DXMATRIX* hair) { m_matHairTM = *hair; }
+	D3DXMATRIX GetHairTM() { return m_matHairTM; }
 
-	LPD3DXMESH							m_pMesh;
-	LPD3DXBUFFER						m_pBuffer;
-	std::vector<LPDIRECT3DTEXTURE9>		m_vecTexture;
-	float								m_ft;
-
-	
-
+	void SetRootTM(D3DXMATRIX* root) { m_matRootTM = *root; }
+	D3DXMATRIX GetRootTM() { return m_matRootTM; }
 };
 

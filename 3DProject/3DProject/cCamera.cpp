@@ -9,7 +9,7 @@ cCamera::cCamera(void)
 	, m_isLButtonDown(false)
 	, m_fRotX(0.0f)
 	, m_fRotY(0.0f)
-	, m_fDist(500)
+	, m_fDist(50)
 {
 	RECT rc;
 	GetClientRect( g_hWnd, &rc );

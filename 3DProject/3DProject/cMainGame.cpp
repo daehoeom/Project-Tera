@@ -1,33 +1,38 @@
 #include "stdafx.h"
 #include "cMainGame.h"
-
 #include "cGrid.h"
-#include "cSkinnedMesh.h"
 #include "cPlayer.h"
 
-
 cMainGame::cMainGame( )
+	: m_pGrid(NULL)
+
 {
-	this->SetupManagers( );
 
-	m_player.reset( new cPlayer );
+	cRandomUtil::Setup();
+	cDeviceManager::Get( );
+	cTimeManager::Get( );
+	cKeyManager::Get( );
+	cObjectManager::Get( );
+
+
+	m_pGrid.reset(new cGrid);
+	m_player.reset(new cPlayer);
 	
-	m_grid.reset( new cGrid );
-
-	m_enemy.reset( new cSkinnedMesh("./LongTusk/", "LongTusk_Idle.X" ));
-	//m_enemy->SetRandomTrackPosition();
 }
 
 cMainGame::~cMainGame()
 {
+	g_pTextureManager->Destroy();
 }
 
 void cMainGame::Update()
 {
 	cCamera::Get()->Update(NULL);
-	
-	if ( m_player )
-		m_player->Update( );
+
+	if (m_player)
+	{
+		m_player->Update();
+	}
 
 	g_pTimeManager->Update();
 }
@@ -42,12 +47,15 @@ void cMainGame::Render()
 
 	g_pD3DDevice->BeginScene();
 
-	if ( m_grid )
-		m_grid->Render( );
-	if ( m_player )
-		m_player->Render( );
-	if( m_enemy )
-		m_enemy->UpdateAndRender();
+	if (m_pGrid)
+	{
+		m_pGrid->Render();
+	}
+
+	if (m_player)
+	{
+		m_player->Render();
+	}
 
 	g_pD3DDevice->EndScene();
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
@@ -60,16 +68,9 @@ void cMainGame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void cMainGame::SetupManagers( )
 {
-	/*
-		WARNING! & TODO:
-		All of managers ( e.g. singleton object ) 
-		must be initialized from here.
-	*/
-
 	cDeviceManager::Get( );
 	// Must be called after cDeviceManager initialized
 	cCamera::Get( );
-	cSkinnedMeshManager::Get( );
 	cTextureManager::Get( );
 	// Etc
 	cRandomUtil::Setup();
