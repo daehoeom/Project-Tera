@@ -15,39 +15,39 @@ cPlayer::cPlayer( ) :
 
 	//´ë±â»óÅÂ
 	m_pIdleBody.reset(new cBody);
-	m_pIdleBody->Setup("./¿¤¸°", "¿¤¸°_¸ö_´ë±â.X");
+	m_pIdleBody->Setup("./Resource/¿¤¸°", "¿¤¸°_¸ö_´ë±â.X");
 
 	m_pIdleFace.reset(new cFace);
 	m_pIdleFace->SetNeckTM(&m_pIdleBody->GetNeckTM());
-	m_pIdleFace->Setup("./¿¤¸°", "¿¤¸°_¾ó±¼_´ë±â.X");
+	m_pIdleFace->Setup("./Resource/¿¤¸°", "¿¤¸°_¾ó±¼_´ë±â.X");
 
 	m_pIdleHair.reset(new cHair);
 	m_pIdleHair->SetHairTM(&m_pIdleFace->GetHairTM());
-	m_pIdleHair->Setup("./¿¤¸°", "¿¤¸°_Çì¾î_´ë±â.X");
+	m_pIdleHair->Setup("./Resource/¿¤¸°", "¿¤¸°_Çì¾î_´ë±â.X");
 
 	//°ø°Ý»óÅÂ
 	m_pAttackBody.reset(new cBody);
-	m_pAttackBody->Setup("./¿¤¸°", "¿¤¸°_¸ö_°ø°Ý.X");
+	m_pAttackBody->Setup("./Resource/¿¤¸°", "¿¤¸°_¸ö_°ø°Ý.X");
 
 	m_pAttackFace.reset(new cFace);
 	m_pAttackFace->SetNeckTM(&m_pAttackBody->GetNeckTM());
-	m_pAttackFace->Setup("./¿¤¸°", "¿¤¸°_¾ó±¼_°ø°Ý.X");
+	m_pAttackFace->Setup("./Resource/¿¤¸°", "¿¤¸°_¾ó±¼_°ø°Ý.X");
 
 	m_pAttackHair.reset(new cHair);
 	m_pAttackHair->SetHairTM(&m_pAttackBody->GetHairTM());
-	m_pAttackHair->Setup("./¿¤¸°", "¿¤¸°_Çì¾î_°ø°Ý.X");
+	m_pAttackHair->Setup("./Resource/¿¤¸°", "¿¤¸°_Çì¾î_°ø°Ý.X");
 
 	//´Þ¸®±â»óÅÂ
 	m_pRunBody.reset(new cBody);
-	m_pRunBody->Setup("./¿¤¸°", "¿¤¸°_¸ö_´Þ¸®±â.X");
+	m_pRunBody->Setup("./Resource/¿¤¸°", "¿¤¸°_¸ö_´Þ¸®±â.X");
 
 	m_pRunFace.reset(new cFace);
 	m_pRunFace->SetNeckTM(&m_pRunBody->GetNeckTM());
-	m_pRunFace->Setup("./¿¤¸°", "¿¤¸°_¾ó±¼_´Þ¸®±â.X");
+	m_pRunFace->Setup("./Resource/¿¤¸°", "¿¤¸°_¾ó±¼_´Þ¸®±â.X");
 
 	m_pRunHair.reset(new cHair);
 	m_pRunHair->SetHairTM(&m_pRunBody->GetHairTM());
-	m_pRunHair->Setup("./¿¤¸°", "¿¤¸°_Çì¾î_´Þ¸®±â.X");
+	m_pRunHair->Setup("./Resource/¿¤¸°", "¿¤¸°_Çì¾î_´Þ¸®±â.X");
 }
 
 cPlayer::~cPlayer( )

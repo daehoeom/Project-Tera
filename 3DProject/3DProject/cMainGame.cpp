@@ -2,22 +2,24 @@
 #include "cMainGame.h"
 #include "cGrid.h"
 #include "cPlayer.h"
+#include "cBoundingBox.h"
+
+#include "cCollisionManager.h"
+#include "cObjectManager.h"
 
 cMainGame::cMainGame( )
 	: m_pGrid(NULL)
 
 {
-
-	cRandomUtil::Setup();
-	cDeviceManager::Get( );
-	cTimeManager::Get( );
-	cKeyManager::Get( );
-	cObjectManager::Get( );
-
-
 	m_pGrid.reset(new cGrid);
 	m_player.reset(new cPlayer);
-	
+
+	for ( int i = 0; i < 50; i++ )
+	{
+		std::shared_ptr<cB> box( new cB );
+		box->SetPosition( {(float)(rand()%100), 0.f, (float)(rand()%100) });
+		b.push_back( box );
+	}
 }
 
 cMainGame::~cMainGame()
@@ -28,6 +30,13 @@ cMainGame::~cMainGame()
 void cMainGame::Update()
 {
 	cCamera::Get()->Update(NULL);
+	cCollisionManager::Get( )->Update( );
+
+	a.Update( );
+	
+	for ( auto& elem : b )
+		elem->Update( );
+
 
 	if (m_player)
 	{
@@ -46,6 +55,11 @@ void cMainGame::Render()
 		1.0f, 0);
 
 	g_pD3DDevice->BeginScene();
+
+	a.Render( );
+	
+	for ( auto& elem : b )
+		elem->Render( );
 
 	if (m_pGrid)
 	{
@@ -70,11 +84,12 @@ void cMainGame::SetupManagers( )
 {
 	cDeviceManager::Get( );
 	// Must be called after cDeviceManager initialized
-	cCamera::Get( );
 	cTextureManager::Get( );
+	cCamera::Get( );
 	// Etc
 	cRandomUtil::Setup();
 	cTimeManager::Get( );
 	cKeyManager::Get( );
 	cObjectManager::Get( );
+	cCollisionManager::Get( );
 }

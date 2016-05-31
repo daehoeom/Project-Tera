@@ -10,12 +10,20 @@ public:
 	~cCollision() = delete;
 
 	static bool IsSphereToSphere(
-		cBoundingSphere& s1, cBoundingSphere& s2);
+		const cBoundingSphere& s1, 
+		const cBoundingSphere& s2);
 
 	static bool IsBoxToSphere(
-		cBoundingBox& box, cBoundingSphere& s);
+		const cBoundingBox& box, 
+		const cBoundingSphere& s);
+
+	static bool IsSphereToBox(
+		const cBoundingSphere& s,
+		const cBoundingBox& box );
+
 
 	static bool IsBoxToBox(
-		cBoundingBox& box1, cBoundingBox& box2);
+		const cBoundingBox& box1, 
+		const cBoundingBox& box2);
 };
 

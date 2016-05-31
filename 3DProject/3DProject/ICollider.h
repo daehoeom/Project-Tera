@@ -1,17 +1,24 @@
 #pragma once
 
+enum class eColliderType
+{
+	kSphere,
+	kBox,	// AABB
+};
+
 class ICollisionDelegate
 {
 public:
-	virtual void OnCollisionEnter( ) {}
-	virtual void OnCollisionStay( ) {}
-	virtual void OnCollisionLeave( ) {}
+	//virtual void OnCollisionEnter( ) {}
+	virtual void OnCollisionStay( class cCollisionObject* ) {}
+	//virtual void OnCollisionLeave( ) {}
 };
 
+class cGameObject;
 class ICollider
 {
 public:
-	ICollider( class cGameObject* owner );
+	ICollider( cGameObject* owner );
 	virtual ~ICollider( ) = 0 {};
 
 	virtual void Update( ) = 0;
@@ -23,8 +30,11 @@ public:
 	void SetDebugRender( bool isDebugRender );
 	bool IsDebugRender( );
 
-	void SetOwner( class cGameObject* owner );
-	class cGameObject* GetOwner( );
+	virtual eColliderType GetColliderType( ) const = 0;
+
+	void SetOwner( cGameObject* owner );
+	cGameObject* GetOwner( );
+	const cGameObject* GetOwner( ) const;
 
 private:
 	bool m_isDebugRender;
@@ -47,6 +57,11 @@ inline void ICollider::SetOwner( cGameObject * owner )
 }
 
 inline cGameObject * ICollider::GetOwner( )
+{
+	return m_owner;
+}
+
+inline const cGameObject * ICollider::GetOwner( ) const
 {
 	return m_owner;
 }

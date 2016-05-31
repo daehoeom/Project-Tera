@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "cCollisionManager.h"
 
+#include "cCollision.h"
+#include "cBoundingBox.h"
+#include "cBoundingSphere.h"
+#include "ICollider.h"
 #include "cCollisionObject.h"
 
 
@@ -19,9 +23,8 @@ void cCollisionManager::Update( )
 		// elemOp1 Has no collider?
 		if ( !elemOp1.second->GetCollider( ))
 		{
-			continue;
 		}
-
+		
 		for ( auto& elemOp2 : m_collisionMap )
 		{
 			// Compare target is same as elemOp1?
@@ -34,9 +37,60 @@ void cCollisionManager::Update( )
 
 			// Then, elemOp1 and elemOp2 is different with,
 			// And both have colliders.
+			eColliderType op1CollType =
+				elemOp1.second->GetCollider( )->GetColliderType( );
+			eColliderType op2CollType = 
+				elemOp2.second->GetCollider( )->GetColliderType( );
 
+			bool isCollised = false;
+
+			// TODO : Optimize here
+			if ( op1CollType == eColliderType::kBox &&
+				op2CollType == eColliderType::kBox )
+			{
+				isCollised = cCollision::IsBoxToBox(
+					static_cast<const cBoundingBox&>( 
+						*elemOp1.second->GetCollider( )),
+					static_cast<const cBoundingBox&>(
+						*elemOp2.second->GetCollider( ))
+				);
+			}
+			else if ( op1CollType == eColliderType::kSphere &&
+				op2CollType == eColliderType::kSphere )
+			{
+				isCollised = cCollision::IsSphereToSphere(
+					static_cast<const cBoundingSphere&>(
+						*elemOp1.second->GetCollider( )),
+					static_cast<const cBoundingSphere&>(
+						*elemOp2.second->GetCollider( ))
+				);
+			}
+			else if ( op1CollType == eColliderType::kBox &&
+				op2CollType == eColliderType::kSphere )
+			{
+				isCollised = cCollision::IsBoxToSphere(
+					static_cast<const cBoundingBox&>(
+						*elemOp1.second->GetCollider( ) ),
+					static_cast<const cBoundingSphere&>(
+						*elemOp2.second->GetCollider( ) )
+				);
+			}
+			else if ( op1CollType == eColliderType::kSphere &&
+				op2CollType == eColliderType::kBox )
+			{
+				isCollised = cCollision::IsBoxToSphere(
+					static_cast<const cBoundingBox&>(
+						*elemOp1.second->GetCollider( ) ),
+					static_cast<const cBoundingSphere&>(
+						*elemOp2.second->GetCollider( ) )
+				);
+			}
+
+			if ( isCollised )
+			{
+				elemOp1.second->OnCollisionStay( elemOp2.second );
+			}
 		}
-			
 	}
 }
 

@@ -4,6 +4,7 @@
 
 #include "ICollider.h"
 
+
 cCollisionObject::cCollisionObject(
 	const std::string& objName ) :
 
@@ -35,6 +36,11 @@ void cCollisionObject::Render( )
 	{
 		this->GetCollider( )->Render( );
 	}
+}
+
+void cCollisionObject::OnCollisionStay( 
+	cCollisionObject* rhs )
+{
 }
 
 void cCollisionObject::SetCollider( ICollider* collider )
