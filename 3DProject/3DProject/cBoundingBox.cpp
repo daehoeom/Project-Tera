@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "cBoundingBox.h"
-#include "GameObject.h"
+#include "cGameObject.h"
 
 
 cBoundingBox::cBoundingBox( 

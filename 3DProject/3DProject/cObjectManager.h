@@ -2,7 +2,7 @@
 
 #pragma once
 #include "Singleton.h"
-#include "GameObject.h"
+#include "cGameObject.h"
 
 
 class cObjectManager : 

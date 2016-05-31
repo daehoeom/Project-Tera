@@ -3,7 +3,7 @@
 #include "cBoundingBox.h"
 #include "cBoundingSphere.h"
 
-#include "GameObject.h"
+#include "cGameObject.h"
 
 bool cCollision::IsSphereToSphere(cBoundingSphere& s1, cBoundingSphere& s2)
 {

@@ -105,7 +105,7 @@
     <ClInclude Include="cSkyBox.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="cTimeManager.h" />
-    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="cGameObject.h" />
     <ClInclude Include="ICollider.h" />
     <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="Particle.h" />
@@ -140,7 +140,7 @@
     <ClCompile Include="cSkyBox.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="cTimeManager.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="stdafx.cpp">

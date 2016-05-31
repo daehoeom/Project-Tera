@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "GameObject.h"
+#include "cGameObject.h"
 
 #include "cObjectManager.h"
 #include "ICollider.h"
