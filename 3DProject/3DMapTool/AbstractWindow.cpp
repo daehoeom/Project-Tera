@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "IWindow.h"
+#include "AbstractWindow.h"
 
 #include "resource.h"
 

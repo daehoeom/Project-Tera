@@ -1,5 +1,5 @@
 #pragma once
-#include "IWindow.h"
+#include "AbstractWindow.h"
 
 
 class MainSurfaceWindow :

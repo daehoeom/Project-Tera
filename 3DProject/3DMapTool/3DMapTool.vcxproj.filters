@@ -72,8 +72,8 @@
     <ClInclude Include="Resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="IWindow.h">
-      <Filter>hpp</Filter>
+    <ClInclude Include="AbstractWindow.h">
+      <Filter>hpp\Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,8 +89,8 @@
     <ClCompile Include="3DMapTool.cpp">
       <Filter>cpp\Main</Filter>
     </ClCompile>
-    <ClCompile Include="IWindow.cpp">
-      <Filter>cpp</Filter>
+    <ClCompile Include="AbstractWindow.cpp">
+      <Filter>cpp\Window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

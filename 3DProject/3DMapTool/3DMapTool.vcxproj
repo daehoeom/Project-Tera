@@ -149,7 +149,7 @@
   <ItemGroup>
     <ClInclude Include="3DMapTool.h" />
     <ClInclude Include="cDeviceManager.h" />
-    <ClInclude Include="IWindow.h" />
+    <ClInclude Include="AbstractWindow.h" />
     <ClInclude Include="MainSurfaceWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
@@ -160,7 +160,7 @@
   <ItemGroup>
     <ClCompile Include="3DMapTool.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
-    <ClCompile Include="IWindow.cpp" />
+    <ClCompile Include="AbstractWindow.cpp" />
     <ClCompile Include="MainSurfaceWindow.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
