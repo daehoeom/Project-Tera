@@ -2,13 +2,13 @@
 #include "ICollider.h"
 #include "cFSM.h"
 
-class GameObject :
+class cGameObject :
 	public cFSM,
 	public ICollisionDelegate
 {
 public:
-	GameObject( const std::string& objName );
-	virtual ~GameObject( );
+	cGameObject( const std::string& objName );
+	virtual ~cGameObject( );
 
 	virtual void Update( );
 	virtual void Render( );
@@ -40,7 +40,7 @@ public:
 	
 	// Collider
 	void SetCollider( class ICollider* collider );
-	ICollider* GetCollider( );
+	const std::unique_ptr<ICollider>& GetCollider( );
 	
 	const std::string& GetName( ) const;
 	const D3DXMATRIXA16 GetWorld( ) const;
@@ -54,12 +54,12 @@ private:
 	D3DXVECTOR3 m_scale;
 	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
-	class ICollider* m_collider;
+	std::unique_ptr<class ICollider> m_collider;
 	bool m_isActive;
 	std::map<std::uintptr_t, class IAction*> m_actionMap;
 };
 
-inline void GameObject::SetPosition( const D3DXVECTOR3& pos )
+inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
 {
 	m_pos = pos;
 	m_matWorld._41 = pos.x;
@@ -67,7 +67,7 @@ inline void GameObject::SetPosition( const D3DXVECTOR3& pos )
 	m_matWorld._43 = pos.z;
 }
 
-inline void GameObject::Move( const D3DXVECTOR3& pos )
+inline void cGameObject::Move( const D3DXVECTOR3& pos )
 {
 	m_pos += pos;
 	m_matWorld._41 += pos.x;
@@ -75,66 +75,66 @@ inline void GameObject::Move( const D3DXVECTOR3& pos )
 	m_matWorld._43 += pos.z;
 }
 
-inline void GameObject::SetAngle( const D3DXVECTOR3& rot )
+inline void cGameObject::SetAngle( const D3DXVECTOR3& rot )
 {
 	m_angle = rot;
 	this->UpdateWorld( );
 }
 
-inline void GameObject::Rotate( const D3DXVECTOR3& rot )
+inline void cGameObject::Rotate( const D3DXVECTOR3& rot )
 {
 	m_angle += rot;
 	this->UpdateWorld( );
 }
 
-inline void GameObject::SetScale( const D3DXVECTOR3& scale )
+inline void cGameObject::SetScale( const D3DXVECTOR3& scale )
 {
 	m_scale = scale;
 	this->UpdateWorld( );
 }
 
-inline void GameObject::Scale( const D3DXVECTOR3& scale )
+inline void cGameObject::Scale( const D3DXVECTOR3& scale )
 {
 	m_scale += scale;
 	this->UpdateWorld( );
 }
 
-inline void GameObject::SetActive( bool isActive )
+inline void cGameObject::SetActive( bool isActive )
 {
 	m_isActive = isActive;
 }
 
-inline const D3DXVECTOR3& GameObject::GetPosition( ) const
+inline const D3DXVECTOR3& cGameObject::GetPosition( ) const
 {
 	return m_pos;
 }
 
-inline const D3DXVECTOR3& GameObject::GetAngle( ) const
+inline const D3DXVECTOR3& cGameObject::GetAngle( ) const
 {
 	return m_angle;
 }
 
-inline const D3DXVECTOR3& GameObject::GetScale( ) const
+inline const D3DXVECTOR3& cGameObject::GetScale( ) const
 {
 	return m_scale;
 }
 
-inline const std::string& GameObject::GetName( ) const
+inline const std::string& cGameObject::GetName( ) const
 {
 	return m_objName;
 }
 
-inline const D3DXMATRIXA16 GameObject::GetWorld( ) const
+inline const D3DXMATRIXA16 cGameObject::GetWorld( ) const
 {
 	return m_matWorld;
 }
 
-inline bool GameObject::IsActive( ) const
+inline bool cGameObject::IsActive( ) const
 {
 	return m_isActive;
 }
 
-inline void GameObject::UpdateWorld( )
+inline void cGameObject::UpdateWorld( )
 {
 	D3DXMATRIXA16 matScale;
 	D3DXMatrixScaling( &matScale, m_scale.x, m_scale.y, m_scale.z );

@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "cBoundingBox.h"
-#include "GameObject.h"
+#include "cGameObject.h"
 
 
 cBoundingBox::cBoundingBox( 
-	GameObject* owner,
+	cGameObject* owner,
 	const D3DXVECTOR3& vMin,
 	const D3DXVECTOR3& vMax ) : 
 	

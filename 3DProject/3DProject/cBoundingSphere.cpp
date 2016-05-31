@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "cBoundingSphere.h"
 
-#include "GameObject.h"
+#include "cGameObject.h"
 
-cBoundingSphere::cBoundingSphere( GameObject* owner )
+cBoundingSphere::cBoundingSphere( cGameObject* owner )
 	: sphereMesh(NULL)
 	, ICollider( owner )
 {

@@ -1,8 +1,8 @@
 #pragma once
-#include "GameObject.h"
+#include "cGameObject.h"
 
 class cPlayer : 
-	public GameObject
+	public cGameObject
 {
 	std::shared_ptr<class cBody>	m_pIdleBody;
 	std::shared_ptr<class cHair>	m_pIdleHair;

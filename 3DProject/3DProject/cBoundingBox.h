@@ -7,7 +7,7 @@ class cBoundingBox
 	: public ICollider
 {
 public:
-	cBoundingBox( class GameObject* owner, 
+	cBoundingBox( class cGameObject* owner, 
 				  const D3DXVECTOR3& vMin, 
 				  const D3DXVECTOR3& vMax );
 	virtual ~cBoundingBox();

@@ -135,9 +135,6 @@
     <ClInclude Include="cCamera.h">
       <Filter>Object\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Object\Abstract</Filter>
-    </ClInclude>
     <ClInclude Include="cFrustumCulling.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
@@ -150,6 +147,10 @@
     <ClInclude Include="cBody.h" />
     <ClInclude Include="cHair.h" />
     <ClInclude Include="cFace.h" />
+    <ClInclude Include="cCollisionManager.h" />
+    <ClInclude Include="cGameObject.h">
+      <Filter>Object\Abstract</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -215,9 +216,6 @@
     <ClCompile Include="cCamera.cpp">
       <Filter>Object\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Object\Abstract</Filter>
-    </ClCompile>
     <ClCompile Include="cFSM.cpp">
       <Filter>Object\FSM</Filter>
     </ClCompile>
@@ -227,6 +225,10 @@
     <ClCompile Include="cBody.cpp" />
     <ClCompile Include="cHair.cpp" />
     <ClCompile Include="cFace.cpp" />
+    <ClCompile Include="cCollisionManager.cpp" />
+    <ClCompile Include="cGameObject.cpp">
+      <Filter>Object\Abstract</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

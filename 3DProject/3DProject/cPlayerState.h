@@ -5,7 +5,7 @@ class cPlayerIdleState :
 	public iFSMState
 {
 public:
-	cPlayerIdleState( class GameObject* owner );
+	cPlayerIdleState( class cGameObject* owner );
 	virtual ~cPlayerIdleState( );
 
 	virtual void OnBeginState( );

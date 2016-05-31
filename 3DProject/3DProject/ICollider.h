@@ -11,7 +11,7 @@ public:
 class ICollider
 {
 public:
-	ICollider( class GameObject* owner );
+	ICollider( class cGameObject* owner );
 	virtual ~ICollider( ) = 0 {};
 
 	virtual void Update( ) = 0;
@@ -23,12 +23,12 @@ public:
 	void SetDebugRender( bool isDebugRender );
 	bool IsDebugRender( );
 
-	void SetOwner( class GameObject* owner );
-	class GameObject* GetOwner( );
+	void SetOwner( class cGameObject* owner );
+	class cGameObject* GetOwner( );
 
 private:
 	bool m_isDebugRender;
-	class GameObject* m_owner;
+	class cGameObject* m_owner;
 };
 
 inline void ICollider::SetDebugRender( bool isDebugRender )
@@ -41,12 +41,12 @@ inline bool ICollider::IsDebugRender( )
 	return m_isDebugRender;
 }
 
-inline void ICollider::SetOwner( GameObject * owner )
+inline void ICollider::SetOwner( cGameObject * owner )
 {
 	m_owner = owner;
 }
 
-inline GameObject * ICollider::GetOwner( )
+inline cGameObject * ICollider::GetOwner( )
 {
 	return m_owner;
 }

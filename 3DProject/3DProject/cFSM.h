@@ -13,7 +13,7 @@ enum class eFSMState
 class iFSMState
 {
 public:
-	iFSMState( class GameObject* owner ) :
+	iFSMState( class cGameObject* owner ) :
 		m_owner( owner ) {}
 	virtual ~iFSMState( ) {}
 
@@ -22,10 +22,10 @@ public:
 	virtual void OnDoingState( ) = 0;
 
 protected:
-	class GameObject* GetOwner( ) { return m_owner; }
+	class cGameObject* GetOwner( ) { return m_owner; }
 
 private:
-	class GameObject* m_owner;
+	class cGameObject* m_owner;
 };
 
 class cFSM
