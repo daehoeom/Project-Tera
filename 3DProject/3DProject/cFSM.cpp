@@ -4,7 +4,8 @@
 
 cFSM::cFSM( ):
 	m_curState( NULL ),
-	m_nextState( NULL )
+	m_nextState( NULL ),
+	m_currStateType( eFSMState::kNone )
 {
 }
 
@@ -40,12 +41,27 @@ void cFSM::Update( )
 	}
 }
 
+void cFSM::Render( )
+{
+	if ( m_curState )
+	{
+		m_curState->OnDoingStateRender( );
+	}
+}
+
 void cFSM::TranslateState(
 	eFSMState newState )
 {
+	m_currStateType = newState;
+	
 	auto iter = m_mapState.find( newState );
 	if ( iter != m_mapState.end( ) )
 	{
 		m_nextState = iter->second.get();
 	}
+}
+
+eFSMState cFSM::GetCurrStateType( ) const
+{
+	return m_currStateType;
 }

@@ -5,6 +5,7 @@
 #include "cGameObject.h"
 
 
+class cGameObject;
 class cObjectManager : 
 	public TSingleton<cObjectManager>
 {
@@ -17,9 +18,9 @@ public:
 public:
 	void Update( );
 
-	void AddObject( class cGameObject* pObject );
-	class cGameObject* FindObject( const std::string& key );
-	void DeleteObject( const std::string& key );
+	void AddObject( cGameObject* pObject );
+	void EraseObject( const std::string& key );
+	cGameObject* FindObject( const std::string& key );
 
 	iterator begin( );
 	iterator end( );
@@ -27,9 +28,6 @@ public:
 protected:
 	cObjectManager( );
 	virtual ~cObjectManager( );
-
-private:
-	void UpdateCollisionState( );
 
 private:
 	ObjectMap m_objMap;
@@ -47,7 +45,7 @@ inline cGameObject* cObjectManager::FindObject(
 	return m_objMap[key];
 }
 
-inline void cObjectManager::DeleteObject( 
+inline void cObjectManager::EraseObject( 
 	const std::string& key )
 {
 	m_objMap.erase( key );

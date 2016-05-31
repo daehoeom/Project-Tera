@@ -141,15 +141,20 @@
     <ClInclude Include="cFSM.h">
       <Filter>Object\FSM</Filter>
     </ClInclude>
-    <ClInclude Include="cPlayerState.h">
-      <Filter>Object\FSM</Filter>
-    </ClInclude>
     <ClInclude Include="cBody.h" />
     <ClInclude Include="cHair.h" />
     <ClInclude Include="cFace.h" />
-    <ClInclude Include="cCollisionManager.h" />
     <ClInclude Include="cGameObject.h">
       <Filter>Object\Abstract</Filter>
+    </ClInclude>
+    <ClInclude Include="cCollisionManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="cCollisionObject.h">
+      <Filter>Object\Abstract</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayerState.h">
+      <Filter>Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -219,15 +224,20 @@
     <ClCompile Include="cFSM.cpp">
       <Filter>Object\FSM</Filter>
     </ClCompile>
-    <ClCompile Include="cPlayerState.cpp">
-      <Filter>Object\FSM</Filter>
-    </ClCompile>
     <ClCompile Include="cBody.cpp" />
     <ClCompile Include="cHair.cpp" />
     <ClCompile Include="cFace.cpp" />
-    <ClCompile Include="cCollisionManager.cpp" />
     <ClCompile Include="cGameObject.cpp">
       <Filter>Object\Abstract</Filter>
+    </ClCompile>
+    <ClCompile Include="cCollisionManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="cCollisionObject.cpp">
+      <Filter>Object\Abstract</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayerState.cpp">
+      <Filter>Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

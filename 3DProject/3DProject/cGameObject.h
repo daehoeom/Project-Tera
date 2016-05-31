@@ -1,10 +1,15 @@
 #pragma once
-#include "ICollider.h"
 #include "cFSM.h"
 
+enum class ObjectTag
+{
+	kPlayer,
+	kMonster,
+	kBuilding,
+};
+
 class cGameObject :
-	public cFSM,
-	public ICollisionDelegate
+	public cFSM
 {
 public:
 	cGameObject( const std::string& objName );
@@ -38,10 +43,6 @@ public:
 	void SetActive( bool isActive );
 	bool IsActive( ) const;
 	
-	// Collider
-	void SetCollider( class ICollider* collider );
-	const std::unique_ptr<ICollider>& GetCollider( );
-	
 	const std::string& GetName( ) const;
 	const D3DXMATRIXA16 GetWorld( ) const;
 
@@ -54,9 +55,7 @@ private:
 	D3DXVECTOR3 m_scale;
 	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
-	std::unique_ptr<class ICollider> m_collider;
 	bool m_isActive;
-	std::map<std::uintptr_t, class IAction*> m_actionMap;
 };
 
 inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )

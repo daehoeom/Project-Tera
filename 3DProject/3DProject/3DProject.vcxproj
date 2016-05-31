@@ -89,6 +89,7 @@
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cCollision.h" />
     <ClInclude Include="cCollisionManager.h" />
+    <ClInclude Include="cCollisionObject.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="cFace.h" />
     <ClInclude Include="cFrustumCulling.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cCollision.cpp" />
     <ClCompile Include="cCollisionManager.cpp" />
+    <ClCompile Include="cCollisionObject.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cFace.cpp" />
     <ClCompile Include="cFrustumCulling.cpp" />

@@ -5,6 +5,7 @@
 cPlayerIdleState::cPlayerIdleState( cGameObject * owner ) :
 	iFSMState( owner )
 {
+	
 }
 
 cPlayerIdleState::~cPlayerIdleState( )
@@ -13,15 +14,18 @@ cPlayerIdleState::~cPlayerIdleState( )
 
 void cPlayerIdleState::OnBeginState( )
 {
-	int n = 3;
 }
 
 void cPlayerIdleState::OnEndState( )
 {
-	int n = 3;
+}
+
+void cPlayerIdleState::OnDoingStateRender( )
+{
+	
 }
 
 void cPlayerIdleState::OnDoingState( )
 {
-	int n = 3;
+	
 }
