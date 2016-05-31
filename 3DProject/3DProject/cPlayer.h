@@ -15,6 +15,10 @@ public:
 	virtual void Update( ) override;
 	virtual void Render( ) override;
 
+	void SetUpdateState();	//상태에 따라 업데이트를 다르게 진행
+	void SetRenderState();	//상태에 따라 렌더를 다르게 진행
+	void KeyControl();
+
 private:
 	std::shared_ptr<cBody>	m_pIdleBody;
 	std::shared_ptr<cHair>	m_pIdleHair;
