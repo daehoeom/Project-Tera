@@ -17,7 +17,7 @@ cPlayer::cPlayer( ) :
 	 , m_pRunBody(nullptr)
 	 , m_pRunFace(nullptr)
 	 , m_pRunHair(nullptr)
-	 , m_sState(player_IDLE)
+	 , m_sState(player_RUN)
 {
 	this->AddState( eFSMState::kIdle, new cPlayerIdleState( this ));
 	this->SetCollider( new cBoundingBox( this, D3DXVECTOR3( -1.f,-1.f,-1.f ), D3DXVECTOR3( 1.f, 1.f, 1.f )));
@@ -70,6 +70,8 @@ void cPlayer::Update( )
 	__super::Update( );
 
 	StateUpdate();
+
+	KeyControl();
 }
 
 void cPlayer::Render( )
@@ -88,12 +90,22 @@ void cPlayer::KeyControl()
 {
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
+		m_sState = player_RUN;
+	}
 
+	if (KEYMANAGER->isOnceKeyUp('W'))
+	{
+		m_sState = player_IDLE;
 	}
 
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
+		m_sState = player_RUN;
+	}
 
+	if (KEYMANAGER->isOnceKeyUp('S'))
+	{
+		m_sState = player_IDLE;
 	}
 
 	if (KEYMANAGER->isStayKeyDown('A'))
@@ -105,13 +117,18 @@ void cPlayer::KeyControl()
 	{
 
 	}
+
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		m_sState = player_ATTACK;
+	}
 }
 
 void cPlayer::StateUpdate()
 {
 	if (m_sState == player_IDLE)
 	{
-		if (m_pIdleBody && m_sState == player_IDLE)
+		if (m_pIdleBody)
 		{
 			m_pIdleBody->Update();
 		}
@@ -131,7 +148,7 @@ void cPlayer::StateUpdate()
 
 	if (m_sState == player_ATTACK)
 	{
-		if (m_pAttackBody && m_sState == player_IDLE)
+		if (m_pAttackBody)
 		{
 			m_pAttackBody->Update();
 		}
@@ -151,7 +168,7 @@ void cPlayer::StateUpdate()
 
 	if (m_sState == player_RUN)
 	{
-		if (m_pRunBody && m_sState == player_IDLE)
+		if (m_pRunBody)
 		{
 			m_pRunBody->Update();
 		}
@@ -174,7 +191,7 @@ void cPlayer::StateRender()
 {
 	if (m_sState == player_IDLE)
 	{
-		if (m_pIdleBody && m_sState == player_IDLE)
+		if (m_pIdleBody)
 		{
 			m_pIdleBody->Render();
 		}
@@ -192,7 +209,7 @@ void cPlayer::StateRender()
 
 	if (m_sState == player_ATTACK)
 	{
-		if (m_pAttackBody && m_sState == player_IDLE)
+		if (m_pAttackBody)
 		{
 			m_pAttackBody->Render();
 		}
@@ -210,7 +227,7 @@ void cPlayer::StateRender()
 
 	if (m_sState == player_RUN)
 	{
-		if (m_pRunBody && m_sState == player_IDLE)
+		if (m_pRunBody)
 		{
 			m_pRunBody->Render();
 		}
