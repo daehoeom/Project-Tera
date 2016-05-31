@@ -190,3 +190,7 @@ _Pvt_Extensions/
 ModelManifest.xml
 *.db
 *.opendb
+/3DProject/3DProject/Map
+/3DProject/3DProject/NPC&ENEMY
+/3DProject/3DProject/Resource
+*.X
