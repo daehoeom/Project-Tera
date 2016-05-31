@@ -150,6 +150,7 @@
     <ClInclude Include="cBody.h" />
     <ClInclude Include="cHair.h" />
     <ClInclude Include="cFace.h" />
+    <ClInclude Include="cCollisionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -227,6 +228,7 @@
     <ClCompile Include="cBody.cpp" />
     <ClCompile Include="cHair.cpp" />
     <ClCompile Include="cFace.cpp" />
+    <ClCompile Include="cCollisionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

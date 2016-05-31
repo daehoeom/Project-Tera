@@ -2,7 +2,7 @@
 #include "cPlayerState.h"
 
 
-cPlayerIdleState::cPlayerIdleState( GameObject * owner ) :
+cPlayerIdleState::cPlayerIdleState( cGameObject * owner ) :
 	iFSMState( owner )
 {
 }

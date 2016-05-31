@@ -5,7 +5,7 @@ class cBoundingSphere :
 	public ICollider
 {
 public:
-	cBoundingSphere( class GameObject* owner );
+	cBoundingSphere( class cGameObject* owner );
 	virtual ~cBoundingSphere();
 
 	void Setup(D3DXVECTOR3* vCenter, float radius);

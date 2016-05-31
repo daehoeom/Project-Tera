@@ -8,7 +8,7 @@
 class cObjectManager : 
 	public TSingleton<cObjectManager>
 {
-	using ObjectMap = std::unordered_map<std::string, GameObject*>;
+	using ObjectMap = std::unordered_map<std::string, cGameObject*>;
 	
 public:
 	using iterator = ObjectMap::iterator;
@@ -17,8 +17,8 @@ public:
 public:
 	void Update( );
 
-	void AddObject( class GameObject* pObject );
-	class GameObject* FindObject( const std::string& key );
+	void AddObject( class cGameObject* pObject );
+	class cGameObject* FindObject( const std::string& key );
 	void DeleteObject( const std::string& key );
 
 	iterator begin( );
@@ -29,21 +29,26 @@ protected:
 	virtual ~cObjectManager( );
 
 private:
+	void UpdateCollisionState( );
+
+private:
 	ObjectMap m_objMap;
 };
 
 inline void cObjectManager::AddObject(
-	GameObject* obj )
+	cGameObject* obj )
 {
 	m_objMap.insert( std::make_pair( obj->GetName( ), obj ) );
 }
 
-inline GameObject* cObjectManager::FindObject( const std::string& key )
+inline cGameObject* cObjectManager::FindObject( 
+	const std::string& key )
 {
 	return m_objMap[key];
 }
 
-inline void cObjectManager::DeleteObject( const std::string& key )
+inline void cObjectManager::DeleteObject( 
+	const std::string& key )
 {
 	m_objMap.erase( key );
 }

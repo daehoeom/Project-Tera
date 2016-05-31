@@ -4,7 +4,7 @@
 #include "cObjectManager.h"
 #include "ICollider.h"
 
-GameObject::GameObject( const std::string& objName ) :
+cGameObject::cGameObject( const std::string& objName ) :
 	m_objName( objName ),
 	m_isActive( true ),
 	m_collider( nullptr ),
@@ -13,31 +13,30 @@ GameObject::GameObject( const std::string& objName ) :
 	m_scale( 1.f, 1.f, 1.f )
 {
 	D3DXMatrixIdentity( &m_matWorld );
-	//ObjectManager::Get()->AddObject( this );
+	cObjectManager::Get()->AddObject( this );
 }
 
-GameObject::~GameObject( )
+cGameObject::~cGameObject( )
 {
-	delete m_collider;
-	//ObjectManager::Get()->DeleteObject( this->GetName());
+	cObjectManager::Get()->DeleteObject( this->GetName());
 }
 
-void GameObject::Update( )
+void cGameObject::Update( )
 {
 	cFSM::Update( );
 }
 
-void GameObject::Render( )
+void cGameObject::Render( )
 {
 }
 
-void GameObject::SetCollider( ICollider* collider )
+void cGameObject::SetCollider( ICollider* collider )
 {
-	m_collider = collider;
+	m_collider.reset( collider );
 	collider->SetOwner( this );
 }
 
-ICollider* GameObject::GetCollider( )
+const std::unique_ptr<ICollider>& cGameObject::GetCollider( )
 {
 	return m_collider;
 }

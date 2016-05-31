@@ -7,7 +7,7 @@
 #include "cPlayerState.h"
 
 cPlayer::cPlayer( ) :
-	 GameObject( "Player" )
+	 cGameObject( "Player" )
 	 , m_pIdleBody(nullptr)
 	 , m_pIdleHair(nullptr)
 	 , m_pIdleFace(nullptr)

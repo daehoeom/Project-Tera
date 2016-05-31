@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 
-cBoundingSphere::cBoundingSphere( GameObject* owner )
+cBoundingSphere::cBoundingSphere( cGameObject* owner )
 	: sphereMesh(NULL)
 	, ICollider( owner )
 {

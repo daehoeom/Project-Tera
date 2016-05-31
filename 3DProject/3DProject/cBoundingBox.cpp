@@ -4,7 +4,7 @@
 
 
 cBoundingBox::cBoundingBox( 
-	GameObject* owner,
+	cGameObject* owner,
 	const D3DXVECTOR3& vMin,
 	const D3DXVECTOR3& vMax ) : 
 	
