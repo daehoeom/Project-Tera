@@ -1,10 +1,10 @@
 #pragma once
 #include "cCollisionObject.h"
 
-
 class cBody;
 class cHair;
 class cFace;
+
 class cPlayer : 
 	public cCollisionObject
 {

@@ -16,8 +16,16 @@ public:
 	virtual void Render() override;
 
 public:
-	const D3DXVECTOR3& GetMinimum() { return m_vMin; }
-	const D3DXVECTOR3& GetMaximum() { return m_vMax; }
+	virtual eColliderType GetColliderType( ) const;
+
+	D3DXVECTOR3 GetMinimum() const 
+	{
+		return m_vMin + GetOwner( )->GetPosition(); 
+	}
+	D3DXVECTOR3 GetMaximum() const 
+	{ 
+		return m_vMax + GetOwner( )->GetPosition( );
+	}
 
 private:
 	shared_comptr<ID3DXMesh>	m_pBox;
@@ -26,3 +34,8 @@ private:
 	D3DXVECTOR3					m_vMax;
 
 };
+
+inline eColliderType cBoundingBox::GetColliderType( ) const
+{
+	return eColliderType::kBox;
+}
