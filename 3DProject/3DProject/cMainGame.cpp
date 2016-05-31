@@ -3,7 +3,6 @@
 #include "cGrid.h"
 #include "cPlayer.h"
 #include "cBoundingBox.h"
-
 #include "cCollisionManager.h"
 #include "cObjectManager.h"
 
@@ -12,6 +11,7 @@ cMainGame::cMainGame( )
 
 {
 	m_pGrid.reset(new cGrid);
+
 	m_player.reset(new cPlayer);
 
 	for ( int i = 0; i < 50; i++ )

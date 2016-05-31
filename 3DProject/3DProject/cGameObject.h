@@ -44,7 +44,7 @@ public:
 	bool IsActive( ) const;
 	
 	const std::string& GetName( ) const;
-	const D3DXMATRIXA16 GetWorld( ) const;
+	const D3DXMATRIXA16& GetWorld( ) const;
 
 private:
 	void UpdateWorld( );
@@ -123,7 +123,7 @@ inline const std::string& cGameObject::GetName( ) const
 	return m_objName;
 }
 
-inline const D3DXMATRIXA16 cGameObject::GetWorld( ) const
+inline const D3DXMATRIXA16& cGameObject::GetWorld( ) const
 {
 	return m_matWorld;
 }

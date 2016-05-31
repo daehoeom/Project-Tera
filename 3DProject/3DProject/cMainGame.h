@@ -11,7 +11,7 @@ public:
 	cA( ) : 
 		cCollisionObject( "cA" )
 	{
-		this->SetCollider( new cBoundingSphere( this, 5 ));
+		this->SetCollider(new cBoundingBox(this, { -5, -5, -5 }, { 5, 5, 5 }));
 	}
 
 	virtual ~cA( )
