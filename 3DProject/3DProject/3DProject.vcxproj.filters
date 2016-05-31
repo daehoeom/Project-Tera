@@ -141,9 +141,6 @@
     <ClInclude Include="cFSM.h">
       <Filter>Object\FSM</Filter>
     </ClInclude>
-    <ClInclude Include="cBody.h" />
-    <ClInclude Include="cHair.h" />
-    <ClInclude Include="cFace.h" />
     <ClInclude Include="cGameObject.h">
       <Filter>Object\Abstract</Filter>
     </ClInclude>
@@ -155,6 +152,15 @@
     </ClInclude>
     <ClInclude Include="cPlayerState.h">
       <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="cBody.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cFace.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cHair.h">
+      <Filter>Misc\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,9 +230,6 @@
     <ClCompile Include="cFSM.cpp">
       <Filter>Object\FSM</Filter>
     </ClCompile>
-    <ClCompile Include="cBody.cpp" />
-    <ClCompile Include="cHair.cpp" />
-    <ClCompile Include="cFace.cpp" />
     <ClCompile Include="cGameObject.cpp">
       <Filter>Object\Abstract</Filter>
     </ClCompile>
@@ -238,6 +241,15 @@
     </ClCompile>
     <ClCompile Include="cPlayerState.cpp">
       <Filter>Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="cBody.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cFace.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cHair.cpp">
+      <Filter>Misc\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

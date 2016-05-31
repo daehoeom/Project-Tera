@@ -58,116 +58,14 @@ void cPlayer::Update( )
 {
 	__super::Update( );
 
-	switch ( this->GetCurrStateType( ))
-	{
-	case eFSMState::kIdle:
-		if ( m_pIdleBody )
-		{
-			m_pIdleBody->Update( );
-		}
-		if ( m_pIdleHair )
-		{
-			m_pIdleHair->SetHairTM( 
-				&m_pIdleBody->GetHairTM( ) );
-			m_pIdleHair->Update( );
-		}
-		if ( m_pIdleFace )
-		{
-			m_pIdleFace->SetNeckTM( 
-				&m_pIdleBody->GetNeckTM( ) );
-			m_pIdleFace->Update( );
-		}
-		break;
-
-	case eFSMState::kAttack:
-		if ( m_pAttackBody )
-		{
-			m_pAttackBody->Update( );
-		}
-		if ( m_pAttackHair )
-		{
-			m_pAttackHair->SetHairTM(
-				&m_pAttackBody->GetHairTM( ) );
-			m_pAttackHair->Update( );
-		}
-		if ( m_pAttackFace )
-		{
-			m_pAttackFace->SetNeckTM( &m_pAttackBody->GetNeckTM( ) );
-			m_pAttackFace->Update( );
-		}
-		break;
-
-	case eFSMState::kMove:
-		if ( m_pRunBody )
-		{
-			m_pRunBody->Update( );
-		}
-		if ( m_pRunHair )
-		{
-			m_pRunHair->SetHairTM( &m_pRunBody->GetHairTM( ) );
-			m_pRunHair->Update( );
-		}
-		if ( m_pRunFace )
-		{
-			m_pRunFace->SetNeckTM( &m_pRunBody->GetNeckTM( ) );
-			m_pRunFace->Update( );
-		}
-		break;
-	}
+	SetUpdateState();
 }
 
 void cPlayer::Render( )
 {
 	__super::Render( );
 
-	switch ( this->GetCurrStateType( ) )
-	{
-	case eFSMState::kIdle:
-		if ( m_pIdleBody )
-		{
-			m_pIdleBody->Render( );
-		}
-		if ( m_pIdleHair )
-		{
-			m_pIdleHair->Render( );
-		}
-		if ( m_pIdleFace )
-		{
-			m_pIdleFace->Render( );
-		}
-		break;
-	
-	case eFSMState::kAttack:
-		if ( m_pAttackBody )
-		{
-			m_pAttackBody->Render( );
-		}
-		if ( m_pAttackHair )
-		{
-			m_pAttackHair->Render( );
-		}
-		if ( m_pAttackFace )
-		{
-			m_pAttackFace->Render( );
-		}
-		break;
-	
-	case eFSMState::kMove:
-		if (m_pRunBody )
-		{
-			m_pRunBody->Render();
-		}
-		if (m_pRunHair)
-		{
-			m_pRunHair->Render();
-		}
-		if (m_pRunFace)
-		{
-			m_pRunFace->Render();
-		}
-		break;
-	}
-	
+	SetRenderState();
 }
 //
 //void cPlayer::KeyControl()
@@ -192,3 +90,114 @@ void cPlayer::Render( )
 //
 //	}
 //}
+
+void cPlayer::SetUpdateState()
+{
+	switch (this->GetCurrStateType())
+	{
+	case eFSMState::kIdle:
+		if (m_pIdleBody)
+		{
+			m_pIdleBody->Update();
+		}
+		if (m_pIdleHair)
+		{
+			m_pIdleHair->SetHairTM(
+				&m_pIdleBody->GetHairTM());
+			m_pIdleHair->Update();
+		}
+		if (m_pIdleFace)
+		{
+			m_pIdleFace->SetNeckTM(
+				&m_pIdleBody->GetNeckTM());
+			m_pIdleFace->Update();
+		}
+		break;
+
+	case eFSMState::kAttack:
+		if (m_pAttackBody)
+		{
+			m_pAttackBody->Update();
+		}
+		if (m_pAttackHair)
+		{
+			m_pAttackHair->SetHairTM(
+				&m_pAttackBody->GetHairTM());
+			m_pAttackHair->Update();
+		}
+		if (m_pAttackFace)
+		{
+			m_pAttackFace->SetNeckTM(&m_pAttackBody->GetNeckTM());
+			m_pAttackFace->Update();
+		}
+		break;
+
+	case eFSMState::kMove:
+		if (m_pRunBody)
+		{
+			m_pRunBody->Update();
+		}
+		if (m_pRunHair)
+		{
+			m_pRunHair->SetHairTM(&m_pRunBody->GetHairTM());
+			m_pRunHair->Update();
+		}
+		if (m_pRunFace)
+		{
+			m_pRunFace->SetNeckTM(&m_pRunBody->GetNeckTM());
+			m_pRunFace->Update();
+		}
+		break;
+	}
+}
+
+void cPlayer::SetRenderState()
+{
+	switch (this->GetCurrStateType())
+	{
+	case eFSMState::kIdle:
+		if (m_pIdleBody)
+		{
+			m_pIdleBody->Render();
+		}
+		if (m_pIdleHair)
+		{
+			m_pIdleHair->Render();
+		}
+		if (m_pIdleFace)
+		{
+			m_pIdleFace->Render();
+		}
+		break;
+
+	case eFSMState::kAttack:
+		if (m_pAttackBody)
+		{
+			m_pAttackBody->Render();
+		}
+		if (m_pAttackHair)
+		{
+			m_pAttackHair->Render();
+		}
+		if (m_pAttackFace)
+		{
+			m_pAttackFace->Render();
+		}
+		break;
+
+	case eFSMState::kMove:
+		if (m_pRunBody)
+		{
+			m_pRunBody->Render();
+		}
+		if (m_pRunHair)
+		{
+			m_pRunHair->Render();
+		}
+		if (m_pRunFace)
+		{
+			m_pRunFace->Render();
+		}
+		break;
+	}
+}
