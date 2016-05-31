@@ -13,29 +13,83 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="cpp\Manager">
+      <UniqueIdentifier>{4aa30117-0a2a-4afc-8d3f-d1e6a89fe5de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Window">
+      <UniqueIdentifier>{80e0b3be-3a8c-4471-839a-73155d34b348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Window">
+      <UniqueIdentifier>{71f74f83-b68c-47f4-9b5b-2671438226d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Manager">
+      <UniqueIdentifier>{fc4905c6-a70a-45ea-927c-796da22aa4b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Main">
+      <UniqueIdentifier>{78c45ab6-2f95-4ae0-a7cb-cd93e1c11958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\PrecompiledHeader">
+      <UniqueIdentifier>{5419ca37-97d2-4cf3-bff7-3e2b338dbd5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\PrecompiledHeader">
+      <UniqueIdentifier>{4bb1db2b-d89f-44c9-bd27-9e112419fda3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Main">
+      <UniqueIdentifier>{d8d8c0a3-af68-40cd-8c3c-fb257a6fad89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Misc">
+      <UniqueIdentifier>{957c8665-6f86-4317-abff-edacd9b60158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Misc\Utility">
+      <UniqueIdentifier>{c51ea835-45b1-44c7-80d5-62aeb05ec5ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MainSurfaceWindow.h">
+      <Filter>hpp\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="cDeviceManager.h">
+      <Filter>hpp\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="shared_comptr.h">
+      <Filter>hpp\Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>hpp\Misc\Utility</Filter>
+    </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>hpp</Filter>
+      <Filter>hpp\PrecompiledHeader</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>hpp</Filter>
+      <Filter>hpp\PrecompiledHeader</Filter>
     </ClInclude>
     <ClInclude Include="3DMapTool.h">
+      <Filter>hpp\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="IWindow.h">
       <Filter>hpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cDeviceManager.cpp">
+      <Filter>cpp\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="MainSurfaceWindow.cpp">
+      <Filter>cpp\Window</Filter>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>cpp</Filter>
+      <Filter>cpp\PrecompiledHeader</Filter>
     </ClCompile>
     <ClCompile Include="3DMapTool.cpp">
+      <Filter>cpp\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="IWindow.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
   </ItemGroup>
