@@ -67,6 +67,12 @@
     <Filter Include="hpp\Camera">
       <UniqueIdentifier>{71cbe7e0-db02-474f-9687-1c518969d122}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hpp\Object">
+      <UniqueIdentifier>{b151ebb2-a79d-455b-b343-5efd2bbf2831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Object">
+      <UniqueIdentifier>{60f4d207-4df5-403f-9cd5-03dc364d3d4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -120,6 +126,12 @@
     <ClInclude Include="cCamera.h">
       <Filter>hpp\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="cObject.h">
+      <Filter>hpp\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="cObjectManager.h">
+      <Filter>hpp\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cDeviceManager.cpp">
@@ -136,9 +148,6 @@
     </ClCompile>
     <ClCompile Include="AbstractWindow.cpp">
       <Filter>cpp\Window</Filter>
-    </ClCompile>
-    <ClCompile Include="HierarchyWindow.cpp">
-      <Filter>cpp</Filter>
     </ClCompile>
     <ClCompile Include="InspectorWindow.cpp">
       <Filter>cpp\Window</Filter>
@@ -157,6 +166,15 @@
     </ClCompile>
     <ClCompile Include="cCamera.cpp">
       <Filter>cpp\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchyWindow.cpp">
+      <Filter>cpp\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="cObject.cpp">
+      <Filter>cpp\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="cObjectManager.cpp">
+      <Filter>cpp\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

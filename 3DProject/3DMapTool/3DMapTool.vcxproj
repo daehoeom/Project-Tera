@@ -153,6 +153,8 @@
     <ClInclude Include="AbstractWindow.h" />
     <ClInclude Include="cGroup.h" />
     <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="cObject.h" />
+    <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="HierarchyWindow.h" />
@@ -171,6 +173,8 @@
     <ClCompile Include="AbstractWindow.cpp" />
     <ClCompile Include="cGroup.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="cObject.cpp" />
+    <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjLoader.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />

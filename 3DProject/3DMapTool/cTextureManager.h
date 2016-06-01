@@ -12,11 +12,10 @@ public:
 	void Destroy();
 
 protected:
-	cTextureManager( );
-	virtual ~cTextureManager( );
+	cTextureManager( ) {};
+	virtual ~cTextureManager( ) {};
 
 private:
 	std::map<std::string, LPDIRECT3DTEXTURE9> m_mapTexture;
-
 };
 

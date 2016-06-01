@@ -3,14 +3,6 @@
 
 #include "cDeviceManager.h"
 
-cTextureManager::cTextureManager(void)
-{
-}
-
-
-cTextureManager::~cTextureManager(void)
-{
-}
 
 LPDIRECT3DTEXTURE9 cTextureManager::GetTexture( char* szFullPath )
 {
@@ -40,8 +32,8 @@ LPDIRECT3DTEXTURE9 cTextureManager::GetTexture( std::string sFullPath )
 
 void cTextureManager::Destroy()
 {
-	for each(auto it in m_mapTexture)
+	for (auto& iter : m_mapTexture)
 	{
-		SAFE_RELEASE(it.second);
+		SAFE_RELEASE(iter.second);
 	}
 }

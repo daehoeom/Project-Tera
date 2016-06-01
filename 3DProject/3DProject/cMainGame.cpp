@@ -8,6 +8,7 @@
 #include "cObjLoader.h"
 #include "cGroup.h"
 
+
 cMainGame::cMainGame( )
 	: m_pGrid(nullptr)
 	, m_pLoader(nullptr)
