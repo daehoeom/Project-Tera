@@ -95,9 +95,12 @@
     <ClInclude Include="cFrustumCulling.h" />
     <ClInclude Include="cFSM.h" />
     <ClInclude Include="cGrid.h" />
+    <ClInclude Include="cGroup.h" />
     <ClInclude Include="cHair.h" />
     <ClInclude Include="cKeyManager.h" />
     <ClInclude Include="cMainGame.h" />
+    <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="cObjLoader.h" />
     <ClInclude Include="cParticle_Base.h" />
     <ClInclude Include="cParticle_Firework.h" />
     <ClInclude Include="cPlayer.h" />
@@ -131,9 +134,12 @@
     <ClCompile Include="cFrustumCulling.cpp" />
     <ClCompile Include="cFSM.cpp" />
     <ClCompile Include="cGrid.cpp" />
+    <ClCompile Include="cGroup.cpp" />
     <ClCompile Include="cHair.cpp" />
     <ClCompile Include="cKeyManager.cpp" />
     <ClCompile Include="cMainGame.cpp" />
+    <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="cObjLoader.cpp" />
     <ClCompile Include="cParticle_Base.cpp" />
     <ClCompile Include="cParticle_Firework.cpp" />
     <ClCompile Include="cPlayer.cpp" />

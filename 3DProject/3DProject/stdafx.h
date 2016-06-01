@@ -182,6 +182,28 @@ struct ST_BONE_MESH : public D3DXMESHCONTAINER
 	D3DXMATRIX*						pCurrentBoneMatrices;	//각 본의 계산된 월드매트릭스
 };
 
+#define SYNTHESIZE(varType, varName, funName)\
+protected: varType varName;\
+public: inline varType Get##funName(void) const { return varName; }\
+public: inline void Set##funName(varType var){ varName = var; }
+
+
+#define SYNTHESIZE_PASS_BY_REF(varType, varName, funName)\
+protected: varType varName;\
+public: inline varType& Get##funName(void) { return varName; }\
+public: inline void Set##funName(varType& var){ varName = var; }
+
+#define SYNTHESIZE_ADD_REF(varType, varName, funName)    \
+protected: varType varName; \
+public: virtual varType Get##funName(void) const { return varName; } \
+public: virtual void Set##funName(varType var){\
+	if (varName != var) {\
+	SAFE_ADD_REF(var);\
+	SAFE_RELEASE(varName);\
+	varName = var;\
+		}\
+}
+
 extern HWND		g_hWnd;
 
 #define SYNTHESIZE(varType, varName, funName)\
@@ -213,3 +235,9 @@ public: virtual void Set##funName(varType var){\
 #include "Particle.h"
 #include "cCamera.h"
 #include "cRandomUtil.h"
+
+
+
+///////////////////
+typedef std::shared_ptr<class cGroup> SpGroup;
+typedef std::shared_ptr<class cMtlTex> SpMtlTex;
