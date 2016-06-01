@@ -148,8 +148,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DMapTool.h" />
+    <ClInclude Include="cCamera.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="AbstractWindow.h" />
+    <ClInclude Include="cGroup.h" />
+    <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="cObjLoader.h" />
+    <ClInclude Include="cTextureManager.h" />
+    <ClInclude Include="HierarchyWindow.h" />
+    <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="MainSurfaceWindow.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
@@ -159,8 +166,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DMapTool.cpp" />
+    <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="AbstractWindow.cpp" />
+    <ClCompile Include="cGroup.cpp" />
+    <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="cObjLoader.cpp" />
+    <ClCompile Include="cTextureManager.cpp" />
+    <ClCompile Include="HierarchyWindow.cpp" />
+    <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="MainSurfaceWindow.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

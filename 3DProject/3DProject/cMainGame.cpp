@@ -10,13 +10,12 @@ cMainGame::cMainGame( )
 	: m_pGrid(NULL)
 
 {
-	m_pGrid.reset(new cGrid);
-
-	m_player.reset(new cPlayer);
+	m_pGrid = new cGrid;
+	m_player = new cPlayer;
 
 	/*for ( int i = 0; i < 50; i++ )
 	{
-		std::shared_ptr<cB> box( new cB );
+		cB* box( new cB );
 		box->SetPosition( {(float)(rand()%100), 0.f, (float)(rand()%100) });
 		b.push_back( box );
 	}*/
@@ -24,6 +23,14 @@ cMainGame::cMainGame( )
 
 cMainGame::~cMainGame()
 {
+	SAFE_DELETE( m_pGrid );
+	SAFE_DELETE( m_player );
+
+	for ( auto& elem : b )
+	{
+		SAFE_DELETE( elem );
+	}
+
 	g_pTextureManager->Destroy();
 }
 

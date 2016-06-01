@@ -4,6 +4,9 @@
 #include "3DMapTool.h"
 
 #include "MainSurfaceWindow.h"
+#include "HierarchyWindow.h"
+
+#pragma comment( linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"" )
 
 
 HINSTANCE g_instHandle;
@@ -20,7 +23,17 @@ int APIENTRY wWinMain(
 
 	std::unique_ptr<MainSurfaceWindow> mainSurfaceWnd( 
 		new MainSurfaceWindow );
+	std::unique_ptr<HierarchyWindow> hierarchyWnd(
+		new HierarchyWindow );
+
+
 	mainSurfaceWnd->Setup( );
+	mainSurfaceWnd->SetChild( hierarchyWnd.get() );
+
+	hierarchyWnd->SetOwner( mainSurfaceWnd.get() );
+	hierarchyWnd->SetDelegate( mainSurfaceWnd.get( ) );
+	hierarchyWnd->Setup( );
+
 
     MSG msg {0};
     while ( true )
@@ -42,6 +55,7 @@ int APIENTRY wWinMain(
 		{
 			// Idle
 			mainSurfaceWnd->OnIdle( );
+			hierarchyWnd->OnIdle( );
 		}
     }
 

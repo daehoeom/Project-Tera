@@ -14,16 +14,17 @@ public:
 	virtual void OnIdle( ) override;
 
 	// delegate
-	virtual void OnMove( AbstractWindow* sender ) {}
-	virtual void OnSize( AbstractWindow* sender ) {}
+	virtual void OnMove( AbstractWindow* sender, int x, int y );
+	virtual void OnSize( AbstractWindow* sender, int width, int height );
 
 protected:
 	static LRESULT CALLBACK MsgProc( HWND, UINT, WPARAM, LPARAM );
 	virtual HWND SetupWindowComponents( ) override;
 
 private:
+	wchar_t* m_dropQueryPath;
 	void SetupWindowClass( );
+	POINT m_prevPos;
 	HWND SetupWindow( );
-	void InitD3DSurface( );
 };
 

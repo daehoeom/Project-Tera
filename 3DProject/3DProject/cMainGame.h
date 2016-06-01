@@ -80,11 +80,11 @@ private:
 	void SetupManagers( );
 
 private:
-	std::shared_ptr<cPlayer> m_player;
-	std::shared_ptr<cGrid> m_pGrid;
-	std::shared_ptr<cSkyBox> m_pSkyBox;
+	cPlayer* m_player;
+	cGrid* m_pGrid;
+	cSkyBox* m_pSkyBox;
 	
 	cA a;
-	std::vector<std::shared_ptr<cB>> b;
+	std::vector<cB*> b;
 };
 
