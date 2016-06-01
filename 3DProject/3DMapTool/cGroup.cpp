@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "cGroup.h"
 #include "cMtlTex.h"
+
 #include "cDeviceManager.h"
 
 cGroup::cGroup(void)
@@ -11,6 +12,7 @@ cGroup::cGroup(void)
 
 cGroup::~cGroup(void)
 {
+	SAFE_RELEASE(m_pMtlTex);
 }
 
 void cGroup::Render()

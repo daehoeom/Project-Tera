@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <memory>
 #include <string>
+#include <set>
 #include <map>
 #include <initializer_list>
 #include <array>
