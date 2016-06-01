@@ -4,26 +4,6 @@ struct ST_BONE_MESH;
 
 class cBody
 {
-	//X파일
-	cAllocateHierarchy*			m_pAlloc;
-	LPD3DXFRAME					m_pFrameRoot;
-	LPD3DXFRAME					m_pFrameRootOrigin;
-
-	//string						
-	std::string						m_sPath;
-	LPD3DXANIMATIONCONTROLLER	m_pAnimControl;
-
-	LPD3DXMESH					m_pMesh;
-	LPD3DXBUFFER				m_pBuffer;
-	std::vector<LPDIRECT3DTEXTURE9>	m_vecTexture;
-	float						m_ft;
-
-public:
-
-	D3DXMATRIX					m_matNeckTM;
-	D3DXMATRIX					m_matHairTM;
-	D3DXMATRIX					m_matRootTM;
-
 
 public:
 	cBody();
@@ -46,5 +26,28 @@ public:
 
 	void SetRootTM(D3DXMATRIX* root) { m_matRootTM = *root; }
 	D3DXMATRIX GetRootTM() { return m_matRootTM; }
+
+	void SetWorld(D3DXMATRIX* world) { m_matWorld = *world; }
+	D3DXMATRIX GetWorld() { return m_matWorld; }
+
+private:
+	//X파일
+	cAllocateHierarchy*			m_pAlloc;
+	LPD3DXFRAME					m_pFrameRoot;
+	LPD3DXFRAME					m_pFrameRootOrigin;
+
+	//string						
+	std::string					m_sPath;
+	LPD3DXANIMATIONCONTROLLER	m_pAnimControl;
+
+	LPD3DXMESH					m_pMesh;
+	LPD3DXBUFFER				m_pBuffer;
+	std::vector<LPDIRECT3DTEXTURE9>	m_vecTexture;
+	float						m_ft;
+
+	D3DXMATRIX					m_matNeckTM;
+	D3DXMATRIX					m_matHairTM;
+	D3DXMATRIX					m_matRootTM;
+	D3DXMATRIX					m_matWorld;
 };
 

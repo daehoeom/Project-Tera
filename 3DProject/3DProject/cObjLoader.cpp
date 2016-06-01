@@ -12,7 +12,7 @@ cObjLoader::~cObjLoader(void)
 {
 }
 
-void cObjLoader::Load(char* szFullPath, std::vector<SpGroup>& vecGroup, D3DXMATRIXA16* mat)
+void cObjLoader::Load(char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATRIXA16* mat /*= NULL*/)
 {
 	std::vector<D3DXVECTOR3> vecV;
 	std::vector<D3DXVECTOR2> vecVT;
@@ -23,6 +23,8 @@ void cObjLoader::Load(char* szFullPath, std::vector<SpGroup>& vecGroup, D3DXMATR
 	FILE* fp = NULL;
 
 	fopen_s(&fp, szFullPath, "r");
+
+	assert(fp != NULL && "파일이 없습니다.");
 
 	while (true)
 	{

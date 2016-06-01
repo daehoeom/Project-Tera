@@ -87,9 +87,6 @@
     <ClInclude Include="cAllocateHierarchy.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="unique_comptr.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Manager\Interface</Filter>
     </ClInclude>
@@ -116,12 +113,6 @@
     </ClInclude>
     <ClInclude Include="ICollider.h">
       <Filter>Object\Abstract\Collider\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="cObjectManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="shared_comptr.h">
-      <Filter>Misc\Utility</Filter>
     </ClInclude>
     <ClInclude Include="cSkyBox.h">
       <Filter>Object\Building</Filter>
@@ -165,6 +156,11 @@
     <ClInclude Include="cObjLoader.h" />
     <ClInclude Include="cGroup.h" />
     <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="cObject.h" />
+    <ClInclude Include="cGameObjectManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="cObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -212,9 +208,6 @@
     <ClCompile Include="ICollider.cpp">
       <Filter>Object\Abstract\Collider\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="cObjectManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="cFrustumCulling.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
@@ -257,6 +250,11 @@
     <ClCompile Include="cObjLoader.cpp" />
     <ClCompile Include="cGroup.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="cObject.cpp" />
+    <ClCompile Include="cGameObjectManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="cObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

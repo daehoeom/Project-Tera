@@ -12,7 +12,7 @@ bool cCollision::IsSphereToSphere(
 {
 	bool result = false;
 
-	D3DXVECTOR3 dv = s1.GetOwner( )->GetPosition() - s2.GetOwner( )->GetPosition();
+	D3DXVECTOR3 dv = s1.GetPosition() - s2.GetPosition();
 	float dist = D3DXVec3LengthSq( &dv );
 
 	float rSum = (s1.GetRadius() + s2.GetRadius()) * 
@@ -33,39 +33,39 @@ bool cCollision::IsSphereToBox(
 	float distance = 0.f;
 	float diff = 0.f;
 
-	if (s.GetOwner( )->GetPosition().x < box.GetMinimum().x)
+	if (s.GetPosition().x < box.GetMinimum().x)
 	{
-		diff = box.GetMinimum().x - s.GetOwner( )->GetPosition().x;
+		diff = box.GetMinimum().x - s.GetPosition().x;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetOwner( )->GetPosition().x > box.GetMaximum().x)
+	else if (s.GetPosition().x > box.GetMaximum().x)
 	{
-		diff = s.GetOwner( )->GetPosition().x - box.GetMaximum().x;
+		diff = s.GetPosition().x - box.GetMaximum().x;
 		distance += (diff * diff);
 	}
 
-	if (s.GetOwner( )->GetPosition().y < box.GetMinimum().y)
+	if (s.GetPosition().y < box.GetMinimum().y)
 	{
 		diff = box.GetMinimum().y - box.GetMaximum().y;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetOwner( )->GetPosition().y > box.GetMaximum().y)
+	else if (s.GetPosition().y > box.GetMaximum().y)
 	{
-		diff = s.GetOwner( )->GetPosition().y - box.GetMaximum().y;
+		diff = s.GetPosition().y - box.GetMaximum().y;
 		distance += (diff * diff);
 	}
 
-	if (s.GetOwner( )->GetPosition().z < box.GetMinimum().z)
+	if (s.GetPosition().z < box.GetMinimum().z)
 	{
-		diff = box.GetMinimum().z - s.GetOwner( )->GetPosition().z;
+		diff = box.GetMinimum().z - s.GetPosition().z;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetOwner( )->GetPosition().z > box.GetMaximum().z)
+	else if (s.GetPosition().z > box.GetMaximum().z)
 	{
-		diff = s.GetOwner( )->GetPosition().z - box.GetMaximum().z;
+		diff = s.GetPosition().z - box.GetMaximum().z;
 		distance += (diff * diff);
 	}
 
@@ -84,39 +84,39 @@ bool cCollision::IsBoxToSphere(
 	float distance = 0.f;
 	float diff = 0.f;
 
-	if (s.GetOwner( )->GetPosition().x < box.GetMinimum().x)
+	if (s.GetPosition().x < box.GetMinimum().x)
 	{
-		diff = box.GetMinimum().x - s.GetOwner( )->GetPosition().x;
+		diff = box.GetMinimum().x - s.GetPosition().x;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetOwner( )->GetPosition().x > box.GetMaximum().x)
+	else if (s.GetPosition().x > box.GetMaximum().x)
 	{
-		diff = s.GetOwner( )->GetPosition().x - box.GetMaximum().x;
+		diff = s.GetPosition().x - box.GetMaximum().x;
 		distance += (diff * diff);
 	}
 
-	if (s.GetOwner( )->GetPosition().y < box.GetMinimum().y)
+	if (s.GetPosition().y < box.GetMinimum().y)
 	{
 		diff = box.GetMinimum().y - box.GetMaximum().y;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetOwner( )->GetPosition().y > box.GetMaximum().y)
+	else if (s.GetPosition().y > box.GetMaximum().y)
 	{
-		diff = s.GetOwner( )->GetPosition().y - box.GetMaximum().y;
+		diff = s.GetPosition().y - box.GetMaximum().y;
 		distance += (diff * diff);
 	}
 
-	if (s.GetOwner( )->GetPosition().z < box.GetMinimum().z)
+	if (s.GetPosition().z < box.GetMinimum().z)
 	{
-		diff = box.GetMinimum().z - s.GetOwner( )->GetPosition().z;
+		diff = box.GetMinimum().z - s.GetPosition().z;
 		distance += (diff * diff);
 	}
 
-	else if (s.GetOwner( )->GetPosition().z > box.GetMaximum().z)
+	else if (s.GetPosition().z > box.GetMaximum().z)
 	{
-		diff = s.GetOwner( )->GetPosition().z - box.GetMaximum().z;
+		diff = s.GetPosition().z - box.GetMaximum().z;
 		distance += (diff * diff);
 	}
 
@@ -132,9 +132,6 @@ bool cCollision::IsBoxToBox(
 	const cBoundingBox& box1, 
 	const cBoundingBox& box2)
 {
-	box1.GetOwner( );
-
-
 	if (box1.GetMaximum().x < box2.GetMinimum().x ||
 		box1.GetMinimum().x > box2.GetMaximum().x)
 		return false;

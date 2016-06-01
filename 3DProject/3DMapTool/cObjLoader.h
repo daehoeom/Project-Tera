@@ -15,6 +15,6 @@ public:
 	void LoadMtlLib(char* szFullPath);
 
 private:
-	std::map<std::string, std::shared_ptr<cMtlTex>> m_mapMtlTex;
+	std::map<std::string, std::shared_ptr<cMtlTex*>> m_mapMtlTex;
 };
 

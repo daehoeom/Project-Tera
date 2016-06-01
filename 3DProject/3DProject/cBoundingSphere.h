@@ -1,13 +1,11 @@
 #pragma once
 #include "ICollider.h"
-#include "shared_comptr.h"
 
-class cGameObject;
 class cBoundingSphere : 
 	public ICollider
 {
 public:
-	cBoundingSphere( cGameObject* owner, float radius );
+	cBoundingSphere( D3DXVECTOR3 Position, float radius );
 	virtual ~cBoundingSphere();
 
 	virtual void Update() override;
@@ -19,9 +17,21 @@ public:
 	float GetRadius( ) const { return m_fRadius; }
 	void SetRadius( float radius ) { m_fRadius = radius; }
 
+	D3DXVECTOR3 GetPosition() const { return m_vPosition; }
+	void SetPosition(D3DXVECTOR3 vPos) { m_vPosition = vPos; }
+
+	D3DXMATRIXA16 GetLocal() { return m_matLocalTM; }
+	void SetLocal(D3DXMATRIXA16* local) { m_matLocalTM = *local; }
+
+	D3DXMATRIXA16 GetWorld() { return m_matWorldTM; }
+	void SetWorld(D3DXMATRIXA16* world) { m_matWorldTM = *world; }
+
 private:
-	shared_comptr<ID3DXMesh> sphereMesh;
-	float m_fRadius;
+	ID3DXMesh*		sphereMesh;
+	float			m_fRadius;
+	D3DXVECTOR3		m_vPosition;
+	D3DXMATRIXA16	m_matLocalTM;
+	D3DXMATRIXA16	m_matWorldTM;
 };
 
 inline eColliderType cBoundingSphere::GetColliderType( ) const

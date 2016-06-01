@@ -2,53 +2,55 @@
 #include "cPlayer.h"
 #include "cBoundingBox.h"
 #include "cPlayerState.h"
-
 #include "cBody.h"
 #include "cHair.h"
 #include "cFace.h"
 
 cPlayer::cPlayer( ) :
 	cCollisionObject( "Player" )
+	, m_vPosition(D3DXVECTOR3(0, 0, 0))
+	, m_vDirection(D3DXVECTOR3(0, 0, 1))
+	, m_fSpeed(0.1f)
 {
-	this->SetCollider( new cBoundingBox( this, D3DXVECTOR3( -1.f,-1.f,-1.f ), D3DXVECTOR3( 1.f, 1.f, 1.f )));
-	this->TranslateState( eFSMState::kAttack );
-
-
 	//´ë±â»óÅÂ
 	m_pIdleBody = new cBody;
-	m_pIdleBody->Setup("Resource/¿¤¸°", "¿¤¸°_¸ö_´ë±â.X");
+	m_pIdleBody->Setup("CH/¿¤¸°", "¿¤¸°_¸ö_´ë±â.X");
 
 	m_pIdleFace = new cFace;
 	m_pIdleFace->SetNeckTM(&m_pIdleBody->GetNeckTM());
-	m_pIdleFace->Setup("Resource/¿¤¸°", "¿¤¸°_¾ó±¼_´ë±â.X");
+	m_pIdleFace->Setup("CH/¿¤¸°", "¿¤¸°_¾ó±¼_´ë±â.X");
 
 	m_pIdleHair = new cHair;
 	m_pIdleHair->SetHairTM(&m_pIdleFace->GetHairTM());
-	m_pIdleHair->Setup("Resource/¿¤¸°", "¿¤¸°_Çì¾î_´ë±â.X");
+	m_pIdleHair->Setup("CH/¿¤¸°", "¿¤¸°_Çì¾î_´ë±â.X");
 
 	//°ø°Ý»óÅÂ
 	m_pAttackBody = new cBody;
-	m_pAttackBody->Setup("Resource/¿¤¸°", "¿¤¸°_¸ö_°ø°Ý.X");
+	m_pAttackBody->Setup("CH/¿¤¸°", "¿¤¸°_¸ö_°ø°Ý.X");
 
 	m_pAttackFace = new cFace;
 	m_pAttackFace->SetNeckTM(&m_pAttackBody->GetNeckTM());
-	m_pAttackFace->Setup("Resource/¿¤¸°", "¿¤¸°_¾ó±¼_°ø°Ý.X");
+	m_pAttackFace->Setup("CH/¿¤¸°", "¿¤¸°_¾ó±¼_°ø°Ý.X");
 
 	m_pAttackHair = new cHair;
 	m_pAttackHair->SetHairTM(&m_pAttackBody->GetHairTM());
-	m_pAttackHair->Setup("Resource/¿¤¸°", "¿¤¸°_Çì¾î_°ø°Ý.X");
+	m_pAttackHair->Setup("CH/¿¤¸°", "¿¤¸°_Çì¾î_°ø°Ý.X");
 
 	//´Þ¸®±â»óÅÂ
 	m_pRunBody = new cBody;
-	m_pRunBody->Setup("Resource/¿¤¸°", "¿¤¸°_¸ö_´Þ¸®±â.X");
+	m_pRunBody->Setup("CH/¿¤¸°", "¿¤¸°_¸ö_´Þ¸®±â.X");
 
 	m_pRunFace = new cFace;
 	m_pRunFace->SetNeckTM(&m_pRunBody->GetNeckTM());
-	m_pRunFace->Setup("Resource/¿¤¸°", "¿¤¸°_¾ó±¼_´Þ¸®±â.X");
+	m_pRunFace->Setup("CH/¿¤¸°", "¿¤¸°_¾ó±¼_´Þ¸®±â.X");
 
 	m_pRunHair = new cHair;
 	m_pRunHair->SetHairTM(&m_pRunBody->GetHairTM());
-	m_pRunHair->Setup("Resource/¿¤¸°", "¿¤¸°_Çì¾î_´Þ¸®±â.X");
+	m_pRunHair->Setup("CH/¿¤¸°", "¿¤¸°_Çì¾î_´Þ¸®±â.X");
+
+	D3DXMatrixIdentity(&m_matWorld);
+
+	this->TranslateState(eFSMState::kIdle);
 }
 
 cPlayer::~cPlayer( )
@@ -69,6 +71,7 @@ cPlayer::~cPlayer( )
 void cPlayer::Update( )
 {
 	__super::Update( );
+
 	SetUpdateState();
 }
 
@@ -77,29 +80,29 @@ void cPlayer::Render( )
 	__super::Render( );
 	SetRenderState();
 }
-//
-//void cPlayer::KeyControl()
-//{
-//	if (KEYMANAGER->isStayKeyDown('W'))
-//	{
-//
-//	}
-//
-//	if (KEYMANAGER->isStayKeyDown('S'))
-//	{
-//
-//	}
-//
-//	if (KEYMANAGER->isStayKeyDown('A'))
-//	{
-//
-//	}
-//
-//	if (KEYMANAGER->isStayKeyDown('D'))
-//	{
-//
-//	}
-//}
+
+void cPlayer::KeyControl()
+{
+	if (KEYMANAGER->isStayKeyDown('W'))
+	{
+
+	}
+
+	if (KEYMANAGER->isStayKeyDown('S'))
+	{
+
+	}
+
+	if (KEYMANAGER->isStayKeyDown('A'))
+	{
+
+	}
+
+	if (KEYMANAGER->isStayKeyDown('D'))
+	{
+
+	}
+}
 
 void cPlayer::SetUpdateState( )
 {
@@ -109,6 +112,7 @@ void cPlayer::SetUpdateState( )
 		if ( m_pIdleBody )
 		{
 			m_pIdleBody->Update( );
+			m_pIdleBody->SetWorld(&m_matWorld);
 		}
 		if (m_pIdleHair)
 		{
@@ -128,6 +132,7 @@ void cPlayer::SetUpdateState( )
 		if ( m_pAttackBody )
 		{
 			m_pAttackBody->Update( );
+			m_pAttackBody->SetWorld(&m_matWorld);
 		}
 		if (m_pAttackHair)
 		{
@@ -146,6 +151,7 @@ void cPlayer::SetUpdateState( )
 		if ( m_pRunBody )
 		{
 			m_pRunBody->Update( );
+			m_pRunBody->SetWorld(&m_matWorld);
 		}
 		if ( m_pRunHair )
 		{

@@ -180,6 +180,14 @@ struct ST_BONE_MESH : public D3DXMESHCONTAINER
 	D3DXMATRIX**					ppBoneMatrixPtrs;		//이 메쉬에 영향을 주는 프레임'들'의 월드매트릭스 포인터 계열
 	D3DXMATRIX*						pBoneOffsetMatrices;	//원본 메수를 로컬스페이스로 보내는 매트릭스들
 	D3DXMATRIX*						pCurrentBoneMatrices;	//각 본의 계산된 월드매트릭스
+
+	//충돌용 바운딩 스피어 값 채우기용
+	float					fOriginRadius;			//애니메이션 첫 프레임의 충돌용 바운딩 스피어 메쉬의 반지름. 변환의 기준이 된다.
+	float					fRadius;				//애니메이션 현재 프레임의 충돌용 바운딩 스피어 메쉬의 반지름.
+	D3DXVECTOR3				vCenter;				//충돌용 바운딩 스피어의 중심점
+	LPD3DXMESH				pSphereMesh;			//충돌용 바운딩 스피어의 메쉬
+	LPD3DXBUFFER			pSphereAdj;				//충돌용 바운딩 스피어의 Adj버퍼
+	D3DXMATRIX				matSphereW;				//충돌용 바운딩 스피어의 월드변환행렬
 };
 
 #define SYNTHESIZE(varType, varName, funName)\
@@ -230,13 +238,13 @@ public: virtual void Set##funName(varType var){\
 #include "cDeviceManager.h"
 #include "cTimeManager.h"
 #include "cTextureManager.h"
-#include "cObjectManager.h"
+#include "cGameObjectManager.h"
 #include "cKeyManager.h"
 #include "Particle.h"
 #include "cCamera.h"
 #include "cRandomUtil.h"
-
-
+#include "cObject.h"
+#include "cObjectManager.h"
 
 ///////////////////
 typedef std::shared_ptr<class cGroup> SpGroup;

@@ -2,7 +2,6 @@
 #include "cBody.h"
 #include "cAllocateHierarchy.h"
 
-
 cBody::cBody()
 	: m_pAlloc(nullptr)
 	, m_pFrameRoot(nullptr)
@@ -12,6 +11,8 @@ cBody::cBody()
 {
 	D3DXMatrixIdentity(&m_matNeckTM);
 	D3DXMatrixIdentity(&m_matRootTM);
+	D3DXMatrixIdentity(&m_matHairTM);
+	D3DXMatrixIdentity(&m_matWorld);
 }
 
 cBody::~cBody()
@@ -45,7 +46,6 @@ void cBody::Setup(char* FolderName, char* FileName)
 
 	D3DXMATRIX matW;
 	D3DXMatrixIdentity(&matW);
-
 }
 void cBody::Update()
 {
@@ -59,7 +59,8 @@ void cBody::Render()
 	g_pD3DDevice->LightEnable(0, true);
 	
 	ST_BONE* pBone = (ST_BONE*)m_pFrameRoot;
-	RecursiveFrameRender(pBone, &pBone->CombinedTransformationMatrix);
+
+	RecursiveFrameRender(pBone, &m_matWorld);
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	g_pD3DDevice->SetTexture(0, nullptr);
 }

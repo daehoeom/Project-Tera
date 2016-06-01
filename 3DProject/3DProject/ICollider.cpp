@@ -2,8 +2,7 @@
 #include "ICollider.h"
 
 
-ICollider::ICollider( cGameObject* owner ) :
-	m_owner( owner ),
+ICollider::ICollider( ) :
 #ifdef _DEBUG
 	m_isDebugRender( true )
 #else 
