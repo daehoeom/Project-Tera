@@ -110,7 +110,7 @@ HWND HierarchyWindow::SetupWindow( )
 		NULL,
 		this->GetClassName( ).c_str( ),
 		this->GetName( ).c_str( ), 
-		WS_BORDER,
+		WS_OVERLAPPEDWINDOW,
 		ownerX+ownerWidth,
 		ownerY,
 		HierarchyWindowWidth,
@@ -121,6 +121,12 @@ HWND HierarchyWindow::SetupWindow( )
 		nullptr 
 	);
 	
+	SetWindowLongPtr( g_hierarchyWndHandle, GWL_STYLE, 
+		WS_POPUP | WS_SYSMENU );
+
+	SetWindowLongPtr( g_hierarchyWndHandle, 
+		GWL_STYLE, WS_CAPTION );
+
 
 	SetWindowLongPtrW(
 		g_hierarchyWndHandle,

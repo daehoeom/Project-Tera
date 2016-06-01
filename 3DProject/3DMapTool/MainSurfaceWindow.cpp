@@ -53,7 +53,6 @@ LRESULT MainSurfaceWindow::MsgProc( HWND wndHandle, UINT msg, WPARAM wParam, LPA
 					extraMemAsWindow->m_dropQueryPath, MAX_PATH );
 			
 				static int32_t hierarchyObjIndex = 0;
-
 			}
 			break;
 

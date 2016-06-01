@@ -20,15 +20,15 @@ public:
 	void KeyControl();
 
 private:
-	std::shared_ptr<cBody>	m_pIdleBody;
-	std::shared_ptr<cHair>	m_pIdleHair;
-	std::shared_ptr<cFace>	m_pIdleFace;
-
-	std::shared_ptr<cBody>	m_pAttackBody;
-	std::shared_ptr<cHair>	m_pAttackHair;
-	std::shared_ptr<cFace>	m_pAttackFace;
-
-	std::shared_ptr<cBody>	m_pRunBody;
-	std::shared_ptr<cHair>	m_pRunHair;
-	std::shared_ptr<cFace>	m_pRunFace;
+	cBody*	m_pIdleBody;
+	cHair*	m_pIdleHair;
+	cFace*	m_pIdleFace;
+		 
+	cBody*	m_pAttackBody;
+	cHair*	m_pAttackHair;
+	cFace*	m_pAttackFace;
+		 
+	cBody*	m_pRunBody;
+	cHair*	m_pRunHair;
+	cFace*	m_pRunFace;
 };

@@ -3,6 +3,10 @@
 
 #include "resource.h"
 
+#include "cCamera.h"
+#include "cTextureManager.h"
+#include "cDeviceManager.h"
+
 
 AbstractWindow::AbstractWindow( 
 	const wchar_t* wndName ) :
@@ -18,6 +22,13 @@ AbstractWindow::~AbstractWindow( )
 void AbstractWindow::Setup( )
 {
 	m_myWndHandle = this->SetupWindowComponents( );
+	
+	
+	// Make managers
+	cDeviceManager::Get( );
+	cTextureManager::Get( );
+	cCamera::Get( );
+
 }
 
 AbstractWindow * AbstractWindow::GetOwner( )

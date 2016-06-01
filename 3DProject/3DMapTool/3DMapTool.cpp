@@ -55,6 +55,7 @@ int APIENTRY wWinMain(
 		{
 			// Idle
 			mainSurfaceWnd->OnIdle( );
+			hierarchyWnd->OnIdle( );
 		}
     }
 
