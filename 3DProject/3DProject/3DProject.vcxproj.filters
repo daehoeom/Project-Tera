@@ -162,6 +162,9 @@
     <ClInclude Include="cHair.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="cObjLoader.h" />
+    <ClInclude Include="cGroup.h" />
+    <ClInclude Include="cMtlTex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -251,6 +254,9 @@
     <ClCompile Include="cHair.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="cObjLoader.cpp" />
+    <ClCompile Include="cGroup.cpp" />
+    <ClCompile Include="cMtlTex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

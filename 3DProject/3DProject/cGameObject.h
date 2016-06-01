@@ -19,10 +19,6 @@ public:
 	virtual void Render( );
 
 public:
-	/*
-		Transform
-	*/
-	// Position
 	void SetPosition( const D3DXVECTOR3& pos );
 	void Move( const D3DXVECTOR3& pos );
 	const D3DXVECTOR3& GetPosition( ) const;
