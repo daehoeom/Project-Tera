@@ -53,11 +53,11 @@ cPlayer::cPlayer( ) :
 
 	this->TranslateState(eFSMState::kIdle);
 
-	m_pBound = new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f);
+	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f));
 
 	D3DXMATRIXA16 matLocal;
 	D3DXMatrixTranslation(&matLocal, 0, 15, 0);
-	m_pBound->SetLocal(&matLocal);
+	this->GetCollider()->SetLocal(&matLocal);
 }
 
 cPlayer::~cPlayer( )
@@ -73,8 +73,6 @@ cPlayer::~cPlayer( )
 	SAFE_DELETE( m_pRunBody );
 	SAFE_DELETE( m_pRunFace );
 	SAFE_DELETE( m_pRunHair );
-
-	SAFE_DELETE(m_pBound);
 }
 
 void cPlayer::Update( )
@@ -83,11 +81,7 @@ void cPlayer::Update( )
 
 	SetUpdateState();
 
-	if (m_pBound)
-	{
-		m_pBound->SetWorld(&(D3DXMATRIXA16)m_matWorld);
-		m_pBound->Update();
-	}
+	this->GetCollider()->SetWorld(&m_matWorld);
 
 	KeyControl();
 }
@@ -95,12 +89,8 @@ void cPlayer::Update( )
 void cPlayer::Render( )
 {
 	__super::Render( );
-	SetRenderState();
 
-	if (m_pBound)
-	{
-		m_pBound->Render();
-	}
+	SetRenderState();
 }
 
 void cPlayer::KeyControl()

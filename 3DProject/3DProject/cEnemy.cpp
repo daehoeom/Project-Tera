@@ -8,6 +8,7 @@ cEnemy::cEnemy()
 	, m_nMaxHp(1000)
 	, m_nCurrentHp(1000)
 {
+	D3DXMatrixIdentity(&m_matWorld);
 }
 
 
@@ -17,9 +18,10 @@ cEnemy::~cEnemy()
 
 void cEnemy::Update()
 {
+	__super::Update();
 }
 
 void cEnemy::Render()
 {
-
+	__super::Render();
 }

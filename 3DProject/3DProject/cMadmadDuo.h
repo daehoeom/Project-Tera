@@ -6,6 +6,7 @@ class cBody;
 class cMadmadDuo :
 	public cEnemy
 {
+	int n = 0;
 public:
 	cMadmadDuo();
 	virtual ~cMadmadDuo();

@@ -56,11 +56,15 @@ void cNpc::Setup(char* szFolder, char* szFile)
 	m_pFace->SetNeckTM(&m_pBody->GetNeckTM());
 	m_pFace->Setup(szFolder, (char*)face.c_str());
 
-	m_pBound = new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f);
+	//m_pBound = ;
+
+	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
 }
 
 void cNpc::Update()
 {
+	__super::Update(); 
+
 	if (m_pBody)
 	{
 		m_pBody->Update();
@@ -83,20 +87,27 @@ void cNpc::Update()
 		m_pFace->Update();
 	}
 
-	if (m_pBound)
-	{
-		m_pBound->Update();
+	//if (m_pBound)
+	//{
+	//	m_pBound->Update();
 
-		//바운딩 박스 올림
-		D3DXMATRIXA16 matLocal;
-		D3DXMatrixTranslation(&matLocal, 0, 20, 0);
-		matLocal = matLocal * m_matWorld;
-		m_pBound->SetWorld(&matLocal);
-	}
+	//	//바운딩 박스 올림
+	//	D3DXMATRIXA16 matLocal;
+	//	D3DXMatrixTranslation(&matLocal, 0, 20, 0);
+	//	matLocal = matLocal * m_matWorld;
+	//	m_pBound->SetWorld(&matLocal);
+	//}
+
+	D3DXMATRIXA16 matLocal;
+	D3DXMatrixTranslation(&matLocal, 0, 20, 0);
+	matLocal = matLocal * m_matWorld;
+	this->GetCollider()->SetWorld(&matLocal);
 }
 
 void cNpc::Render()
 {
+	__super::Render();
+
 	if (m_pBody)
 	{
 		m_pBody->Render();
@@ -112,9 +123,5 @@ void cNpc::Render()
 		m_pFace->Render();
 	}
 
-	if (m_pBound)
-	{
-		m_pBound->Render();
-	}
-
+	//this->GetCollider()->Render();
 }

@@ -10,6 +10,9 @@ cBody::cBody()
 	, m_pMesh(nullptr)
 	, m_pBuffer(nullptr)
 	, m_ft(0.1f)
+	, m_bIsBlend(false)
+	, m_fBlendTime(0.2f)
+	, m_fPassedBlendTime(0.f)
 {
 	D3DXMatrixIdentity(&m_matNeckTM);
 	D3DXMatrixIdentity(&m_matRootTM);
@@ -52,6 +55,26 @@ void cBody::Setup(char* FolderName, char* FileName)
 
 void cBody::Update()
 {
+	if (m_bIsBlend)
+	{
+		m_fPassedBlendTime += g_pTimeManager->GetDeltaTime();
+
+		if (m_fPassedBlendTime > m_fBlendTime)
+		{
+			m_bIsBlend = false;
+			m_pAnimControl->SetTrackWeight(0, 1.f);
+			m_pAnimControl->SetTrackEnable(1, false);
+			m_fPassedBlendTime = 0.f;
+		}
+
+		else
+		{
+			float fWeight = m_fPassedBlendTime / m_fBlendTime;
+			m_pAnimControl->SetTrackWeight(0, fWeight);
+			m_pAnimControl->SetTrackWeight(1, 1.f - fWeight);
+		}
+	}
+
 	m_pAnimControl->AdvanceTime(fAniTime, NULL);
 	GetNeckWorld(m_pFrameRoot, nullptr);
 
@@ -249,4 +272,27 @@ void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
 LPD3DXFRAME& cBody::GetFrameRoot()
 {
 	return this->m_pFrameRoot;
+}
+
+void cBody::SetAnimationIndex(int nIndex)
+{
+	if (m_pAnimControl == NULL)
+		return;
+
+	LPD3DXANIMATIONSET pAnimSet = NULL;						//새로운 애니메이션을 저장할 애니메이션 셋 포인터
+
+	D3DXTRACK_DESC desc;
+	m_pAnimControl->GetTrackDesc(0, &desc);
+
+	m_pAnimControl->GetTrackAnimationSet(0, &pAnimSet);
+	m_pAnimControl->SetTrackAnimationSet(1, pAnimSet);
+
+	m_pAnimControl->GetAnimationSet(nIndex, &pAnimSet);
+	m_pAnimControl->SetTrackAnimationSet(0, pAnimSet);
+	m_pAnimControl->SetTrackPosition(0, 0.f);
+	m_pAnimControl->SetTrackDesc(1, &desc);
+
+	m_bIsBlend = true;
+
+	SAFE_RELEASE(pAnimSet);
 }
