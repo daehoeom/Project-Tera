@@ -16,6 +16,7 @@ public:
 
 public:
 	void Update( );
+	void Render( );
 
 	void AddObject( cGameObject* pObject );
 	void EraseObject( const std::string& key );
