@@ -7,18 +7,23 @@
 #include "cGameObjectManager.h"
 #include "cObjLoader.h"
 #include "cGroup.h"
+#include "cNpc.h"
 
 
 cMainGame::cMainGame( )
 	: m_pGrid(nullptr)
 	, m_pLoader(nullptr)
 	, m_player(nullptr)
-
+	, m_pSeller(nullptr)
 {
 	SetupManagers();
 
 	m_pGrid = new cGrid;
 	m_player = new cPlayer;
+
+	m_pSeller = new cNpc;
+	D3DXMATRIXA16 matW;
+	m_pSeller->Setup(nullptr, "./CH/NpcCastanic", "NpcCastanic");
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
@@ -31,6 +36,8 @@ cMainGame::~cMainGame()
 	SAFE_DELETE( m_pGrid );
 	SAFE_DELETE( m_player );
 	SAFE_DELETE( m_pLoader );
+	SAFE_DELETE( m_pSeller );
+
 
 	for each(auto p in m_vecGroup)
 	{
@@ -50,6 +57,11 @@ void cMainGame::Update()
 		m_player->Update();
 	}
 
+	if (m_pSeller)
+	{
+		m_pSeller->Update();
+	}
+
 	g_pTimeManager->Update();
 }
 
@@ -63,6 +75,7 @@ void cMainGame::Render()
 
 	g_pD3DDevice->BeginScene();
 
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	/*for each(auto p in m_vecGroup)
 	{
 		p->Render();
@@ -76,6 +89,11 @@ void cMainGame::Render()
 	if (m_player)
 	{
 		m_player->Render();
+	}
+
+	if (m_pSeller)
+	{
+		m_pSeller->Render();
 	}
 
 	g_pD3DDevice->EndScene();

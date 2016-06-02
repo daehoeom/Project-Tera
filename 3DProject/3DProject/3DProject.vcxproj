@@ -91,6 +91,7 @@
     <ClInclude Include="cCollisionManager.h" />
     <ClInclude Include="cCollisionObject.h" />
     <ClInclude Include="cDeviceManager.h" />
+    <ClInclude Include="cEnemy.h" />
     <ClInclude Include="cFace.h" />
     <ClInclude Include="cFrustumCulling.h" />
     <ClInclude Include="cFSM.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="cKeyManager.h" />
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="cNpc.h" />
     <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
@@ -130,6 +132,7 @@
     <ClCompile Include="cCollisionManager.cpp" />
     <ClCompile Include="cCollisionObject.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
+    <ClCompile Include="cEnemy.cpp" />
     <ClCompile Include="cFace.cpp" />
     <ClCompile Include="cFrustumCulling.cpp" />
     <ClCompile Include="cFSM.cpp" />
@@ -139,6 +142,7 @@
     <ClCompile Include="cKeyManager.cpp" />
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="cNpc.cpp" />
     <ClCompile Include="cObject.cpp" />
     <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjLoader.cpp" />

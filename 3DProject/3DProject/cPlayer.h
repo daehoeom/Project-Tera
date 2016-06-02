@@ -4,6 +4,7 @@
 class cBody;
 class cHair;
 class cFace;
+class cBoundingSphere;
 
 class cPlayer : 
 	public cCollisionObject
@@ -37,4 +38,7 @@ private:
 	D3DXVECTOR3	m_vDirection;
 
 	float		m_fSpeed;
+	float		m_fAngle;
+
+	cBoundingSphere*	m_pBound;
 };

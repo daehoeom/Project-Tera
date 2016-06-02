@@ -1,16 +1,17 @@
 #include "stdafx.h"
 #include "cPlayer.h"
-#include "cBoundingBox.h"
 #include "cPlayerState.h"
 #include "cBody.h"
 #include "cHair.h"
 #include "cFace.h"
+#include "cBoundingSphere.h"
 
 cPlayer::cPlayer( ) :
 	cCollisionObject( "Player" )
 	, m_vPosition(D3DXVECTOR3(0, 0, 0))
 	, m_vDirection(D3DXVECTOR3(0, 0, 1))
-	, m_fSpeed(0.1f)
+	, m_fSpeed(1.f)
+	, m_fAngle(0.f)
 {
 	//대기상태
 	m_pIdleBody = new cBody;
@@ -51,6 +52,12 @@ cPlayer::cPlayer( ) :
 	D3DXMatrixIdentity(&m_matWorld);
 
 	this->TranslateState(eFSMState::kIdle);
+
+	m_pBound = new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f);
+
+	D3DXMATRIXA16 matLocal;
+	D3DXMatrixTranslation(&matLocal, 0, 15, 0);
+	m_pBound->SetLocal(&matLocal);
 }
 
 cPlayer::~cPlayer( )
@@ -66,6 +73,8 @@ cPlayer::~cPlayer( )
 	SAFE_DELETE( m_pRunBody );
 	SAFE_DELETE( m_pRunFace );
 	SAFE_DELETE( m_pRunHair );
+
+	SAFE_DELETE(m_pBound);
 }
 
 void cPlayer::Update( )
@@ -73,35 +82,69 @@ void cPlayer::Update( )
 	__super::Update( );
 
 	SetUpdateState();
+
+	if (m_pBound)
+	{
+		m_pBound->SetWorld(&(D3DXMATRIXA16)m_matWorld);
+		m_pBound->Update();
+	}
+
+	KeyControl();
 }
 
 void cPlayer::Render( )
 {
 	__super::Render( );
 	SetRenderState();
+
+	if (m_pBound)
+	{
+		m_pBound->Render();
+	}
 }
 
 void cPlayer::KeyControl()
 {
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-
-	}
-
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-
-	}
+	D3DXMATRIXA16 matR, matT;
 
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
-
+		m_fAngle -= 0.1f;
 	}
 
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
-
+		m_fAngle += 0.1f;
 	}
+
+	m_vDirection = D3DXVECTOR3(0, 0, -1);
+	D3DXMatrixRotationY(&matR, m_fAngle);
+	D3DXVec3TransformNormal(&m_vDirection, &m_vDirection, &matR);
+
+	if (KEYMANAGER->isStayKeyDown('W'))
+	{
+		this->TranslateState(eFSMState::kMove);
+		m_vPosition = m_vPosition + m_vDirection * m_fSpeed;
+	}
+
+	if (KEYMANAGER->isOnceKeyUp('W'))
+	{
+		this->TranslateState(eFSMState::kIdle);
+	}
+
+	if (KEYMANAGER->isStayKeyDown('S'))
+	{
+		this->TranslateState(eFSMState::kMove);
+		m_vPosition = m_vPosition - m_vDirection * m_fSpeed;
+	}
+
+	if (KEYMANAGER->isOnceKeyUp('S'))
+	{
+		this->TranslateState(eFSMState::kIdle);
+	}
+
+	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	m_matWorld = matR * matT;
 }
 
 void cPlayer::SetUpdateState( )

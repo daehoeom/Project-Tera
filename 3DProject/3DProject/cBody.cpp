@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "cBody.h"
 #include "cAllocateHierarchy.h"
+#include "cMtlTex.h"
+
 
 cBody::cBody()
 	: m_pAlloc(nullptr)
@@ -47,20 +49,27 @@ void cBody::Setup(char* FolderName, char* FileName)
 	D3DXMATRIX matW;
 	D3DXMatrixIdentity(&matW);
 }
+
 void cBody::Update()
 {
 	m_pAnimControl->AdvanceTime(0.0075f, NULL);
 	GetNeckWorld(m_pFrameRoot, nullptr);
+
+	//머리와 목 로컬TM에 월드 매트릭스 곱한다.
+	m_matHairTM = m_matHairTM * m_matWorld;
+	m_matNeckTM = m_matNeckTM * m_matWorld;
+	
 	UpdateSkinnedMesh(m_pFrameRoot);
 }
 void cBody::Render()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	g_pD3DDevice->LightEnable(0, true);
-	
+	//g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	//D3DXMatrixIdentity(&m_pFrame->TransformationMatrix);
 	ST_BONE* pBone = (ST_BONE*)m_pFrameRoot;
-
-	RecursiveFrameRender(pBone, &m_matWorld);
+	//D3DXMatrixScaling(&pBone->matWorldTM, 0.3f, 0.3f, 0.3f);//전체 모델의 크기조절
+	RecursiveFrameRender(pBone, &pBone->CombinedTransformationMatrix);
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	g_pD3DDevice->SetTexture(0, nullptr);
 }
@@ -73,8 +82,14 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 	matW = pFrame->TransformationMatrix * (*pParentWorldTM);
 
 	pBone->CombinedTransformationMatrix = matW;
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &pBone->CombinedTransformationMatrix);
 
+	D3DXMATRIXA16 matWorld;
+
+	matWorld = pBone->CombinedTransformationMatrix * m_matWorld;
+
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+	//m_pMesh->DrawSubset(0);//렌더
 	if (pBone->pMeshContainer)
 	{
 		ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
@@ -86,9 +101,11 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 			g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 			pBoneMesh->MeshData.pMesh->DrawSubset(i);
 			g_pD3DDevice->SetTexture(0, NULL);
+
+			//월드변환 원래대로
+			g_pD3DDevice->SetTransform(D3DTS_WORLD, &pBone->CombinedTransformationMatrix);
 		}
 	}
-
 	//자식
 	if (pFrame->pFrameFirstChild)
 	{
@@ -168,6 +185,7 @@ void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 
 	if (pBoneMesh)
 	{
+		pBoneMesh->matSphereW = pBone->CombinedTransformationMatrix;
 		DWORD nNumBones = pBoneMesh->pSkinInfo->GetNumBones();
 		for (size_t i = 0; i < nNumBones; ++i)
 		{
@@ -176,14 +194,12 @@ void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 
 		BYTE* src = NULL;
 		BYTE* dest = NULL;
-		//D3DXVECTOR3* dest = NULL;
 		pBoneMesh->pOrigMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&src);
 		pBoneMesh->MeshData.pMesh->LockVertexBuffer(0, (void**)&dest);
 
 		//MeshData.pMesh을 업데이트 시켜준다.
 		pBoneMesh->pSkinInfo->UpdateSkinnedMesh(
 			pBoneMesh->pCurrentBoneMatrices, NULL, src, dest);
-
 	}
 	if (pBone->pFrameSibling)
 	{
