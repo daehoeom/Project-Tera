@@ -22,6 +22,11 @@ void cMadmadDuo::Update()
 		m_pBody->Update();
 		m_pBody->SetWorld(&this->GetWorld( ));
 	}
+
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		m_pBody->SetAnimationIndex(n++);
+	}
 }
 
 void cMadmadDuo::Render()

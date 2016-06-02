@@ -21,7 +21,7 @@ void cCollisionManager::Update( )
 	for ( auto& elemOp1 : m_collisionMap )
 	{
 		// elemOp1 Has no collider?
-		if ( !elemOp1.second->GetCollider( ))
+		if ( !elemOp1.second->GetColliderRepo( ))
 		{
 		}
 		

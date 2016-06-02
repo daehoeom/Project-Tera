@@ -8,8 +8,8 @@ cBoundingSphere::cBoundingSphere( D3DXVECTOR3 Pos, float radius ) :
 	,m_vPosition(0, 0, 0)
 {
 	D3DXCreateSphere( g_pD3DDevice, radius, 16, 16, &sphereMesh, NULL );
-	D3DXMatrixIdentity(&m_matLocalTM);
-	D3DXMatrixIdentity(&m_matWorldTM);
+	D3DXMatrixIdentity(&m_matLocal);
+	D3DXMatrixIdentity(&m_matWorld);
 }
 
 cBoundingSphere::~cBoundingSphere()
@@ -19,8 +19,8 @@ cBoundingSphere::~cBoundingSphere()
 
 void cBoundingSphere::Update()
 {
-	m_matWorldTM = m_matLocalTM * m_matWorldTM;
-	m_vPosition = D3DXVECTOR3(m_matWorldTM._41, m_matWorldTM._42, m_matWorldTM._43);
+	m_matWorld = m_matLocal * m_matWorld;
+	m_vPosition = D3DXVECTOR3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 }
 
 void cBoundingSphere::Render()
@@ -28,7 +28,8 @@ void cBoundingSphere::Render()
 	this->PreRender( );
 	
 	//월드매트릭스 갱신 안되서;; 넣음
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorldTM);
+	m_matWorld = m_matWorld * m_matLocal;
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
 	g_pD3DDevice->SetTexture(0, nullptr);
 	sphereMesh->DrawSubset(0);
 

@@ -12,10 +12,11 @@ public:
 	void Update();
 	void Render();
 	void RecursiveFrameRender(D3DXFRAME* pParent, D3DXMATRIX* pParentWorldTM);
-	void cBody::SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent);
-	void cBody::SetupBoneMatrixPtrs(D3DXFRAME* pFrame);
-	void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame);
-	void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM);
+	void SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent);
+	void SetupBoneMatrixPtrs(D3DXFRAME* pFrame);
+	void UpdateSkinnedMesh(D3DXFRAME* pFrame);
+	void GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM);
+	void SetAnimationIndex(int nIndex);
 	LPD3DXFRAME& cBody::GetFrameRoot();
 
 	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
@@ -49,5 +50,10 @@ private:
 	D3DXMATRIX					m_matHairTM;
 	D3DXMATRIX					m_matRootTM;
 	D3DXMATRIX					m_matWorld;
+
+	//º¸°£
+	bool						m_bIsBlend;
+	float						m_fPassedBlendTime;
+	float						m_fBlendTime;
 };
 

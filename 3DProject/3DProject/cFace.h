@@ -4,6 +4,26 @@ class cAllocateHierarchy;
 
 class cFace
 {
+public:
+	cFace();
+	~cFace();
+
+	void Setup(char* szFolder, char* szFile);
+	void Update();
+	void Render();
+	void RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM);
+	void SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent);
+	void SetupBoneMatrixPtrs(D3DXFRAME* pFrame);
+	void UpdateSkinnedMesh(D3DXFRAME* pFrame);
+	void SetAnimationIndex(int nIndex);
+
+	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
+	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }
+
+	void SetHairTM(D3DXMATRIX* hair) { m_matHairTM = *hair; }
+	D3DXMATRIX GetHairTM() { return m_matHairTM; }
+
+
 private:
 	//X파일
 	cAllocateHierarchy*				m_pAlloc;
@@ -21,22 +41,10 @@ private:
 
 	D3DXMATRIX						m_matNeckTM;
 	D3DXMATRIX						m_matHairTM;
-public:
-	cFace();
-	~cFace();
 
-	void Setup(char* szFolder, char* szFile);
-	void Update();
-	void Render();
-	void RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM);
-	void SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent);
-	void SetupBoneMatrixPtrs(D3DXFRAME* pFrame);
-	void UpdateSkinnedMesh(D3DXFRAME* pFrame);
-
-	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
-	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }
-
-	void SetHairTM(D3DXMATRIX* hair) { m_matHairTM = *hair; }
-	D3DXMATRIX GetHairTM() { return m_matHairTM; }
+	//보간
+	bool						m_bIsBlend;
+	float						m_fPassedBlendTime;
+	float						m_fBlendTime;
 };
 

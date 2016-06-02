@@ -6,6 +6,12 @@ cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 {
 	m_pBody = new cBody;
 	m_pBody->Setup("./CH/ArgoniteFemaleMagician", "ArgoniteFemaleMagician.X");
+
+	D3DXMATRIXA16 matT;
+	D3DXMatrixTranslation(&matT, 0, 10, 0);
+	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
+	this->GetCollider()->SetLocal(&matT);
+	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
 }
 
 
@@ -16,6 +22,10 @@ cArgoniteFemaleMagician::~cArgoniteFemaleMagician()
 
 void cArgoniteFemaleMagician::Update()
 {
+	__super::Update();
+
+	this->GetCollider()->SetWorld(&m_matWorld);
+	
 	if (m_pBody)
 	{
 		m_pBody->Update();
@@ -25,6 +35,8 @@ void cArgoniteFemaleMagician::Update()
 
 void cArgoniteFemaleMagician::Render()
 {
+	__super::Render();
+
 	if (m_pBody)
 	{
 		m_pBody->Render();

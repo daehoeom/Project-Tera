@@ -15,8 +15,8 @@ public:
 	virtual void OnCollisionStay( cCollisionObject* rhs );
 
 	void SetCollider( ICollider* collider );
-	const std::unique_ptr<ICollider>& GetCollider( );
+	std::vector<ICollider*>& GetColliderRepo();
 
 private:
-	std::unique_ptr<ICollider> m_collider;
+	std::vector<ICollider*> m_collider;
 };

@@ -8,7 +8,7 @@
 #include "cObjLoader.h"
 #include "cGroup.h"
 #include "cNpcManager.h"
-#include "cPixie.h"
+#include "cArgoniteFemaleMagician.h"
 
 cMainGame::cMainGame( )
 	: m_pGrid(nullptr)
@@ -20,11 +20,12 @@ cMainGame::cMainGame( )
 	SetupManagers();
 
 	m_pGrid = new cGrid;
-	m_player = new cPlayer;
 
-	m_pNpc = new cNpcManager;
+	//m_player = new cPlayer;
 
-	m_pMonster = new cPixie;
+	//m_pNpc = new cNpcManager;
+
+	m_pMonster = new cArgoniteFemaleMagician;
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
@@ -102,10 +103,10 @@ void cMainGame::Render()
 	}
 
 	//Npc ∑ª¥ı
-	/*if (m_pNpc)
+	if (m_pNpc)
 	{
 		m_pNpc->Render();
-	}*/
+	}
 
 	//∏ÛΩ∫≈Õ ∑ª¥ı
 	if (m_pMonster)
