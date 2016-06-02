@@ -25,4 +25,5 @@ public:
 	STDMETHOD(DestroyMeshContainer)(THIS_ LPD3DXMESHCONTAINER pMeshContainerToFree) override;
 
 	void SetFolder(std::string folder) { sFolderName = folder; }
+	void cAllocateHierarchy::CreateCollisionBoundingSphere(ST_BONE_MESH* pBoneMesh, CONST D3DXMESHDATA *pMeshData);
 };

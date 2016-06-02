@@ -4,32 +4,44 @@
 #include "cPlayer.h"
 #include "cBoundingBox.h"
 #include "cCollisionManager.h"
-#include "cObjectManager.h"
+#include "cGameObjectManager.h"
+#include "cObjLoader.h"
+#include "cGroup.h"
+#include "cNpc.h"
 
 
 cMainGame::cMainGame( )
-	: m_pGrid(NULL)
-
+	: m_pGrid(nullptr)
+	, m_pLoader(nullptr)
+	, m_player(nullptr)
+	, m_pSeller(nullptr)
 {
+	SetupManagers();
+
 	m_pGrid = new cGrid;
 	m_player = new cPlayer;
 
-	/*for ( int i = 0; i < 50; i++ )
-	{
-		cB* box( new cB );
-		box->SetPosition( {(float)(rand()%100), 0.f, (float)(rand()%100) });
-		b.push_back( box );
-	}*/
+	m_pSeller = new cNpc;
+	D3DXMATRIXA16 matW;
+	m_pSeller->Setup(nullptr, "./CH/NpcCastanic", "NpcCastanic");
+
+	/*D3DXMATRIXA16 mat;
+	D3DXMatrixIdentity(&mat);
+	m_pLoader = new cObjLoader;
+	m_pLoader->Load("./Map/Height.obj", m_vecGroup, &mat);*/
 }
 
 cMainGame::~cMainGame()
 {
 	SAFE_DELETE( m_pGrid );
 	SAFE_DELETE( m_player );
+	SAFE_DELETE( m_pLoader );
+	SAFE_DELETE( m_pSeller );
 
-	for ( auto& elem : b )
+
+	for each(auto p in m_vecGroup)
 	{
-		SAFE_DELETE( elem );
+		SAFE_RELEASE(p);
 	}
 
 	g_pTextureManager->Destroy();
@@ -40,13 +52,14 @@ void cMainGame::Update()
 	cCamera::Get()->Update(NULL);
 	cCollisionManager::Get( )->Update( );
 
-	/*for ( auto& elem : b )
-		elem->Update( );*/
-
-
 	if (m_player)
 	{
 		m_player->Update();
+	}
+
+	if (m_pSeller)
+	{
+		m_pSeller->Update();
 	}
 
 	g_pTimeManager->Update();
@@ -62,9 +75,11 @@ void cMainGame::Render()
 
 	g_pD3DDevice->BeginScene();
 
-	
-	/*for ( auto& elem : b )
-		elem->Render( );*/
+	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	/*for each(auto p in m_vecGroup)
+	{
+		p->Render();
+	}*/
 
 	if (m_pGrid)
 	{
@@ -74,6 +89,11 @@ void cMainGame::Render()
 	if (m_player)
 	{
 		m_player->Render();
+	}
+
+	if (m_pSeller)
+	{
+		m_pSeller->Render();
 	}
 
 	g_pD3DDevice->EndScene();
@@ -95,6 +115,6 @@ void cMainGame::SetupManagers( )
 	cRandomUtil::Setup();
 	cTimeManager::Get( );
 	cKeyManager::Get( );
-	cObjectManager::Get( );
+	cGameObjectManager::Get( );
 	cCollisionManager::Get( );
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "cGameObject.h"
 
-#include "cObjectManager.h"
+#include "cGameObjectManager.h"
 #include "ICollider.h"
 
 
@@ -13,12 +13,12 @@ cGameObject::cGameObject( const std::string& objName ) :
 	m_scale( 1.f, 1.f, 1.f )
 {
 	D3DXMatrixIdentity( &m_matWorld );
-	cObjectManager::Get()->AddObject( this );
+	cGameObjectManager::Get()->AddObject(this);
 }
 
 cGameObject::~cGameObject( )
 {
-	cObjectManager::Get()->EraseObject( this->GetName());
+	cGameObjectManager::Get()->EraseObject(this->GetName());
 }
 
 void cGameObject::Update( )

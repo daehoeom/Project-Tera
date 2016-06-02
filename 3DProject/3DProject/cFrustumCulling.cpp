@@ -66,7 +66,7 @@ bool cFrustumCulling::IsInFrustum(cBoundingSphere* bs)
 	for (size_t i = 0; i < frustumPlaneArray.size(); ++i)
 	{
 		if ( D3DXPlaneDotCoord(&frustumPlaneArray[i], 
-				&bs->GetOwner( )->GetPosition()) > bs->GetRadius())
+				&bs->GetPosition()) > bs->GetRadius())
 		{
 			return false;
 		}

@@ -46,7 +46,6 @@ void cCollisionObject::OnCollisionStay(
 void cCollisionObject::SetCollider( ICollider* collider )
 {
 	m_collider.reset( collider );
-	collider->SetOwner( this );
 }
 
 const std::unique_ptr<ICollider>& cCollisionObject::GetCollider( )

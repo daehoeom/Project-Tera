@@ -91,6 +91,7 @@
     <ClInclude Include="cCollisionManager.h" />
     <ClInclude Include="cCollisionObject.h" />
     <ClInclude Include="cDeviceManager.h" />
+    <ClInclude Include="cEnemy.h" />
     <ClInclude Include="cFace.h" />
     <ClInclude Include="cFrustumCulling.h" />
     <ClInclude Include="cFSM.h" />
@@ -100,6 +101,9 @@
     <ClInclude Include="cKeyManager.h" />
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cMtlTex.h" />
+    <ClInclude Include="cNpc.h" />
+    <ClInclude Include="cObject.h" />
+    <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
     <ClInclude Include="cParticle_Base.h" />
     <ClInclude Include="cParticle_Firework.h" />
@@ -111,13 +115,11 @@
     <ClInclude Include="cTimeManager.h" />
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="ICollider.h" />
-    <ClInclude Include="cObjectManager.h" />
+    <ClInclude Include="cGameObjectManager.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="shared_comptr.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="unique_comptr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DProject.cpp" />
@@ -130,6 +132,7 @@
     <ClCompile Include="cCollisionManager.cpp" />
     <ClCompile Include="cCollisionObject.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
+    <ClCompile Include="cEnemy.cpp" />
     <ClCompile Include="cFace.cpp" />
     <ClCompile Include="cFrustumCulling.cpp" />
     <ClCompile Include="cFSM.cpp" />
@@ -139,6 +142,9 @@
     <ClCompile Include="cKeyManager.cpp" />
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
+    <ClCompile Include="cNpc.cpp" />
+    <ClCompile Include="cObject.cpp" />
+    <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjLoader.cpp" />
     <ClCompile Include="cParticle_Base.cpp" />
     <ClCompile Include="cParticle_Firework.cpp" />
@@ -150,7 +156,7 @@
     <ClCompile Include="cTimeManager.cpp" />
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="ICollider.cpp" />
-    <ClCompile Include="cObjectManager.cpp" />
+    <ClCompile Include="cGameObjectManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
