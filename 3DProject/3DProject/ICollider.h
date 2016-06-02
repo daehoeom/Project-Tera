@@ -15,6 +15,7 @@ public:
 };
 
 class cGameObject;
+
 class ICollider
 {
 public:
@@ -25,15 +26,20 @@ public:
 	virtual void PreRender( );
 	virtual void Render( ) = 0; // Debug renderer
 	virtual void PostRender( );
-
+	virtual void SetWorld(D3DXMATRIXA16* matWorld) { m_matWorld = *matWorld; }
+	virtual D3DXMATRIXA16 GetWorld() { return m_matWorld; }
+	virtual void SetLocal(D3DXMATRIXA16* matLocal) { m_matLocal = *matLocal; }
+	virtual D3DXMATRIXA16 GetLocal() { return m_matLocal; }
 public:
 	void SetDebugRender( bool isDebugRender );
 	bool IsDebugRender( );
 
 	virtual eColliderType GetColliderType( ) const = 0;
 
-private:
+protected:
 	bool m_isDebugRender;
+	D3DXMATRIXA16 m_matWorld;
+	D3DXMATRIXA16 m_matLocal;
 };
 
 inline void ICollider::SetDebugRender( bool isDebugRender )

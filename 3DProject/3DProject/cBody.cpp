@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "cBody.h"
 #include "cAllocateHierarchy.h"
+#include "cMtlTex.h"
+
 
 cBody::cBody()
 	: m_pAlloc(nullptr)
@@ -8,6 +10,9 @@ cBody::cBody()
 	, m_pMesh(nullptr)
 	, m_pBuffer(nullptr)
 	, m_ft(0.1f)
+	, m_bIsBlend(false)
+	, m_fBlendTime(0.2f)
+	, m_fPassedBlendTime(0.f)
 {
 	D3DXMatrixIdentity(&m_matNeckTM);
 	D3DXMatrixIdentity(&m_matRootTM);
@@ -47,20 +52,47 @@ void cBody::Setup(char* FolderName, char* FileName)
 	D3DXMATRIX matW;
 	D3DXMatrixIdentity(&matW);
 }
+
 void cBody::Update()
 {
-	m_pAnimControl->AdvanceTime(0.0075f, NULL);
+	if (m_bIsBlend)
+	{
+		m_fPassedBlendTime += g_pTimeManager->GetDeltaTime();
+
+		if (m_fPassedBlendTime > m_fBlendTime)
+		{
+			m_bIsBlend = false;
+			m_pAnimControl->SetTrackWeight(0, 1.f);
+			m_pAnimControl->SetTrackEnable(1, false);
+			m_fPassedBlendTime = 0.f;
+		}
+
+		else
+		{
+			float fWeight = m_fPassedBlendTime / m_fBlendTime;
+			m_pAnimControl->SetTrackWeight(0, fWeight);
+			m_pAnimControl->SetTrackWeight(1, 1.f - fWeight);
+		}
+	}
+
+	m_pAnimControl->AdvanceTime(fAniTime, NULL);
 	GetNeckWorld(m_pFrameRoot, nullptr);
+
+	//머리와 목 로컬TM에 월드 매트릭스 곱한다.
+	m_matHairTM = m_matHairTM * m_matWorld;
+	m_matNeckTM = m_matNeckTM * m_matWorld;
+	
 	UpdateSkinnedMesh(m_pFrameRoot);
 }
 void cBody::Render()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	g_pD3DDevice->LightEnable(0, true);
-	
+	//g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	//D3DXMatrixIdentity(&m_pFrame->TransformationMatrix);
 	ST_BONE* pBone = (ST_BONE*)m_pFrameRoot;
-
-	RecursiveFrameRender(pBone, &m_matWorld);
+	//D3DXMatrixScaling(&pBone->matWorldTM, 0.3f, 0.3f, 0.3f);//전체 모델의 크기조절
+	RecursiveFrameRender(pBone, &pBone->CombinedTransformationMatrix);
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	g_pD3DDevice->SetTexture(0, nullptr);
 }
@@ -73,8 +105,14 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 	matW = pFrame->TransformationMatrix * (*pParentWorldTM);
 
 	pBone->CombinedTransformationMatrix = matW;
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &pBone->CombinedTransformationMatrix);
 
+	D3DXMATRIXA16 matWorld;
+
+	matWorld = pBone->CombinedTransformationMatrix * m_matWorld;
+
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
+
+	//m_pMesh->DrawSubset(0);//렌더
 	if (pBone->pMeshContainer)
 	{
 		ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
@@ -86,9 +124,11 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 			g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 			pBoneMesh->MeshData.pMesh->DrawSubset(i);
 			g_pD3DDevice->SetTexture(0, NULL);
+
+			//월드변환 원래대로
+			g_pD3DDevice->SetTransform(D3DTS_WORLD, &pBone->CombinedTransformationMatrix);
 		}
 	}
-
 	//자식
 	if (pFrame->pFrameFirstChild)
 	{
@@ -168,6 +208,7 @@ void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 
 	if (pBoneMesh)
 	{
+		pBoneMesh->matSphereW = pBone->CombinedTransformationMatrix;
 		DWORD nNumBones = pBoneMesh->pSkinInfo->GetNumBones();
 		for (size_t i = 0; i < nNumBones; ++i)
 		{
@@ -176,14 +217,12 @@ void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 
 		BYTE* src = NULL;
 		BYTE* dest = NULL;
-		//D3DXVECTOR3* dest = NULL;
 		pBoneMesh->pOrigMesh->LockVertexBuffer(D3DLOCK_READONLY, (void**)&src);
 		pBoneMesh->MeshData.pMesh->LockVertexBuffer(0, (void**)&dest);
 
 		//MeshData.pMesh을 업데이트 시켜준다.
 		pBoneMesh->pSkinInfo->UpdateSkinnedMesh(
 			pBoneMesh->pCurrentBoneMatrices, NULL, src, dest);
-
 	}
 	if (pBone->pFrameSibling)
 	{
@@ -233,4 +272,27 @@ void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
 LPD3DXFRAME& cBody::GetFrameRoot()
 {
 	return this->m_pFrameRoot;
+}
+
+void cBody::SetAnimationIndex(int nIndex)
+{
+	if (m_pAnimControl == NULL)
+		return;
+
+	LPD3DXANIMATIONSET pAnimSet = NULL;						//새로운 애니메이션을 저장할 애니메이션 셋 포인터
+
+	D3DXTRACK_DESC desc;
+	m_pAnimControl->GetTrackDesc(0, &desc);
+
+	m_pAnimControl->GetTrackAnimationSet(0, &pAnimSet);
+	m_pAnimControl->SetTrackAnimationSet(1, pAnimSet);
+
+	m_pAnimControl->GetAnimationSet(nIndex, &pAnimSet);
+	m_pAnimControl->SetTrackAnimationSet(0, pAnimSet);
+	m_pAnimControl->SetTrackPosition(0, 0.f);
+	m_pAnimControl->SetTrackDesc(1, &desc);
+
+	m_bIsBlend = true;
+
+	SAFE_RELEASE(pAnimSet);
 }

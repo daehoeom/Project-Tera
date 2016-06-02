@@ -16,15 +16,21 @@ cCollisionObject::cCollisionObject(
 cCollisionObject::~cCollisionObject( )
 {
 	cCollisionManager::Get( )->EraseObject( this );
+
+	for (ICollider* elem : m_collider)
+	{
+		SAFE_DELETE(elem);
+	}
 }
 
 void cCollisionObject::Update( )
 {
 	__super::Update( );
 
-	if ( this->GetCollider( ) )
+
+	for (auto colliderElem : m_collider)
 	{
-		this->GetCollider( )->Update( );
+		colliderElem->Update();
 	}
 }
 
@@ -32,9 +38,9 @@ void cCollisionObject::Render( )
 {
 	__super::Render( );
 
-	if ( this->GetCollider( ) )
+	for (auto colliderElem : m_collider)
 	{
-		this->GetCollider( )->Render( );
+		colliderElem->Render();
 	}
 }
 
@@ -45,10 +51,10 @@ void cCollisionObject::OnCollisionStay(
 
 void cCollisionObject::SetCollider( ICollider* collider )
 {
-	m_collider.reset( collider );
+	m_collider.push_back( collider );
 }
 
-const std::unique_ptr<ICollider>& cCollisionObject::GetCollider( )
+std::vector<ICollider*>& cCollisionObject::GetColliderRepo()
 {
 	return m_collider;
 }

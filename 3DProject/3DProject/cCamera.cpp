@@ -9,7 +9,7 @@ cCamera::cCamera(void)
 	, m_isLButtonDown(false)
 	, m_fRotX(0.0f)
 	, m_fRotY(0.0f)
-	, m_fDist(100)
+	, m_fDist(500)
 {
 	RECT rc;
 	GetClientRect( g_hWnd, &rc );
@@ -76,7 +76,7 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	case WM_MOUSEWHEEL:
-		m_fDist -= GET_WHEEL_DELTA_WPARAM(wParam) / 100.0f;
+		m_fDist -= GET_WHEEL_DELTA_WPARAM(wParam) / 10;
 		break;
 	}
 }
