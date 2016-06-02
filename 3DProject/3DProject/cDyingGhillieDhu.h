@@ -1,7 +1,10 @@
 #pragma once
 
+#include "cEnemy.h"
+
 class cBody;
-class cDyingGhillieDhu
+class cDyingGhillieDhu:
+	public cEnemy
 {
 public:
 	cDyingGhillieDhu();
