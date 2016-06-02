@@ -1,47 +1,95 @@
 #pragma once
 
-
+#ifdef CreateWindow
+#	undef CreateWindow
+#endif
 #ifdef GetClassName
-	#undef GetClassName
+#	undef GetClassName
 #endif
 
-class AbstractWindow
+class AbstractWindow;
+class IWindowDelegate
 {
 public:
-	AbstractWindow( const wchar_t* wndName );
-	virtual ~AbstractWindow( ) = 0;
+	virtual void OnMove( AbstractWindow* sender, int x, int y ) {}
+	virtual void OnSize( AbstractWindow* sender, int width, int height ) {}
+};
 
+class AbstractWindow :
+	public IWindowDelegate
+{
 public:
-	void Setup( );
+	AbstractWindow(
+		const wchar_t* wndName,
+		DWORD exStyle,
+		DWORD normalStyle,
+		const WNDCLASSEXW& wndClass,
+		int x,
+		int y,
+		int width,
+		int height
+	);
+	
+	virtual ~AbstractWindow( ) = 0;
 
 	// Event Handler
 	virtual void OnIdle( ) = 0;
 
 public:
-	// Sets
+	void SetupWindowComponents( );
+	
+	/* 
+		Sets
+	*/
 	void SetOwner( AbstractWindow* owner );
 	void SetPosition(int x, int y );
+	void SetDelegate( IWindowDelegate* wndDelegate );
 	void SetChild( AbstractWindow* child );
 	void Move( int x, int y );
 	
-	// Gets
-	AbstractWindow* GetOwner( );
+	/* 
+		Gets
+	*/
 	void GetSize( _Out_ int * width, _Out_ int * height );
 	void GetPosition( _Out_ int * x, _Out_ int * y );
+	
+	AbstractWindow* GetOwner( );
+	HWND GetWindowHandle( ) const;
+	const std::wstring& GetName( ) const;
+	const std::wstring& GetClassName( ) const;
+	
+protected:
+	virtual LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) = 0;
 	std::vector<AbstractWindow*>& GetChildRepo( );
 
-	const std::wstring& GetClassName( ) const { return m_wndClassName; }
-	const std::wstring& GetName( ) const { return m_wndName; }
-	HWND GetHWND( ) const { return m_myWndHandle; }
-
-protected:
-	virtual HWND SetupWindowComponents( ) = 0;
+private:
+	static LRESULT CALLBACK CallbackMsgProc( HWND, UINT, WPARAM, LPARAM );
+	void CreateWindow(
+		DWORD exStyle, 
+		DWORD normalStyle, 
+		int x, 
+		int y, 
+		int width, 
+		int height
+	);
 
 private:
-	HWND m_myWndHandle;
-	std::wstring m_wndName;
-	std::wstring m_wndClassName;
-	AbstractWindow* m_owner = nullptr;
+	// Window info
+	HWND m_wndHandle;
+	const std::wstring m_wndName;
+	const std::wstring m_wndClassName;
+	const DWORD m_exStyle;
+	const DWORD m_normalStyle;
+	const WNDCLASSEXW m_wndClassEx;
+	const int m_x;
+	const int m_y;
+	const int m_width;
+	const int m_height;
+
+
+	// About hierarchy
+	AbstractWindow* m_owner;
+	IWindowDelegate* m_wndDelegate;
 	std::vector<AbstractWindow*> m_childRepo;
 };
 
@@ -53,7 +101,13 @@ inline void AbstractWindow::SetOwner(
 
 inline void AbstractWindow::SetPosition( int x, int y )
 {
-	SetWindowPos( m_myWndHandle, NULL, x, y, 0, 0, SWP_NOSIZE );
+	SetWindowPos( m_wndHandle, NULL, x, y, 0, 0, SWP_NOSIZE );
+}
+
+inline void AbstractWindow::SetDelegate( 
+	IWindowDelegate* wndDelegate )
+{
+	m_wndDelegate = wndDelegate;
 }
 
 inline void AbstractWindow::SetChild( 
@@ -67,12 +121,20 @@ inline void AbstractWindow::Move( int x, int y )
 	int currX, currY;
 	this->GetPosition( &currX, &currY );
 
-	SetWindowPos( m_myWndHandle, NULL, currX+x, currY+y, 0,0, SWP_NOSIZE );
+	SetWindowPos( m_wndHandle, NULL, currX+x, currY+y, 0,0, SWP_NOSIZE );
 }
 
-class IWindowDelegate
+inline HWND AbstractWindow::GetWindowHandle( ) const
 {
-public:
-	virtual void OnMove( AbstractWindow* sender, int x, int y ) {}
-	virtual void OnSize( AbstractWindow* sender, int width, int height ) {}
-};
+	return m_wndHandle;
+}
+
+inline const std::wstring & AbstractWindow::GetName( ) const
+{
+	return m_wndName;
+}
+
+inline const std::wstring & AbstractWindow::GetClassName( ) const
+{
+	return m_wndClassName;
+}

@@ -21,19 +21,17 @@ int APIENTRY wWinMain(
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_MY3DMAPTOOL));
 
-	std::unique_ptr<MainSurfaceWindow> mainSurfaceWnd( 
-		new MainSurfaceWindow );
-	std::unique_ptr<HierarchyWindow> hierarchyWnd(
-		new HierarchyWindow );
+	std::unique_ptr<MainSurfaceWindow> mainSurfaceWnd( new MainSurfaceWindow );
+	mainSurfaceWnd->SetupWindowComponents( );
 
+	//std::unique_ptr<HierarchyWindow> hierarchyWnd(
+	//	new HierarchyWindow );
 
-	mainSurfaceWnd->Setup( );
-	mainSurfaceWnd->SetChild( hierarchyWnd.get() );
+	//mainSurfaceWnd->SetChild( hierarchyWnd.get() );
 
-	hierarchyWnd->SetOwner( mainSurfaceWnd.get() );
-	hierarchyWnd->SetDelegate( mainSurfaceWnd.get( ) );
-	hierarchyWnd->Setup( );
-
+	//hierarchyWnd->SetOwner( mainSurfaceWnd.get() );
+	//hierarchyWnd->SetDelegate( mainSurfaceWnd.get( ) );
+	//hierarchyWnd->Setup( );
 
     MSG msg {0};
     while ( true )
@@ -55,7 +53,7 @@ int APIENTRY wWinMain(
 		{
 			// Idle
 			mainSurfaceWnd->OnIdle( );
-			hierarchyWnd->OnIdle( );
+			//hierarchyWnd->OnIdle( );
 		}
     }
 

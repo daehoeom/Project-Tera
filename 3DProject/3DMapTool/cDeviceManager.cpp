@@ -83,5 +83,8 @@ void cDeviceManager::Setup(
 
 LPDIRECT3DDEVICE9 cDeviceManager::GetDevice()
 {
+	assert( m_pD3DDevice && 
+		"cDeviceManager::Setup" );
+
 	return m_pD3DDevice;
 }
