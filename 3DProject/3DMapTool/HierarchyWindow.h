@@ -12,7 +12,7 @@ public:
 	// Event handler
 	virtual void OnIdle( ) override;
 	
-	void AddListItem( const wchar_t* itemName );
+	void AddListItem( const std::wstring& itemName );
 
 protected:
 	LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) override;
@@ -23,9 +23,8 @@ private:
 
 private:
 	HWND m_listHandle;
-	int m_Layer = 0;
-	LVITEM m_lvItem;
-	LVCOLUMN m_lvCol;
+	LVITEMW m_lvItem;
+	int m_layer = 0;
 	POINT m_prevPos;
 	IWindowDelegate* m_wndDelegate = nullptr;
 };

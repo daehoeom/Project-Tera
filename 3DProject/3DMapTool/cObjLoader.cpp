@@ -3,6 +3,7 @@
 #include "cMtlTex.h"
 #include "cGroup.h"
 #include "cTextureManager.h"
+#include "StringUtil.h"
 
 #pragma warning( disable: 4996 )
 
@@ -47,9 +48,15 @@ void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3
 		}
 		else if (szBuf[0] == 'm')
 		{
-			char szMtlPath[1024];
-			sscanf(szBuf, "%*s %s", szMtlPath);
-			LoadMtlLib(szMtlPath);
+			std::string szMtlPath;
+			szMtlPath.resize( 1024 );
+			sscanf(szBuf, "%*s %s", &szMtlPath[0] );
+
+			szMtlPath = 
+				GetPathWithoutFileName( szFullPath )+
+				GetFileNameFromPath( szMtlPath );
+
+			LoadMtlLib( szMtlPath.c_str() );
 		}
 		else if (szBuf[0] == 'g')
 		{

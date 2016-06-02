@@ -19,7 +19,7 @@ class AbstractWindow :
 	public IWindowDelegate
 {
 public:
-	AbstractWindow(
+	explicit AbstractWindow(
 		const wchar_t* wndName,
 		DWORD exStyle,
 		DWORD normalStyle,
@@ -50,6 +50,7 @@ public:
 	/* 
 		Gets
 	*/
+	std::wstring GetTitle( );
 	void GetSize( _Out_ int * width, _Out_ int * height );
 	void GetPosition( _Out_ int * x, _Out_ int * y );
 	
@@ -60,6 +61,7 @@ public:
 	
 protected:
 	virtual LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) = 0;
+	AbstractWindow* GetChildByName( const std::wstring& name );
 	std::vector<AbstractWindow*>& GetChildRepo( );
 
 private:

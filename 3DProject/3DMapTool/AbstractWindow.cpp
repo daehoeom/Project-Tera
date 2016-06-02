@@ -37,6 +37,15 @@ AbstractWindow* AbstractWindow::GetOwner( )
 	return m_owner;
 }
 
+std::wstring AbstractWindow::GetTitle( )
+{
+	std::wstring titleName;
+	titleName.resize( 128 );
+	GetWindowText( m_wndHandle, &titleName[0], 128 );
+
+	return titleName;
+}
+
 void AbstractWindow::GetSize( int* width, int* height )
 {
 	RECT rt;
@@ -71,6 +80,20 @@ void AbstractWindow::SetupWindowComponents( )
 		m_width, 
 		m_height 
 	);
+}
+
+AbstractWindow* AbstractWindow::GetChildByName( 
+	const std::wstring& name )
+{
+	for ( int i = 0; i < m_childRepo.size( ); ++i )
+	{
+		if ( m_childRepo[i]->GetTitle( ) == name)
+		{
+			return m_childRepo[i];
+		}
+	}
+
+	return nullptr;
 }
 
 std::vector<AbstractWindow*>& AbstractWindow::GetChildRepo( )

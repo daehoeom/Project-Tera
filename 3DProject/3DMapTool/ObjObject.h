@@ -7,7 +7,7 @@ class ObjObject :
 	public cGameObject
 {
 public:
-	ObjObject( const std::string& name,
+	ObjObject( const std::wstring& name,
 			   const std::string& filePath );
 	virtual ~ObjObject( );
 

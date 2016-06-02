@@ -4,7 +4,7 @@
 #include "cDeviceManager.h"
 
 ObjObject::ObjObject( 
-	const std::string& name,
+	const std::wstring& name,
 	const std::string& filePath ) :
 	
 	cGameObject( name )

@@ -141,6 +141,9 @@
     <ClInclude Include="ObjObject.h">
       <Filter>hpp</Filter>
     </ClInclude>
+    <ClInclude Include="StringUtil.h">
+      <Filter>hpp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cDeviceManager.cpp">
@@ -192,6 +195,9 @@
       <Filter>cpp\Manager</Filter>
     </ClCompile>
     <ClCompile Include="ObjObject.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtil.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
   </ItemGroup>

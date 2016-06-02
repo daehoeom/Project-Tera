@@ -8,7 +8,7 @@ class cGameObject;
 class cGameObjectManager : 
 	public TSingleton<cGameObjectManager>
 {
-	using ObjectMap = std::unordered_map<std::string, cGameObject*>;
+	using ObjectMap = std::unordered_map<std::wstring, cGameObject*>;
 	
 public:
 	using iterator = ObjectMap::iterator;
@@ -19,8 +19,8 @@ public:
 	void Render( );
 
 	void AddObject( cGameObject* pObject );
-	void EraseObject( const std::string& key );
-	cGameObject* FindObject( const std::string& key );
+	void EraseObject( const std::wstring& key );
+	cGameObject* FindObject( const std::wstring& key );
 
 	iterator begin( );
 	iterator end( );
@@ -40,13 +40,13 @@ inline void cGameObjectManager::AddObject(
 }
 
 inline cGameObject* cGameObjectManager::FindObject(
-	const std::string& key )
+	const std::wstring& key )
 {
 	return m_objMap[key];
 }
 
 inline void cGameObjectManager::EraseObject(
-	const std::string& key )
+	const std::wstring& key )
 {
 	m_objMap.erase( key );
 }

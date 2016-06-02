@@ -3,7 +3,7 @@
 class cGameObject
 {
 public:
-	explicit cGameObject( const std::string& objName );
+	explicit cGameObject( const std::wstring& objName );
 	virtual ~cGameObject( );
 
 	virtual void Update( );
@@ -30,7 +30,7 @@ public:
 	void SetActive( bool isActive );
 	bool IsActive( ) const;
 	
-	const std::string& GetName( ) const;
+	const std::wstring& GetName( ) const;
 	const D3DXMATRIXA16& GetWorld( ) const;
 
 private:
@@ -41,7 +41,7 @@ private:
 	D3DXVECTOR3 m_angle;
 	D3DXVECTOR3 m_scale;
 	D3DXMATRIXA16 m_matWorld;
-	std::string m_objName;
+	std::wstring m_objName;
 	bool m_isActive;
 };
 
@@ -105,7 +105,7 @@ inline const D3DXVECTOR3& cGameObject::GetScale( ) const
 	return m_scale;
 }
 
-inline const std::string& cGameObject::GetName( ) const
+inline const std::wstring& cGameObject::GetName( ) const
 {
 	return m_objName;
 }

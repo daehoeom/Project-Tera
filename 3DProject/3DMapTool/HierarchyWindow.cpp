@@ -14,7 +14,8 @@ HierarchyWindow::HierarchyWindow( ) :
 		0,
 		0,
 		HierarchyWindowWidth,
-		HierarchyWindowHeight )
+		HierarchyWindowHeight ),
+	m_layer( 0 )
 {
 }
 
@@ -96,24 +97,18 @@ void HierarchyWindow::OnIdle( )
 }
 
 void HierarchyWindow::AddListItem( 
-	const wchar_t* itemName )
+	const std::wstring& itemName )
 {
-}
+	m_lvItem.mask = LVIF_TEXT;
+	m_lvItem.iItem = m_layer;
+	m_lvItem.iSubItem = 0;
+	ListView_InsertItem( m_listHandle, &m_lvItem );
 
-//void HierarchyWindow::AddListItem( 
-//	const wchar_t * itemName )
-//{
-//	//wchar_t tempBuf[5];
-//	//wsprintf( tempBuf, L"%d", m_Layer );
-//
-//	m_lvItem.mask = LVIF_TEXT;
-//	m_lvItem.iItem = m_Layer;
-//	m_lvItem.iSubItem = 0;
-//	ListView_InsertItem( m_listHandle, &m_lvItem );
-//	ListView_SetItemText( m_listHandle, m_Layer, 0, L"WOWOW" );
-//
-//	++m_Layer;
-//}
+	/*ListView_SetItemText( m_listHandle, m_layer, 0, 
+		const_cast<wchar_t*>(itemName.c_str() ));
+
+	++m_layer;*/
+}
 
 void HierarchyWindow::SetupList( HWND wndHandle )
 {
@@ -128,10 +123,11 @@ void HierarchyWindow::SetupList( HWND wndHandle )
 		NULL, GetModuleHandle( 0 ), NULL 
 	);
 
-	m_lvCol.mask = LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
-	m_lvCol.fmt = LVCFMT_LEFT;
-	m_lvCol.cx = rt.right;
-	m_lvCol.pszText = L"Name";
-	m_lvCol.iSubItem = 0;
-	ListView_InsertColumn( m_listHandle, 0, &m_lvCol );
+	LVCOLUMN lvCol {0};
+	lvCol.mask = LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
+	lvCol.fmt = LVCFMT_LEFT;
+	lvCol.cx = rt.right;
+	lvCol.pszText = L"Name";
+	lvCol.iSubItem = 0;
+	ListView_InsertColumn( m_listHandle, 0, &lvCol );
 }

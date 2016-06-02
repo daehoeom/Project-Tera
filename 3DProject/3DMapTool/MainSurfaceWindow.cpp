@@ -5,6 +5,7 @@
 #include "cDeviceManager.h"
 #include "cGameObjectManager.h"
 #include "ObjObject.h"
+#include "HierarchyWindow.h"
 #include "cCamera.h"
 
 namespace
@@ -180,7 +181,7 @@ LRESULT MainSurfaceWindow::MessageProc(
 	case WM_DROPFILES:
 		{
 			DragQueryFileA( reinterpret_cast<HDROP>( wParam ), 0, 
-				m_dropQueryPath.get( ), MAX_PATH );
+				&m_dropQueryPath[0], MAX_PATH );
 			
 			static int32_t hierarchyObjIndex = 0;
 		
@@ -189,13 +190,21 @@ LRESULT MainSurfaceWindow::MessageProc(
 			switch ( extension )
 			{
 			case ExtensionTable::kX:
-
 				break;
 
 			case ExtensionTable::kObj:
 				{
-					ObjObject* obj = new ObjObject( "MYYAM", m_dropQueryPath.get() );
+					static int32_t createCount = 0;
+					std::wstring str = L"object_";
+					str += std::to_wstring( createCount );
+
+					ObjObject* obj = new ObjObject( str.c_str(), m_dropQueryPath.get() );
 					cGameObjectManager::Get( )->AddObject( obj );
+
+					auto* hierarchyWindow = static_cast<HierarchyWindow*>( 
+						this->GetChildByName( L"Hierarchy" ));
+
+					int n = 3;
 				}
 				break;
 
