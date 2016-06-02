@@ -201,10 +201,8 @@ LRESULT MainSurfaceWindow::MessageProc(
 					ObjObject* obj = new ObjObject( str.c_str(), m_dropQueryPath.get() );
 					cGameObjectManager::Get( )->AddObject( obj );
 
-					auto* hierarchyWindow = static_cast<HierarchyWindow*>( 
-						this->GetChildByName( L"Hierarchy" ));
-
-					int n = 3;
+					//auto* hierarchyWindow = static_cast<HierarchyWindow*>( 
+					//	this->GetChildByName( L"Hierarchy" ));
 				}
 				break;
 
