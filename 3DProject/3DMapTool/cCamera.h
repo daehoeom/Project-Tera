@@ -5,6 +5,8 @@ class cCamera :
 	public TSingleton<cCamera>
 {
 public:
+	void Setup( HWND wndHandle );
+
 	void Update(D3DXVECTOR3* pTarget = NULL);
 	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -13,6 +15,7 @@ protected:
 	~cCamera( );
 
 private:
+	HWND m_ownerWndHandle;
 	D3DXVECTOR3	m_vEye;
 	D3DXVECTOR3	m_vUp;
 	D3DXVECTOR3	m_vLookAt;

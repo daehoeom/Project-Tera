@@ -58,6 +58,7 @@ void AbstractWindow::GetPosition( int* x, int* y )
 void AbstractWindow::SetupWindowComponents( )
 {
 	WNDCLASSEX copyWndClass = m_wndClassEx;
+	copyWndClass.cbWndExtra = sizeof( uintptr_t );
 	copyWndClass.lpszClassName = m_wndClassName.c_str();
 	copyWndClass.lpfnWndProc = AbstractWindow::CallbackMsgProc;
 	RegisterClassExW( &copyWndClass );
@@ -88,18 +89,29 @@ LRESULT CALLBACK AbstractWindow::CallbackMsgProc(
 
 	if ( extraMemAsWindow )
 	{
-		int n = 3;
-		return extraMemAsWindow->MessageProc( wndHandle, msg, wParam, lParam );
+		return extraMemAsWindow->MessageProc( 
+			wndHandle, 
+			msg, 
+			wParam, 
+			lParam 
+		);
 	}
 	else if ( msg == WM_CREATE )
 	{
-		int n = 3;
+		extraMemAsWindow = reinterpret_cast<AbstractWindow*>( 
+			LPCREATESTRUCT( lParam )->lpCreateParams );
+		return extraMemAsWindow->MessageProc( 
+			wndHandle, msg, wParam, lParam );
 	}
 	else
 	{
+		return DefWindowProc( 
+			wndHandle, 
+			msg, 
+			wParam, 
+			lParam 
+		);
 	}
-
-	return DefWindowProc( wndHandle, msg, wParam, lParam );
 }
 
 void AbstractWindow::CreateWindow(
@@ -122,7 +134,7 @@ void AbstractWindow::CreateWindow(
 		nullptr, 
 		nullptr, 
 		GetModuleHandle( nullptr ), 
-		nullptr 
+		this
 	);
 
 	SetWindowLongPtrW(

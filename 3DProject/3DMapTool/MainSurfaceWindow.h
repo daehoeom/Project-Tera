@@ -1,6 +1,6 @@
 #pragma once
 #include "AbstractWindow.h"
-
+#include "cObjLoader.h"
 
 class MainSurfaceWindow :
 	public AbstractWindow
@@ -25,5 +25,6 @@ private:
 private:
 	std::unique_ptr<wchar_t[]> m_dropQueryPath;
 	POINT m_prevPos;
+	cObjLoader m_objLoader;
 };
 

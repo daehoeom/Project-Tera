@@ -5,6 +5,48 @@
 #include "cDeviceManager.h"
 
 
+namespace
+{
+
+enum ExtensionTable
+{
+	kX,
+	kObj,
+	kUnknown,
+};
+
+__forceinline ExtensionTable AnalyzeExtension( 
+	const std::wstring& filePath )
+{
+	int i = filePath.size( )-1; 
+	while ( i >= 0 &&
+		filePath[i] != L'.' )
+	{
+		--i;
+	}
+
+	const std::wstring extension = 
+		filePath.substr( i+1, filePath.size( ));
+
+	MessageBox( 0, 0, extension.c_str( ), MB_OK );
+
+	if ( extension == L"x" )
+	{
+		return ExtensionTable::kX;
+	}
+	else if ( extension == L"obj" )
+	{
+		return ExtensionTable::kObj;
+	}
+	else
+	{
+		return ExtensionTable::kUnknown;
+	}
+}
+
+}
+
+
 HWND g_mainWndHandle;
 
 MainSurfaceWindow::MainSurfaceWindow( ) :
@@ -54,15 +96,39 @@ LRESULT MainSurfaceWindow::MessageProc(
 	switch ( msg )
 	{
 	case WM_CREATE:
-		int n = 3;
+		{
+			cDeviceManager::Get( )->Setup( wndHandle );
+			
+			int x, y;
+			this->GetPosition( &x, &y );
+			m_prevPos = { x, y };
+
+			//m_objLoader.Load(
+			//	;
+		}
 		break;
 
 	case WM_DROPFILES:
 		{
-			DragQueryFileW(( HDROP )wParam, 0, 
-				m_dropQueryPath.get(), MAX_PATH );
+			DragQueryFileW( reinterpret_cast<HDROP>( wParam ), 0, 
+				m_dropQueryPath.get( ), MAX_PATH );
 			
 			static int32_t hierarchyObjIndex = 0;
+		
+			ExtensionTable extension = AnalyzeExtension( 
+				m_dropQueryPath.get( ));
+			switch ( extension )
+			{
+			case ExtensionTable::kX:
+
+				break;
+
+			case ExtensionTable::kObj:
+				break;
+
+			case ExtensionTable::kUnknown:
+				break;
+			}
 		}
 		break;
 
@@ -84,6 +150,20 @@ LRESULT MainSurfaceWindow::MessageProc(
 
 	case WM_MOVE:
 		{
+			int x, y;
+			this->GetPosition( &x, &y );
+			
+			POINT currPos{ x, y };
+			
+			for ( auto& childElem : GetChildRepo( ) )
+			{
+				childElem->Move(
+					( currPos.x-m_prevPos.x ),
+					( currPos.y-m_prevPos.y )
+				);
+			}
+
+			m_prevPos = currPos;
 		}
 		break;
 
@@ -97,13 +177,13 @@ LRESULT MainSurfaceWindow::MessageProc(
 
 void MainSurfaceWindow::OnIdle( )
 {
-	/*g_pD3DDevice->Clear( 0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+	g_pD3DDevice->Clear( 0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
 		D3DCOLOR_XRGB( 0,0,255 ), 1.f, 0.f );
 
 	g_pD3DDevice->BeginScene( );
 	g_pD3DDevice->EndScene( );
 
-	g_pD3DDevice->Present( nullptr, nullptr, nullptr, nullptr );*/
+	g_pD3DDevice->Present( nullptr, nullptr, nullptr, nullptr );
 }
 
 void MainSurfaceWindow::OnMove( 

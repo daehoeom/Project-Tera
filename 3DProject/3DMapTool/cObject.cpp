@@ -1,8 +1,7 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "cObject.h"
 
 #include "cObjectManager.h"
-
 
 cObject::cObject(void)
 	: m_nRefCount(1)
@@ -25,7 +24,7 @@ void cObject::AddRef()
 void cObject::Release()
 {
 	--m_nRefCount;
-	if(m_nRefCount <= 0)
+	if (m_nRefCount <= 0)
 	{
 		delete this;
 	}

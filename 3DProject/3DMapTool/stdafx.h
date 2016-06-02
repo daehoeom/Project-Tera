@@ -21,6 +21,7 @@
 #include <memory>
 #include <string>
 #include <set>
+#include <unordered_map>
 #include <map>
 #include <initializer_list>
 #include <array>
