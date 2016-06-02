@@ -14,6 +14,8 @@ cNpc::cNpc()
 	, m_fAngle(0.f)
 {
 	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixIdentity(&m_matLocalHair);
+	D3DXMatrixIdentity(&m_matLocalHead);
 
 }
 
@@ -26,13 +28,8 @@ cNpc::~cNpc()
 	SAFE_DELETE(m_pBound);
 }
 
-void cNpc::Setup(D3DXMATRIXA16* matWorld, char* szFolder, char* szFile)
+void cNpc::Setup(char* szFolder, char* szFile)
 {
-	if (matWorld)
-	{
-		m_matWorld = *matWorld;
-	}
-
 	//몸파일 등록
 	m_pBody = new cBody;
 
@@ -67,24 +64,34 @@ void cNpc::Update()
 	if (m_pBody)
 	{
 		m_pBody->Update();
+		m_pBody->SetWorld(&m_matWorld);
 	}
 
 	if (m_pHair)
 	{
+		D3DXMATRIXA16 mat;
+		mat = m_pBody->GetHairTM() * m_matLocalHair;
+		m_pHair->SetHairTM(&mat);
 		m_pHair->Update();
-		m_pHair->SetHairTM(&m_pBody->GetHairTM());
 	}
 
 	if (m_pFace)
 	{
+		D3DXMATRIXA16 mat;
+		mat = m_pBody->GetNeckTM() * m_matLocalHead;
+		m_pFace->SetNeckTM(&mat);
 		m_pFace->Update();
-		m_pFace->SetNeckTM(&m_pBody->GetNeckTM());
 	}
 
 	if (m_pBound)
 	{
 		m_pBound->Update();
-		m_pBound->SetWorld(&m_matWorld);
+
+		//바운딩 박스 올림
+		D3DXMATRIXA16 matLocal;
+		D3DXMatrixTranslation(&matLocal, 0, 20, 0);
+		matLocal = matLocal * m_matWorld;
+		m_pBound->SetWorld(&matLocal);
 	}
 }
 

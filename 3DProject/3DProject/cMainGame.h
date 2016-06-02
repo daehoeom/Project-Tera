@@ -5,7 +5,8 @@ class cGrid;
 class cSkyBox;
 class cObjLoader;
 class cGroup;
-class cNpc;
+class cNpcManager;
+class cPixie;
 
 class cMainGame
 {
@@ -25,7 +26,8 @@ private:
 	cGrid* m_pGrid;
 	cSkyBox* m_pSkyBox;
 	cObjLoader*	m_pLoader;
-	cNpc*		m_pSeller;
+	cNpcManager* m_pNpc;
+	cPixie*	m_pMonster;
 	std::vector<cGroup*>	m_vecGroup;
 };
 

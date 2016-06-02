@@ -55,6 +55,9 @@
     <Filter Include="Object\Abstract\Collider\Interface">
       <UniqueIdentifier>{51da7a26-107c-4fda-8455-33af7fc5f65a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{8707ce46-649e-4380-8b3d-7ecdd8a83b1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -171,11 +174,38 @@
     <ClInclude Include="cGroup.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cEnemy.h">
-      <Filter>Misc\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="cNpc.h">
       <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cArgoniteFemaleMagician.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cArgoniteKallashGuardLeader.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cNpcManager.h">
+      <Filter>Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="cDyingGhillieDhu.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cEnemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cFatHunter.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cGiantStone.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cKalanHeavyWarrior.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cMadmadDuo.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="cPixie.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -281,11 +311,38 @@
     <ClCompile Include="cGroup.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="cEnemy.cpp">
-      <Filter>Misc\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="cNpc.cpp">
       <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cArgoniteFemaleMagician.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cArgoniteKallashGuardLeader.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cNpcManager.cpp">
+      <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="cDyingGhillieDhu.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cEnemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cFatHunter.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cGiantStone.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cKalanHeavyWarrior.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cMadmadDuo.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="cPixie.cpp">
+      <Filter>Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

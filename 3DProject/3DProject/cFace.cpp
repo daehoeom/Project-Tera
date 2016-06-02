@@ -47,7 +47,7 @@ void cFace::Setup(char* szFolder, char* szFile)
 
 void cFace::Update()
 {
-	m_pAnimControl->AdvanceTime(0.0075f, NULL);
+	m_pAnimControl->AdvanceTime(fAniTime, NULL);
 
 	D3DXMATRIX matW;
 	matW = m_matNeckTM;

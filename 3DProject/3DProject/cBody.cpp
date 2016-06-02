@@ -52,7 +52,7 @@ void cBody::Setup(char* FolderName, char* FileName)
 
 void cBody::Update()
 {
-	m_pAnimControl->AdvanceTime(0.0075f, NULL);
+	m_pAnimControl->AdvanceTime(fAniTime, NULL);
 	GetNeckWorld(m_pFrameRoot, nullptr);
 
 	//머리와 목 로컬TM에 월드 매트릭스 곱한다.

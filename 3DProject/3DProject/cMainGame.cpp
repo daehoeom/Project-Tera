@@ -7,23 +7,24 @@
 #include "cGameObjectManager.h"
 #include "cObjLoader.h"
 #include "cGroup.h"
-#include "cNpc.h"
-
+#include "cNpcManager.h"
+#include "cPixie.h"
 
 cMainGame::cMainGame( )
 	: m_pGrid(nullptr)
 	, m_pLoader(nullptr)
 	, m_player(nullptr)
-	, m_pSeller(nullptr)
+	, m_pNpc(nullptr)
+	, m_pMonster(nullptr)
 {
 	SetupManagers();
 
 	m_pGrid = new cGrid;
 	m_player = new cPlayer;
 
-	m_pSeller = new cNpc;
-	D3DXMATRIXA16 matW;
-	m_pSeller->Setup(nullptr, "./CH/NpcCastanic", "NpcCastanic");
+	m_pNpc = new cNpcManager;
+
+	m_pMonster = new cPixie;
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
@@ -36,8 +37,8 @@ cMainGame::~cMainGame()
 	SAFE_DELETE( m_pGrid );
 	SAFE_DELETE( m_player );
 	SAFE_DELETE( m_pLoader );
-	SAFE_DELETE( m_pSeller );
-
+	SAFE_DELETE( m_pNpc );
+	SAFE_DELETE(m_pMonster);
 
 	for each(auto p in m_vecGroup)
 	{
@@ -57,9 +58,14 @@ void cMainGame::Update()
 		m_player->Update();
 	}
 
-	if (m_pSeller)
+	if (m_pNpc)
 	{
-		m_pSeller->Update();
+		m_pNpc->Update();
+	}
+
+	if (m_pMonster)
+	{
+		m_pMonster->Update();
 	}
 
 	g_pTimeManager->Update();
@@ -76,24 +82,35 @@ void cMainGame::Render()
 	g_pD3DDevice->BeginScene();
 
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
+	//Height¸Ê ·»´õ
 	/*for each(auto p in m_vecGroup)
 	{
 		p->Render();
 	}*/
 
+	//±×¸®µå ·»´õ
 	if (m_pGrid)
 	{
 		m_pGrid->Render();
 	}
 
+
+	//ÇÃ·¹ÀÌ¾î ·»´õ
 	if (m_player)
 	{
 		m_player->Render();
 	}
 
-	if (m_pSeller)
+	//Npc ·»´õ
+	/*if (m_pNpc)
 	{
-		m_pSeller->Render();
+		m_pNpc->Render();
+	}*/
+
+	//¸ó½ºÅÍ ·»´õ
+	if (m_pMonster)
+	{
+		m_pMonster->Render();
 	}
 
 	g_pD3DDevice->EndScene();

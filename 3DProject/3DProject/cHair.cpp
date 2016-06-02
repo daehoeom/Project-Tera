@@ -43,7 +43,7 @@ void cHair::Setup(char* szFolderName, char* szFileName)
 
 void cHair::Update()
 {
-	m_pAnimControl->AdvanceTime(0.0075f, NULL);
+	m_pAnimControl->AdvanceTime(fAniTime, NULL);
 
 	D3DXMATRIX matW;
 

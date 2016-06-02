@@ -27,6 +27,7 @@ void cBoundingSphere::Render()
 {
 	this->PreRender( );
 	
+	//월드매트릭스 갱신 안되서;; 넣음
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorldTM);
 	g_pD3DDevice->SetTexture(0, nullptr);
 	sphereMesh->DrawSubset(0);

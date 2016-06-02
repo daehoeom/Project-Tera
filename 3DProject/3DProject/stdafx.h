@@ -158,13 +158,6 @@ struct ST_SIZE
 	ST_SIZE(float w, float h) : fWidth(w), fHeight(h) {}
 };
 
-enum PlayerState
-{
-	player_IDLE,
-	player_RUN,
-	player_ATTACK
-};
-
 struct ST_BONE : public D3DXFRAME
 {
 	D3DXMATRIXA16 CombinedTransformationMatrix;
@@ -188,6 +181,13 @@ struct ST_BONE_MESH : public D3DXMESHCONTAINER
 	LPD3DXMESH				pSphereMesh;			//충돌용 바운딩 스피어의 메쉬
 	LPD3DXBUFFER			pSphereAdj;				//충돌용 바운딩 스피어의 Adj버퍼
 	D3DXMATRIX				matSphereW;				//충돌용 바운딩 스피어의 월드변환행렬
+};
+
+enum class eNpcType
+{
+	NPC_SHOP,
+	NPC_BLACKSMITH,
+	NPC_QUEST,
 };
 
 #define SYNTHESIZE(varType, varName, funName)\
@@ -247,5 +247,4 @@ public: virtual void Set##funName(varType var){\
 #include "cObjectManager.h"
 
 ///////////////////
-typedef std::shared_ptr<class cGroup> SpGroup;
-typedef std::shared_ptr<class cMtlTex> SpMtlTex;
+extern float fAniTime;
