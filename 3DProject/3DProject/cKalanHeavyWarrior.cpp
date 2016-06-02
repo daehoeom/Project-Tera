@@ -4,11 +4,8 @@
 
 cKalanHeavyWarrior::cKalanHeavyWarrior()
 {
-	D3DXMatrixIdentity(&m_matWorld);
-
 	m_pBody = new cBody;
 	m_pBody->Setup("./CH/KalanHeavyWarrior", "KalanHeavyWarrior.X");
-
 }
 
 
@@ -22,7 +19,7 @@ void cKalanHeavyWarrior::Update()
 	if (m_pBody)
 	{
 		m_pBody->Update();
-		m_pBody->SetWorld(&m_matWorld);
+		m_pBody->SetWorld(&this->GetWorld( ));
 	}
 }
 

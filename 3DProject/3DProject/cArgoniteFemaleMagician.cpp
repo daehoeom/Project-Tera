@@ -4,11 +4,8 @@
 
 cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 {
-	D3DXMatrixIdentity(&m_matWorld);
-
 	m_pBody = new cBody;
 	m_pBody->Setup("./CH/ArgoniteFemaleMagician", "ArgoniteFemaleMagician.X");
-
 }
 
 
@@ -22,7 +19,7 @@ void cArgoniteFemaleMagician::Update()
 	if (m_pBody)
 	{
 		m_pBody->Update();
-		m_pBody->SetWorld(&m_matWorld);
+		m_pBody->SetWorld(&this->GetWorld( ));
 	}
 }
 

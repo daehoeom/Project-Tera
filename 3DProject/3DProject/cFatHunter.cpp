@@ -4,8 +4,6 @@
 
 cFatHunter::cFatHunter()
 {
-	D3DXMatrixIdentity(&m_matWorld);
-
 	m_pBody = new cBody;
 	m_pBody->Setup("./CH/FatHunter", "FatHunter.X");
 }
@@ -21,7 +19,7 @@ void cFatHunter::Update()
 	if (m_pBody)
 	{
 		m_pBody->Update();
-		m_pBody->SetWorld(&m_matWorld);
+		m_pBody->SetWorld(&this->GetWorld( ));
 	}
 }
 
