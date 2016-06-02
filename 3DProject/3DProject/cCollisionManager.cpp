@@ -21,8 +21,9 @@ void cCollisionManager::Update( )
 	for ( auto& elemOp1 : m_collisionMap )
 	{
 		// elemOp1 Has no collider?
-		if ( !elemOp1.second->GetColliderRepo( ))
+		if ( elemOp1.second->GetColliderRepo( ).size( ) == 0 )
 		{
+			continue;
 		}
 		
 		for ( auto& elemOp2 : m_collisionMap )
@@ -30,65 +31,71 @@ void cCollisionManager::Update( )
 			// Compare target is same as elemOp1?
 			// Or elemOp2 has no collider? 
 			if ( elemOp1 == elemOp2 ||
-				!elemOp2.second->GetCollider( ))
+				 elemOp2.second->GetColliderRepo( ).size( ) == 0 )
 			{
 				continue;
 			}
 
 			// Then, elemOp1 and elemOp2 is different with,
 			// And both have colliders.
-			eColliderType op1CollType =
-				elemOp1.second->GetCollider( )->GetColliderType( );
-			eColliderType op2CollType = 
-				elemOp2.second->GetCollider( )->GetColliderType( );
+			for ( auto& op1Collider : elemOp1.second->GetColliderRepo( ))
+			{
+				for ( auto& op2Collider : elemOp2.second->GetColliderRepo( ) )
+				{
+					eColliderType op1CollType =
+						op1Collider->GetColliderType( );
+					eColliderType op2CollType =
+						op2Collider->GetColliderType( );
 
-			bool isCollised = false;
+					bool isCollised = false;
 
-			// TODO : Optimize here
-			if ( op1CollType == eColliderType::kBox &&
-				op2CollType == eColliderType::kBox )
-			{
-				isCollised = cCollision::IsBoxToBox(
-					static_cast<const cBoundingBox&>( 
-						*elemOp1.second->GetCollider( )),
-					static_cast<const cBoundingBox&>(
-						*elemOp2.second->GetCollider( ))
-				);
-			}
-			else if ( op1CollType == eColliderType::kSphere &&
-				op2CollType == eColliderType::kSphere )
-			{
-				isCollised = cCollision::IsSphereToSphere(
-					static_cast<const cBoundingSphere&>(
-						*elemOp1.second->GetCollider( )),
-					static_cast<const cBoundingSphere&>(
-						*elemOp2.second->GetCollider( ))
-				);
-			}
-			else if ( op1CollType == eColliderType::kBox &&
-				op2CollType == eColliderType::kSphere )
-			{
-				isCollised = cCollision::IsBoxToSphere(
-					static_cast<const cBoundingBox&>(
-						*elemOp1.second->GetCollider( ) ),
-					static_cast<const cBoundingSphere&>(
-						*elemOp2.second->GetCollider( ) )
-				);
-			}
-			else if ( op1CollType == eColliderType::kSphere &&
-				op2CollType == eColliderType::kBox )
-			{
-				isCollised = cCollision::IsBoxToSphere(
-					static_cast<const cBoundingBox&>(
-						*elemOp1.second->GetCollider( ) ),
-					static_cast<const cBoundingSphere&>(
-						*elemOp2.second->GetCollider( ) )
-				);
-			}
+					// TODO : Optimize here
+					if ( op1CollType == eColliderType::kBox &&
+						op2CollType == eColliderType::kBox )
+					{
+						isCollised = cCollision::IsBoxToBox(
+							static_cast<const cBoundingBox&>(
+								*op1Collider ),
+							static_cast<const cBoundingBox&>(
+								*op2Collider )
+						);
+					}
+					else if ( op1CollType == eColliderType::kSphere &&
+						op2CollType == eColliderType::kSphere )
+					{
+						isCollised = cCollision::IsSphereToSphere(
+							static_cast<const cBoundingSphere&>(
+								*op1Collider ),
+							static_cast<const cBoundingSphere&>(
+								*op2Collider )
+						);
+					}
+					else if ( op1CollType == eColliderType::kBox &&
+						op2CollType == eColliderType::kSphere )
+					{
+						isCollised = cCollision::IsBoxToSphere(
+							static_cast<const cBoundingBox&>(
+								*op1Collider ),
+							static_cast<const cBoundingSphere&>(
+								*op2Collider )
+						);
+					}
+					else if ( op1CollType == eColliderType::kSphere &&
+						op2CollType == eColliderType::kBox )
+					{
+						isCollised = cCollision::IsBoxToSphere(
+							static_cast<const cBoundingBox&>(
+								*op1Collider ),
+							static_cast<const cBoundingSphere&>(
+								*op2Collider )
+						);
+					}
 
-			if ( isCollised )
-			{
-				elemOp1.second->OnCollisionStay( elemOp2.second );
+					if ( isCollised )
+					{
+						elemOp1.second->OnCollisionStay( elemOp2.second );
+					}
+				}
 			}
 		}
 	}
