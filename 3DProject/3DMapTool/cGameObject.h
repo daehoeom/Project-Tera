@@ -3,7 +3,7 @@
 class cGameObject
 {
 public:
-	cGameObject( const std::string& objName );
+	explicit cGameObject( const std::string& objName );
 	virtual ~cGameObject( );
 
 	virtual void Update( );

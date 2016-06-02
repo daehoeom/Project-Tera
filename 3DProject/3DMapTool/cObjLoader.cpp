@@ -2,6 +2,9 @@
 #include "cObjLoader.h"
 #include "cMtlTex.h"
 #include "cGroup.h"
+#include "cTextureManager.h"
+
+#pragma warning( disable: 4996 )
 
 cObjLoader::cObjLoader(void)
 {
@@ -12,7 +15,7 @@ cObjLoader::~cObjLoader(void)
 {
 }
 
-void cObjLoader::Load(char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATRIXA16* mat /*= NULL*/)
+void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATRIXA16* mat /*= NULL*/)
 {
 	std::vector<D3DXVECTOR3> vecV;
 	std::vector<D3DXVECTOR2> vecVT;
@@ -114,15 +117,15 @@ void cObjLoader::Load(char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATR
 		}
 	}
 
-	for each(auto it in m_mapMtlTex)
+	for (auto& iter : m_mapMtlTex)
 	{
-		SAFE_RELEASE(it.second);
+		SAFE_RELEASE(iter.second);
 	}
 
 	fclose(fp);
 }
 
-void cObjLoader::LoadMtlLib(char* szFullPath)
+void cObjLoader::LoadMtlLib(const char* szFullPath)
 {
 	FILE* fp = NULL;
 
@@ -204,3 +207,6 @@ void cObjLoader::LoadMtlLib(char* szFullPath)
 
 	fclose(fp);
 }
+
+
+#pragma warning( default: 4996 )

@@ -25,7 +25,7 @@ void cCamera::Setup( HWND wndHandle )
 	m_ownerWndHandle = wndHandle;
 
 	RECT rc;
-	GetClientRect( g_mainWndHandle, &rc );
+	GetClientRect( wndHandle, &rc );
 	D3DXMATRIXA16 matProj;
 	D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4.0f, rc.right / ( float )rc.bottom, 1, 3000 );
 	g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );

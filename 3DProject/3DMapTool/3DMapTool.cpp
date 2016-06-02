@@ -5,6 +5,11 @@
 
 #include "MainSurfaceWindow.h"
 #include "HierarchyWindow.h"
+#include "cDeviceManager.h"
+#include "cTextureManager.h"
+#include "cObjectManager.h"
+#include "cGameObjectManager.h"
+#include "cCamera.h"
 
 #pragma comment( linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"" )
 
@@ -32,6 +37,12 @@ int APIENTRY wWinMain(
 	hierarchyWnd->SetOwner( mainSurfaceWnd.get( ));
 	hierarchyWnd->SetDelegate( mainSurfaceWnd.get( ));
 	hierarchyWnd->SetupWindowComponents( );
+
+	cDeviceManager::Get( )->Setup( mainSurfaceWnd->GetWindowHandle( ));
+	cCamera::Get( )->Setup( mainSurfaceWnd->GetWindowHandle( ));
+	cTextureManager::Get( );
+	cObjectManager::Get( );
+	cGameObjectManager::Get( );
 
     MSG msg {0};
     while ( true )

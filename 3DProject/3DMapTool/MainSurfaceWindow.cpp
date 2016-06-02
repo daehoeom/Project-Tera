@@ -3,7 +3,9 @@
 
 #include "resource.h"
 #include "cDeviceManager.h"
-
+#include "cGameObjectManager.h"
+#include "ObjObject.h"
+#include "cCamera.h"
 
 namespace
 {
@@ -15,7 +17,7 @@ enum ExtensionTable
 	kUnknown,
 };
 
-__forceinline ExtensionTable AnalyzeExtension( 
+ExtensionTable AnalyzeExtension( 
 	const std::wstring& filePath )
 {
 	int i = filePath.size( )-1; 
@@ -27,8 +29,6 @@ __forceinline ExtensionTable AnalyzeExtension(
 
 	const std::wstring extension = 
 		filePath.substr( i+1, filePath.size( ));
-
-	MessageBox( 0, 0, extension.c_str( ), MB_OK );
 
 	if ( extension == L"x" )
 	{
@@ -46,11 +46,12 @@ __forceinline ExtensionTable AnalyzeExtension(
 
 }
 
+std::vector<ST_PN_VERTEX>	m_vecVertex;
 
 HWND g_mainWndHandle;
 
 MainSurfaceWindow::MainSurfaceWindow( ) :
-	AbstractWindow( 
+	AbstractWindow(
 		L"3DMapTool",
 		WS_EX_ACCEPTFILES,
 		WS_OVERLAPPEDWINDOW,
@@ -62,6 +63,77 @@ MainSurfaceWindow::MainSurfaceWindow( ) :
 	),
 	m_dropQueryPath( new wchar_t[MAX_PATH] )
 {
+	std::vector<D3DXVECTOR3> vecVertexList;
+	vecVertexList.push_back(D3DXVECTOR3(-1, -1, -1));
+	vecVertexList.push_back(D3DXVECTOR3(-1,  1, -1));
+	vecVertexList.push_back(D3DXVECTOR3( 1,  1, -1));
+	vecVertexList.push_back(D3DXVECTOR3( 1, -1, -1));
+	vecVertexList.push_back(D3DXVECTOR3(-1, -1,  1));
+	vecVertexList.push_back(D3DXVECTOR3(-1,  1,  1));
+	vecVertexList.push_back(D3DXVECTOR3( 1,  1,  1));
+	vecVertexList.push_back(D3DXVECTOR3( 1, -1,  1));
+
+	D3DXVECTOR3 n;
+	// 전
+	n = D3DXVECTOR3( 0, 0,-1);
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[0], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[2], n));
+
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[0], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[2], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
+
+	// 후
+	n = D3DXVECTOR3( 0, 0, 1);
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[5], n));
+
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[7], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
+
+	// 좌
+	n = D3DXVECTOR3(-1, 0, 0);
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[5], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
+
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[0], n));
+
+	// 우
+	n = D3DXVECTOR3( 1, 0, 0);
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[2], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
+
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[7], n));
+
+	// 상
+	n = D3DXVECTOR3( 0, 1, 0);
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[5], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
+
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[2], n));
+
+	// 하
+	n = D3DXVECTOR3( 0,-1, 0);
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[0], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
+
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
+	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[7], n));
+
 }
 
 MainSurfaceWindow::~MainSurfaceWindow( )
@@ -97,14 +169,11 @@ LRESULT MainSurfaceWindow::MessageProc(
 	{
 	case WM_CREATE:
 		{
-			cDeviceManager::Get( )->Setup( wndHandle );
-			
+			g_mainWndHandle = wndHandle;
+
 			int x, y;
 			this->GetPosition( &x, &y );
 			m_prevPos = { x, y };
-
-			//m_objLoader.Load(
-			//	;
 		}
 		break;
 
@@ -124,6 +193,8 @@ LRESULT MainSurfaceWindow::MessageProc(
 				break;
 
 			case ExtensionTable::kObj:
+				//ObjObject* obj = new ObjObject( "MYYAM", m_dropQueryPath );
+				//cGameObjectManager::Get( )->AddObject( obj );
 				break;
 
 			case ExtensionTable::kUnknown:
@@ -177,12 +248,24 @@ LRESULT MainSurfaceWindow::MessageProc(
 
 void MainSurfaceWindow::OnIdle( )
 {
-	g_pD3DDevice->Clear( 0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-		D3DCOLOR_XRGB( 0,0,255 ), 1.f, 0.f );
-
+	g_pD3DDevice->Clear( NULL,
+		NULL,
+		D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+		D3DCOLOR_XRGB( 47, 121, 112 ),
+		1.0f, 0 );
 	g_pD3DDevice->BeginScene( );
-	g_pD3DDevice->EndScene( );
+	
+	D3DXMATRIXA16 world;
+	D3DXMatrixIdentity( &world );
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &world);
+	g_pD3DDevice->SetFVF(ST_PN_VERTEX::FVF);
+	g_pD3DDevice->DrawPrimitiveUP(
+		D3DPT_TRIANGLELIST,
+		m_vecVertex.size() / 3,
+		&m_vecVertex[0],
+		sizeof(ST_PN_VERTEX));
 
+	g_pD3DDevice->EndScene( );
 	g_pD3DDevice->Present( nullptr, nullptr, nullptr, nullptr );
 }
 
