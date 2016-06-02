@@ -23,7 +23,7 @@ private:
 	WNDCLASSEXW MakeWindowClass( );
 
 private:
-	std::unique_ptr<wchar_t[]> m_dropQueryPath;
+	std::unique_ptr<char[]> m_dropQueryPath;
 	POINT m_prevPos;
 	cObjLoader m_objLoader;
 };

@@ -18,23 +18,23 @@ enum ExtensionTable
 };
 
 ExtensionTable AnalyzeExtension( 
-	const std::wstring& filePath )
+	const std::string& filePath )
 {
 	int i = filePath.size( )-1; 
 	while ( i >= 0 &&
-		filePath[i] != L'.' )
+		filePath[i] != '.' )
 	{
 		--i;
 	}
 
-	const std::wstring extension = 
+	const std::string extension = 
 		filePath.substr( i+1, filePath.size( ));
 
-	if ( extension == L"x" )
+	if ( extension == "x" )
 	{
 		return ExtensionTable::kX;
 	}
-	else if ( extension == L"obj" )
+	else if ( extension == "obj" )
 	{
 		return ExtensionTable::kObj;
 	}
@@ -61,7 +61,7 @@ MainSurfaceWindow::MainSurfaceWindow( ) :
 		MainWindowWidth,
 		MainWindowHeight
 	),
-	m_dropQueryPath( new wchar_t[MAX_PATH] )
+	m_dropQueryPath( new char[MAX_PATH] )
 {
 	std::vector<D3DXVECTOR3> vecVertexList;
 	vecVertexList.push_back(D3DXVECTOR3(-1, -1, -1));
@@ -179,7 +179,7 @@ LRESULT MainSurfaceWindow::MessageProc(
 
 	case WM_DROPFILES:
 		{
-			DragQueryFileW( reinterpret_cast<HDROP>( wParam ), 0, 
+			DragQueryFileA( reinterpret_cast<HDROP>( wParam ), 0, 
 				m_dropQueryPath.get( ), MAX_PATH );
 			
 			static int32_t hierarchyObjIndex = 0;
@@ -193,11 +193,15 @@ LRESULT MainSurfaceWindow::MessageProc(
 				break;
 
 			case ExtensionTable::kObj:
-				//ObjObject* obj = new ObjObject( "MYYAM", m_dropQueryPath );
-				//cGameObjectManager::Get( )->AddObject( obj );
+				{
+					ObjObject* obj = new ObjObject( "MYYAM", m_dropQueryPath.get() );
+					cGameObjectManager::Get( )->AddObject( obj );
+				}
 				break;
 
 			case ExtensionTable::kUnknown:
+				MessageBox( wndHandle, L"Unknown file extension.", L"WARNING",
+					MB_OK | MB_ICONEXCLAMATION );
 				break;
 			}
 		}
@@ -248,25 +252,9 @@ LRESULT MainSurfaceWindow::MessageProc(
 
 void MainSurfaceWindow::OnIdle( )
 {
-	g_pD3DDevice->Clear( NULL,
-		NULL,
-		D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-		D3DCOLOR_XRGB( 47, 121, 112 ),
-		1.0f, 0 );
-	g_pD3DDevice->BeginScene( );
-	
-	D3DXMATRIXA16 world;
-	D3DXMatrixIdentity( &world );
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &world);
-	g_pD3DDevice->SetFVF(ST_PN_VERTEX::FVF);
-	g_pD3DDevice->DrawPrimitiveUP(
-		D3DPT_TRIANGLELIST,
-		m_vecVertex.size() / 3,
-		&m_vecVertex[0],
-		sizeof(ST_PN_VERTEX));
-
-	g_pD3DDevice->EndScene( );
-	g_pD3DDevice->Present( nullptr, nullptr, nullptr, nullptr );
+	cGameObjectManager::Get( )->Update( );
+	cGameObjectManager::Get( )->Render( );
+	cCamera::Get( )->Update( );
 }
 
 void MainSurfaceWindow::OnMove( 
