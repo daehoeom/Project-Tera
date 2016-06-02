@@ -1,30 +1,30 @@
 #pragma once
 #include "AbstractWindow.h"
-
+#include "cObjLoader.h"
 
 class MainSurfaceWindow :
-	public AbstractWindow,
-	public IWindowDelegate
+	public AbstractWindow
 {
 public:
 	MainSurfaceWindow( );
 	virtual ~MainSurfaceWindow( );
 	
-	// Event handler
+	// Event Handler
 	virtual void OnIdle( ) override;
 
-	// delegate
+	// Deletgate
 	virtual void OnMove( AbstractWindow* sender, int x, int y );
 	virtual void OnSize( AbstractWindow* sender, int width, int height );
 
 protected:
-	static LRESULT CALLBACK MsgProc( HWND, UINT, WPARAM, LPARAM );
-	virtual HWND SetupWindowComponents( ) override;
+	LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) override;
+	
+private:
+	WNDCLASSEXW MakeWindowClass( );
 
 private:
-	wchar_t* m_dropQueryPath;
-	void SetupWindowClass( );
+	std::unique_ptr<char[]> m_dropQueryPath;
 	POINT m_prevPos;
-	HWND SetupWindow( );
+	cObjLoader m_objLoader;
 };
 

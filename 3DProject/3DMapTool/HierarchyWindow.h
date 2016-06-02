@@ -6,28 +6,24 @@ class HierarchyWindow :
 	public AbstractWindow
 {
 public:
-	HierarchyWindow( );
+	HierarchyWindow( HWND parentWndHandle );
 	virtual ~HierarchyWindow( );
 
 	// Event handler
 	virtual void OnIdle( ) override;
-	void SetDelegate( IWindowDelegate* windowDelegate );
-	void AddListItem( const wchar_t* itemName );
+	
+	void AddListItem( const std::wstring& itemName );
 
 protected:
-	static LRESULT CALLBACK MsgProc( HWND, UINT, WPARAM, LPARAM );
-	virtual HWND SetupWindowComponents( ) override;
+	LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) override;
 
 private:
-	void SetupWindowClass( );
-	HWND SetupWindow( );
-	void SetupList( );
+	WNDCLASSEXW MakeWindowClass( );
+	void SetupList( HWND wndHandle );
 
 private:
 	HWND m_listHandle;
-	int m_Layer = 0;
-	LVITEM m_lvItem;
-	LVCOLUMN m_lvCol;
+	int m_layer = 0;
 	POINT m_prevPos;
 	IWindowDelegate* m_wndDelegate = nullptr;
 };

@@ -5,6 +5,11 @@
 
 #include "MainSurfaceWindow.h"
 #include "HierarchyWindow.h"
+#include "cDeviceManager.h"
+#include "cTextureManager.h"
+#include "cObjectManager.h"
+#include "cGameObjectManager.h"
+#include "cCamera.h"
 
 #pragma comment( linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"" )
 
@@ -19,21 +24,25 @@ int APIENTRY wWinMain(
 {
 	g_instHandle = hInstance;
 
+	InitCommonControls( );
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_MY3DMAPTOOL));
 
-	std::unique_ptr<MainSurfaceWindow> mainSurfaceWnd( 
-		new MainSurfaceWindow );
+	std::unique_ptr<MainSurfaceWindow> mainSurfaceWnd( new MainSurfaceWindow );
+	mainSurfaceWnd->SetupWindowComponents( );
+
 	std::unique_ptr<HierarchyWindow> hierarchyWnd(
-		new HierarchyWindow );
+		new HierarchyWindow( mainSurfaceWnd->GetWindowHandle( )));
 
+	mainSurfaceWnd->SetChild( hierarchyWnd.get( ));
+	hierarchyWnd->SetOwner( mainSurfaceWnd.get( ));
+	hierarchyWnd->SetDelegate( mainSurfaceWnd.get( ));
+	hierarchyWnd->SetupWindowComponents( );
 
-	mainSurfaceWnd->Setup( );
-	mainSurfaceWnd->SetChild( hierarchyWnd.get() );
-
-	hierarchyWnd->SetOwner( mainSurfaceWnd.get() );
-	hierarchyWnd->SetDelegate( mainSurfaceWnd.get( ) );
-	hierarchyWnd->Setup( );
-
+	cDeviceManager::Get( )->Setup( mainSurfaceWnd->GetWindowHandle( ));
+	cCamera::Get( )->Setup( mainSurfaceWnd->GetWindowHandle( ));
+	cTextureManager::Get( );
+	cObjectManager::Get( );
+	cGameObjectManager::Get( );
 
     MSG msg {0};
     while ( true )
@@ -62,18 +71,3 @@ int APIENTRY wWinMain(
     return (int) msg.wParam;
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    switch (message)
-    {
-    
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
-}
-
-// 정보 대화 상자의 메시지 처리기입니다.

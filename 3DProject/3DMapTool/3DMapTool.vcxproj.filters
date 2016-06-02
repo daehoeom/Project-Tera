@@ -117,9 +117,6 @@
     <ClInclude Include="cGroup.h">
       <Filter>Loader\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="cTextureManager.h">
-      <Filter>cpp\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="cMtlTex.h">
       <Filter>hpp\Misc\MtlTex</Filter>
     </ClInclude>
@@ -131,6 +128,24 @@
     </ClInclude>
     <ClInclude Include="cObjectManager.h">
       <Filter>hpp\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="cGameObjectManager.h">
+      <Filter>hpp\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="cGameObject.h">
+      <Filter>hpp\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="cTextureManager.h">
+      <Filter>hpp\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjObject.h">
+      <Filter>hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtil.h">
+      <Filter>hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="LightObject.h">
+      <Filter>hpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +190,21 @@
     </ClCompile>
     <ClCompile Include="cObjectManager.cpp">
       <Filter>cpp\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="cGameObject.cpp">
+      <Filter>cpp\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="cGameObjectManager.cpp">
+      <Filter>cpp\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjObject.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtil.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="LightObject.cpp">
+      <Filter>cpp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

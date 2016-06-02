@@ -151,6 +151,8 @@
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="AbstractWindow.h" />
+    <ClInclude Include="cGameObject.h" />
+    <ClInclude Include="cGameObjectManager.h" />
     <ClInclude Include="cGroup.h" />
     <ClInclude Include="cMtlTex.h" />
     <ClInclude Include="cObject.h" />
@@ -159,11 +161,14 @@
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="InspectorWindow.h" />
+    <ClInclude Include="LightObject.h" />
     <ClInclude Include="MainSurfaceWindow.h" />
+    <ClInclude Include="ObjObject.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StringUtil.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +176,8 @@
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="AbstractWindow.cpp" />
+    <ClCompile Include="cGameObject.cpp" />
+    <ClCompile Include="cGameObjectManager.cpp" />
     <ClCompile Include="cGroup.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
     <ClCompile Include="cObject.cpp" />
@@ -179,13 +186,16 @@
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
+    <ClCompile Include="LightObject.cpp" />
     <ClCompile Include="MainSurfaceWindow.cpp" />
+    <ClCompile Include="ObjObject.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StringUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DMapTool.rc" />
