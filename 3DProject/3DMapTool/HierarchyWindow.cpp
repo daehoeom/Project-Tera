@@ -48,7 +48,7 @@ LRESULT HierarchyWindow::MessageProc(
 		}
 		break;
 
-	case WM_SIZE:
+	/*case WM_SIZE:
 		if ( m_wndDelegate )
 		{
 			m_wndDelegate->OnSize( 
@@ -62,7 +62,7 @@ LRESULT HierarchyWindow::MessageProc(
 			m_wndDelegate->OnMove( 
 				this, LOWORD( lParam ), HIWORD( lParam ));
 		}
-		break;
+		break;*/
 
 	case WM_NCLBUTTONDOWN:
 		return 0;
