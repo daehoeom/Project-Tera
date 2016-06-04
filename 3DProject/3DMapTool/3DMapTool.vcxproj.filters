@@ -174,6 +174,12 @@
     <ClInclude Include="IO.h">
       <Filter>hpp\IO</Filter>
     </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="IPickable.h">
+      <Filter>hpp\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cDeviceManager.cpp">
@@ -241,6 +247,12 @@
     </ClCompile>
     <ClCompile Include="IO.cpp">
       <Filter>cpp\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="IRenderable.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="IPickable.cpp">
+      <Filter>hpp\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

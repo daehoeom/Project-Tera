@@ -2,6 +2,7 @@
 #include "IO.h"
 
 #include <iterator>
+#include <fstream>
 
 std::vector<float> ReadRAW( const char* filePath )
 {

@@ -2,6 +2,8 @@
 #include "HierarchyWindow.h"
 
 #include "resource.h"
+#include "cGameObjectManager.h"
+#include "InspectorWindow.h"
 
 HWND g_hierarchyWndHandle;
 
@@ -43,6 +45,58 @@ LRESULT HierarchyWindow::MessageProc(
 				ownerY, 0, 0, SWP_NOSIZE );
 
 			this->SetupList( wndHandle );
+		}
+		break;
+
+	/*case WM_COMMAND:
+		{
+			WORD wmID = LOWORD( wParam );
+			WORD wmEvent = HIWORD( wParam );
+
+			if ( wmEvent == LBN_KILLFOCUS )
+			{
+				MessageBox( 0,0,0,0 );
+			}
+		}
+		break;*/
+
+	case WM_NOTIFY:
+		{
+			LPNMHDR lpHdr;
+			LPNMLISTVIEW lpListView;
+
+			lpHdr = reinterpret_cast<LPNMHDR>( lParam );
+			lpListView = reinterpret_cast<LPNMLISTVIEW>( lParam );
+
+			if ( lpHdr->hwndFrom != m_listHandle )
+				break;
+			
+			switch ( lpHdr->code )
+			{
+			case LVN_ITEMCHANGED:
+				{
+					wchar_t findObjName[256];
+					ListView_GetItemText( m_listHandle,
+						lpListView->iItem, 0,
+						findObjName, 256
+					);
+
+					auto object = cGameObjectManager::Get( )->FindObject(
+						findObjName
+					);
+					if ( object )
+					{
+						auto inspectorWindow = static_cast<InspectorWindow*>(
+							this->GetOwner( )->GetChildByName( 
+								L"Inspector" ));
+							
+						inspectorWindow->SetPositionData( object->GetPosition( ) );
+						inspectorWindow->SetRotationData( object->GetAngle( ) );
+						inspectorWindow->SetScaleData( object->GetScale( ));
+					}
+				}
+				break;
+			}
 		}
 		break;
 
@@ -116,7 +170,7 @@ void HierarchyWindow::SetupList( HWND wndHandle )
 		NULL, 
 		WC_LISTVIEW, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER |
 		LVS_REPORT | LVS_SHOWSELALWAYS, -1, -1, rt.right+2, rt.bottom+2, 
-		wndHandle, 
+		wndHandle,
 		NULL, GetModuleHandle( 0 ), NULL 
 	);
 

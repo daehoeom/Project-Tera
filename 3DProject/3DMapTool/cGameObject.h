@@ -43,7 +43,6 @@ public:
 
 	virtual ObjectIdenfier GetIdenfier( ) const = 0;
 
-
 private:
 	void UpdateWorld( );
 
@@ -62,6 +61,7 @@ inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
 	m_matWorld._41 = pos.x;
 	m_matWorld._42 = pos.y;
 	m_matWorld._43 = pos.z;
+	g_inspectorWnd->SetPositionData( m_pos );
 }
 
 inline void cGameObject::Move( const D3DXVECTOR3& pos )
@@ -70,30 +70,35 @@ inline void cGameObject::Move( const D3DXVECTOR3& pos )
 	m_matWorld._41 += pos.x;
 	m_matWorld._42 += pos.y;
 	m_matWorld._43 += pos.z;
+	g_inspectorWnd->SetPositionData( m_pos );
 }
 
 inline void cGameObject::SetAngle( const D3DXVECTOR3& rot )
 {
 	m_angle = rot;
 	this->UpdateWorld( );
+	g_inspectorWnd->SetRotationData( m_angle );
 }
 
 inline void cGameObject::Rotate( const D3DXVECTOR3& rot )
 {
 	m_angle += rot;
 	this->UpdateWorld( );
+	g_inspectorWnd->SetRotationData( m_angle );
 }
 
 inline void cGameObject::SetScale( const D3DXVECTOR3& scale )
 {
 	m_scale = scale;
 	this->UpdateWorld( );
+	g_inspectorWnd->SetScaleData( m_scale );
 }
 
 inline void cGameObject::Scale( const D3DXVECTOR3& scale )
 {
 	m_scale += scale;
 	this->UpdateWorld( );
+	g_inspectorWnd->SetScaleData( m_scale );
 }
 
 inline void cGameObject::SetActive( bool isActive )

@@ -16,6 +16,8 @@ namespace
 enum ExtensionTable
 {
 	kX,
+	kRaw8,
+	kRaw16,
 	kObj,
 	kUnknown,
 };
@@ -38,6 +40,10 @@ ExtensionTable AnalyzeExtension(
 		return ExtensionTable::kX;
 	}
 	else if ( extension == "obj" )
+	{
+		return ExtensionTable::kObj;
+	}
+	else if ( extension == "raw" )
 	{
 		return ExtensionTable::kObj;
 	}
@@ -150,7 +156,7 @@ LRESULT MainSurfaceWindow::MessageProc(
 			switch (wmId)
 			{
 			case IDM_ABOUT:
-				DialogBox(g_instHandle, MAKEINTRESOURCE(IDD_ABOUTBOX), wndHandle, About);
+				DialogBox(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDD_ABOUTBOX), wndHandle, About);
 				break;
 			case IDM_EXIT:
 				DestroyWindow( wndHandle );
@@ -217,7 +223,7 @@ WNDCLASSEXW MainSurfaceWindow::MakeWindowClass( )
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = nullptr; // Ignore, using member function
 	wcex.hInstance = instanceHandle;
-	wcex.hIcon = LoadIcon( g_instHandle, MAKEINTRESOURCE( IDI_MY3DMAPTOOL ));
+	wcex.hIcon = LoadIcon( instanceHandle, MAKEINTRESOURCE( IDI_MY3DMAPTOOL ));
 	wcex.hCursor = LoadCursor( nullptr, IDC_ARROW );
 	wcex.hbrBackground = (HBRUSH)( COLOR_WINDOW+1 );
 	wcex.lpszMenuName = MAKEINTRESOURCEW( IDC_MY3DMAPTOOL );

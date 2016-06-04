@@ -26,6 +26,7 @@ AbstractWindow::AbstractWindow(
 	m_owner( nullptr ),
 	m_wndDelegate( nullptr ),
 	m_wndName( wndName ),
+	m_wndHandle( nullptr ),
 	m_wndClassName( wndClassEx.lpszClassName ),
 	m_x( x ),
 	m_y( y ),
@@ -50,11 +51,10 @@ AbstractWindow* AbstractWindow::GetOwner( )
 
 std::wstring AbstractWindow::GetTitle( )
 {
-	std::wstring titleName;
-	titleName.resize( 128 );
-	GetWindowText( m_wndHandle, &titleName[0], 128 );
-
-	return titleName;
+	wchar_t buf[128];
+	GetWindowText( m_wndHandle, buf, 128 );
+	
+	return std::wstring( buf );
 }
 
 void AbstractWindow::GetSize( int* width, int* height )
@@ -111,7 +111,7 @@ AbstractWindow* AbstractWindow::GetChildByName(
 {
 	for ( int i = 0; i < m_childRepo.size( ); ++i )
 	{
-		if ( m_childRepo[i]->GetTitle( ).compare( name ))
+		if ( m_childRepo[i]->GetTitle( ) == name )
 		{
 			return m_childRepo[i];
 		}
@@ -136,6 +136,11 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 
 	if ( extraMemAsWindow )
 	{
+		if ( msg == WM_LBUTTONDOWN )
+		{
+			extraMemAsWindow->Move( 100, 0 );
+		}
+
 		if ( msg == WM_DESTROY )
 		{
 			SetWindowLongPtrW(
@@ -145,7 +150,6 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 			);
 
 			PostQuitMessage( 0 );
-
 			return 0;
 		}
 		else
@@ -164,7 +168,7 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 		{
 			extraMemAsWindow = reinterpret_cast<AbstractWindow*>(
 				lParam );
-
+			extraMemAsWindow->m_wndHandle = wndHandle;
 			return extraMemAsWindow->MessageProc(
 				wndHandle, msg, wParam, lParam );
 		}
@@ -219,6 +223,7 @@ LRESULT CALLBACK AbstractWindow::CallbackMsgProc(
 		{
 			extraMemAsWindow = reinterpret_cast<AbstractWindow*>(
 				LPCREATESTRUCT( lParam )->lpCreateParams );
+			extraMemAsWindow->m_wndHandle = wndHandle;
 
 			return extraMemAsWindow->MessageProc(
 				wndHandle, msg, wParam, lParam );
@@ -268,7 +273,7 @@ void AbstractWindow::CreateWindow(
 	modifiedWndClass.lpfnWndProc = AbstractWindow::CallbackMsgProc;
 	RegisterClassExW( &modifiedWndClass );
 
-	m_wndHandle = CreateWindowExW(
+	CreateWindowExW(
 		exStyle,
 		m_wndClassName.c_str(),
 		m_wndName.c_str(),

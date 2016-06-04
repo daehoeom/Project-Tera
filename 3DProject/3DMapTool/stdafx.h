@@ -29,6 +29,12 @@
 #include <vector>
 #include <cassert>
 
+// TODO: 프로그램에 필요한 추가 헤더는 여기에서 참조합니다.
+#include "MainSurfaceWindow.h"
+#include "InspectorWindow.h"
+#include "HierarchyWindow.h"
+
+
 // CommCtrl
 #pragma comment( lib, "uxtheme" )
 #pragma comment( lib, "comctl32" )
@@ -69,9 +75,6 @@ public: virtual void Set##funName(varType var){\
 	}\
 }
 
-
-// TODO: 프로그램에 필요한 추가 헤더는 여기에서 참조합니다.
-
 enum
 {
 	MainWindowWidth = 800,
@@ -84,17 +87,9 @@ enum
 	InspectorWindowHeight = MainWindowHeight/2,
 };
 
-
-#define MAINWINDOW_TITLENAME L"3DMapTool"
-#define HIERARCHYWINDOW_TITLENAME L"Hierarchy"
-#define INSPECTORWINDOW_TITLENAME L"Inspector"
-
-
-extern HINSTANCE g_instHandle;
-extern HWND g_mainWndHandle;		// D3DX Surface window & Menu bar
-extern HWND g_hierarchyWndHandle;	// Contains object hierarchy listbox
-extern HWND g_inspectorWndHandle;
-
+extern std::unique_ptr<MainSurfaceWindow> g_mainSurfaceWnd;
+extern std::unique_ptr<InspectorWindow> g_inspectorWnd;
+extern std::unique_ptr<HierarchyWindow> g_hierarchyWnd;
 
 struct ST_PC_VERTEX
 {

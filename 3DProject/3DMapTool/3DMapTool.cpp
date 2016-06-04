@@ -17,6 +17,9 @@
 
 #pragma comment( linker, "/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"" )
 
+std::unique_ptr<MainSurfaceWindow> g_mainSurfaceWnd;
+std::unique_ptr<InspectorWindow> g_inspectorWnd;
+std::unique_ptr<HierarchyWindow> g_hierarchyWnd;
 
 HINSTANCE g_instHandle;
 
@@ -41,37 +44,33 @@ int APIENTRY wWinMain(
 	InitCommonControls( );
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_MY3DMAPTOOL));
 
-	std::unique_ptr<MainSurfaceWindow> mainSurfaceWnd( new MainSurfaceWindow );
-	mainSurfaceWnd->SetupWindowComponents( );
+	g_mainSurfaceWnd.reset( new MainSurfaceWindow );
+	g_mainSurfaceWnd->SetupWindowComponents( );
 	
+	g_hierarchyWnd.reset( new HierarchyWindow( g_mainSurfaceWnd->GetWindowHandle( )));
+	g_mainSurfaceWnd->SetChild( g_hierarchyWnd.get( ));
+	g_hierarchyWnd->SetOwner( g_mainSurfaceWnd.get( ));
+	g_hierarchyWnd->SetDelegate( g_mainSurfaceWnd.get( ));
+	g_hierarchyWnd->SetupWindowComponents( );
 
-	std::unique_ptr<HierarchyWindow> hierarchyWnd(
-		new HierarchyWindow( mainSurfaceWnd->GetWindowHandle( )));
-	mainSurfaceWnd->SetChild( hierarchyWnd.get( ));
-	hierarchyWnd->SetOwner( mainSurfaceWnd.get( ));
-	hierarchyWnd->SetDelegate( mainSurfaceWnd.get( ));
-	hierarchyWnd->SetupWindowComponents( );
-	
-
-	std::unique_ptr<InspectorWindow> inspectorWnd(
-		new InspectorWindow( mainSurfaceWnd->GetWindowHandle( )));
-	mainSurfaceWnd->SetChild( inspectorWnd.get( ));
-	inspectorWnd->SetOwner( mainSurfaceWnd.get( ));
-	inspectorWnd->SetDelegate( mainSurfaceWnd.get( ));
-	inspectorWnd->SetupWindowComponents( );
+	g_inspectorWnd.reset( new InspectorWindow( g_mainSurfaceWnd->GetWindowHandle( )));
+	g_mainSurfaceWnd->SetChild( g_inspectorWnd.get( ));
+	g_inspectorWnd->SetOwner( g_mainSurfaceWnd.get( ));
+	g_inspectorWnd->SetDelegate( g_mainSurfaceWnd.get( ));
+	g_inspectorWnd->SetupWindowComponents( );
 
 
 	// Init managers
-	cDeviceManager::Get( )->Setup( mainSurfaceWnd->GetWindowHandle( ));
+	cDeviceManager::Get( )->Setup( g_mainSurfaceWnd->GetWindowHandle( ));
 	cTextureManager::Get( );
 	cObjectManager::Get( );
 	cGameObjectManager::Get( );
-	cDirectInput::Get( )->Setup( mainSurfaceWnd->GetWindowHandle( ));
+	cDirectInput::Get( )->Setup( g_mainSurfaceWnd->GetWindowHandle( ));
 	cCameraObject* camera = new cCameraObject( 
-		mainSurfaceWnd->GetWindowHandle( ), L"Camera" );
-	hierarchyWnd->AddListItem( camera->GetName( ));
+		g_mainSurfaceWnd->GetWindowHandle( ), L"Camera" );
+	g_hierarchyWnd->AddListItem( camera->GetName( ));
 	LightObject* obj = new LightObject( L"Light" );
-	hierarchyWnd->AddListItem( obj->GetName( ));
+	g_hierarchyWnd->AddListItem( obj->GetName( ));
 
 
     MSG msg {0};
@@ -93,7 +92,7 @@ int APIENTRY wWinMain(
 		else
 		{
 			cDirectInput::Get( )->Update( );
-			mainSurfaceWnd->OnIdle( );
+			g_mainSurfaceWnd->OnIdle( );
 		}
     }
 

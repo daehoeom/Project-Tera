@@ -163,6 +163,8 @@
     <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="IO.h" />
+    <ClInclude Include="IPickable.h" />
+    <ClInclude Include="IRenderable.h" />
     <ClInclude Include="LightObject.h" />
     <ClInclude Include="MainSurfaceWindow.h" />
     <ClInclude Include="ObjObject.h" />
@@ -191,6 +193,8 @@
     <ClCompile Include="HierarchyWindow.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="IO.cpp" />
+    <ClCompile Include="IPickable.cpp" />
+    <ClCompile Include="IRenderable.cpp" />
     <ClCompile Include="LightObject.cpp" />
     <ClCompile Include="MainSurfaceWindow.cpp" />
     <ClCompile Include="ObjObject.cpp" />

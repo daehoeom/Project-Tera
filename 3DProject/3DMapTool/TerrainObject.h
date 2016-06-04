@@ -1,7 +1,8 @@
 #pragma once
-#include "cGameObject.h"
+#include "IRenderable.h"
 
-class TerrainObject : public cGameObject
+class TerrainObject : 
+	public IRenderable
 {
 public:
 	TerrainObject(
@@ -21,8 +22,8 @@ public:
 	int GetCol( ) const { return m_col; }
 	int GetRow( ) const { return m_row; }
 	int GetInterval( ) const { return m_interval; }
-	const auto& GetHeightRepo( ) const { return m_heightRepo; }
-	const auto& GetVertexRepo( ) const { return m_vertexRepo; }
+	const std::vector<float>& GetHeightRepo( ) const { return m_heightRepo; }
+	const std::vector<ST_PNT_VERTEX>& GetVertexRepo( ) const { return m_vertexRepo; }
 
 private:
 	void InitMesh( );
@@ -50,7 +51,6 @@ private:
 	const int m_numVertices;
 	const int m_numTriangles;
 	ID3DXMesh* m_mesh;
-	IDirect3DTexture9* m_texture;
 	std::vector<ST_PNT_VERTEX> m_vertexRepo;
 	std::vector<float> m_heightRepo;
 };

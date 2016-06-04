@@ -10,7 +10,7 @@ TerrainObject::TerrainObject(
 	int row, int col, float interval,
 	_In_ const char* rowPath,
 	_In_ const char* texPath ) :
-	cGameObject( objName ),
+	IRenderable( objName ),
 	m_row( row ),
 	m_col( col ),
 	m_numSubset( 1 ),
@@ -28,28 +28,26 @@ TerrainObject::TerrainObject(
 	this->InitVertexBuffer( row, col, interval, m_heightRepo );
 	this->InitIndexBuffer( row, col, interval );
 	this->InitTexture( texPath );
-
-
 }
 
 TerrainObject::~TerrainObject( )
 {
 }
 
-void TerrainObject::Update( float tickTime )
+void TerrainObject::Update( )
 {
 }
 
 void TerrainObject::Render( )
 {
-	GetD3dDevice( )->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING, TRUE );
-	GetD3dDevice( )->SetRenderState( D3DRENDERSTATETYPE::D3DRS_FILLMODE, D3DFILL_SOLID );
+	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING, TRUE );
+	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_FILLMODE, D3DFILL_SOLID );
 	
-	GetD3dDevice( )->SetTransform( D3DTS_WORLD, &this->GetWorld());
+	g_pD3DDevice->SetTransform( D3DTS_WORLD, &this->GetWorld());
 	
 	for ( int i = 0; i < m_numSubset; i++ )
 	{
-		GetD3dDevice()->SetTexture( 0, this->GetTexture( i ));
+		g_pD3DDevice->SetTexture( 0, this->GetTexture( i ));
 		m_mesh->DrawSubset( i );
 	}
 
@@ -81,7 +79,7 @@ void TerrainObject::InitMesh( )
 		m_numVertices,
 		D3DXMESH_DYNAMIC | D3DXMESH_32BIT,
 		ST_PNT_VERTEX::FVF,
-		GetD3dDevice( ),
+		g_pD3DDevice,
 		&m_mesh
 	);
 
@@ -235,7 +233,7 @@ void TerrainObject::InitIndexBuffer( int row, int col, float interval )
 void TerrainObject::InitTexture( const char* texPath )
 {
 	IDirect3DTexture9* texture;
-	HRESULT hr = D3DXCreateTextureFromFileA( GetD3dDevice( ),
+	HRESULT hr = D3DXCreateTextureFromFileA( g_pD3DDevice,
 		texPath, &texture );
 	if ( FAILED( hr ))
 	{
@@ -243,5 +241,5 @@ void TerrainObject::InitTexture( const char* texPath )
 			L"WARNING!", MB_OK | MB_ICONEXCLAMATION );
 	}
 
-	this->SetTexture( texture );
+	this->AddTexture( texture );
 }

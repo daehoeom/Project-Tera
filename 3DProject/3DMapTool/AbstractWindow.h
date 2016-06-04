@@ -63,10 +63,10 @@ public:
 	HWND GetWindowHandle( ) const;
 	const std::wstring& GetName( ) const;
 	const std::wstring& GetClassName( ) const;
+	AbstractWindow* GetChildByName( const std::wstring& name );
 	
 protected:
 	virtual LRESULT MessageProc( HWND wndHandle, UINT msg, WPARAM wParam, LPARAM lParam ) = 0;
-	AbstractWindow* GetChildByName( const std::wstring& name );
 	std::vector<AbstractWindow*>& GetChildRepo( );
 
 
