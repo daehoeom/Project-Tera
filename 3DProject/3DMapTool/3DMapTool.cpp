@@ -48,13 +48,13 @@ int APIENTRY wWinMain(
 	g_mainSurfaceWnd->SetupWindowComponents( );
 	
 	g_hierarchyWnd.reset( new HierarchyWindow( g_mainSurfaceWnd->GetWindowHandle( )));
-	g_mainSurfaceWnd->SetChild( g_hierarchyWnd.get( ));
+	g_mainSurfaceWnd->AddChild( g_hierarchyWnd.get( ));
 	g_hierarchyWnd->SetOwner( g_mainSurfaceWnd.get( ));
 	g_hierarchyWnd->SetDelegate( g_mainSurfaceWnd.get( ));
 	g_hierarchyWnd->SetupWindowComponents( );
 
 	g_inspectorWnd.reset( new InspectorWindow( g_mainSurfaceWnd->GetWindowHandle( )));
-	g_mainSurfaceWnd->SetChild( g_inspectorWnd.get( ));
+	g_mainSurfaceWnd->AddChild( g_inspectorWnd.get( ));
 	g_inspectorWnd->SetOwner( g_mainSurfaceWnd.get( ));
 	g_inspectorWnd->SetDelegate( g_mainSurfaceWnd.get( ));
 	g_inspectorWnd->SetupWindowComponents( );

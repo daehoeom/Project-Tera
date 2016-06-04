@@ -5,6 +5,7 @@
 #include "cGameObjectManager.h"
 #include "InspectorWindow.h"
 
+
 HWND g_hierarchyWndHandle;
 
 HierarchyWindow::HierarchyWindow( HWND parentWndHandle ) :

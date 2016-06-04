@@ -83,6 +83,16 @@ LRESULT InspectorWindow::MessageProc(
 				ownerY, 0, 0, SWP_NOSIZE );
 		}
 		break;
+
+	case WM_LBUTTONDOWN:
+		{
+			MessageBox( 0, 0, 0, 0 );
+			auto a = SendMessage( 
+				GetOwner( )->GetChildByName( L"Hierarchy" )->GetWindowHandle( ), 
+					LB_GETCURSEL, NULL, NULL );
+			int n = 3;
+		}
+		break;
 	
 	case WM_NCLBUTTONDOWN:
 		return -1;

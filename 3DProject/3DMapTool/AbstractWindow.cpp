@@ -136,11 +136,6 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 
 	if ( extraMemAsWindow )
 	{
-		if ( msg == WM_LBUTTONDOWN )
-		{
-			extraMemAsWindow->Move( 100, 0 );
-		}
-
 		if ( msg == WM_DESTROY )
 		{
 			SetWindowLongPtrW(

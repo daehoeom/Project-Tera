@@ -49,7 +49,7 @@ public:
 	void SetOwner( AbstractWindow* owner );
 	void SetPosition(int x, int y );
 	void SetDelegate( IWindowDelegate* wndDelegate );
-	void SetChild( AbstractWindow* child );
+	void AddChild( AbstractWindow* child );
 	void Move( int x, int y );
 	
 	/* 
@@ -122,7 +122,7 @@ inline void AbstractWindow::SetDelegate(
 	m_wndDelegate = wndDelegate;
 }
 
-inline void AbstractWindow::SetChild( 
+inline void AbstractWindow::AddChild( 
 	AbstractWindow * child )
 {
 	m_childRepo.push_back( child );
