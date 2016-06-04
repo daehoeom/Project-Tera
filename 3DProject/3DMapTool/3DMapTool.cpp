@@ -44,16 +44,20 @@ int APIENTRY wWinMain(
 	std::unique_ptr<MainSurfaceWindow> mainSurfaceWnd( new MainSurfaceWindow );
 	mainSurfaceWnd->SetupWindowComponents( );
 	
+
 	std::unique_ptr<HierarchyWindow> hierarchyWnd(
 		new HierarchyWindow( mainSurfaceWnd->GetWindowHandle( )));
-	
-	std::unique_ptr<InspectorWindow> inspectorWnd(
-		new InspectorWindow( mainSurfaceWnd->GetWindowHandle( )));
-
 	mainSurfaceWnd->SetChild( hierarchyWnd.get( ));
 	hierarchyWnd->SetOwner( mainSurfaceWnd.get( ));
 	hierarchyWnd->SetDelegate( mainSurfaceWnd.get( ));
 	hierarchyWnd->SetupWindowComponents( );
+	
+
+	std::unique_ptr<InspectorWindow> inspectorWnd(
+		new InspectorWindow( mainSurfaceWnd->GetWindowHandle( )));
+	mainSurfaceWnd->SetChild( inspectorWnd.get( ));
+	inspectorWnd->SetOwner( mainSurfaceWnd.get( ));
+	inspectorWnd->SetDelegate( mainSurfaceWnd.get( ));
 	inspectorWnd->SetupWindowComponents( );
 
 
@@ -90,8 +94,6 @@ int APIENTRY wWinMain(
 		{
 			cDirectInput::Get( )->Update( );
 			mainSurfaceWnd->OnIdle( );
-			hierarchyWnd->OnIdle( );
-			//inspectorWnd->OnIdle( );
 		}
     }
 

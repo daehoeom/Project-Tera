@@ -146,12 +146,7 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 
 			PostQuitMessage( 0 );
 
-			return DefWindowProc(
-				wndHandle,
-				msg,
-				wParam,
-				lParam
-			);
+			return 0;
 		}
 		else
 		{
@@ -175,12 +170,7 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 		}
 		else
 		{
-			return DefWindowProc( 
-				wndHandle, 
-				msg, 
-				wParam, 
-				lParam 
-			);
+			return 0;
 		}
 	}
 }

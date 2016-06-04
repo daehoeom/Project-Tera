@@ -42,9 +42,6 @@ LRESULT HierarchyWindow::MessageProc(
 			SetWindowPos( wndHandle, NULL, ownerX-HierarchyWindowWidth,
 				ownerY, 0, 0, SWP_NOSIZE );
 
-			SetWindowPos( wndHandle, NULL, 0, 
-				0, HierarchyWindowWidth, HierarchyWindowHeight, SWP_NOMOVE );
-		
 			this->SetupList( wndHandle );
 		}
 		break;

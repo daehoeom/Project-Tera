@@ -29,11 +29,18 @@ LRESULT InspectorWindow::MessageProc(
 	switch ( msg )
 	{
 	case WM_INITDIALOG:
-		MessageBox( 0, 00, 0, 0 );
+		{
+			int ownerX, ownerY, ownerWidth, ownerHeight;
+			this->GetOwner( )->GetPosition( &ownerX, &ownerY );
+			this->GetOwner( )->GetSize( &ownerWidth, &ownerHeight );
+
+			SetWindowPos( wndHandle, nullptr, ownerX+ownerWidth, 
+				ownerY, 0, 0, SWP_NOSIZE );
+		}
 		break;
-	case WM_LBUTTONDOWN:
-		MessageBox( 0, 00, 0, 0 );
-		break;
+
+	case WM_NCLBUTTONDOWN:
+		return -1;
 	}
 
 	return 0;
