@@ -79,6 +79,18 @@
     <Filter Include="cpp\Utility">
       <UniqueIdentifier>{b8f3d421-faa4-4064-9393-98cd9cb76032}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cpp\Terrain">
+      <UniqueIdentifier>{9c9e2ba1-9910-4aed-9289-0af9ae407892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Terrain">
+      <UniqueIdentifier>{fd303ae4-a8ba-4520-ab52-1e2f02db2261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\IO">
+      <UniqueIdentifier>{96c8bd0e-ce8a-42d1-847b-188d9c61a520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\IO">
+      <UniqueIdentifier>{a844b7fd-a89a-4d4a-ae54-6f153c89a2f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -156,6 +168,12 @@
     <ClInclude Include="3DMapTool.h">
       <Filter>hpp\Main</Filter>
     </ClInclude>
+    <ClInclude Include="TerrainObject.h">
+      <Filter>hpp\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
+      <Filter>hpp\IO</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cDeviceManager.cpp">
@@ -217,6 +235,12 @@
     </ClCompile>
     <ClCompile Include="DirectInput.cpp">
       <Filter>cpp\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainObject.cpp">
+      <Filter>cpp\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>cpp\IO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
