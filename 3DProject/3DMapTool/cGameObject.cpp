@@ -18,8 +18,6 @@ cGameObject::cGameObject( const std::wstring& objName ) :
 
 cGameObject::~cGameObject( )
 {
-	cGameObjectManager::Get()->EraseObject(
-		this->GetName());
 }
 
 void cGameObject::Update( )

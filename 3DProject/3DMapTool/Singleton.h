@@ -51,6 +51,8 @@ public:
 		return &spInst;
 	}
 
+	
+
 protected:
 	TSingleton( )
 	{

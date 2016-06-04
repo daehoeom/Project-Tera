@@ -5,11 +5,13 @@
 #include "cDeviceManager.h"
 #include "cGameObjectManager.h"
 #include "ObjObject.h"
+#include "LightObject.h"
 #include "HierarchyWindow.h"
 #include "cCamera.h"
 
 namespace
 {
+
 
 enum ExtensionTable
 {
@@ -45,6 +47,7 @@ ExtensionTable AnalyzeExtension(
 	}
 }
 
+
 }
 
 HWND g_mainWndHandle;
@@ -67,6 +70,7 @@ MainSurfaceWindow::MainSurfaceWindow( ) :
 
 MainSurfaceWindow::~MainSurfaceWindow( )
 {
+	PostQuitMessage( 0 );
 }
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -112,23 +116,20 @@ LRESULT MainSurfaceWindow::MessageProc(
 				&m_dropQueryPath[0], MAX_PATH );
 			
 			static int32_t hierarchyObjIndex = 0;
-		
 			ExtensionTable extension = AnalyzeExtension( 
 				m_dropQueryPath.get( ));
+
 			switch ( extension )
 			{
 			case ExtensionTable::kX:
 				break;
-
 			case ExtensionTable::kObj:
 				{
 					static int32_t createCount = 0;
 					std::wstring str = L"object_";
 					str += std::to_wstring( createCount++ );
 
-					ObjObject* obj = new ObjObject( str.c_str(), m_dropQueryPath.get() );
-					cGameObjectManager::Get( )->AddObject( obj );
-
+					ObjObject* obj = new ObjObject( str.c_str(), m_dropQueryPath.get());
 					static_cast<HierarchyWindow*>( this->GetChildByName( 
 						L"Hierarchy" ))->AddListItem( str );
 				}
@@ -176,10 +177,6 @@ LRESULT MainSurfaceWindow::MessageProc(
 			m_prevPos = currPos;
 		}
 		break;
-
-	case WM_DESTROY:
-		PostQuitMessage( 0 );
-		break;
 	}
 
 	return DefWindowProc( wndHandle, msg, wParam, lParam );
@@ -187,9 +184,13 @@ LRESULT MainSurfaceWindow::MessageProc(
 
 void MainSurfaceWindow::OnIdle( )
 {
+	g_pD3DDevice->SetRenderState(
+		D3DRENDERSTATETYPE::D3DRS_LIGHTING,
+		TRUE
+	);
+
 	cGameObjectManager::Get( )->Update( );
 	cGameObjectManager::Get( )->Render( );
-	cCamera::Get( )->Update( );
 }
 
 void MainSurfaceWindow::OnMove( 

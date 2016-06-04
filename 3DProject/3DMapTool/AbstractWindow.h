@@ -19,6 +19,11 @@ class AbstractWindow :
 	public IWindowDelegate
 {
 public:
+	// For dialog
+	explicit AbstractWindow( 
+		HWND parentWndHandle );
+	
+	// General creation
 	explicit AbstractWindow(
 		const wchar_t* wndName,
 		DWORD exStyle,
@@ -36,9 +41,8 @@ public:
 	// Event Handler
 	virtual void OnIdle( ) = 0;
 
-public:
 	void SetupWindowComponents( );
-	
+
 	/* 
 		Sets
 	*/
@@ -61,12 +65,16 @@ public:
 	const std::wstring& GetClassName( ) const;
 	
 protected:
-	virtual LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) = 0;
+	virtual LRESULT MessageProc( HWND wndHandle, UINT msg, WPARAM wParam, LPARAM lParam ) = 0;
 	AbstractWindow* GetChildByName( const std::wstring& name );
 	std::vector<AbstractWindow*>& GetChildRepo( );
 
+
 private:
+	static INT_PTR CALLBACK DlgCallbackMsgProc( HWND, UINT, WPARAM, LPARAM );
 	static LRESULT CALLBACK CallbackMsgProc( HWND, UINT, WPARAM, LPARAM );
+	
+	void CreateDialogWindow( );
 	void CreateWindow(
 		DWORD exStyle, 
 		DWORD normalStyle, 
@@ -79,17 +87,17 @@ private:
 private:
 	// Window info
 	HWND m_wndHandle;
-	const std::wstring m_wndName;
-	const std::wstring m_wndClassName;
-	const DWORD m_exStyle;
-	const DWORD m_normalStyle;
-	const HWND m_parentWndHandle;
-	const WNDCLASSEXW m_wndClassEx;
-	const int m_x;
-	const int m_y;
-	const int m_width;
-	const int m_height;
-
+	std::wstring m_wndName;
+	std::wstring m_wndClassName;
+	DWORD m_exStyle;
+	DWORD m_normalStyle;
+	HWND m_parentWndHandle;
+	WNDCLASSEXW m_wndClassEx;
+	int m_x;
+	int m_y;
+	int m_width;
+	int m_height;
+	const bool m_isDialog;
 
 	// About hierarchy
 	AbstractWindow* m_owner;
@@ -130,6 +138,9 @@ inline void AbstractWindow::Move( int x, int y )
 
 inline HWND AbstractWindow::GetWindowHandle( ) const
 {
+	assert( m_wndHandle &&
+		"GetWindowHandle invoked but returning handle pointer address is zero." );
+
 	return m_wndHandle;
 }
 

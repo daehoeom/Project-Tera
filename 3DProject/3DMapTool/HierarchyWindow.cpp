@@ -16,7 +16,8 @@ HierarchyWindow::HierarchyWindow( HWND parentWndHandle ) :
 		0,
 		HierarchyWindowWidth,
 		HierarchyWindowHeight ),
-	m_layer( 0 )
+	m_layer( 0 ),
+	m_currSelectedItem( -1 )
 {
 }
 
@@ -38,7 +39,7 @@ LRESULT HierarchyWindow::MessageProc(
 			this->GetOwner( )->GetPosition( &ownerX, &ownerY );
 			this->GetOwner( )->GetSize( &ownerWidth, &ownerHeight );
 			
-			SetWindowPos( wndHandle, NULL, ownerX+ownerWidth, 
+			SetWindowPos( wndHandle, NULL, ownerX-HierarchyWindowWidth,
 				ownerY, 0, 0, SWP_NOSIZE );
 
 			SetWindowPos( wndHandle, NULL, 0, 
@@ -64,12 +65,11 @@ LRESULT HierarchyWindow::MessageProc(
 		}
 		break;*/
 
-	case WM_NCLBUTTONDOWN:
+	case WM_CLOSE:
 		return 0;
 
-	case WM_DESTROY:
-		PostQuitMessage( 0 );
-		break;
+	case WM_NCLBUTTONDOWN:
+		return 0;
 	}
 
 	return DefWindowProc( wndHandle, msg, wParam, lParam );
@@ -118,7 +118,7 @@ void HierarchyWindow::SetupList( HWND wndHandle )
 	m_listHandle = CreateWindowEx( 
 		NULL, 
 		WC_LISTVIEW, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER |
-		LVS_REPORT | LVS_SHOWSELALWAYS, 0, 0, rt.right, rt.bottom, 
+		LVS_REPORT | LVS_SHOWSELALWAYS, -1, -1, rt.right+2, rt.bottom+2, 
 		wndHandle, 
 		NULL, GetModuleHandle( 0 ), NULL 
 	);

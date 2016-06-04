@@ -1,5 +1,13 @@
 #pragma once
 
+enum ObjectIdenfier
+{
+	kLight,
+	kCamera,
+	kObject,
+	kUnknown,
+};
+
 class cGameObject
 {
 public:
@@ -32,6 +40,9 @@ public:
 	
 	const std::wstring& GetName( ) const;
 	const D3DXMATRIXA16& GetWorld( ) const;
+
+	virtual ObjectIdenfier GetIdenfier( ) const = 0;
+
 
 private:
 	void UpdateWorld( );

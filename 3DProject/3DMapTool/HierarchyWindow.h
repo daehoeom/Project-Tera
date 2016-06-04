@@ -23,6 +23,7 @@ private:
 
 private:
 	HWND m_listHandle;
+	int m_currSelectedItem;
 	int m_layer = 0;
 	POINT m_prevPos;
 	IWindowDelegate* m_wndDelegate = nullptr;

@@ -2,7 +2,7 @@
 #include "cGameObjectManager.h"
 
 #include "cDeviceManager.h"
-//#include "cCollision.h"
+
 
 cGameObjectManager::cGameObjectManager()
 {
@@ -14,6 +14,7 @@ cGameObjectManager::~cGameObjectManager()
 	{
 		SAFE_DELETE( elem.second );
 	}
+	m_objMap.clear( );
 }
 
 void cGameObjectManager::Update()

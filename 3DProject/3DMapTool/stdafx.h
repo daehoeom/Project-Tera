@@ -77,8 +77,8 @@ enum
 	MainWindowWidth = 800,
 	MainWindowHeight = 800,
 
-	HierarchyWindowWidth = 300,
-	HierarchyWindowHeight = MainWindowHeight/2,	// Follow parent's
+	HierarchyWindowWidth = 200,
+	HierarchyWindowHeight = MainWindowHeight,
 
 	InspectorWindowWidth = HierarchyWindowWidth,
 	InspectorWindowHeight = MainWindowHeight/2,

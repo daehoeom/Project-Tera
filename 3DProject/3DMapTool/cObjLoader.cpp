@@ -202,8 +202,13 @@ void cObjLoader::LoadMtlLib(const char* szFullPath)
 		}
 		else if (szBuf[0] == 'm')
 		{
-			char szTexPath[1024];
-			sscanf(szBuf, "%*s %s", szTexPath);
+			std::string szTexPath;
+			szTexPath.resize( 1024 );
+			sscanf(szBuf, "%*s %s", &szTexPath[0]);
+
+			szTexPath =
+				GetPathWithoutFileName( szFullPath ) +
+				GetFileNameFromPath( szTexPath );
 
 			LPDIRECT3DTEXTURE9 pTexture = NULL;
 			pTexture = g_pTextureManager->GetTexture(szTexPath);
@@ -211,6 +216,8 @@ void cObjLoader::LoadMtlLib(const char* szFullPath)
 			m_mapMtlTex[sMtlName]->SetTexture(pTexture);
 		}
 	}
+
+	auto mtrl = m_mapMtlTex.find( sMtlName )->second->GetMtl( );
 
 	fclose(fp);
 }

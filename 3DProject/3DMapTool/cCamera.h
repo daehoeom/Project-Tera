@@ -1,20 +1,25 @@
 #pragma once
+#include "cGameObject.h"
 #include "Singleton.h"
 
-class cCamera : 
-	public TSingleton<cCamera>
+class cCameraObject :
+	public cGameObject
 {
 public:
-	void Setup( HWND wndHandle );
+	cCameraObject( HWND wndHandle, const std::wstring& objName );
+	virtual ~cCameraObject( );
 
-	void Update(D3DXVECTOR3* pTarget = NULL);
+	void Update( );
 	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-protected:
-	cCamera( );
-	~cCamera( );
+	void SetTarget( cGameObject* target );
+	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kCamera; }
 
 private:
+	void UpdateInput( );
+
+private:
+	cGameObject* m_target;
 	HWND m_ownerWndHandle;
 	D3DXVECTOR3	m_vEye;
 	D3DXVECTOR3	m_vUp;

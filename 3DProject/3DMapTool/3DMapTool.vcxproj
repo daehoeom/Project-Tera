@@ -159,6 +159,7 @@
     <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
     <ClInclude Include="cTextureManager.h" />
+    <ClInclude Include="DirectInput.h" />
     <ClInclude Include="HierarchyWindow.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="LightObject.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjLoader.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
+    <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="LightObject.cpp" />
