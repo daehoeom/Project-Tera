@@ -45,6 +45,7 @@ public:
 
 private:
 	void UpdateWorld( );
+	bool IsSameWithSelectedItemInHierarchy( );
 
 private:
 	D3DXVECTOR3 m_pos;
@@ -61,7 +62,11 @@ inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
 	m_matWorld._41 = pos.x;
 	m_matWorld._42 = pos.y;
 	m_matWorld._43 = pos.z;
-	g_inspectorWnd->SetPositionData( m_pos );
+
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetPositionData( m_pos );
+	}
 }
 
 inline void cGameObject::Move( const D3DXVECTOR3& pos )
@@ -70,35 +75,55 @@ inline void cGameObject::Move( const D3DXVECTOR3& pos )
 	m_matWorld._41 += pos.x;
 	m_matWorld._42 += pos.y;
 	m_matWorld._43 += pos.z;
-	g_inspectorWnd->SetPositionData( m_pos );
+	
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetPositionData( m_pos );
+	}
 }
 
 inline void cGameObject::SetAngle( const D3DXVECTOR3& rot )
 {
 	m_angle = rot;
 	this->UpdateWorld( );
-	g_inspectorWnd->SetRotationData( m_angle );
+	
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetRotationData( m_angle );
+	}
 }
 
 inline void cGameObject::Rotate( const D3DXVECTOR3& rot )
 {
 	m_angle += rot;
 	this->UpdateWorld( );
-	g_inspectorWnd->SetRotationData( m_angle );
+
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetRotationData( m_angle );
+	}
 }
 
 inline void cGameObject::SetScale( const D3DXVECTOR3& scale )
 {
 	m_scale = scale;
 	this->UpdateWorld( );
-	g_inspectorWnd->SetScaleData( m_scale );
+
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetScaleData( m_scale );
+	}
 }
 
 inline void cGameObject::Scale( const D3DXVECTOR3& scale )
 {
 	m_scale += scale;
 	this->UpdateWorld( );
-	g_inspectorWnd->SetScaleData( m_scale );
+	
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetScaleData( m_scale );
+	}
 }
 
 inline void cGameObject::SetActive( bool isActive )
@@ -151,4 +176,24 @@ inline void cGameObject::UpdateWorld( )
 	D3DXMatrixTranslation( &matTrans, m_pos.x, m_pos.y, m_pos.z );
 
 	m_matWorld = matScale * matRot * matTrans;
+}
+
+inline bool cGameObject::IsSameWithSelectedItemInHierarchy( )
+{
+	if ( g_hierarchyWnd->GetSelectedItemIndex( ) != -1 )
+	{
+		wchar_t selectedItemText[256] {0};
+		g_hierarchyWnd->GetSelectedItemText(
+			selectedItemText, 256 );
+
+		if ( !std::wcscmp( selectedItemText,
+			this->GetName( ).c_str( ) ) )
+		{
+			return true;
+		}
+	}
+	
+	return false;
+
+	return false;
 }

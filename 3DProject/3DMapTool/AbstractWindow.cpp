@@ -49,6 +49,11 @@ AbstractWindow* AbstractWindow::GetOwner( )
 	return m_owner;
 }
 
+const AbstractWindow* AbstractWindow::GetOwner( ) const
+{
+	return m_owner;
+}
+
 std::wstring AbstractWindow::GetTitle( )
 {
 	wchar_t buf[128];
@@ -108,6 +113,19 @@ void AbstractWindow::SetupWindowComponents( )
 
 AbstractWindow* AbstractWindow::GetChildByName( 
 	const std::wstring& name )
+{
+	for ( int i = 0; i < m_childRepo.size( ); ++i )
+	{
+		if ( m_childRepo[i]->GetTitle( ) == name )
+		{
+			return m_childRepo[i];
+		}
+	}
+
+	return nullptr;
+}
+
+const AbstractWindow * AbstractWindow::GetChildByName( const std::wstring & name ) const
 {
 	for ( int i = 0; i < m_childRepo.size( ); ++i )
 	{

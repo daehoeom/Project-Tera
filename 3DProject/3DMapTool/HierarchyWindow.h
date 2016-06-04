@@ -13,6 +13,9 @@ public:
 	virtual void OnIdle( ) override;
 	
 	void AddListItem( const std::wstring& itemName );
+	
+	void GetSelectedItemText( wchar_t* outText, int32_t maxCount ) const;
+	int32_t GetSelectedItemIndex( ) const;
 
 protected:
 	LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) override;

@@ -49,18 +49,6 @@ LRESULT HierarchyWindow::MessageProc(
 		}
 		break;
 
-	/*case WM_COMMAND:
-		{
-			WORD wmID = LOWORD( wParam );
-			WORD wmEvent = HIWORD( wParam );
-
-			if ( wmEvent == LBN_KILLFOCUS )
-			{
-				MessageBox( 0,0,0,0 );
-			}
-		}
-		break;*/
-
 	case WM_NOTIFY:
 		{
 			LPNMHDR lpHdr;
@@ -74,13 +62,18 @@ LRESULT HierarchyWindow::MessageProc(
 			
 			switch ( lpHdr->code )
 			{
-			case LVN_ITEMCHANGED:
+			case NM_CLICK:
 				{
-					wchar_t findObjName[256];
+					wchar_t findObjName[256] {0};
 					ListView_GetItemText( m_listHandle,
 						lpListView->iItem, 0,
 						findObjName, 256
 					);
+
+					if ( findObjName[0] == '\0' )
+					{
+						break;
+					}
 
 					auto object = cGameObjectManager::Get( )->FindObject(
 						findObjName
@@ -149,6 +142,24 @@ void HierarchyWindow::OnIdle( )
 {
 }
 
+void HierarchyWindow::GetSelectedItemText( 
+	wchar_t* outText, int32_t maxCount ) const
+{
+	ListView_GetItemText( m_listHandle,
+		this->GetSelectedItemIndex( ),
+		0,
+		outText,
+		maxCount );
+}
+
+int32_t HierarchyWindow::GetSelectedItemIndex( ) const
+{
+	int32_t index = ListView_GetNextItem( m_listHandle,
+		-1, LVNI_ALL | LVNI_SELECTED );
+
+	return index;
+}
+
 void HierarchyWindow::AddListItem( 
 	const std::wstring& itemName )
 {
@@ -170,7 +181,7 @@ void HierarchyWindow::SetupList( HWND wndHandle )
 	m_listHandle = CreateWindowEx( 
 		NULL, 
 		WC_LISTVIEW, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER |
-		LVS_REPORT | LVS_SHOWSELALWAYS, -1, -1, rt.right+2, rt.bottom+2, 
+		LVS_REPORT | LVS_SINGLESEL, -1, -1, rt.right+2, rt.bottom+2,
 		wndHandle,
 		NULL, GetModuleHandle( 0 ), NULL 
 	);

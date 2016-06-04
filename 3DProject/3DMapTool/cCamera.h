@@ -24,9 +24,6 @@ private:
 	D3DXVECTOR3	m_vLookAt;
 	D3DXVECTOR3	m_vEye;
 	bool		m_isLButtonDown;
-	float		m_fRotX;
-	float		m_fRotY;
 	POINT		m_ptPrevMouse;
-	float		m_fDist;
 };
 

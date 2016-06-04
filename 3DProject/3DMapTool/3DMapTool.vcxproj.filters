@@ -91,6 +91,9 @@
     <Filter Include="hpp\IO">
       <UniqueIdentifier>{a844b7fd-a89a-4d4a-ae54-6f153c89a2f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hpp\Console">
+      <UniqueIdentifier>{bec04f1c-1287-44f3-98bf-afcd821832c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -179,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="IPickable.h">
       <Filter>hpp\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>hpp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

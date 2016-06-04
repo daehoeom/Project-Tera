@@ -60,10 +60,12 @@ public:
 	void GetPosition( _Out_ int * x, _Out_ int * y );
 	
 	AbstractWindow* GetOwner( );
+	const AbstractWindow* GetOwner( ) const;
 	HWND GetWindowHandle( ) const;
 	const std::wstring& GetName( ) const;
 	const std::wstring& GetClassName( ) const;
 	AbstractWindow* GetChildByName( const std::wstring& name );
+	const AbstractWindow* GetChildByName( const std::wstring& name ) const;
 	
 protected:
 	virtual LRESULT MessageProc( HWND wndHandle, UINT msg, WPARAM wParam, LPARAM lParam ) = 0;

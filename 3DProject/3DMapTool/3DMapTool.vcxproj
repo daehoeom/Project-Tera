@@ -158,6 +158,7 @@
     <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="HierarchyWindow.h" />
