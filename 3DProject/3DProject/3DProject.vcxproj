@@ -95,10 +95,10 @@
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="cDyingGhillieDhu.h" />
     <ClInclude Include="cEnemy.h" />
+    <ClInclude Include="cEnemySkinMesh.h" />
     <ClInclude Include="cFace.h" />
     <ClInclude Include="cFatHunter.h" />
     <ClInclude Include="cFrustumCulling.h" />
-    <ClInclude Include="cFSM.h" />
     <ClInclude Include="cGiantStone.h" />
     <ClInclude Include="cGrid.h" />
     <ClInclude Include="cGroup.h" />
@@ -117,7 +117,6 @@
     <ClInclude Include="cParticle_Firework.h" />
     <ClInclude Include="cPixie.h" />
     <ClInclude Include="cPlayer.h" />
-    <ClInclude Include="cPlayerState.h" />
     <ClInclude Include="cRandomUtil.h" />
     <ClInclude Include="cSkyBox.h" />
     <ClInclude Include="cTextureManager.h" />
@@ -125,6 +124,7 @@
     <ClInclude Include="cGameObject.h" />
     <ClInclude Include="ICollider.h" />
     <ClInclude Include="cGameObjectManager.h" />
+    <ClInclude Include="IState.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Singleton.h" />
@@ -145,10 +145,10 @@
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cDyingGhillieDhu.cpp" />
     <ClCompile Include="cEnemy.cpp" />
+    <ClCompile Include="cEnemySkinMesh.cpp" />
     <ClCompile Include="cFace.cpp" />
     <ClCompile Include="cFatHunter.cpp" />
     <ClCompile Include="cFrustumCulling.cpp" />
-    <ClCompile Include="cFSM.cpp" />
     <ClCompile Include="cGiantStone.cpp" />
     <ClCompile Include="cGrid.cpp" />
     <ClCompile Include="cGroup.cpp" />
@@ -167,7 +167,6 @@
     <ClCompile Include="cParticle_Firework.cpp" />
     <ClCompile Include="cPixie.cpp" />
     <ClCompile Include="cPlayer.cpp" />
-    <ClCompile Include="cPlayerState.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
@@ -175,6 +174,7 @@
     <ClCompile Include="cGameObject.cpp" />
     <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="cGameObjectManager.cpp" />
+    <ClCompile Include="IState.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

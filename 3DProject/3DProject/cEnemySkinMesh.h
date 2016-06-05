@@ -1,13 +1,14 @@
 #pragma once
+
 class cAllocateHierarchy;
 struct ST_BONE_MESH;
 
-class cBody
+class cEnemySkinMesh
 {
-
 public:
-	cBody();
-	~cBody();
+	cEnemySkinMesh();
+	~cEnemySkinMesh();
+
 	void Setup(char* FolderName, char* FileName);
 	void Update();
 	void Render();
@@ -20,17 +21,14 @@ public:
 	LPD3DXFRAME& GetFrameRoot();
 	DOUBLE GetAniTrackPeriod(int nIndex);
 
-	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
-	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }
-
-	void SetHairTM(D3DXMATRIX* hair) { m_matHairTM = *hair; }
-	D3DXMATRIX GetHairTM() { return m_matHairTM; }
-
 	void SetRootTM(D3DXMATRIX* root) { m_matRootTM = *root; }
 	D3DXMATRIX GetRootTM() { return m_matRootTM; }
 
 	void SetWorld(D3DXMATRIX* world) { m_matWorld = *world; }
 	D3DXMATRIX GetWorld() { return m_matWorld; }
+
+	void SetLocal(D3DXMATRIX* local) { m_matLocal = *local; }
+	D3DXMATRIX GetLocal() { return m_matLocal; }
 
 private:
 	//X파일
@@ -47,10 +45,9 @@ private:
 	std::vector<LPDIRECT3DTEXTURE9>	m_vecTexture;
 	float						m_ft;
 
-	D3DXMATRIX					m_matNeckTM;
-	D3DXMATRIX					m_matHairTM;
 	D3DXMATRIX					m_matRootTM;
 	D3DXMATRIX					m_matWorld;
+	D3DXMATRIX					m_matLocal;
 
 	//보간
 	bool						m_bIsBlend;

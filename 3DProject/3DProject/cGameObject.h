@@ -1,5 +1,4 @@
 #pragma once
-#include "cFSM.h"
 
 enum class ObjectTag
 {
@@ -8,8 +7,7 @@ enum class ObjectTag
 	kBuilding,
 };
 
-class cGameObject :
-	public cFSM
+class cGameObject
 {
 public:
 	cGameObject( const std::string& objName );
@@ -21,7 +19,8 @@ public:
 public:
 	void SetPosition( const D3DXVECTOR3& pos );
 	void Move( const D3DXVECTOR3& pos );
-	const D3DXVECTOR3& GetPosition( ) const;
+	D3DXVECTOR3& GetPosition();
+	const D3DXVECTOR3& GetPosition() const;
 
 	// Roatation
 	void SetAngle( const D3DXVECTOR3& rot );
@@ -99,7 +98,12 @@ inline void cGameObject::SetActive( bool isActive )
 	m_isActive = isActive;
 }
 
-inline const D3DXVECTOR3& cGameObject::GetPosition( ) const
+inline D3DXVECTOR3& cGameObject::GetPosition()
+{
+	return m_pos;
+}
+
+inline const D3DXVECTOR3& cGameObject::GetPosition() const
 {
 	return m_pos;
 }

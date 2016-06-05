@@ -1,17 +1,24 @@
 #include "stdafx.h"
 #include "cArgoniteFemaleMagician.h"
-#include "cBody.h"
+#include "cEnemySkinMesh.h"
 
 cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 {
-	m_pBody = new cBody;
+	m_pBody = new cEnemySkinMesh;
 	m_pBody->Setup("./CH/ArgoniteFemaleMagician", "ArgoniteFemaleMagician.X");
 
+	D3DXMATRIX matR;
+	D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);
+	m_pBody->SetLocal(&matR);
+
 	D3DXMATRIXA16 matT;
-	D3DXMatrixTranslation(&matT, 0, 10, 0);
+	D3DXMatrixTranslation(&matT, 0, 50, 0);
 	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
-	this->GetCollider()->SetLocal(&matT);
+	this->GetColliderRepo()[0]->SetLocal(&matT);
+
+	D3DXMatrixTranslation(&matT, 0, 30, 0);
 	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
+	this->GetColliderRepo()[1]->SetLocal(&matT);
 }
 
 
@@ -24,12 +31,9 @@ void cArgoniteFemaleMagician::Update()
 {
 	__super::Update();
 
-	this->GetCollider()->SetWorld(&m_matWorld);
-	
-	if (m_pBody)
+	for (size_t i = 0; i < this->GetColliderRepo().size(); i++)
 	{
-		m_pBody->Update();
-		m_pBody->SetWorld(&this->GetWorld( ));
+		this->GetColliderRepo()[i]->SetWorld(&m_matWorld);
 	}
 }
 

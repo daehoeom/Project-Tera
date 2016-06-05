@@ -23,10 +23,8 @@ cGameObject::~cGameObject( )
 
 void cGameObject::Update( )
 {
-	cFSM::Update( );
 }
 
 void cGameObject::Render( )
 {
-	cFSM::Render( );
 }

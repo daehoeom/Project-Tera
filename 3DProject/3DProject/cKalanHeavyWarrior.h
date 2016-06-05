@@ -2,7 +2,7 @@
 
 #include "cEnemy.h"
 
-class cBody;
+class cEnemySkinMesh;
 class cKalanHeavyWarrior :
 	public cEnemy
 {
@@ -12,5 +12,7 @@ public:
 
 	virtual void Update();
 	virtual void Render();
+
+private:
 };
 

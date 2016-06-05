@@ -10,20 +10,19 @@
 #include "cNpcManager.h"
 #include "cArgoniteFemaleMagician.h"
 
+cPlayer* g_player = nullptr;
+
+
 cMainGame::cMainGame( )
 	: m_pGrid(nullptr)
 	, m_pLoader(nullptr)
-	, m_player(nullptr)
 	, m_pNpc(nullptr)
 	, m_pMonster(nullptr)
 {
 	SetupManagers();
 
 	m_pGrid = new cGrid;
-
-	//m_player = new cPlayer;
-
-	//m_pNpc = new cNpcManager;
+	g_player = new cPlayer;
 
 	m_pMonster = new cArgoniteFemaleMagician;
 
@@ -36,7 +35,7 @@ cMainGame::cMainGame( )
 cMainGame::~cMainGame()
 {
 	SAFE_DELETE( m_pGrid );
-	SAFE_DELETE( m_player );
+	SAFE_DELETE( g_player);
 	SAFE_DELETE( m_pLoader );
 	SAFE_DELETE( m_pNpc );
 	SAFE_DELETE(m_pMonster);
@@ -54,9 +53,9 @@ void cMainGame::Update()
 	cCamera::Get()->Update(NULL);
 	cCollisionManager::Get( )->Update( );
 
-	if (m_player)
+	if (g_player)
 	{
-		m_player->Update();
+		g_player->Update();
 	}
 
 	if (m_pNpc)
@@ -95,11 +94,10 @@ void cMainGame::Render()
 		m_pGrid->Render();
 	}
 
-
 	//ÇÃ·¹ÀÌ¾î ·»´õ
-	if (m_player)
+	if (g_player)
 	{
-		m_player->Render();
+		g_player->Render();
 	}
 
 	//Npc ·»´õ
