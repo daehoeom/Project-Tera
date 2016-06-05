@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DMapTool.h" />
+    <ClInclude Include="cBoundingBox.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="AbstractWindow.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="HierarchyWindow.h" />
+    <ClInclude Include="ICollider.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="IO.h" />
     <ClInclude Include="IPickable.h" />
@@ -169,6 +171,7 @@
     <ClInclude Include="LightObject.h" />
     <ClInclude Include="MainSurfaceWindow.h" />
     <ClInclude Include="ObjObject.h" />
+    <ClInclude Include="PickUtil.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
     <ClInclude Include="Singleton.h" />
@@ -179,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DMapTool.cpp" />
+    <ClCompile Include="cBoundingBox.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="AbstractWindow.cpp" />
@@ -192,6 +196,7 @@
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
+    <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="IPickable.cpp" />
@@ -199,6 +204,7 @@
     <ClCompile Include="LightObject.cpp" />
     <ClCompile Include="MainSurfaceWindow.cpp" />
     <ClCompile Include="ObjObject.cpp" />
+    <ClCompile Include="PickUtil.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

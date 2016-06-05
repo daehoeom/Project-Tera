@@ -9,6 +9,7 @@
 
 #define WIN32_LEAN_AND_MEAN     // 거의 사용되지 않는 내용은 Windows 헤더에서 제외합니다.
 // Windows dependent 헤더 파일:
+#define NOMINMAX
 #include <windows.h>
 #include <tchar.h>
 #include <d3d9.h>
@@ -90,6 +91,18 @@ enum
 extern std::unique_ptr<MainSurfaceWindow> g_mainSurfaceWnd;
 extern std::unique_ptr<InspectorWindow> g_inspectorWnd;
 extern std::unique_ptr<HierarchyWindow> g_hierarchyWnd;
+
+struct ST_SPHERE
+{
+	D3DXVECTOR3 position;
+	float radius;
+};
+
+struct ST_RAY
+{
+	D3DXVECTOR3 origin;
+	D3DXVECTOR3 direction;
+};
 
 struct ST_PC_VERTEX
 {
@@ -190,13 +203,6 @@ struct ST_ROT_SAMPLE
 {
 	int				nKeyFrame;
 	D3DXQUATERNION	q;
-};
-
-struct ST_SPHERE
-{
-	D3DXVECTOR3 vCenter;
-	float		fRadius;
-	bool		isPicked;
 };
 
 struct ST_SIZE

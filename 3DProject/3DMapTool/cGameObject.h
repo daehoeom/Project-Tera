@@ -35,6 +35,8 @@ public:
 	/*
 		State & Component
 	*/
+	void SetSelected( bool isSelected );
+	bool IsSelected( ) const;
 	virtual void SetActive( bool isActive );
 	bool IsActive( ) const;
 	
@@ -48,6 +50,7 @@ private:
 	bool IsSameWithSelectedItemInHierarchy( );
 
 private:
+	bool m_isSelected;
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_angle;
 	D3DXVECTOR3 m_scale;
@@ -124,6 +127,16 @@ inline void cGameObject::Scale( const D3DXVECTOR3& scale )
 	{
 		g_inspectorWnd->SetScaleData( m_scale );
 	}
+}
+
+inline void cGameObject::SetSelected( bool isSelected )
+{
+	m_isSelected = isSelected;
+}
+
+inline bool cGameObject::IsSelected( ) const
+{
+	return m_isSelected;
 }
 
 inline void cGameObject::SetActive( bool isActive )

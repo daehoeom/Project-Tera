@@ -30,6 +30,7 @@ protected:
 	virtual ~cGameObjectManager();
 
 private:
+	cGameObject* m_prevSelected;
 	ObjectMap m_objMap;
 };
 

@@ -2,7 +2,9 @@
 #include "HierarchyWindow.h"
 
 #include "resource.h"
+#include "cGameObject.h"
 #include "cGameObjectManager.h"
+#include "cCamera.h"
 #include "InspectorWindow.h"
 
 
@@ -62,28 +64,31 @@ LRESULT HierarchyWindow::MessageProc(
 			
 			switch ( lpHdr->code )
 			{
-			case NM_CLICK:
+			case NM_DBLCLK:
+				this->OnItemDoubleClicked( lpListView );
+				break;
+
+			case LVN_KEYDOWN:
+				switch ( LOWORD( lParam ))
 				{
-					wchar_t findObjName[256] {0};
-					ListView_GetItemText( m_listHandle,
-						lpListView->iItem, 0,
-						findObjName, 256
-					);
+				case VK_F2:
+					break;
+				case VK_DELETE:
+					MessageBox( 0, 0, 0, 0 );
 
-					if ( findObjName[0] == '\0' )
-					{
-						break;
-					}
+					break;
+				}
+				break;
 
-					auto object = cGameObjectManager::Get( )->FindObject(
-						findObjName
-					);
+			case LVN_ITEMCHANGED:
+				{
+					auto* object = this->GetSelectedItemAsObject( lpListView );
 					if ( object )
 					{
 						auto inspectorWindow = static_cast<InspectorWindow*>(
 							this->GetOwner( )->GetChildByName( 
 								L"Inspector" ));
-							
+						
 						inspectorWindow->SetPositionData( object->GetPosition( ) );
 						inspectorWindow->SetRotationData( object->GetAngle( ) );
 						inspectorWindow->SetScaleData( object->GetScale( ));
@@ -142,7 +147,51 @@ void HierarchyWindow::OnIdle( )
 {
 }
 
-void HierarchyWindow::GetSelectedItemText( 
+void HierarchyWindow::OnItemDoubleClicked( 
+	LPNMLISTVIEW lpListView )
+{
+	auto* object = this->GetSelectedItemAsObject( lpListView );
+	if ( object )
+	{
+		// Move Camera
+
+		auto* camera = cGameObjectManager::Get( )->FindObject(
+			L"Camera" );
+		const D3DXVECTOR3& cameraRot = camera->GetAngle( );
+		D3DXVECTOR3 cameraDir( 0, 0, 1 );
+		D3DXMATRIXA16 matRot, matRotX, matRotY;
+		D3DXMatrixRotationX( &matRotX, cameraRot.x );
+		D3DXMatrixRotationY( &matRotY, cameraRot.y );
+		matRot = matRotX*matRotY;
+		D3DXVec3TransformNormal( &cameraDir, &cameraDir, &matRot );
+
+		camera->SetPosition( {
+			object->GetPosition( ).x,
+			object->GetPosition( ).y,
+			object->GetPosition( ).z
+		} );
+		camera->Move( cameraDir*-20 );
+	}
+}
+
+cGameObject* HierarchyWindow::GetSelectedItemAsObject(
+	LPNMLISTVIEW lpListView )
+{
+	wchar_t findObjName[256]{ 0 };
+	ListView_GetItemText( m_listHandle,
+		lpListView->iItem, 0,
+		findObjName, 256
+	);
+
+	if ( findObjName[0] == '\0' )
+	{
+		return nullptr;
+	}
+
+	return cGameObjectManager::Get( )->FindObject( findObjName );
+}
+
+void HierarchyWindow::GetSelectedItemText(
 	wchar_t* outText, int32_t maxCount ) const
 {
 	ListView_GetItemText( m_listHandle,

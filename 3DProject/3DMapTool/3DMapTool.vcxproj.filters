@@ -76,9 +76,6 @@
     <Filter Include="hpp\Utility">
       <UniqueIdentifier>{bd144f53-2313-4a0a-bb70-acefa05dca48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cpp\Utility">
-      <UniqueIdentifier>{b8f3d421-faa4-4064-9393-98cd9cb76032}</UniqueIdentifier>
-    </Filter>
     <Filter Include="cpp\Terrain">
       <UniqueIdentifier>{9c9e2ba1-9910-4aed-9289-0af9ae407892}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,12 @@
     </Filter>
     <Filter Include="hpp\Console">
       <UniqueIdentifier>{bec04f1c-1287-44f3-98bf-afcd821832c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Collider">
+      <UniqueIdentifier>{9ee9ab0a-1233-442e-85d2-9407e3c1f49c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Misc\Utility">
+      <UniqueIdentifier>{b8f3d421-faa4-4064-9393-98cd9cb76032}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -177,14 +180,23 @@
     <ClInclude Include="IO.h">
       <Filter>hpp\IO</Filter>
     </ClInclude>
-    <ClInclude Include="IRenderable.h">
-      <Filter>hpp</Filter>
-    </ClInclude>
     <ClInclude Include="IPickable.h">
       <Filter>hpp\Object</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>hpp\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollider.h">
+      <Filter>hpp\Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="cBoundingBox.h">
+      <Filter>hpp\Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="PickUtil.h">
+      <Filter>hpp\Misc\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +255,7 @@
       <Filter>cpp\Object</Filter>
     </ClCompile>
     <ClCompile Include="StringUtil.cpp">
-      <Filter>cpp\Utility</Filter>
+      <Filter>cpp\Misc\Utility</Filter>
     </ClCompile>
     <ClCompile Include="DirectInput.cpp">
       <Filter>cpp\Manager</Filter>
@@ -255,10 +267,19 @@
       <Filter>cpp\IO</Filter>
     </ClCompile>
     <ClCompile Include="IRenderable.cpp">
-      <Filter>cpp</Filter>
+      <Filter>cpp\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ICollider.cpp">
+      <Filter>hpp\Object\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="cBoundingBox.cpp">
+      <Filter>hpp\Object\Collider</Filter>
     </ClCompile>
     <ClCompile Include="IPickable.cpp">
-      <Filter>hpp\Object</Filter>
+      <Filter>cpp\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PickUtil.cpp">
+      <Filter>cpp\Misc\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

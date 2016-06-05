@@ -1,10 +1,11 @@
 #pragma once
-#include "cGameObject.h"
+#include "IPickable.h"
 #include "cObjLoader.h"
 #include "cGroup.h"
 
+
 class ObjObject : 
-	public cGameObject
+	public IPickable
 {
 public:
 	ObjObject( const std::wstring& name,
@@ -16,6 +17,7 @@ public:
 	virtual void Update( ) override;
 
 	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kObject; }
+	virtual bool IsPicked( const D3DXVECTOR3& pickedPos ) const override;
 
 private:
 	std::vector<cGroup*> m_vecGroup;

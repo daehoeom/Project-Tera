@@ -3,8 +3,9 @@
 
 #include "cDeviceManager.h"
 
+
 IPickable::IPickable( const std::wstring& objName ) :
-	IRenderable( objName )
+	cGameObject( objName )
 {
 }
 

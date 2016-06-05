@@ -11,9 +11,11 @@ public:
 
 	// Event handler
 	virtual void OnIdle( ) override;
-	
+	void OnItemDoubleClicked( LPNMLISTVIEW );
+
 	void AddListItem( const std::wstring& itemName );
 	
+	class cGameObject* GetSelectedItemAsObject( LPNMLISTVIEW );
 	void GetSelectedItemText( wchar_t* outText, int32_t maxCount ) const;
 	int32_t GetSelectedItemIndex( ) const;
 

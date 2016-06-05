@@ -1,22 +1,21 @@
 #pragma once
-#include "IRenderable.h"
+#include "cGameObject.h"
 
 
 class IPickDelegate
 {
 public:
-//	void OnPicked( ) = 0;
+//	virtual void OnPicked( ) = 0;
 };
 
 class IPickable : 
-	public IRenderable//,
+	public cGameObject//,
 	//public IPickDelegate
 {
 public:
 	IPickable( const std::wstring& objName );
 	virtual ~IPickable( ) = 0;
 
-public:
-	virtual bool IsPicked( D3DXVECTOR3* pickedPos ) const = 0;
+	virtual bool IsPicked( const D3DXVECTOR3& pickedPos ) const = 0;
 };
 
