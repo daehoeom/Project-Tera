@@ -15,8 +15,9 @@ public:
 	virtual void Render( ) override;
 	virtual void Update( ) override;
 
+	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kObject; }
+
 private:
 	std::vector<cGroup*> m_vecGroup;
-	cObjLoader m_objLoader;
 };
 

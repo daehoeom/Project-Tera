@@ -2,10 +2,10 @@
 #include "cGameObject.h"
 
 #include "cGameObjectManager.h"
-//#include "ICollider.h"
 
-
-cGameObject::cGameObject( const std::wstring& objName ) :
+cGameObject::cGameObject( 
+	const std::wstring& objName ) :
+	
 	m_objName( objName ),
 	m_isActive( true ),
 	m_pos( 0.f, 0.f, 0.f ),
@@ -18,8 +18,6 @@ cGameObject::cGameObject( const std::wstring& objName ) :
 
 cGameObject::~cGameObject( )
 {
-	cGameObjectManager::Get()->EraseObject(
-		this->GetName());
 }
 
 void cGameObject::Update( )

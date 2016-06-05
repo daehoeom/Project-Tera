@@ -1,5 +1,13 @@
 #pragma once
 
+enum ObjectIdenfier
+{
+	kLight,
+	kCamera,
+	kObject,
+	kUnknown,
+};
+
 class cGameObject
 {
 public:
@@ -27,14 +35,17 @@ public:
 	/*
 		State & Component
 	*/
-	void SetActive( bool isActive );
+	virtual void SetActive( bool isActive );
 	bool IsActive( ) const;
 	
 	const std::wstring& GetName( ) const;
 	const D3DXMATRIXA16& GetWorld( ) const;
 
+	virtual ObjectIdenfier GetIdenfier( ) const = 0;
+
 private:
 	void UpdateWorld( );
+	bool IsSameWithSelectedItemInHierarchy( );
 
 private:
 	D3DXVECTOR3 m_pos;
@@ -51,6 +62,11 @@ inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
 	m_matWorld._41 = pos.x;
 	m_matWorld._42 = pos.y;
 	m_matWorld._43 = pos.z;
+
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetPositionData( m_pos );
+	}
 }
 
 inline void cGameObject::Move( const D3DXVECTOR3& pos )
@@ -59,30 +75,55 @@ inline void cGameObject::Move( const D3DXVECTOR3& pos )
 	m_matWorld._41 += pos.x;
 	m_matWorld._42 += pos.y;
 	m_matWorld._43 += pos.z;
+	
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetPositionData( m_pos );
+	}
 }
 
 inline void cGameObject::SetAngle( const D3DXVECTOR3& rot )
 {
 	m_angle = rot;
 	this->UpdateWorld( );
+	
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetRotationData( m_angle );
+	}
 }
 
 inline void cGameObject::Rotate( const D3DXVECTOR3& rot )
 {
 	m_angle += rot;
 	this->UpdateWorld( );
+
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetRotationData( m_angle );
+	}
 }
 
 inline void cGameObject::SetScale( const D3DXVECTOR3& scale )
 {
 	m_scale = scale;
 	this->UpdateWorld( );
+
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetScaleData( m_scale );
+	}
 }
 
 inline void cGameObject::Scale( const D3DXVECTOR3& scale )
 {
 	m_scale += scale;
 	this->UpdateWorld( );
+	
+	if ( IsSameWithSelectedItemInHierarchy() )
+	{
+		g_inspectorWnd->SetScaleData( m_scale );
+	}
 }
 
 inline void cGameObject::SetActive( bool isActive )
@@ -135,4 +176,24 @@ inline void cGameObject::UpdateWorld( )
 	D3DXMatrixTranslation( &matTrans, m_pos.x, m_pos.y, m_pos.z );
 
 	m_matWorld = matScale * matRot * matTrans;
+}
+
+inline bool cGameObject::IsSameWithSelectedItemInHierarchy( )
+{
+	if ( g_hierarchyWnd->GetSelectedItemIndex( ) != -1 )
+	{
+		wchar_t selectedItemText[256] {0};
+		g_hierarchyWnd->GetSelectedItemText(
+			selectedItemText, 256 );
+
+		if ( !std::wcscmp( selectedItemText,
+			this->GetName( ).c_str( ) ) )
+		{
+			return true;
+		}
+	}
+	
+	return false;
+
+	return false;
 }

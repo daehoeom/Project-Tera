@@ -19,7 +19,7 @@ public:
 	void Render( );
 
 	void AddObject( cGameObject* pObject );
-	void EraseObject( const std::wstring& key );
+	void DeleteObject( const std::wstring& key );
 	cGameObject* FindObject( const std::wstring& key );
 
 	iterator begin( );
@@ -45,10 +45,15 @@ inline cGameObject* cGameObjectManager::FindObject(
 	return m_objMap[key];
 }
 
-inline void cGameObjectManager::EraseObject(
+inline void cGameObjectManager::DeleteObject(
 	const std::wstring& key )
 {
-	m_objMap.erase( key );
+	auto iter = m_objMap.find( key );
+	if ( iter != m_objMap.end( ) )
+	{
+		SAFE_DELETE( iter->second );
+		m_objMap.erase( key );
+	}
 }
 
 inline cGameObjectManager::iterator cGameObjectManager::begin()

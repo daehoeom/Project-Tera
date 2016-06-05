@@ -73,6 +73,27 @@
     <Filter Include="cpp\Object">
       <UniqueIdentifier>{60f4d207-4df5-403f-9cd5-03dc364d3d4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hpp\Utility">
+      <UniqueIdentifier>{bd144f53-2313-4a0a-bb70-acefa05dca48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Utility">
+      <UniqueIdentifier>{b8f3d421-faa4-4064-9393-98cd9cb76032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Terrain">
+      <UniqueIdentifier>{9c9e2ba1-9910-4aed-9289-0af9ae407892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Terrain">
+      <UniqueIdentifier>{fd303ae4-a8ba-4520-ab52-1e2f02db2261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\IO">
+      <UniqueIdentifier>{96c8bd0e-ce8a-42d1-847b-188d9c61a520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\IO">
+      <UniqueIdentifier>{a844b7fd-a89a-4d4a-ae54-6f153c89a2f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Console">
+      <UniqueIdentifier>{bec04f1c-1287-44f3-98bf-afcd821832c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -95,9 +116,6 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>hpp\PrecompiledHeader</Filter>
-    </ClInclude>
-    <ClInclude Include="3DMapTool.h">
-      <Filter>hpp\Main</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resource</Filter>
@@ -139,9 +157,33 @@
       <Filter>hpp\Manager</Filter>
     </ClInclude>
     <ClInclude Include="ObjObject.h">
-      <Filter>hpp</Filter>
+      <Filter>hpp\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="LightObject.h">
+      <Filter>hpp\Object</Filter>
     </ClInclude>
     <ClInclude Include="StringUtil.h">
+      <Filter>hpp\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectInput.h">
+      <Filter>hpp\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="3DMapTool.h">
+      <Filter>hpp\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainObject.h">
+      <Filter>hpp\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
+      <Filter>hpp\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="IPickable.h">
+      <Filter>hpp\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
       <Filter>hpp</Filter>
     </ClInclude>
   </ItemGroup>
@@ -195,10 +237,28 @@
       <Filter>cpp\Manager</Filter>
     </ClCompile>
     <ClCompile Include="ObjObject.cpp">
-      <Filter>cpp</Filter>
+      <Filter>cpp\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="LightObject.cpp">
+      <Filter>cpp\Object</Filter>
     </ClCompile>
     <ClCompile Include="StringUtil.cpp">
+      <Filter>cpp\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectInput.cpp">
+      <Filter>cpp\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainObject.cpp">
+      <Filter>cpp\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>cpp\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="IRenderable.cpp">
       <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="IPickable.cpp">
+      <Filter>hpp\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

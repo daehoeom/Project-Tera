@@ -5,15 +5,19 @@
 #include "cDeviceManager.h"
 #include "cGameObjectManager.h"
 #include "ObjObject.h"
+#include "LightObject.h"
 #include "HierarchyWindow.h"
 #include "cCamera.h"
 
 namespace
 {
 
+
 enum ExtensionTable
 {
 	kX,
+	kRaw8,
+	kRaw16,
 	kObj,
 	kUnknown,
 };
@@ -39,15 +43,18 @@ ExtensionTable AnalyzeExtension(
 	{
 		return ExtensionTable::kObj;
 	}
+	else if ( extension == "raw" )
+	{
+		return ExtensionTable::kObj;
+	}
 	else
 	{
 		return ExtensionTable::kUnknown;
 	}
 }
 
-}
 
-std::vector<ST_PN_VERTEX>	m_vecVertex;
+}
 
 HWND g_mainWndHandle;
 
@@ -56,6 +63,7 @@ MainSurfaceWindow::MainSurfaceWindow( ) :
 		L"3DMapTool",
 		WS_EX_ACCEPTFILES,
 		WS_OVERLAPPEDWINDOW,
+		nullptr,
 		this->MakeWindowClass( ),
 		GetSystemMetrics( SM_CXSCREEN )/2-(MainWindowWidth/2),
 		GetSystemMetrics( SM_CYSCREEN )/2-(MainWindowHeight/2),
@@ -64,81 +72,11 @@ MainSurfaceWindow::MainSurfaceWindow( ) :
 	),
 	m_dropQueryPath( new char[MAX_PATH] )
 {
-	std::vector<D3DXVECTOR3> vecVertexList;
-	vecVertexList.push_back(D3DXVECTOR3(-1, -1, -1));
-	vecVertexList.push_back(D3DXVECTOR3(-1,  1, -1));
-	vecVertexList.push_back(D3DXVECTOR3( 1,  1, -1));
-	vecVertexList.push_back(D3DXVECTOR3( 1, -1, -1));
-	vecVertexList.push_back(D3DXVECTOR3(-1, -1,  1));
-	vecVertexList.push_back(D3DXVECTOR3(-1,  1,  1));
-	vecVertexList.push_back(D3DXVECTOR3( 1,  1,  1));
-	vecVertexList.push_back(D3DXVECTOR3( 1, -1,  1));
-
-	D3DXVECTOR3 n;
-	// 전
-	n = D3DXVECTOR3( 0, 0,-1);
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[0], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[2], n));
-
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[0], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[2], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
-
-	// 후
-	n = D3DXVECTOR3( 0, 0, 1);
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[5], n));
-
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[7], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
-
-	// 좌
-	n = D3DXVECTOR3(-1, 0, 0);
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[5], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
-
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[0], n));
-
-	// 우
-	n = D3DXVECTOR3( 1, 0, 0);
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[2], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
-
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[7], n));
-
-	// 상
-	n = D3DXVECTOR3( 0, 1, 0);
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[5], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
-
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[1], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[6], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[2], n));
-
-	// 하
-	n = D3DXVECTOR3( 0,-1, 0);
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[0], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
-
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[4], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[3], n));
-	m_vecVertex.push_back(ST_PN_VERTEX(vecVertexList[7], n));
-
 }
 
 MainSurfaceWindow::~MainSurfaceWindow( )
 {
+	PostQuitMessage( 0 );
 }
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -184,25 +122,22 @@ LRESULT MainSurfaceWindow::MessageProc(
 				&m_dropQueryPath[0], MAX_PATH );
 			
 			static int32_t hierarchyObjIndex = 0;
-		
 			ExtensionTable extension = AnalyzeExtension( 
 				m_dropQueryPath.get( ));
+
 			switch ( extension )
 			{
 			case ExtensionTable::kX:
 				break;
-
 			case ExtensionTable::kObj:
 				{
 					static int32_t createCount = 0;
 					std::wstring str = L"object_";
-					str += std::to_wstring( createCount );
+					str += std::to_wstring( createCount++ );
 
-					ObjObject* obj = new ObjObject( str.c_str(), m_dropQueryPath.get() );
-					cGameObjectManager::Get( )->AddObject( obj );
-
-					//auto* hierarchyWindow = static_cast<HierarchyWindow*>( 
-					//	this->GetChildByName( L"Hierarchy" ));
+					ObjObject* obj = new ObjObject( str.c_str(), m_dropQueryPath.get());
+					static_cast<HierarchyWindow*>( this->GetChildByName( 
+						L"Hierarchy" ))->AddListItem( str );
 				}
 				break;
 
@@ -221,7 +156,7 @@ LRESULT MainSurfaceWindow::MessageProc(
 			switch (wmId)
 			{
 			case IDM_ABOUT:
-				DialogBox(g_instHandle, MAKEINTRESOURCE(IDD_ABOUTBOX), wndHandle, About);
+				DialogBox(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDD_ABOUTBOX), wndHandle, About);
 				break;
 			case IDM_EXIT:
 				DestroyWindow( wndHandle );
@@ -248,10 +183,6 @@ LRESULT MainSurfaceWindow::MessageProc(
 			m_prevPos = currPos;
 		}
 		break;
-
-	case WM_DESTROY:
-		PostQuitMessage( 0 );
-		break;
 	}
 
 	return DefWindowProc( wndHandle, msg, wParam, lParam );
@@ -259,9 +190,13 @@ LRESULT MainSurfaceWindow::MessageProc(
 
 void MainSurfaceWindow::OnIdle( )
 {
+	g_pD3DDevice->SetRenderState(
+		D3DRENDERSTATETYPE::D3DRS_LIGHTING,
+		TRUE
+	);
+
 	cGameObjectManager::Get( )->Update( );
 	cGameObjectManager::Get( )->Render( );
-	cCamera::Get( )->Update( );
 }
 
 void MainSurfaceWindow::OnMove( 
@@ -288,7 +223,7 @@ WNDCLASSEXW MainSurfaceWindow::MakeWindowClass( )
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc = nullptr; // Ignore, using member function
 	wcex.hInstance = instanceHandle;
-	wcex.hIcon = LoadIcon( g_instHandle, MAKEINTRESOURCE( IDI_MY3DMAPTOOL ));
+	wcex.hIcon = LoadIcon( instanceHandle, MAKEINTRESOURCE( IDI_MY3DMAPTOOL ));
 	wcex.hCursor = LoadCursor( nullptr, IDC_ARROW );
 	wcex.hbrBackground = (HBRUSH)( COLOR_WINDOW+1 );
 	wcex.lpszMenuName = MAKEINTRESOURCEW( IDC_MY3DMAPTOOL );

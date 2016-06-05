@@ -4,6 +4,14 @@
 #include "cDeviceManager.h"
 
 
+cTextureManager::~cTextureManager( )
+{
+	for ( auto& iter : m_mapTexture )
+	{
+		SAFE_RELEASE( iter.second );
+	}
+}
+
 LPDIRECT3DTEXTURE9 cTextureManager::GetTexture( char* szFullPath )
 {
 	return GetTexture(std::string(szFullPath));
@@ -14,7 +22,8 @@ LPDIRECT3DTEXTURE9 cTextureManager::GetTexture( std::string sFullPath )
 	if (m_mapTexture.find(sFullPath) == m_mapTexture.end())
 	{
 		LPDIRECT3DTEXTURE9 pTexture = NULL;
-		HRESULT hr = D3DXCreateTextureFromFileA(g_pD3DDevice,
+		HRESULT hr = D3DXCreateTextureFromFileA(
+			g_pD3DDevice,
 			sFullPath.c_str(),
 			&pTexture);
 
@@ -27,13 +36,7 @@ LPDIRECT3DTEXTURE9 cTextureManager::GetTexture( std::string sFullPath )
 			return NULL;
 		}
 	}
+
 	return m_mapTexture[sFullPath];
 }
 
-void cTextureManager::Destroy()
-{
-	for (auto& iter : m_mapTexture)
-	{
-		SAFE_RELEASE(iter.second);
-	}
-}

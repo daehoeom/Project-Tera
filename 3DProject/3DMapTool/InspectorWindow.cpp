@@ -2,146 +2,317 @@
 #include "InspectorWindow.h"
 
 #include "resource.h"
+#include "cGameObjectManager.h"
+#include "Console.h"
+
+HWND g_inspectorWndHandle;
+
+WNDPROC orgButtonProc;
+LRESULT CALLBACK buttonSubProc( HWND wndHandle,
+	UINT msg, WPARAM wParam, LPARAM lParam )
+{
+	switch ( msg )
+	{
+	case WM_KEYDOWN:
+		{
+			if ( wParam != VK_RETURN ||
+				g_hierarchyWnd->GetSelectedItemIndex() < 0 )
+			{
+				break;
+			}
+
+			wchar_t buf[256] {0};
+			g_hierarchyWnd->GetSelectedItemText( buf, 256 );
+			if ( buf[0] == L'\0' )
+				break;
+			
+
+			// POSITION
+			if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITXPOS ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITXPOS, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetPosition( {
+						( float )_wtof( dlgItemText ),
+						object->GetPosition( ).y,
+						object->GetPosition( ).z
+					} );
+				}
+			}
+			else if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITYPOS ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITYPOS, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetPosition( {
+						object->GetPosition( ).x,
+						( float )_wtof( dlgItemText ),
+						object->GetPosition( ).z
+					} );
+				}
+			}
+			else if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITZPOS ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITZPOS, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetPosition( {
+						object->GetPosition( ).x,
+						object->GetPosition( ).y,
+						( float )_wtof( dlgItemText )
+					} );
+				}
+			}
+			// ROTATION
+			else if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITXROT ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITXROT, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetAngle( {
+						( float )_wtof( dlgItemText ),
+						object->GetAngle( ).y,
+						object->GetAngle( ).z
+					} );
+				}
+			}
+			else if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITYROT ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITYROT, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetAngle( {
+						object->GetAngle( ).x,
+						( float )_wtof( dlgItemText ),
+						object->GetAngle( ).z
+					} );
+				}
+			}
+			else if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITZROT ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITZROT, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetAngle( {
+						object->GetAngle( ).x,
+						object->GetAngle( ).y,
+						( float )_wtof( dlgItemText )
+					} );
+				}
+			}
+			//SCALE
+			else if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITXSCALE ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITXSCALE, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetScale( {
+						( float )_wtof( dlgItemText ),
+						object->GetScale( ).y,
+						object->GetScale( ).z
+					} );
+				}
+			}
+			else if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITYSCALE ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITYSCALE, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetScale( {
+						object->GetScale( ).x,
+						( float )_wtof( dlgItemText ),
+						object->GetScale( ).z
+					} );
+				}
+			}
+			else if ( wndHandle == GetDlgItem( 
+				g_inspectorWnd->GetWindowHandle( ), IDC_EDITZSCALE ))
+			{
+				wchar_t dlgItemText[256]{ 0 };
+				GetDlgItemText( g_inspectorWnd->GetWindowHandle( ),
+					IDC_EDITZSCALE, dlgItemText, 256 );
+
+				auto* object = cGameObjectManager::Get( )->FindObject(
+					buf );
+				if ( object )
+				{
+					object->SetScale( {
+						object->GetScale( ).x,
+						object->GetScale( ).y,
+						( float )_wtof( dlgItemText )
+					} );
+				}
+			}
+
+			int n = 3;
+		}
+		break;
+	}
+
+	return CallWindowProc( orgButtonProc, wndHandle, msg, wParam, lParam );
+}
 
 
-//HWND g_hierarchyWndHandle;
-//
-//
-//InspectorWindow::InspectorWindow( ) :
-//	AbstractWindow( INSPECTORWINDOW_TITLENAME )
-//{
-//}
-//
-//InspectorWindow::~InspectorWindow( )
-//{
-//}
-//
-//LRESULT InspectorWindow::MsgProc( HWND wndHandle, UINT msg, WPARAM wParam, LPARAM lParam )
-//{
-//	InspectorWindow* extraMemAsWindow = reinterpret_cast<InspectorWindow*>(
-//		GetWindowLongPtrW( wndHandle, GWLP_USERDATA ) );
-//
-//	if ( extraMemAsWindow && 
-//		extraMemAsWindow->m_wndDelegate )
-//	{
-//		switch ( msg )
-//		{
-//		case WM_CREATE:
-//			{
-//			}
-//			break;
-//
-//		case WM_SIZE:
-//			extraMemAsWindow->m_wndDelegate->OnSize( 
-//				extraMemAsWindow, LOWORD( lParam ), HIWORD( lParam ));
-//			break;
-//
-//		case WM_NCLBUTTONDOWN:
-//			return 0;
-//		}
-//	}
-//
-//	if ( msg == WM_DESTROY )
-//	{
-//		PostQuitMessage( 0 );
-//	}
-//
-//	return DefWindowProc( wndHandle, msg, wParam, lParam );
-//}
-//
-//void InspectorWindow::OnIdle( )
-//{
-//}
-//
-//void InspectorWindow::SetDelegate( 
-//	IWindowDelegate * windowDelegate )
-//{
-//	m_wndDelegate = windowDelegate;
-//}
-//
-//HWND InspectorWindow::SetupWindowComponents( )
-//{
-//	this->SetupWindowClass( );
-//	HWND myWindowHandle = this->SetupWindow( );
-//	this->SetupList( );
-//
-//	return myWindowHandle;
-//}
-//
-//void InspectorWindow::SetupWindowClass( )
-//{
-//	WNDCLASSEXW wcex{ 0 };
-//	
-//	wcex.cbSize =			sizeof( WNDCLASSEX );
-//	wcex.style =			CS_HREDRAW | CS_VREDRAW;
-//	wcex.lpfnWndProc =		InspectorWindow::MsgProc;
-//	wcex.hInstance =		g_instHandle;
-//	wcex.hIcon =			LoadIcon( g_instHandle, MAKEINTRESOURCE( IDI_MY3DMAPTOOL ) );
-//	wcex.hCursor =			LoadCursor( nullptr, IDC_ARROW );
-//	wcex.hbrBackground =	(HBRUSH)( COLOR_WINDOW+1 );
-//	wcex.lpszClassName =	this->GetClassName( ).c_str() ;
-//	wcex.hIconSm =			LoadIcon( wcex.hInstance, MAKEINTRESOURCE( IDI_SMALL ) );
-//	
-//	RegisterClassExW( &wcex );
-//}
-//
-//HWND InspectorWindow::SetupWindow( )
-//{
-//	int ownerX, ownerY, ownerWidth, ownerHeight;
-//	GetOwner( )->GetPosition( &ownerX, &ownerY );
-//	GetOwner( )->GetSize( &ownerWidth, &ownerHeight );
-//
-//	g_hierarchyWndHandle = CreateWindowExW(
-//		NULL,
-//		this->GetClassName( ).c_str( ),
-//		this->GetName( ).c_str( ), 
-//		WS_BORDER,
-//		ownerX+ownerWidth,
-//		ownerY,
-//		InspectorWindowWidth,
-//		InspectorWindowHeight,
-//		nullptr, 
-//		nullptr, 
-//		GetModuleHandle( nullptr ), 
-//		nullptr 
-//	);
-//	
-//
-//	SetWindowLongPtrW(
-//		g_hierarchyWndHandle,
-//		GWLP_USERDATA, // Save window ptr to window-personal storage
-//		reinterpret_cast<LONG_PTR>( this )
-//	);
-//
-//	ShowWindow( g_hierarchyWndHandle, SW_SHOW );
-//	UpdateWindow( g_hierarchyWndHandle );
-//
-//
-//	return g_hierarchyWndHandle;
-//}
-//
-//void InspectorWindow::SetupList( )
-//{
-//	InitCommonControls( );
-//
-//	RECT rt;
-//	GetClientRect( g_hierarchyWndHandle, &rt );
-//
-//	m_listHandle = CreateWindowEx( 
-//		NULL, 
-//		WC_LISTVIEW, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER |
-//		LVS_REPORT | LVS_SHOWSELALWAYS, 0, 0, rt.right, rt.bottom, g_hierarchyWndHandle, 
-//		NULL, GetModuleHandle( 0 ), NULL 
-//	);
-//	//SetWindowTheme( m_listHandle, L"explorer", NULL );
-//
-//
-//	m_lvCol.mask = LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
-//	m_lvCol.fmt = LVCFMT_LEFT;
-//	m_lvCol.cx = rt.right;
-//	m_lvCol.pszText = L"Name";
-//	m_lvCol.iSubItem = 0;
-//	ListView_InsertColumn( m_listHandle, 0, &m_lvCol );
-//
-//
-//}
+InspectorWindow::InspectorWindow( HWND parentWndHandle ) :
+	AbstractWindow( parentWndHandle )
+{
+}
+
+InspectorWindow::~InspectorWindow( )
+{
+	DestroyWindow( this->GetWindowHandle( ));
+}
+
+void InspectorWindow::OnIdle( )
+{
+}
+
+
+void InspectorWindow::SetPositionData(
+	const D3DXVECTOR3& pos )
+{
+	const HWND dlgWndHandle = this->GetWindowHandle( );
+
+	SetDlgItemText( dlgWndHandle, IDC_EDITXPOS, 
+		std::to_wstring(pos.x).c_str());
+	SetDlgItemText( dlgWndHandle, IDC_EDITYPOS, 
+		std::to_wstring(pos.y).c_str());
+	SetDlgItemText( dlgWndHandle, IDC_EDITZPOS, 
+		std::to_wstring(pos.z).c_str());
+}
+
+void InspectorWindow::SetRotationData( 
+	const D3DXVECTOR3 & rot )
+{
+	const HWND dlgWndHandle = this->GetWindowHandle( );
+
+	SetDlgItemText( dlgWndHandle, IDC_EDITXROT, 
+		std::to_wstring(rot.x).c_str());
+	SetDlgItemText( dlgWndHandle, IDC_EDITYROT, 
+		std::to_wstring(rot.y).c_str());
+	SetDlgItemText( dlgWndHandle, IDC_EDITZROT, 
+		std::to_wstring(rot.z).c_str());
+}
+
+void InspectorWindow::SetScaleData( 
+	const D3DXVECTOR3& scale )
+{
+	const HWND dlgWndHandle = this->GetWindowHandle( );
+
+	SetDlgItemText( dlgWndHandle, IDC_EDITXSCALE, 
+		std::to_wstring(scale.x).c_str());
+	SetDlgItemText( dlgWndHandle, IDC_EDITYSCALE, 
+		std::to_wstring(scale.y).c_str());
+	SetDlgItemText( dlgWndHandle, IDC_EDITZSCALE, 
+		std::to_wstring(scale.z).c_str());
+}
+
+void InspectorWindow::SubclassMyDlgButton( HWND myWindowHandle )
+{
+	orgButtonProc = ( WNDPROC )SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITXPOS ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+	SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITYPOS ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+	SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITZPOS ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+
+	SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITXROT ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+	SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITYROT ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+	SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITZROT ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+
+	SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITXSCALE ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+	SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITYSCALE ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+	SetWindowLongPtr(
+		GetDlgItem( myWindowHandle, IDC_EDITZSCALE ),
+		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+}
+
+LRESULT InspectorWindow::MessageProc( 
+	HWND wndHandle, 
+	UINT msg, 
+	WPARAM wParam, 
+	LPARAM lParam )
+{
+	switch ( msg )
+	{
+	case WM_INITDIALOG:
+		{
+			int ownerX, ownerY, ownerWidth, ownerHeight;
+			this->GetOwner( )->GetPosition( &ownerX, &ownerY );
+			this->GetOwner( )->GetSize( &ownerWidth, &ownerHeight );
+
+			SetWindowPos( wndHandle, nullptr, ownerX+ownerWidth, 
+				ownerY, 0, 0, SWP_NOSIZE );
+
+			this->SubclassMyDlgButton( wndHandle );
+		}
+		break;
+
+	case WM_NCLBUTTONDOWN:
+		return -1;
+	}
+
+	return 0;
+}

@@ -9,12 +9,17 @@ ObjObject::ObjObject(
 	
 	cGameObject( name )
 {
-	m_objLoader.Load( filePath.c_str(), m_vecGroup, nullptr );
+	cObjLoader objLoader;
+	objLoader.Load( filePath.c_str(), m_vecGroup, nullptr );
 }
 
 ObjObject::~ObjObject( )
 {
-
+	for each( auto p in m_vecGroup )
+	{
+		SAFE_RELEASE( p );
+	}
+	m_vecGroup.clear( );
 }
 
 void ObjObject::Render( )

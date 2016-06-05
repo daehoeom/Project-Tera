@@ -19,10 +19,16 @@ class AbstractWindow :
 	public IWindowDelegate
 {
 public:
+	// For dialog
+	explicit AbstractWindow( 
+		HWND parentWndHandle );
+	
+	// General creation
 	explicit AbstractWindow(
 		const wchar_t* wndName,
 		DWORD exStyle,
 		DWORD normalStyle,
+		HWND parentWndHandle,
 		const WNDCLASSEXW& wndClass,
 		int x,
 		int y,
@@ -35,16 +41,15 @@ public:
 	// Event Handler
 	virtual void OnIdle( ) = 0;
 
-public:
 	void SetupWindowComponents( );
-	
+
 	/* 
 		Sets
 	*/
 	void SetOwner( AbstractWindow* owner );
 	void SetPosition(int x, int y );
 	void SetDelegate( IWindowDelegate* wndDelegate );
-	void SetChild( AbstractWindow* child );
+	void AddChild( AbstractWindow* child );
 	void Move( int x, int y );
 	
 	/* 
@@ -55,17 +60,23 @@ public:
 	void GetPosition( _Out_ int * x, _Out_ int * y );
 	
 	AbstractWindow* GetOwner( );
+	const AbstractWindow* GetOwner( ) const;
 	HWND GetWindowHandle( ) const;
 	const std::wstring& GetName( ) const;
 	const std::wstring& GetClassName( ) const;
+	AbstractWindow* GetChildByName( const std::wstring& name );
+	const AbstractWindow* GetChildByName( const std::wstring& name ) const;
 	
 protected:
-	virtual LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) = 0;
-	AbstractWindow* GetChildByName( const std::wstring& name );
+	virtual LRESULT MessageProc( HWND wndHandle, UINT msg, WPARAM wParam, LPARAM lParam ) = 0;
 	std::vector<AbstractWindow*>& GetChildRepo( );
 
+
 private:
+	static INT_PTR CALLBACK DlgCallbackMsgProc( HWND, UINT, WPARAM, LPARAM );
 	static LRESULT CALLBACK CallbackMsgProc( HWND, UINT, WPARAM, LPARAM );
+	
+	void CreateDialogWindow( );
 	void CreateWindow(
 		DWORD exStyle, 
 		DWORD normalStyle, 
@@ -78,16 +89,17 @@ private:
 private:
 	// Window info
 	HWND m_wndHandle;
-	const std::wstring m_wndName;
-	const std::wstring m_wndClassName;
-	const DWORD m_exStyle;
-	const DWORD m_normalStyle;
-	const WNDCLASSEXW m_wndClassEx;
-	const int m_x;
-	const int m_y;
-	const int m_width;
-	const int m_height;
-
+	std::wstring m_wndName;
+	std::wstring m_wndClassName;
+	DWORD m_exStyle;
+	DWORD m_normalStyle;
+	HWND m_parentWndHandle;
+	WNDCLASSEXW m_wndClassEx;
+	int m_x;
+	int m_y;
+	int m_width;
+	int m_height;
+	const bool m_isDialog;
 
 	// About hierarchy
 	AbstractWindow* m_owner;
@@ -112,7 +124,7 @@ inline void AbstractWindow::SetDelegate(
 	m_wndDelegate = wndDelegate;
 }
 
-inline void AbstractWindow::SetChild( 
+inline void AbstractWindow::AddChild( 
 	AbstractWindow * child )
 {
 	m_childRepo.push_back( child );
@@ -128,6 +140,9 @@ inline void AbstractWindow::Move( int x, int y )
 
 inline HWND AbstractWindow::GetWindowHandle( ) const
 {
+	assert( m_wndHandle &&
+		"GetWindowHandle invoked but returning handle pointer address is zero." );
+
 	return m_wndHandle;
 }
 

@@ -1,28 +1,29 @@
 #pragma once
+#include "cGameObject.h"
 #include "Singleton.h"
 
-class cCamera : 
-	public TSingleton<cCamera>
+class cCameraObject :
+	public cGameObject
 {
 public:
-	void Setup( HWND wndHandle );
+	cCameraObject( HWND wndHandle, const std::wstring& objName );
+	virtual ~cCameraObject( );
 
-	void Update(D3DXVECTOR3* pTarget = NULL);
-	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	void Update( );
 
-protected:
-	cCamera( );
-	~cCamera( );
+	void SetTarget( cGameObject* target );
+	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kCamera; }
 
 private:
+	void UpdateInput( const D3DXMATRIXA16& matRot );
+
+private:
+	cGameObject* m_target;
 	HWND m_ownerWndHandle;
-	D3DXVECTOR3	m_vEye;
-	D3DXVECTOR3	m_vUp;
+	const D3DXVECTOR3 m_vUp;
 	D3DXVECTOR3	m_vLookAt;
+	D3DXVECTOR3	m_vEye;
 	bool		m_isLButtonDown;
-	float		m_fRotX;
-	float		m_fRotY;
 	POINT		m_ptPrevMouse;
-	float		m_fDist;
 };
 
