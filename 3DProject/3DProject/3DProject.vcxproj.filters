@@ -37,9 +37,6 @@
     <Filter Include="Object\Player">
       <UniqueIdentifier>{bbea4c93-5d81-4071-94af-6ea73b4c8911}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Monster">
-      <UniqueIdentifier>{b76b8d2c-06aa-4a88-9623-f41a65838032}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Building">
       <UniqueIdentifier>{f9783b53-e1b1-467e-8c2e-291892be59ef}</UniqueIdentifier>
     </Filter>
@@ -132,9 +129,6 @@
     <ClInclude Include="cFrustumCulling.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cFSM.h">
-      <Filter>Object\FSM</Filter>
-    </ClInclude>
     <ClInclude Include="cGameObject.h">
       <Filter>Object\Abstract</Filter>
     </ClInclude>
@@ -143,9 +137,6 @@
     </ClInclude>
     <ClInclude Include="cCollisionObject.h">
       <Filter>Object\Abstract</Filter>
-    </ClInclude>
-    <ClInclude Include="cPlayerState.h">
-      <Filter>Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="cBody.h">
       <Filter>Misc\Utility</Filter>
@@ -207,6 +198,8 @@
     <ClInclude Include="cPixie.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="IState.h" />
+    <ClInclude Include="cEnemySkinMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -269,9 +262,6 @@
     <ClCompile Include="cCamera.cpp">
       <Filter>Object\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="cFSM.cpp">
-      <Filter>Object\FSM</Filter>
-    </ClCompile>
     <ClCompile Include="cGameObject.cpp">
       <Filter>Object\Abstract</Filter>
     </ClCompile>
@@ -280,9 +270,6 @@
     </ClCompile>
     <ClCompile Include="cCollisionObject.cpp">
       <Filter>Object\Abstract</Filter>
-    </ClCompile>
-    <ClCompile Include="cPlayerState.cpp">
-      <Filter>Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="cBody.cpp">
       <Filter>Misc\Utility</Filter>
@@ -344,6 +331,8 @@
     <ClCompile Include="cPixie.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="IState.cpp" />
+    <ClCompile Include="cEnemySkinMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

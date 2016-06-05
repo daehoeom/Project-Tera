@@ -22,12 +22,10 @@ private:
 	void SetupManagers( );
 
 private:
-	cPlayer* m_player;
-	cGrid* m_pGrid;
-	cSkyBox* m_pSkyBox;
-	cObjLoader*	m_pLoader;
-	cNpcManager* m_pNpc;
-	cArgoniteFemaleMagician*	m_pMonster;
-	std::vector<cGroup*>	m_vecGroup;
+	cGrid*							m_pGrid;
+	cSkyBox*						m_pSkyBox;
+	cObjLoader*						m_pLoader;
+	cNpcManager*					m_pNpc;
+	cArgoniteFemaleMagician*		m_pMonster;
+	std::vector<cGroup*>			m_vecGroup;
 };
-

@@ -2,7 +2,7 @@
 
 #include "cEnemy.h"
 
-class cBody;
+class cEnemySkinMesh;
 class cMadmadDuo :
 	public cEnemy
 {

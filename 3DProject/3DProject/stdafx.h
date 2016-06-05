@@ -30,6 +30,18 @@
 // Platform dependent headers are here
 #include <d3dx9.h>
 #include <tchar.h>
+#include "cDeviceManager.h"
+#include "cTimeManager.h"
+#include "cTextureManager.h"
+#include "cGameObjectManager.h"
+#include "cKeyManager.h"
+#include "Particle.h"
+#include "cCamera.h"
+#include "cRandomUtil.h"
+#include "cObject.h"
+#include "cObjectManager.h"
+#include "cPlayer.h"
+
 
 #define EPSILON 0.0001f
 #define SAFE_RELEASE(p) {if (p) { (p)->Release(); (p) = NULL; }}
@@ -190,6 +202,8 @@ enum class eNpcType
 	NPC_QUEST,
 };
 
+
+
 #define SYNTHESIZE(varType, varName, funName)\
 protected: varType varName;\
 public: inline varType Get##funName(void) const { return varName; }\
@@ -212,8 +226,6 @@ public: virtual void Set##funName(varType var){\
 		}\
 }
 
-extern HWND		g_hWnd;
-
 #define SYNTHESIZE(varType, varName, funName)\
 protected: varType varName;\
 public: inline varType Get##funName(void) const { return varName; }\
@@ -235,16 +247,8 @@ public: virtual void Set##funName(varType var){\
 	}\
 }
 
-#include "cDeviceManager.h"
-#include "cTimeManager.h"
-#include "cTextureManager.h"
-#include "cGameObjectManager.h"
-#include "cKeyManager.h"
-#include "Particle.h"
-#include "cCamera.h"
-#include "cRandomUtil.h"
-#include "cObject.h"
-#include "cObjectManager.h"
-
 ///////////////////
 extern float fAniTime;
+
+extern HWND		g_hWnd;
+extern cPlayer* g_player;

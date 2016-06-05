@@ -101,7 +101,7 @@ void cNpc::Update()
 	D3DXMATRIXA16 matLocal;
 	D3DXMatrixTranslation(&matLocal, 0, 20, 0);
 	matLocal = matLocal * m_matWorld;
-	this->GetCollider()->SetWorld(&matLocal);
+	this->GetColliderRepo()[0]->SetWorld(&matLocal);
 }
 
 void cNpc::Render()

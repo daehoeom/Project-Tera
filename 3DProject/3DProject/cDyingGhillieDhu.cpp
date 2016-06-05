@@ -1,11 +1,20 @@
 #include "stdafx.h"
 #include "cDyingGhillieDhu.h"
-#include "cBody.h"
+#include "cEnemySkinMesh.h"
 
 cDyingGhillieDhu::cDyingGhillieDhu()
 {
-	m_pBody = new cBody;
+	m_pBody = new cEnemySkinMesh;
 	m_pBody->Setup("./CH/DyingGhillieDhu", "DyingGhillieDhu.X");
+
+	D3DXMATRIXA16 matT;
+	D3DXMatrixTranslation(&matT, 0, 50, 0);
+	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 30.f));
+	this->GetColliderRepo()[0]->SetLocal(&matT);
+
+	D3DXMatrixTranslation(&matT, 0, 30, 0);
+	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 30.f));
+	this->GetColliderRepo()[1]->SetLocal(&matT);
 }
 
 
@@ -16,15 +25,18 @@ cDyingGhillieDhu::~cDyingGhillieDhu()
 
 void cDyingGhillieDhu::Update()
 {
-	if (m_pBody)
+	__super::Update();
+
+	for (auto& elem : this->GetColliderRepo())
 	{
-		m_pBody->Update();
-		m_pBody->SetWorld(&this->GetWorld( ));
+		elem->SetWorld(&m_matWorld);
 	}
 }
 
 void cDyingGhillieDhu::Render()
 {
+	__super::Render();
+
 	if (m_pBody)
 	{
 		m_pBody->Render();

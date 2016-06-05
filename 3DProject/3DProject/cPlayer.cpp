@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "cPlayer.h"
-#include "cPlayerState.h"
 #include "cBody.h"
 #include "cHair.h"
 #include "cFace.h"
@@ -8,10 +7,10 @@
 
 cPlayer::cPlayer( ) :
 	cCollisionObject( "Player" )
-	, m_vPosition(D3DXVECTOR3(0, 0, 0))
 	, m_vDirection(D3DXVECTOR3(0, 0, 1))
 	, m_fSpeed(1.f)
 	, m_fAngle(0.f)
+	, m_sState(ePlayerState::PLAYER_IDLE)
 {
 	//대기상태
 	m_pIdleBody = new cBody;
@@ -51,13 +50,12 @@ cPlayer::cPlayer( ) :
 
 	D3DXMatrixIdentity(&m_matWorld);
 
-	this->TranslateState(eFSMState::kIdle);
 
 	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f));
 
 	D3DXMATRIXA16 matLocal;
 	D3DXMatrixTranslation(&matLocal, 0, 15, 0);
-	this->GetCollider()->SetLocal(&matLocal);
+	this->GetColliderRepo()[0]->SetLocal(&matLocal);
 }
 
 cPlayer::~cPlayer( )
@@ -81,7 +79,7 @@ void cPlayer::Update( )
 
 	SetUpdateState();
 
-	this->GetCollider()->SetWorld(&m_matWorld);
+	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
 
 	KeyControl();
 }
@@ -113,35 +111,35 @@ void cPlayer::KeyControl()
 
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
-		this->TranslateState(eFSMState::kMove);
-		m_vPosition = m_vPosition + m_vDirection * m_fSpeed;
+		m_sState = ePlayerState::PLAYER_RUN;
+		SetPosition(GetPosition() + m_vDirection * m_fSpeed);
 	}
 
 	if (KEYMANAGER->isOnceKeyUp('W'))
 	{
-		this->TranslateState(eFSMState::kIdle);
+		m_sState = ePlayerState::PLAYER_IDLE;
 	}
 
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-		this->TranslateState(eFSMState::kMove);
-		m_vPosition = m_vPosition - m_vDirection * m_fSpeed;
+		m_sState = ePlayerState::PLAYER_RUN;
+		SetPosition(GetPosition() - m_vDirection * m_fSpeed);
 	}
 
 	if (KEYMANAGER->isOnceKeyUp('S'))
 	{
-		this->TranslateState(eFSMState::kIdle);
+		m_sState = ePlayerState::PLAYER_IDLE;
 	}
 
-	D3DXMatrixTranslation(&matT, m_vPosition.x, m_vPosition.y, m_vPosition.z);
+	D3DXMatrixTranslation(&matT, GetPosition().x, GetPosition().y, GetPosition().z);
 	m_matWorld = matR * matT;
 }
 
 void cPlayer::SetUpdateState( )
 {
-	switch (this->GetCurrStateType( ))
+	switch (m_sState)
 	{
-	case eFSMState::kIdle:
+	case ePlayerState::PLAYER_IDLE :
 		if ( m_pIdleBody )
 		{
 			m_pIdleBody->Update( );
@@ -161,7 +159,7 @@ void cPlayer::SetUpdateState( )
 		}
 		break;
 
-	case eFSMState::kAttack:
+	case ePlayerState::PLAYER_ATTACK:
 		if ( m_pAttackBody )
 		{
 			m_pAttackBody->Update( );
@@ -178,9 +176,10 @@ void cPlayer::SetUpdateState( )
 			m_pAttackFace->SetNeckTM( &m_pAttackBody->GetNeckTM( ));
 			m_pAttackFace->Update( );
 		}
+
 		break;
 
-	case eFSMState::kMove:
+	case ePlayerState::PLAYER_RUN:
 		if ( m_pRunBody )
 		{
 			m_pRunBody->Update( );
@@ -196,48 +195,51 @@ void cPlayer::SetUpdateState( )
 			m_pRunFace->SetNeckTM(&m_pRunBody->GetNeckTM());
 			m_pRunFace->Update( );
 		}
+
 		break;
 	}
 }
 
 void cPlayer::SetRenderState()
 {
-	switch ( this->GetCurrStateType( ))
+	switch (m_sState)
 	{
-	case eFSMState::kIdle:
-		if ( m_pIdleBody )
+	case ePlayerState::PLAYER_IDLE:
+		if (m_pIdleBody)
 		{
-			m_pIdleBody->Render( );
+			m_pIdleBody->Render();
 		}
 		if (m_pIdleHair)
 		{
-			m_pIdleHair->Render( );
+			m_pIdleHair->Render();
 		}
-		if ( m_pIdleFace )
+		if (m_pIdleFace)
 		{
-			m_pIdleFace->Render( );
+			m_pIdleFace->Render();
 		}
+
 		break;
 
-	case eFSMState::kAttack:
-		if ( m_pAttackBody )
+	case ePlayerState::PLAYER_ATTACK:
+		if (m_pAttackBody)
 		{
-			m_pAttackBody->Render( );
+			m_pAttackBody->Render();
 		}
-		if ( m_pAttackHair )
+		if (m_pAttackHair)
 		{
-			m_pAttackHair->Render( );
+			m_pAttackHair->Render();
 		}
-		if ( m_pAttackFace )
+		if (m_pAttackFace)
 		{
-			m_pAttackFace->Render( );
+			m_pAttackFace->Render();
 		}
+
 		break;
 
-	case eFSMState::kMove:
-		if ( m_pRunBody )
+	case ePlayerState::PLAYER_RUN:
+		if (m_pRunBody)
 		{
-			m_pRunBody->Render( );
+			m_pRunBody->Render();
 		}
 		if (m_pRunHair)
 		{

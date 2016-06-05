@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "cBody.h"
+#include "cEnemySkinMesh.h"
 #include "cAllocateHierarchy.h"
 #include "cMtlTex.h"
 
 
-cBody::cBody()
+cEnemySkinMesh::cEnemySkinMesh()
 	: m_pAlloc(nullptr)
 	, m_pFrameRoot(nullptr)
 	, m_pMesh(nullptr)
@@ -14,13 +14,12 @@ cBody::cBody()
 	, m_fBlendTime(0.2f)
 	, m_fPassedBlendTime(0.f)
 {
-	D3DXMatrixIdentity(&m_matNeckTM);
 	D3DXMatrixIdentity(&m_matRootTM);
-	D3DXMatrixIdentity(&m_matHairTM);
 	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixIdentity(&m_matLocal);
 }
 
-cBody::~cBody()
+cEnemySkinMesh::~cEnemySkinMesh()
 {
 	D3DXFrameDestroy(m_pFrameRoot, m_pAlloc);
 	//m_pAlloc->DestroyFrame(m_pFrame);
@@ -28,7 +27,7 @@ cBody::~cBody()
 	SAFE_RELEASE(m_pMesh);
 }
 
-void cBody::Setup(char* FolderName, char* FileName)
+void cEnemySkinMesh::Setup(char* FolderName, char* FileName)
 {
 	std::string folder = (std::string)FolderName;
 	std::string file = (std::string)FileName;
@@ -53,7 +52,7 @@ void cBody::Setup(char* FolderName, char* FileName)
 	D3DXMatrixIdentity(&matW);
 }
 
-void cBody::Update()
+void cEnemySkinMesh::Update()
 {
 	if (m_bIsBlend)
 	{
@@ -75,16 +74,12 @@ void cBody::Update()
 		}
 	}
 
-	m_pAnimControl->AdvanceTime(fAniTime, NULL);
+	m_pAnimControl->AdvanceTime(g_pTimeManager->GetDeltaTime(), NULL);
 	GetNeckWorld(m_pFrameRoot, nullptr);
 
-	//머리와 목 로컬TM에 월드 매트릭스 곱한다.
-	m_matHairTM = m_matHairTM * m_matWorld;
-	m_matNeckTM = m_matNeckTM * m_matWorld;
-	
 	UpdateSkinnedMesh(m_pFrameRoot);
 }
-void cBody::Render()
+void cEnemySkinMesh::Render()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	g_pD3DDevice->LightEnable(0, true);
@@ -96,7 +91,7 @@ void cBody::Render()
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	g_pD3DDevice->SetTexture(0, nullptr);
 }
-void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
+void cEnemySkinMesh::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	D3DXMATRIX matW;
@@ -108,7 +103,7 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 
 	D3DXMATRIXA16 matWorld;
 
-	matWorld = pBone->CombinedTransformationMatrix * m_matWorld;
+	matWorld = pBone->CombinedTransformationMatrix * (m_matLocal * m_matWorld);
 
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 
@@ -141,7 +136,7 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 	}
 }
 
-void cBody::SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent)
+void cEnemySkinMesh::SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	pBone->CombinedTransformationMatrix = pBone->TransformationMatrix;
@@ -161,7 +156,7 @@ void cBody::SetupWorldMatrix(D3DXFRAME* pFrame, D3DXMATRIX* pmatParent)
 	}
 }
 
-void cBody::SetupBoneMatrixPtrs(D3DXFRAME* pFrame)
+void cEnemySkinMesh::SetupBoneMatrixPtrs(D3DXFRAME* pFrame)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
@@ -200,7 +195,7 @@ void cBody::SetupBoneMatrixPtrs(D3DXFRAME* pFrame)
 	}
 }
 
-void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
+void cEnemySkinMesh::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
@@ -234,24 +229,13 @@ void cBody::UpdateSkinnedMesh(D3DXFRAME* pFrame)
 	}
 
 }
-void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
+void cEnemySkinMesh::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
 {
 	ST_BONE* pBone = (ST_BONE*)pFrame;
 	D3DXMATRIXA16 matW;
 	D3DXMatrixIdentity(&matW);
-	if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Bip01-Neck"))
-	{
-		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
-		m_matNeckTM = pBone->CombinedTransformationMatrix;
-		//D3DXMatrixRotationX(&m_matNeckTM, D3DXToRadian(90));
-	}
-	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Bip01-Head"))
-	{
-		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
-		m_matHairTM = pBone->CombinedTransformationMatrix;
-		//D3DXMatrixRotationX(&m_matNeckTM, D3DXToRadian(90));
-	}
-	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Dummy_root"))
+	
+	if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Dummy_root"))
 	{
 		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
 		m_matRootTM = pBone->CombinedTransformationMatrix;
@@ -269,12 +253,12 @@ void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
 }
 
 
-LPD3DXFRAME& cBody::GetFrameRoot()
+LPD3DXFRAME& cEnemySkinMesh::GetFrameRoot()
 {
 	return this->m_pFrameRoot;
 }
 
-void cBody::SetAnimationIndex(int nIndex)
+void cEnemySkinMesh::SetAnimationIndex(int nIndex)
 {
 	if (m_pAnimControl == NULL)
 		return;
@@ -297,7 +281,7 @@ void cBody::SetAnimationIndex(int nIndex)
 	SAFE_RELEASE(pAnimSet);
 }
 
-DOUBLE cBody::GetAniTrackPeriod(int nIndex)
+DOUBLE cEnemySkinMesh::GetAniTrackPeriod(int nIndex)
 {
 	DOUBLE fTime = 0.f;
 	LPD3DXANIMATIONSET pAnimSet;
