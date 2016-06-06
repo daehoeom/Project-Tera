@@ -42,42 +42,7 @@ AbstractWindow::AbstractWindow(
 
 AbstractWindow::~AbstractWindow( )
 {
-}
-
-AbstractWindow* AbstractWindow::GetOwner( )
-{
-	return m_owner;
-}
-
-const AbstractWindow* AbstractWindow::GetOwner( ) const
-{
-	return m_owner;
-}
-
-std::wstring AbstractWindow::GetTitle( )
-{
-	wchar_t buf[128];
-	GetWindowText( m_wndHandle, buf, 128 );
-	
-	return std::wstring( buf );
-}
-
-void AbstractWindow::GetSize( int* width, int* height )
-{
-	RECT rt;
-	GetClientRect( m_wndHandle, &rt );
-
-	*width = rt.right;
-	*height = rt.bottom;
-}
-
-void AbstractWindow::GetPosition( int* x, int* y )
-{
-	RECT rt;
-	GetWindowRect( m_wndHandle, &rt );
-
-	*x = rt.left;
-	*y = rt.top;
+	DestroyWindow( m_wndHandle );
 }
 
 void AbstractWindow::SetupWindowComponents( )
@@ -111,39 +76,7 @@ void AbstractWindow::SetupWindowComponents( )
 	}
 }
 
-AbstractWindow* AbstractWindow::GetChildByName( 
-	const std::wstring& name )
-{
-	for ( int i = 0; i < m_childRepo.size( ); ++i )
-	{
-		if ( m_childRepo[i]->GetTitle( ) == name )
-		{
-			return m_childRepo[i];
-		}
-	}
-
-	return nullptr;
-}
-
-const AbstractWindow * AbstractWindow::GetChildByName( const std::wstring & name ) const
-{
-	for ( int i = 0; i < m_childRepo.size( ); ++i )
-	{
-		if ( m_childRepo[i]->GetTitle( ) == name )
-		{
-			return m_childRepo[i];
-		}
-	}
-
-	return nullptr;
-}
-
-std::vector<AbstractWindow*>& AbstractWindow::GetChildRepo( )
-{
-	return m_childRepo;
-}
-
-INT_PTR AbstractWindow::DlgCallbackMsgProc( 
+INT_PTR AbstractWindow::DlgStaticMsgProc( 
 	HWND wndHandle, 
 	UINT msg, 
 	WPARAM wParam, 
@@ -192,7 +125,7 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 	}
 }
 
-LRESULT CALLBACK AbstractWindow::CallbackMsgProc(
+LRESULT CALLBACK AbstractWindow::StaticMsgProc(
 	HWND wndHandle, 
 	UINT msg, 
 	WPARAM wParam, 
@@ -203,31 +136,24 @@ LRESULT CALLBACK AbstractWindow::CallbackMsgProc(
 
 	if ( extraMemAsWindow )
 	{
-		if ( msg == WM_DESTROY )
+		switch ( msg )
 		{
-			SetWindowLongPtrW(
-				wndHandle,
-				GWLP_USERDATA, // Save window ptr to window-personal storage
-				0
-			);
-
+		case WM_DESTROY:
+			// // Save window ptr to window-personal storage
+			SetWindowLongPtrW( wndHandle, GWLP_USERDATA, 0 );
 			PostQuitMessage( 0 );
+			return DefWindowProc( wndHandle, msg, wParam, lParam );
+			break;
 
-			return DefWindowProc(
-				wndHandle,
-				msg,
-				wParam,
-				lParam
-			);
-		}
-		else
-		{
-			return extraMemAsWindow->MessageProc( 
-				wndHandle, 
-				msg, 
-				wParam, 
-				lParam 
-			);
+		case WM_DROPFILES:
+			extraMemAsWindow->OnDroppedFile( 
+				reinterpret_cast<HDROP>( wParam ));
+			break;
+
+		default:
+			extraMemAsWindow->MessageProc( 
+				wndHandle, msg, wParam, lParam );
+			break;
 		}
 	}
 	else
@@ -237,18 +163,13 @@ LRESULT CALLBACK AbstractWindow::CallbackMsgProc(
 			extraMemAsWindow = reinterpret_cast<AbstractWindow*>(
 				LPCREATESTRUCT( lParam )->lpCreateParams );
 			extraMemAsWindow->m_wndHandle = wndHandle;
-
+			
 			return extraMemAsWindow->MessageProc(
 				wndHandle, msg, wParam, lParam );
 		}
 		else
 		{
-			return DefWindowProc( 
-				wndHandle, 
-				msg, 
-				wParam, 
-				lParam 
-			);
+			return DefWindowProc( wndHandle, msg, wParam, lParam );
 		}
 	}
 }
@@ -259,7 +180,7 @@ void AbstractWindow::CreateDialogWindow( )
 		GetModuleHandle( nullptr ),
 		MAKEINTRESOURCE( IDD_INSPECTOR ),
 		m_parentWndHandle,
-		DlgCallbackMsgProc,
+		DlgStaticMsgProc,
 		reinterpret_cast<LPARAM>( this )
 	);
 
@@ -283,7 +204,7 @@ void AbstractWindow::CreateWindow(
 	WNDCLASSEX modifiedWndClass = m_wndClassEx;
 	modifiedWndClass.cbWndExtra = sizeof( uintptr_t );
 	modifiedWndClass.lpszClassName = m_wndClassName.c_str( );
-	modifiedWndClass.lpfnWndProc = AbstractWindow::CallbackMsgProc;
+	modifiedWndClass.lpfnWndProc = AbstractWindow::StaticMsgProc;
 	RegisterClassExW( &modifiedWndClass );
 
 	CreateWindowExW(

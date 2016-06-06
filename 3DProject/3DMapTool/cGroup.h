@@ -1,5 +1,4 @@
 #pragma once
-
 #include "cMtlTex.h"
 
 class cGroup : public cObject

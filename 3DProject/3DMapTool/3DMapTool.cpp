@@ -11,6 +11,7 @@
 #include "cObjectManager.h"
 #include "cGameObjectManager.h"
 #include "cCamera.h"
+#include "PickingTile.h"
 #include "DirectInput.h"
 #include "LightObject.h"
 #include "InspectorWindow.h"
@@ -70,6 +71,7 @@ int APIENTRY wWinMain(
 		g_mainSurfaceWnd->GetWindowHandle( ), L"Camera" );
 	g_hierarchyWnd->AddListItem( camera->GetName( ));
 	LightObject* obj = new LightObject( L"Light" );
+	PickingTile* pickObj = new PickingTile( );
 	g_hierarchyWnd->AddListItem( obj->GetName( ));
 
 

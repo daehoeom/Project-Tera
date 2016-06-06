@@ -1,6 +1,6 @@
 #pragma once
 
-ST_RAY CalcRay( float x, float y );
+ST_RAY CalcRayFromScreenPoint( float x, float y );
 
 void TransformRay( ST_RAY* ray, D3DXMATRIX* mat );
 

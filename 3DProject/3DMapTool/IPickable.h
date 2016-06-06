@@ -1,21 +1,20 @@
 #pragma once
 #include "cGameObject.h"
-
-
-class IPickDelegate
-{
-public:
-//	virtual void OnPicked( ) = 0;
-};
+#include "IPicker.h"
 
 class IPickable : 
-	public cGameObject//,
-	//public IPickDelegate
+	public cGameObject
 {
 public:
-	IPickable( const std::wstring& objName );
+	IPickable( const std::wstring& objName, IPicker* picker );
 	virtual ~IPickable( ) = 0;
 
-	virtual bool IsPicked( const D3DXVECTOR3& pickedPos ) const = 0;
+	virtual void Update( ) override;
+	
+private:
+	virtual void OnPicked( const D3DXVECTOR3& pickPos ) const = 0;
+
+private:
+	std::unique_ptr<IPicker> m_picker;
 };
 

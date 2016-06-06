@@ -3,7 +3,8 @@
 
 #include "cDeviceManager.h"
 
-ST_RAY CalcRay( float x, float y )
+
+ST_RAY CalcRayFromScreenPoint( float x, float y )
 {
 	D3DVIEWPORT9 viewPort;
 	g_pD3DDevice->GetViewport( &viewPort );

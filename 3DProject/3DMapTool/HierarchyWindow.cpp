@@ -8,19 +8,12 @@
 #include "InspectorWindow.h"
 
 
-HWND g_hierarchyWndHandle;
-
 HierarchyWindow::HierarchyWindow( HWND parentWndHandle ) :
 	AbstractWindow( 
-		L"Hierarchy",
-		NULL,
-		WS_CAPTION,
-		parentWndHandle,
-		this->MakeWindowClass( ),
-		0,
-		0,
-		HierarchyWindowWidth,
-		HierarchyWindowHeight ),
+		L"Hierarchy", NULL, WS_CAPTION,
+		parentWndHandle, this->MakeWindowClass( ),
+		0, 0, HierarchyWindowWidth, HierarchyWindowHeight 
+	),
 	m_layer( 0 ),
 	m_currSelectedItem( -1 )
 {
@@ -44,80 +37,34 @@ LRESULT HierarchyWindow::MessageProc(
 			this->GetOwner( )->GetPosition( &ownerX, &ownerY );
 			this->GetOwner( )->GetSize( &ownerWidth, &ownerHeight );
 			
-			SetWindowPos( wndHandle, NULL, ownerX-HierarchyWindowWidth,
-				ownerY, 0, 0, SWP_NOSIZE );
-
-			this->SetupList( wndHandle );
+			this->SetPosition( ownerX-HierarchyWindowWidth, ownerY );
+			this->SetupListView( wndHandle );
 		}
 		break;
 
 	case WM_NOTIFY:
 		{
-			LPNMHDR lpHdr;
-			LPNMLISTVIEW lpListView;
+			LPNMHDR lpHdr = reinterpret_cast<LPNMHDR>( lParam );
+			LPNMLISTVIEW lpListView = reinterpret_cast<LPNMLISTVIEW>( lParam );
 
-			lpHdr = reinterpret_cast<LPNMHDR>( lParam );
-			lpListView = reinterpret_cast<LPNMLISTVIEW>( lParam );
-
-			if ( lpHdr->hwndFrom != m_listHandle )
-				break;
-			
-			switch ( lpHdr->code )
+			if ( lpHdr->hwndFrom == m_listHandle )
 			{
-			case NM_DBLCLK:
-				this->OnItemDoubleClicked( lpListView );
-				break;
-
-			case LVN_KEYDOWN:
-				switch ( LOWORD( lParam ))
+				switch ( lpHdr->code )
 				{
-				case VK_F2:
+				case NM_DBLCLK:
+					this->OnItemDoubleClicked( lpListView );
 					break;
-				case VK_DELETE:
-					MessageBox( 0, 0, 0, 0 );
 
+				case LVN_ITEMCHANGED:
+					this->OnItemClicked( lpListView );
 					break;
 				}
-				break;
-
-			case LVN_ITEMCHANGED:
-				{
-					auto* object = this->GetSelectedItemAsObject( lpListView );
-					if ( object )
-					{
-						auto inspectorWindow = static_cast<InspectorWindow*>(
-							this->GetOwner( )->GetChildByName( 
-								L"Inspector" ));
-						
-						inspectorWindow->SetPositionData( object->GetPosition( ) );
-						inspectorWindow->SetRotationData( object->GetAngle( ) );
-						inspectorWindow->SetScaleData( object->GetScale( ));
-					}
-				}
-				break;
 			}
 		}
 		break;
 
-	/*case WM_SIZE:
-		if ( m_wndDelegate )
-		{
-			m_wndDelegate->OnSize( 
-				this, LOWORD( lParam ), HIWORD( lParam ));
-		}
-		break;
-
-	case WM_MOVE:
-		if ( m_wndDelegate )
-		{
-			m_wndDelegate->OnMove( 
-				this, LOWORD( lParam ), HIWORD( lParam ));
-		}
-		break;*/
-
+	// Ignore moving & Ctrl+F4
 	case WM_CLOSE:
-		return 0;
-
 	case WM_NCLBUTTONDOWN:
 		return 0;
 	}
@@ -157,6 +104,7 @@ void HierarchyWindow::OnItemDoubleClicked(
 
 		auto* camera = cGameObjectManager::Get( )->FindObject(
 			L"Camera" );
+
 		const D3DXVECTOR3& cameraRot = camera->GetAngle( );
 		D3DXVECTOR3 cameraDir( 0, 0, 1 );
 		D3DXMATRIXA16 matRot, matRotX, matRotY;
@@ -171,6 +119,18 @@ void HierarchyWindow::OnItemDoubleClicked(
 			object->GetPosition( ).z
 		} );
 		camera->Move( cameraDir*-20 );
+	}
+}
+
+void HierarchyWindow::OnItemClicked( 
+	LPNMLISTVIEW lpListView )
+{
+	auto* object = this->GetSelectedItemAsObject( lpListView );
+	if ( object )
+	{
+		g_inspectorWnd->SetPositionData( object->GetPosition( ));
+		g_inspectorWnd->SetRotationData( object->GetAngle( ));
+		g_inspectorWnd->SetScaleData( object->GetScale( ));
 	}
 }
 
@@ -222,7 +182,7 @@ void HierarchyWindow::AddListItem(
 	++m_layer;
 }
 
-void HierarchyWindow::SetupList( HWND wndHandle )
+void HierarchyWindow::SetupListView( HWND wndHandle )
 {
 	RECT rt;
 	GetClientRect( wndHandle, &rt );

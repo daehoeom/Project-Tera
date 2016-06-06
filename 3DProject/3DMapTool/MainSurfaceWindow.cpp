@@ -56,8 +56,6 @@ ExtensionTable AnalyzeExtension(
 
 }
 
-HWND g_mainWndHandle;
-
 MainSurfaceWindow::MainSurfaceWindow( ) :
 	AbstractWindow(
 		L"3DMapTool",
@@ -76,7 +74,6 @@ MainSurfaceWindow::MainSurfaceWindow( ) :
 
 MainSurfaceWindow::~MainSurfaceWindow( )
 {
-	PostQuitMessage( 0 );
 }
 
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
@@ -108,8 +105,6 @@ LRESULT MainSurfaceWindow::MessageProc(
 	{
 	case WM_CREATE:
 		{
-			g_mainWndHandle = wndHandle;
-
 			int x, y;
 			this->GetPosition( &x, &y );
 			m_prevPos = { x, y };
@@ -135,9 +130,9 @@ LRESULT MainSurfaceWindow::MessageProc(
 					std::wstring str = L"object_";
 					str += std::to_wstring( createCount++ );
 
-					ObjObject* obj = new ObjObject( str.c_str(), m_dropQueryPath.get());
-					static_cast<HierarchyWindow*>( this->GetChildByName( 
-						L"Hierarchy" ))->AddListItem( str );
+					ObjObject* obj = new ObjObject( str.c_str( ), 
+						m_dropQueryPath.get());
+					g_hierarchyWnd->AddListItem( str );
 				}
 				break;
 

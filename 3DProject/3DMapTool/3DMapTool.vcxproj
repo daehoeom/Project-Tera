@@ -167,10 +167,12 @@
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="IO.h" />
     <ClInclude Include="IPickable.h" />
+    <ClInclude Include="IPicker.h" />
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="LightObject.h" />
     <ClInclude Include="MainSurfaceWindow.h" />
     <ClInclude Include="ObjObject.h" />
+    <ClInclude Include="PickingTile.h" />
     <ClInclude Include="PickUtil.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
@@ -179,6 +181,7 @@
     <ClInclude Include="StringUtil.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerrainObject.h" />
+    <ClInclude Include="TilePicker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DMapTool.cpp" />
@@ -200,10 +203,12 @@
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="IPickable.cpp" />
+    <ClCompile Include="IPicker.cpp" />
     <ClCompile Include="IRenderable.cpp" />
     <ClCompile Include="LightObject.cpp" />
     <ClCompile Include="MainSurfaceWindow.cpp" />
     <ClCompile Include="ObjObject.cpp" />
+    <ClCompile Include="PickingTile.cpp" />
     <ClCompile Include="PickUtil.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -213,6 +218,7 @@
     </ClCompile>
     <ClCompile Include="StringUtil.cpp" />
     <ClCompile Include="TerrainObject.cpp" />
+    <ClCompile Include="TilePicker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DMapTool.rc" />

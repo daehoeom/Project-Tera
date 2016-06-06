@@ -97,6 +97,18 @@
     <Filter Include="cpp\Misc\Utility">
       <UniqueIdentifier>{b8f3d421-faa4-4064-9393-98cd9cb76032}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hpp\Object\Picker">
+      <UniqueIdentifier>{b7b4e1e4-ea64-4ddd-a230-8c25affce5eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Interface">
+      <UniqueIdentifier>{37aaa9b8-a269-482c-8f5c-b58a1360946a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Picker\Interface">
+      <UniqueIdentifier>{fa7662c6-f725-491d-9718-6adcf74acf1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Collider\Interface">
+      <UniqueIdentifier>{fe6eb861-43e1-4dcd-bef2-758fd4865a7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -180,23 +192,32 @@
     <ClInclude Include="IO.h">
       <Filter>hpp\IO</Filter>
     </ClInclude>
-    <ClInclude Include="IPickable.h">
-      <Filter>hpp\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="IRenderable.h">
-      <Filter>hpp\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="ICollider.h">
-      <Filter>hpp\Object\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="cBoundingBox.h">
       <Filter>hpp\Object\Collider</Filter>
     </ClInclude>
     <ClInclude Include="PickUtil.h">
       <Filter>hpp\Misc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PickingTile.h">
+      <Filter>hpp\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>hpp\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="IPicker.h">
+      <Filter>hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="TilePicker.h">
+      <Filter>hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="IPickable.h">
+      <Filter>hpp\Object\Picker\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>hpp\Object\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollider.h">
+      <Filter>hpp\Object\Collider\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,9 +290,6 @@
     <ClCompile Include="IRenderable.cpp">
       <Filter>cpp\Object</Filter>
     </ClCompile>
-    <ClCompile Include="ICollider.cpp">
-      <Filter>hpp\Object\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="cBoundingBox.cpp">
       <Filter>hpp\Object\Collider</Filter>
     </ClCompile>
@@ -280,6 +298,18 @@
     </ClCompile>
     <ClCompile Include="PickUtil.cpp">
       <Filter>cpp\Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="PickingTile.cpp">
+      <Filter>cpp\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="IPicker.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="TilePicker.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="ICollider.cpp">
+      <Filter>hpp\Object\Collider\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

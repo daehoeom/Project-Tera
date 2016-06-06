@@ -40,6 +40,7 @@ public:
 
 	// Event Handler
 	virtual void OnIdle( ) = 0;
+	virtual void OnDroppedFile( HDROP dropHandle ) {}
 
 	void SetupWindowComponents( );
 
@@ -47,7 +48,7 @@ public:
 		Sets
 	*/
 	void SetOwner( AbstractWindow* owner );
-	void SetPosition(int x, int y );
+	void SetPosition( int x, int y );
 	void SetDelegate( IWindowDelegate* wndDelegate );
 	void AddChild( AbstractWindow* child );
 	void Move( int x, int y );
@@ -56,35 +57,37 @@ public:
 		Gets
 	*/
 	std::wstring GetTitle( );
-	void GetSize( _Out_ int * width, _Out_ int * height );
-	void GetPosition( _Out_ int * x, _Out_ int * y );
+	void GetSize( _Out_ int* width, _Out_ int* height );
+	void GetPosition( _Out_ int* x, _Out_ int* y );
 	
 	AbstractWindow* GetOwner( );
 	const AbstractWindow* GetOwner( ) const;
 	HWND GetWindowHandle( ) const;
 	const std::wstring& GetName( ) const;
 	const std::wstring& GetClassName( ) const;
-	AbstractWindow* GetChildByName( const std::wstring& name );
-	const AbstractWindow* GetChildByName( const std::wstring& name ) const;
 	
 protected:
-	virtual LRESULT MessageProc( HWND wndHandle, UINT msg, WPARAM wParam, LPARAM lParam ) = 0;
+	virtual LRESULT MessageProc( 
+		HWND wndHandle, 
+		UINT msg, 
+		WPARAM wParam, 
+		LPARAM lParam ) = 0;
+
 	std::vector<AbstractWindow*>& GetChildRepo( );
 
 
 private:
-	static INT_PTR CALLBACK DlgCallbackMsgProc( HWND, UINT, WPARAM, LPARAM );
-	static LRESULT CALLBACK CallbackMsgProc( HWND, UINT, WPARAM, LPARAM );
+	static LRESULT MsgProc( AbstractWindow*, HWND, UINT, WPARAM, LPARAM );
+	static INT_PTR CALLBACK DlgStaticMsgProc( HWND, UINT, WPARAM, LPARAM );
+	static LRESULT CALLBACK StaticMsgProc( HWND, UINT, WPARAM, LPARAM );
 	
 	void CreateDialogWindow( );
-	void CreateWindow(
-		DWORD exStyle, 
+	void CreateWindow( DWORD exStyle, 
 		DWORD normalStyle, 
 		int x, 
 		int y, 
 		int width, 
-		int height
-	);
+		int height );
 
 private:
 	// Window info
@@ -122,6 +125,47 @@ inline void AbstractWindow::SetDelegate(
 	IWindowDelegate* wndDelegate )
 {
 	m_wndDelegate = wndDelegate;
+}
+
+inline AbstractWindow* AbstractWindow::GetOwner( )
+{
+	return m_owner;
+}
+
+inline const AbstractWindow* AbstractWindow::GetOwner( ) const
+{
+	return m_owner;
+}
+
+inline std::wstring AbstractWindow::GetTitle( )
+{
+	wchar_t buf[128];
+	GetWindowText( m_wndHandle, buf, 128 );
+
+	return std::wstring( buf );
+}
+
+inline void AbstractWindow::GetSize( int* width, int* height )
+{
+	RECT rt;
+	GetClientRect( m_wndHandle, &rt );
+
+	*width = rt.right;
+	*height = rt.bottom;
+}
+
+inline void AbstractWindow::GetPosition( int* x, int* y )
+{
+	RECT rt;
+	GetWindowRect( m_wndHandle, &rt );
+
+	*x = rt.left;
+	*y = rt.top;
+}
+
+inline std::vector<AbstractWindow*>& AbstractWindow::GetChildRepo( )
+{
+	return m_childRepo;
 }
 
 inline void AbstractWindow::AddChild( 

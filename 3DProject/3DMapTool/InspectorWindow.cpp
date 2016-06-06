@@ -5,22 +5,30 @@
 #include "cGameObjectManager.h"
 #include "Console.h"
 
-HWND g_inspectorWndHandle;
+namespace
+{
+	WNDPROC orgButtonProc;
+}
 
-WNDPROC orgButtonProc;
-LRESULT CALLBACK buttonSubProc( HWND wndHandle,
-	UINT msg, WPARAM wParam, LPARAM lParam )
+LRESULT CALLBACK buttonSubProc( 
+	HWND wndHandle,
+	UINT msg, 
+	WPARAM wParam, 
+	LPARAM lParam )
 {
 	switch ( msg )
 	{
 	case WM_KEYDOWN:
 		{
+			// KeyDown Enter and some of item has been selected
 			if ( wParam != VK_RETURN ||
-				g_hierarchyWnd->GetSelectedItemIndex() < 0 )
+				g_hierarchyWnd->GetSelectedItemIndex( ) < 0 )
 			{
+				// or
 				break;
 			}
 
+			// Then, Get the selected object
 			wchar_t buf[256] {0};
 			g_hierarchyWnd->GetSelectedItemText( buf, 256 );
 			if ( buf[0] == L'\0' )
@@ -209,84 +217,89 @@ InspectorWindow::InspectorWindow( HWND parentWndHandle ) :
 
 InspectorWindow::~InspectorWindow( )
 {
-	DestroyWindow( this->GetWindowHandle( ));
 }
 
 void InspectorWindow::OnIdle( )
 {
 }
 
-
 void InspectorWindow::SetPositionData(
 	const D3DXVECTOR3& pos )
 {
-	const HWND dlgWndHandle = this->GetWindowHandle( );
-
-	SetDlgItemText( dlgWndHandle, IDC_EDITXPOS, 
-		std::to_wstring(pos.x).c_str());
-	SetDlgItemText( dlgWndHandle, IDC_EDITYPOS, 
-		std::to_wstring(pos.y).c_str());
-	SetDlgItemText( dlgWndHandle, IDC_EDITZPOS, 
-		std::to_wstring(pos.z).c_str());
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITXPOS,
+		std::to_wstring( pos.x ).c_str( ));
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITYPOS,
+		std::to_wstring( pos.y ).c_str( ));
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITZPOS,
+		std::to_wstring( pos.z ).c_str( ));
 }
 
 void InspectorWindow::SetRotationData( 
 	const D3DXVECTOR3 & rot )
 {
-	const HWND dlgWndHandle = this->GetWindowHandle( );
-
-	SetDlgItemText( dlgWndHandle, IDC_EDITXROT, 
-		std::to_wstring(rot.x).c_str());
-	SetDlgItemText( dlgWndHandle, IDC_EDITYROT, 
-		std::to_wstring(rot.y).c_str());
-	SetDlgItemText( dlgWndHandle, IDC_EDITZROT, 
-		std::to_wstring(rot.z).c_str());
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITXROT,
+		std::to_wstring( rot.x ).c_str( ));
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITYROT,
+		std::to_wstring( rot.y ).c_str( ));
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITZROT,
+		std::to_wstring( rot.z ).c_str( ));
 }
 
 void InspectorWindow::SetScaleData( 
 	const D3DXVECTOR3& scale )
 {
-	const HWND dlgWndHandle = this->GetWindowHandle( );
-
-	SetDlgItemText( dlgWndHandle, IDC_EDITXSCALE, 
-		std::to_wstring(scale.x).c_str());
-	SetDlgItemText( dlgWndHandle, IDC_EDITYSCALE, 
-		std::to_wstring(scale.y).c_str());
-	SetDlgItemText( dlgWndHandle, IDC_EDITZSCALE, 
-		std::to_wstring(scale.z).c_str());
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITXSCALE,
+		std::to_wstring( scale.x ).c_str( ));
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITYSCALE,
+		std::to_wstring( scale.y ).c_str( ));
+	SetDlgItemText( this->GetWindowHandle( ), IDC_EDITZSCALE,
+		std::to_wstring( scale.z ).c_str( ));
 }
 
-void InspectorWindow::SubclassMyDlgButton( HWND myWindowHandle )
+void InspectorWindow::SubclassMyDlgButton( )
 {
-	orgButtonProc = ( WNDPROC )SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITXPOS ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+	// POSITION
+	orgButtonProc = reinterpret_cast<WNDPROC>(
+		SetWindowLongPtr(
+			GetDlgItem( this->GetWindowHandle( ), IDC_EDITXPOS ),
+			GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc ))
+		);
 	SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITYPOS ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+		GetDlgItem( this->GetWindowHandle( ), IDC_EDITYPOS ),
+		GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc )
+	);
 	SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITZPOS ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+		GetDlgItem( this->GetWindowHandle( ), IDC_EDITZPOS ),
+		GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc )
+	);
 
+	// ROTATION
 	SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITXROT ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+		GetDlgItem( this->GetWindowHandle( ), IDC_EDITXROT ),
+		GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc )
+	);
 	SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITYROT ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+		GetDlgItem( this->GetWindowHandle( ), IDC_EDITYROT ),
+		GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc )
+	);
 	SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITZROT ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
-
+		GetDlgItem( this->GetWindowHandle( ), IDC_EDITZROT ),
+		GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc )
+	);
+	
+	// SCALE
 	SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITXSCALE ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+		GetDlgItem( this->GetWindowHandle( ), IDC_EDITXSCALE ),
+		GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc )
+	);
 	SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITYSCALE ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+		GetDlgItem( this->GetWindowHandle( ), IDC_EDITYSCALE ),
+		GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc )
+	);
 	SetWindowLongPtr(
-		GetDlgItem( myWindowHandle, IDC_EDITZSCALE ),
-		GWLP_WNDPROC, ( LPARAM )buttonSubProc );
+		GetDlgItem( this->GetWindowHandle( ), IDC_EDITZSCALE ),
+		GWLP_WNDPROC, reinterpret_cast<LPARAM>( buttonSubProc )
+	);
 }
 
 LRESULT InspectorWindow::MessageProc( 
@@ -303,10 +316,8 @@ LRESULT InspectorWindow::MessageProc(
 			this->GetOwner( )->GetPosition( &ownerX, &ownerY );
 			this->GetOwner( )->GetSize( &ownerWidth, &ownerHeight );
 
-			SetWindowPos( wndHandle, nullptr, ownerX+ownerWidth, 
-				ownerY, 0, 0, SWP_NOSIZE );
-
-			this->SubclassMyDlgButton( wndHandle );
+			this->SetPosition( ownerX+ownerWidth, ownerY );
+			this->SubclassMyDlgButton( );
 		}
 		break;
 
