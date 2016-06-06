@@ -14,6 +14,8 @@ public:
 	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kUnknown; }
 
 private:
-	virtual void OnPicked( const D3DXVECTOR3& pickPos ) const;
+	virtual void OnPickDown( const D3DXVECTOR3& pickPos ) const override;
+	virtual void OnPickStay( const D3DXVECTOR3& pickPos ) const override;
+	virtual void OnPickUp( const D3DXVECTOR3& pickPos ) const override;
 };
 

@@ -40,7 +40,7 @@ public:
 
 	// Event Handler
 	virtual void OnIdle( ) = 0;
-	virtual void OnDroppedFile( HDROP dropHandle ) {}
+	virtual LRESULT OnDroppedFile( HDROP dropHandle ) { return 0; }
 
 	void SetupWindowComponents( );
 
@@ -66,20 +66,17 @@ public:
 	const std::wstring& GetName( ) const;
 	const std::wstring& GetClassName( ) const;
 	
-protected:
-	virtual LRESULT MessageProc( 
-		HWND wndHandle, 
-		UINT msg, 
-		WPARAM wParam, 
-		LPARAM lParam ) = 0;
 
+protected:
 	std::vector<AbstractWindow*>& GetChildRepo( );
 
-
 private:
-	static LRESULT MsgProc( AbstractWindow*, HWND, UINT, WPARAM, LPARAM );
-	static INT_PTR CALLBACK DlgStaticMsgProc( HWND, UINT, WPARAM, LPARAM );
-	static LRESULT CALLBACK StaticMsgProc( HWND, UINT, WPARAM, LPARAM );
+	static INT_PTR CALLBACK DlgMsgProc( HWND, UINT, WPARAM, LPARAM );
+	static LRESULT CALLBACK MsgProc( HWND, UINT, WPARAM, LPARAM );
+	// Real processor
+	static LRESULT MsgProcImpl( AbstractWindow*, HWND, UINT, WPARAM, LPARAM );
+	// Non-static message procedure ( Pure virtual )
+	virtual LRESULT MessageProc( HWND wndHandle, UINT msg, WPARAM wParam, LPARAM lParam ) = 0;
 	
 	void CreateDialogWindow( );
 	void CreateWindow( DWORD exStyle, 

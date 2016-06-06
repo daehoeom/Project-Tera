@@ -33,6 +33,6 @@ void LightObject::SetActive( bool isActive )
 {
 	__super::SetActive( isActive );
 
-	//g_pD3DDevice->LightEnable( 
-	//	m_myLightIndex, isActive );
+	g_pD3DDevice->LightEnable( 
+		m_myLightIndex, isActive );
 }

@@ -28,7 +28,7 @@ TilePicker::~TilePicker( )
 {
 }
 
-bool TilePicker::IsPicked( OUT D3DXVECTOR3 * outPickPos )
+bool TilePicker::IsPicked( OUT D3DXVECTOR3* outPickPos )
 {
 	POINT pt;
 	GetCursorPos( &pt );
@@ -63,15 +63,8 @@ bool TilePicker::IsPicked( OUT D3DXVECTOR3 * outPickPos )
 		}
 	}
 
-	if ( isPicked )
-	{
-		*outPickPos = ray.origin + dist*ray.direction;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	*outPickPos = ray.origin + dist*ray.direction;
+	return isPicked;
 }
 
 PickType TilePicker::GetPickerType( ) const

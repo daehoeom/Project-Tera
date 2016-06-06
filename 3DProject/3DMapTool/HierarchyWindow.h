@@ -18,7 +18,7 @@ public:
 	void AddListItem( const std::wstring& itemName );
 	
 	// Gets
-	class cGameObject* GetSelectedItemAsObject( LPNMLISTVIEW );
+	class cGameObject* GetSelectedItemAsObject( );
 	void GetSelectedItemText( wchar_t* outText, int32_t maxCount ) const;
 	int32_t GetSelectedItemIndex( ) const;
 

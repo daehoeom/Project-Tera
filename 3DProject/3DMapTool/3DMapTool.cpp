@@ -67,8 +67,7 @@ int APIENTRY wWinMain(
 	cObjectManager::Get( );
 	cGameObjectManager::Get( );
 	cDirectInput::Get( )->Setup( g_mainSurfaceWnd->GetWindowHandle( ));
-	cCameraObject* camera = new cCameraObject( 
-		g_mainSurfaceWnd->GetWindowHandle( ), L"Camera" );
+	cCameraObject* camera = new cCameraObject( g_mainSurfaceWnd->GetWindowHandle( ), L"Camera" );
 	g_hierarchyWnd->AddListItem( camera->GetName( ));
 	LightObject* obj = new LightObject( L"Light" );
 	PickingTile* pickObj = new PickingTile( );

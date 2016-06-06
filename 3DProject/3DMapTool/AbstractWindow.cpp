@@ -76,10 +76,31 @@ void AbstractWindow::SetupWindowComponents( )
 	}
 }
 
-INT_PTR AbstractWindow::DlgStaticMsgProc( 
-	HWND wndHandle, 
-	UINT msg, 
-	WPARAM wParam, 
+LRESULT AbstractWindow::MsgProcImpl(
+	AbstractWindow* window, 
+	HWND wndHandle,
+	UINT msg,
+	WPARAM wParam,
+	LPARAM lParam )
+{
+	switch ( msg )
+	{
+	case WM_DESTROY:
+		// Save window ptr to window-personal storage
+		SetWindowLongPtrW( wndHandle, GWLP_USERDATA, 0 );
+		PostQuitMessage( 0 );
+		return 0;
+
+	default:
+		return window->MessageProc( wndHandle, msg, wParam, lParam );
+	}
+
+}
+
+INT_PTR AbstractWindow::DlgMsgProc( 
+	HWND wndHandle,
+	UINT msg,
+	WPARAM wParam,
 	LPARAM lParam )
 {
 	AbstractWindow* extraMemAsWindow = reinterpret_cast<AbstractWindow*>(
@@ -87,26 +108,7 @@ INT_PTR AbstractWindow::DlgStaticMsgProc(
 
 	if ( extraMemAsWindow )
 	{
-		if ( msg == WM_DESTROY )
-		{
-			SetWindowLongPtrW(
-				wndHandle,
-				GWLP_USERDATA, // Save window ptr to window-personal storage
-				0
-			);
-
-			PostQuitMessage( 0 );
-			return 0;
-		}
-		else
-		{
-			return extraMemAsWindow->MessageProc( 
-				wndHandle, 
-				msg, 
-				wParam, 
-				lParam 
-			);
-		}
+		return MsgProcImpl( extraMemAsWindow, wndHandle, msg, wParam, lParam );
 	}
 	else
 	{
@@ -125,7 +127,7 @@ INT_PTR AbstractWindow::DlgStaticMsgProc(
 	}
 }
 
-LRESULT CALLBACK AbstractWindow::StaticMsgProc(
+LRESULT CALLBACK AbstractWindow::MsgProc(
 	HWND wndHandle, 
 	UINT msg, 
 	WPARAM wParam, 
@@ -136,25 +138,7 @@ LRESULT CALLBACK AbstractWindow::StaticMsgProc(
 
 	if ( extraMemAsWindow )
 	{
-		switch ( msg )
-		{
-		case WM_DESTROY:
-			// // Save window ptr to window-personal storage
-			SetWindowLongPtrW( wndHandle, GWLP_USERDATA, 0 );
-			PostQuitMessage( 0 );
-			return DefWindowProc( wndHandle, msg, wParam, lParam );
-			break;
-
-		case WM_DROPFILES:
-			extraMemAsWindow->OnDroppedFile( 
-				reinterpret_cast<HDROP>( wParam ));
-			break;
-
-		default:
-			extraMemAsWindow->MessageProc( 
-				wndHandle, msg, wParam, lParam );
-			break;
-		}
+		return MsgProcImpl( extraMemAsWindow, wndHandle, msg, wParam, lParam );
 	}
 	else
 	{
@@ -180,7 +164,7 @@ void AbstractWindow::CreateDialogWindow( )
 		GetModuleHandle( nullptr ),
 		MAKEINTRESOURCE( IDD_INSPECTOR ),
 		m_parentWndHandle,
-		DlgStaticMsgProc,
+		DlgMsgProc,
 		reinterpret_cast<LPARAM>( this )
 	);
 
@@ -204,7 +188,7 @@ void AbstractWindow::CreateWindow(
 	WNDCLASSEX modifiedWndClass = m_wndClassEx;
 	modifiedWndClass.cbWndExtra = sizeof( uintptr_t );
 	modifiedWndClass.lpszClassName = m_wndClassName.c_str( );
-	modifiedWndClass.lpfnWndProc = AbstractWindow::StaticMsgProc;
+	modifiedWndClass.lpfnWndProc = AbstractWindow::MsgProc;
 	RegisterClassExW( &modifiedWndClass );
 
 	CreateWindowExW(

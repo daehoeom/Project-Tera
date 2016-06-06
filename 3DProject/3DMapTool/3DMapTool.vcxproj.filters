@@ -109,6 +109,12 @@
     <Filter Include="hpp\Object\Collider\Interface">
       <UniqueIdentifier>{fe6eb861-43e1-4dcd-bef2-758fd4865a7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cpp\Object\Picker">
+      <UniqueIdentifier>{08bf11d5-4604-44ec-b70d-bb6fd879fc08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Object\Interface">
+      <UniqueIdentifier>{7f817a9e-0073-40de-b903-389ea510b604}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -204,20 +210,20 @@
     <ClInclude Include="Console.h">
       <Filter>hpp\Console</Filter>
     </ClInclude>
-    <ClInclude Include="IPicker.h">
-      <Filter>hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="TilePicker.h">
-      <Filter>hpp</Filter>
-    </ClInclude>
-    <ClInclude Include="IPickable.h">
-      <Filter>hpp\Object\Picker\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="IRenderable.h">
       <Filter>hpp\Object\Interface</Filter>
     </ClInclude>
     <ClInclude Include="ICollider.h">
       <Filter>hpp\Object\Collider\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="TilePicker.h">
+      <Filter>hpp\Object\Picker</Filter>
+    </ClInclude>
+    <ClInclude Include="IPickable.h">
+      <Filter>hpp\Object\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IPicker.h">
+      <Filter>hpp\Object\Picker\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,14 +293,8 @@
     <ClCompile Include="IO.cpp">
       <Filter>cpp\IO</Filter>
     </ClCompile>
-    <ClCompile Include="IRenderable.cpp">
-      <Filter>cpp\Object</Filter>
-    </ClCompile>
     <ClCompile Include="cBoundingBox.cpp">
       <Filter>hpp\Object\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="IPickable.cpp">
-      <Filter>cpp\Object</Filter>
     </ClCompile>
     <ClCompile Include="PickUtil.cpp">
       <Filter>cpp\Misc\Utility</Filter>
@@ -305,11 +305,17 @@
     <ClCompile Include="IPicker.cpp">
       <Filter>cpp</Filter>
     </ClCompile>
-    <ClCompile Include="TilePicker.cpp">
-      <Filter>cpp</Filter>
-    </ClCompile>
     <ClCompile Include="ICollider.cpp">
       <Filter>hpp\Object\Collider\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IPickable.cpp">
+      <Filter>cpp\Object\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IRenderable.cpp">
+      <Filter>cpp\Object\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="TilePicker.cpp">
+      <Filter>cpp\Object\Picker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

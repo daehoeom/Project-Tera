@@ -97,7 +97,7 @@ void HierarchyWindow::OnIdle( )
 void HierarchyWindow::OnItemDoubleClicked( 
 	LPNMLISTVIEW lpListView )
 {
-	auto* object = this->GetSelectedItemAsObject( lpListView );
+	auto* object = this->GetSelectedItemAsObject( );
 	if ( object )
 	{
 		// Move Camera
@@ -125,7 +125,7 @@ void HierarchyWindow::OnItemDoubleClicked(
 void HierarchyWindow::OnItemClicked( 
 	LPNMLISTVIEW lpListView )
 {
-	auto* object = this->GetSelectedItemAsObject( lpListView );
+	auto* object = this->GetSelectedItemAsObject( );
 	if ( object )
 	{
 		g_inspectorWnd->SetPositionData( object->GetPosition( ));
@@ -134,12 +134,11 @@ void HierarchyWindow::OnItemClicked(
 	}
 }
 
-cGameObject* HierarchyWindow::GetSelectedItemAsObject(
-	LPNMLISTVIEW lpListView )
+cGameObject* HierarchyWindow::GetSelectedItemAsObject( )
 {
 	wchar_t findObjName[256]{ 0 };
 	ListView_GetItemText( m_listHandle,
-		lpListView->iItem, 0,
+		this->GetSelectedItemIndex( ), 0,
 		findObjName, 256
 	);
 
