@@ -33,6 +33,13 @@ LPDIRECT3DTEXTURE9 cTextureManager::GetTexture( std::string sFullPath )
 		}
 		else 
 		{
+			std::string str = "텍스처 로딩에 실패했습니다. (";
+			str += sFullPath;
+			str += ')';
+
+			MessageBoxA( GetFocus( ), str.c_str( ),
+				"WARNING!", MB_OK | MB_ICONEXCLAMATION );
+			
 			return NULL;
 		}
 	}

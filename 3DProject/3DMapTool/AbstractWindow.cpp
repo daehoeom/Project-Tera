@@ -42,42 +42,7 @@ AbstractWindow::AbstractWindow(
 
 AbstractWindow::~AbstractWindow( )
 {
-}
-
-AbstractWindow* AbstractWindow::GetOwner( )
-{
-	return m_owner;
-}
-
-const AbstractWindow* AbstractWindow::GetOwner( ) const
-{
-	return m_owner;
-}
-
-std::wstring AbstractWindow::GetTitle( )
-{
-	wchar_t buf[128];
-	GetWindowText( m_wndHandle, buf, 128 );
-	
-	return std::wstring( buf );
-}
-
-void AbstractWindow::GetSize( int* width, int* height )
-{
-	RECT rt;
-	GetClientRect( m_wndHandle, &rt );
-
-	*width = rt.right;
-	*height = rt.bottom;
-}
-
-void AbstractWindow::GetPosition( int* x, int* y )
-{
-	RECT rt;
-	GetWindowRect( m_wndHandle, &rt );
-
-	*x = rt.left;
-	*y = rt.top;
+	DestroyWindow( m_wndHandle );
 }
 
 void AbstractWindow::SetupWindowComponents( )
@@ -111,42 +76,31 @@ void AbstractWindow::SetupWindowComponents( )
 	}
 }
 
-AbstractWindow* AbstractWindow::GetChildByName( 
-	const std::wstring& name )
+LRESULT AbstractWindow::MsgProcImpl(
+	AbstractWindow* window, 
+	HWND wndHandle,
+	UINT msg,
+	WPARAM wParam,
+	LPARAM lParam )
 {
-	for ( int i = 0; i < m_childRepo.size( ); ++i )
+	switch ( msg )
 	{
-		if ( m_childRepo[i]->GetTitle( ) == name )
-		{
-			return m_childRepo[i];
-		}
+	case WM_DESTROY:
+		// Save window ptr to window-personal storage
+		SetWindowLongPtrW( wndHandle, GWLP_USERDATA, 0 );
+		PostQuitMessage( 0 );
+		return 0;
+
+	default:
+		return window->MessageProc( wndHandle, msg, wParam, lParam );
 	}
 
-	return nullptr;
 }
 
-const AbstractWindow * AbstractWindow::GetChildByName( const std::wstring & name ) const
-{
-	for ( int i = 0; i < m_childRepo.size( ); ++i )
-	{
-		if ( m_childRepo[i]->GetTitle( ) == name )
-		{
-			return m_childRepo[i];
-		}
-	}
-
-	return nullptr;
-}
-
-std::vector<AbstractWindow*>& AbstractWindow::GetChildRepo( )
-{
-	return m_childRepo;
-}
-
-INT_PTR AbstractWindow::DlgCallbackMsgProc( 
-	HWND wndHandle, 
-	UINT msg, 
-	WPARAM wParam, 
+INT_PTR AbstractWindow::DlgMsgProc( 
+	HWND wndHandle,
+	UINT msg,
+	WPARAM wParam,
 	LPARAM lParam )
 {
 	AbstractWindow* extraMemAsWindow = reinterpret_cast<AbstractWindow*>(
@@ -154,26 +108,7 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 
 	if ( extraMemAsWindow )
 	{
-		if ( msg == WM_DESTROY )
-		{
-			SetWindowLongPtrW(
-				wndHandle,
-				GWLP_USERDATA, // Save window ptr to window-personal storage
-				0
-			);
-
-			PostQuitMessage( 0 );
-			return 0;
-		}
-		else
-		{
-			return extraMemAsWindow->MessageProc( 
-				wndHandle, 
-				msg, 
-				wParam, 
-				lParam 
-			);
-		}
+		return MsgProcImpl( extraMemAsWindow, wndHandle, msg, wParam, lParam );
 	}
 	else
 	{
@@ -192,7 +127,7 @@ INT_PTR AbstractWindow::DlgCallbackMsgProc(
 	}
 }
 
-LRESULT CALLBACK AbstractWindow::CallbackMsgProc(
+LRESULT CALLBACK AbstractWindow::MsgProc(
 	HWND wndHandle, 
 	UINT msg, 
 	WPARAM wParam, 
@@ -203,32 +138,7 @@ LRESULT CALLBACK AbstractWindow::CallbackMsgProc(
 
 	if ( extraMemAsWindow )
 	{
-		if ( msg == WM_DESTROY )
-		{
-			SetWindowLongPtrW(
-				wndHandle,
-				GWLP_USERDATA, // Save window ptr to window-personal storage
-				0
-			);
-
-			PostQuitMessage( 0 );
-
-			return DefWindowProc(
-				wndHandle,
-				msg,
-				wParam,
-				lParam
-			);
-		}
-		else
-		{
-			return extraMemAsWindow->MessageProc( 
-				wndHandle, 
-				msg, 
-				wParam, 
-				lParam 
-			);
-		}
+		return MsgProcImpl( extraMemAsWindow, wndHandle, msg, wParam, lParam );
 	}
 	else
 	{
@@ -237,18 +147,13 @@ LRESULT CALLBACK AbstractWindow::CallbackMsgProc(
 			extraMemAsWindow = reinterpret_cast<AbstractWindow*>(
 				LPCREATESTRUCT( lParam )->lpCreateParams );
 			extraMemAsWindow->m_wndHandle = wndHandle;
-
+			
 			return extraMemAsWindow->MessageProc(
 				wndHandle, msg, wParam, lParam );
 		}
 		else
 		{
-			return DefWindowProc( 
-				wndHandle, 
-				msg, 
-				wParam, 
-				lParam 
-			);
+			return DefWindowProc( wndHandle, msg, wParam, lParam );
 		}
 	}
 }
@@ -259,7 +164,7 @@ void AbstractWindow::CreateDialogWindow( )
 		GetModuleHandle( nullptr ),
 		MAKEINTRESOURCE( IDD_INSPECTOR ),
 		m_parentWndHandle,
-		DlgCallbackMsgProc,
+		DlgMsgProc,
 		reinterpret_cast<LPARAM>( this )
 	);
 
@@ -283,7 +188,7 @@ void AbstractWindow::CreateWindow(
 	WNDCLASSEX modifiedWndClass = m_wndClassEx;
 	modifiedWndClass.cbWndExtra = sizeof( uintptr_t );
 	modifiedWndClass.lpszClassName = m_wndClassName.c_str( );
-	modifiedWndClass.lpfnWndProc = AbstractWindow::CallbackMsgProc;
+	modifiedWndClass.lpfnWndProc = AbstractWindow::MsgProc;
 	RegisterClassExW( &modifiedWndClass );
 
 	CreateWindowExW(

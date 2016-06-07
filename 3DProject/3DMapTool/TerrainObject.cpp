@@ -7,7 +7,9 @@
 
 TerrainObject::TerrainObject(
 	const std::wstring& objName,
-	int row, int col, float interval,
+	int row, 
+	int col, 
+	float interval,
 	_In_ const char* rowPath,
 	_In_ const char* texPath ) :
 	IRenderable( objName ),

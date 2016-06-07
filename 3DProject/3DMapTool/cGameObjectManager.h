@@ -20,6 +20,7 @@ public:
 
 	void AddObject( cGameObject* pObject );
 	void DeleteObject( const std::wstring& key );
+	void ResetAllObject( );
 	cGameObject* FindObject( const std::wstring& key );
 
 	iterator begin( );
@@ -30,6 +31,7 @@ protected:
 	virtual ~cGameObjectManager();
 
 private:
+	cGameObject* m_prevSelected;
 	ObjectMap m_objMap;
 };
 
@@ -54,6 +56,39 @@ inline void cGameObjectManager::DeleteObject(
 		SAFE_DELETE( iter->second );
 		m_objMap.erase( key );
 	}
+}
+
+inline void cGameObjectManager::ResetAllObject( )
+{
+	map<string, SerialdMsg::SerialFunction_t>::iterator pm_it = port_map.begin( );
+	while ( pm_it != port_map.end( ) )
+	{
+		if ( pm_it->second == delete_this_id )
+		{
+			port_map.erase( pm_it++ );  // Use iterator.
+										// Note the post increment.
+										// Increments the iterator but returns the
+										// original value for use by erase 
+		}
+		else
+		{
+			++pm_it;           // Can use pre-increment in this case
+							   // To make sure you have the efficient version
+		}
+	}
+
+	/*auto iter = m_objMap.begin( );
+	while ( iter != m_objMap.end( ) )
+	{
+		if ( iter->second == delete_this_id )
+		{
+			pm_it = port_map.erase( pm_it );
+		}
+		else
+		{
+			++pm_it;
+		}
+	}*/
 }
 
 inline cGameObjectManager::iterator cGameObjectManager::begin()

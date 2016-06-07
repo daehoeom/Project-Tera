@@ -12,10 +12,14 @@ std::string GetFileNameFromPath( const std::string& filePath )
 		{
 			return filePath;
 		}
+		else
+		{
+			return filePath.substr( lastSlashIndex + 1, filePath.size( ) );
+		}
 	}
 	else
 	{
-		return filePath.substr( lastSlashIndex+1, filePath.size( ));
+		return filePath.substr( lastSlashIndex + 1, filePath.size( ) );
 	}
 }
 

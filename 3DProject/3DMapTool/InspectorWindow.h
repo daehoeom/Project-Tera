@@ -17,7 +17,7 @@ public:
 	void SetScaleData( const D3DXVECTOR3& scale );
 
 private:
-	void SubclassMyDlgButton( HWND myWindowHandle );
+	void SubclassMyDlgButton( );
 	
 protected:
 	virtual LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) override;

@@ -4,7 +4,8 @@
 #include "cDeviceManager.h"
 
 
-cGameObjectManager::cGameObjectManager()
+cGameObjectManager::cGameObjectManager() :
+	m_prevSelected( nullptr )
 {
 }
 

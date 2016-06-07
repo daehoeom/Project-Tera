@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DMapTool.h" />
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="AbstractWindow.h" />
@@ -158,17 +159,22 @@
     <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
+    <ClInclude Include="IColliseable.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="DirectInput.h" />
     <ClInclude Include="HierarchyWindow.h" />
+    <ClInclude Include="ICollider.h" />
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="IO.h" />
     <ClInclude Include="IPickable.h" />
+    <ClInclude Include="IPicker.h" />
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="LightObject.h" />
     <ClInclude Include="MainSurfaceWindow.h" />
     <ClInclude Include="ObjObject.h" />
+    <ClInclude Include="PickingTile.h" />
+    <ClInclude Include="PickUtil.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="shared_comptr.h" />
     <ClInclude Include="Singleton.h" />
@@ -176,9 +182,13 @@
     <ClInclude Include="StringUtil.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerrainObject.h" />
+    <ClInclude Include="TilePicker.h" />
+    <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="TXMLReader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DMapTool.cpp" />
+    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="AbstractWindow.cpp" />
@@ -189,16 +199,21 @@
     <ClCompile Include="cObject.cpp" />
     <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjLoader.cpp" />
+    <ClCompile Include="IColliseable.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
+    <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="IPickable.cpp" />
+    <ClCompile Include="IPicker.cpp" />
     <ClCompile Include="IRenderable.cpp" />
     <ClCompile Include="LightObject.cpp" />
     <ClCompile Include="MainSurfaceWindow.cpp" />
     <ClCompile Include="ObjObject.cpp" />
+    <ClCompile Include="PickingTile.cpp" />
+    <ClCompile Include="PickUtil.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -207,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="StringUtil.cpp" />
     <ClCompile Include="TerrainObject.cpp" />
+    <ClCompile Include="TilePicker.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
+    <ClCompile Include="TXMLReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DMapTool.rc" />

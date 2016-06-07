@@ -11,6 +11,7 @@
 #include "cObjectManager.h"
 #include "cGameObjectManager.h"
 #include "cCamera.h"
+#include "PickingTile.h"
 #include "DirectInput.h"
 #include "LightObject.h"
 #include "InspectorWindow.h"
@@ -37,7 +38,6 @@ int APIENTRY wWinMain(
 #ifdef _DEBUG
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
-
 
 	g_instHandle = hInstance;
 
@@ -66,10 +66,10 @@ int APIENTRY wWinMain(
 	cObjectManager::Get( );
 	cGameObjectManager::Get( );
 	cDirectInput::Get( )->Setup( g_mainSurfaceWnd->GetWindowHandle( ));
-	cCameraObject* camera = new cCameraObject( 
-		g_mainSurfaceWnd->GetWindowHandle( ), L"Camera" );
+	cCameraObject* camera = new cCameraObject( g_mainSurfaceWnd->GetWindowHandle( ), L"Camera" );
 	g_hierarchyWnd->AddListItem( camera->GetName( ));
 	LightObject* obj = new LightObject( L"Light" );
+	PickingTile* pickObj = new PickingTile( );
 	g_hierarchyWnd->AddListItem( obj->GetName( ));
 
 

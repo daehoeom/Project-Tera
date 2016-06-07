@@ -76,9 +76,6 @@
     <Filter Include="hpp\Utility">
       <UniqueIdentifier>{bd144f53-2313-4a0a-bb70-acefa05dca48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cpp\Utility">
-      <UniqueIdentifier>{b8f3d421-faa4-4064-9393-98cd9cb76032}</UniqueIdentifier>
-    </Filter>
     <Filter Include="cpp\Terrain">
       <UniqueIdentifier>{9c9e2ba1-9910-4aed-9289-0af9ae407892}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,42 @@
     </Filter>
     <Filter Include="hpp\Console">
       <UniqueIdentifier>{bec04f1c-1287-44f3-98bf-afcd821832c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Collider">
+      <UniqueIdentifier>{9ee9ab0a-1233-442e-85d2-9407e3c1f49c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Misc\Utility">
+      <UniqueIdentifier>{b8f3d421-faa4-4064-9393-98cd9cb76032}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Picker">
+      <UniqueIdentifier>{b7b4e1e4-ea64-4ddd-a230-8c25affce5eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Interface">
+      <UniqueIdentifier>{37aaa9b8-a269-482c-8f5c-b58a1360946a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Picker\Interface">
+      <UniqueIdentifier>{fa7662c6-f725-491d-9718-6adcf74acf1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Object\Picker">
+      <UniqueIdentifier>{08bf11d5-4604-44ec-b70d-bb6fd879fc08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Object\Interface">
+      <UniqueIdentifier>{7f817a9e-0073-40de-b903-389ea510b604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Collider\Interface">
+      <UniqueIdentifier>{b0dd4cf2-b6d6-4b55-9b8b-412c46ecfc35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Object\Collider">
+      <UniqueIdentifier>{90ef74bf-b1c3-467d-af99-2baec6688668}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Object\Collider\Interface">
+      <UniqueIdentifier>{4fd12b1d-6619-4673-97b5-bfb004adfb78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\XML">
+      <UniqueIdentifier>{58e73f7c-203b-44db-8b68-24bdea085cac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\XML">
+      <UniqueIdentifier>{f3b5764e-9fb4-4309-968e-3ad0b6fbfede}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -177,14 +210,41 @@
     <ClInclude Include="IO.h">
       <Filter>hpp\IO</Filter>
     </ClInclude>
-    <ClInclude Include="IRenderable.h">
-      <Filter>hpp</Filter>
+    <ClInclude Include="PickUtil.h">
+      <Filter>hpp\Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="IPickable.h">
+    <ClInclude Include="PickingTile.h">
       <Filter>hpp\Object</Filter>
     </ClInclude>
     <ClInclude Include="Console.h">
-      <Filter>hpp</Filter>
+      <Filter>hpp\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>hpp\Object\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="TilePicker.h">
+      <Filter>hpp\Object\Picker</Filter>
+    </ClInclude>
+    <ClInclude Include="IPickable.h">
+      <Filter>hpp\Object\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IPicker.h">
+      <Filter>hpp\Object\Picker\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollider.h">
+      <Filter>hpp\Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.h">
+      <Filter>hpp\Object\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="IColliseable.h">
+      <Filter>hpp\Object\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>hpp\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="TXMLReader.h">
+      <Filter>hpp\XML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +303,7 @@
       <Filter>cpp\Object</Filter>
     </ClCompile>
     <ClCompile Include="StringUtil.cpp">
-      <Filter>cpp\Utility</Filter>
+      <Filter>cpp\Misc\Utility</Filter>
     </ClCompile>
     <ClCompile Include="DirectInput.cpp">
       <Filter>cpp\Manager</Filter>
@@ -254,11 +314,38 @@
     <ClCompile Include="IO.cpp">
       <Filter>cpp\IO</Filter>
     </ClCompile>
-    <ClCompile Include="IRenderable.cpp">
-      <Filter>cpp</Filter>
+    <ClCompile Include="PickUtil.cpp">
+      <Filter>cpp\Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="PickingTile.cpp">
+      <Filter>cpp\Object</Filter>
     </ClCompile>
     <ClCompile Include="IPickable.cpp">
-      <Filter>hpp\Object</Filter>
+      <Filter>cpp\Object\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="IRenderable.cpp">
+      <Filter>cpp\Object\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="TilePicker.cpp">
+      <Filter>cpp\Object\Picker</Filter>
+    </ClCompile>
+    <ClCompile Include="IPicker.cpp">
+      <Filter>cpp\Object\Picker</Filter>
+    </ClCompile>
+    <ClCompile Include="ICollider.cpp">
+      <Filter>cpp\Object\Collider\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>hpp\Object\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="IColliseable.cpp">
+      <Filter>cpp\Object\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>cpp\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="TXMLReader.cpp">
+      <Filter>cpp\XML</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,6 @@ public:
 	virtual ~LightObject( );
 
 	virtual void SetActive( bool isActive );
-
 	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kLight; }
 
 private:
