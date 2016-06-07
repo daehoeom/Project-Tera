@@ -7,6 +7,7 @@ enum ObjectIdenfier
 	kObj,
 	kX,
 	kRaw,
+	kPickTile,
 	kUnknown,
 };
 

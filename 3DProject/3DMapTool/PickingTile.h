@@ -11,7 +11,7 @@ public:
 	virtual void Update( ) override;
 	virtual void Render( ) override;
 
-	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kUnknown; }
+	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kPickTile; }
 
 private:
 	virtual void OnPickDown( const D3DXVECTOR3& pickPos ) const override;

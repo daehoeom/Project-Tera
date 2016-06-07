@@ -59,35 +59,10 @@ void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3
 			szMtlPath.resize( 1024 );
 			sscanf(szBuf, "%*s %s", &szMtlPath[0] );
 
-			auto a = GetPathWithoutFileName( szFullPath );
-			auto b = GetFileNameFromPath( szMtlPath );
-
-			szMtlPath = 
-				a+b
-				;
+			szMtlPath = GetPathWithoutFileName( szFullPath )+
+						GetFileNameFromPath( szMtlPath );
 
 			LoadMtlLib( szMtlPath.c_str() );
-		}
-		else if (szBuf[0] == 'g')
-		{
-			if (vecVertex.empty() == false)
-			{
-				if (mat)
-				{
-					for (size_t i = 0; i < vecVertex.size(); ++i)
-					{
-						D3DXVec3TransformCoord(&vecVertex[i].p, &vecVertex[i].p, mat);
-						D3DXVec3TransformNormal(&vecVertex[i].n, &vecVertex[i].n, mat);
-					}
-				}
-
-				cGroup* pGroup = new cGroup;
-				pGroup->SetMtlTex(m_mapMtlTex[sMtlName]);
-				pGroup->SetVertex(vecVertex);
-				vecGroup.push_back(pGroup);
-
-				vecVertex.clear();
-			}
 		}
 		else if (szBuf[0] == 'v')
 		{
@@ -202,6 +177,25 @@ void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3
 		}
 	}
 
+	if ( vecVertex.empty( ) == false )
+	{
+		if ( mat )
+		{
+			for ( size_t i = 0; i < vecVertex.size( ); ++i )
+			{
+				D3DXVec3TransformCoord( &vecVertex[i].p, &vecVertex[i].p, mat );
+				D3DXVec3TransformNormal( &vecVertex[i].n, &vecVertex[i].n, mat );
+			}
+		}
+
+		cGroup* pGroup = new cGroup;
+		pGroup->SetMtlTex( m_mapMtlTex[sMtlName] );
+		pGroup->SetVertex( vecVertex );
+		vecGroup.push_back( pGroup );
+
+		vecVertex.clear( );
+	}
+
 	for (auto& iter : m_mapMtlTex)
 	{
 		SAFE_RELEASE(iter.second);
@@ -293,12 +287,9 @@ void cObjLoader::LoadMtlLib(const char* szFullPath)
 			szTexPath.resize( 1024 );
 			sscanf(szBuf, "%*s %s", &szTexPath[0]);
 
-			auto a = GetPathWithoutFileName( szFullPath );
-			auto b = GetFileNameFromPath( szTexPath );
-
 			szTexPath =
-				a +
-				b;
+				GetPathWithoutFileName( szFullPath ) +
+				GetFileNameFromPath( szTexPath );
 
 			LPDIRECT3DTEXTURE9 pTexture = NULL;
 			pTexture = g_pTextureManager->GetTexture(szTexPath);

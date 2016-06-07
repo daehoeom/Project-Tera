@@ -60,35 +60,21 @@ inline void cGameObjectManager::DeleteObject(
 
 inline void cGameObjectManager::ResetAllObject( )
 {
-	map<string, SerialdMsg::SerialFunction_t>::iterator pm_it = port_map.begin( );
-	while ( pm_it != port_map.end( ) )
+	for ( auto iter = m_objMap.begin( ); 
+		iter != m_objMap.end( );) 
 	{
-		if ( pm_it->second == delete_this_id )
+		if ( iter->second->GetIdenfier( ) != ObjectIdenfier::kLight &&
+			iter->second->GetIdenfier( ) != ObjectIdenfier::kCamera &&
+			iter->second->GetIdenfier( ) != ObjectIdenfier::kPickTile )
 		{
-			port_map.erase( pm_it++ );  // Use iterator.
-										// Note the post increment.
-										// Increments the iterator but returns the
-										// original value for use by erase 
+			SAFE_DELETE( iter->second );
+			m_objMap.erase( iter++ );
 		}
 		else
 		{
-			++pm_it;           // Can use pre-increment in this case
-							   // To make sure you have the efficient version
+			++iter;
 		}
 	}
-
-	/*auto iter = m_objMap.begin( );
-	while ( iter != m_objMap.end( ) )
-	{
-		if ( iter->second == delete_this_id )
-		{
-			pm_it = port_map.erase( pm_it );
-		}
-		else
-		{
-			++pm_it;
-		}
-	}*/
 }
 
 inline cGameObjectManager::iterator cGameObjectManager::begin()

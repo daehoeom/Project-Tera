@@ -83,17 +83,10 @@ public:
 		OUT std::vector<cGroup*>& vecGroup,
 		IN D3DXMATRIXA16* mat = NULL);
 
-	LPD3DXMESH Load(IN const char* szFullPath,
-		OUT std::vector<cMtlTex*>& vecMtlTex,
-		IN D3DXMATRIXA16* mat = NULL);
-
 	void LoadMtlLib(const char* szFullPath);
 
 	const D3DXVECTOR3& GetMinVector( ) const;
 	const D3DXVECTOR3& GetMaxVector( ) const;
-
-private:
-	int32_t GetItemCountInF( const char* line );
 
 private:
 	std::map<std::string, cMtlTex*> m_mapMtlTex;
@@ -109,19 +102,4 @@ inline const D3DXVECTOR3& cObjLoader::GetMinVector( ) const
 inline const D3DXVECTOR3& cObjLoader::GetMaxVector( ) const
 {
 	return m_vMax;
-}
-
-inline int32_t cObjLoader::GetItemCountInF( const char * line )
-{
-	int retSpace = 0;
-	int length = std::strlen( line );
-	for ( int i = 0; i < length; ++i )
-	{
-		if ( line[i] == ' ' )
-		{
-			++retSpace;
-		}
-	}
-
-	return retSpace;
 }
