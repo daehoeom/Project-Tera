@@ -1,0 +1,8 @@
+0 -> IDLE
+1 -> IDLE
+2 -> RUN
+3->DEATHWAIT
+4->DEATH
+5->Attack3
+6->Attack2
+7->Attack1
