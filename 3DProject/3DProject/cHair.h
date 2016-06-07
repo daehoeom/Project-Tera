@@ -16,6 +16,7 @@ public:
 	void SetupBoneMatrixPtrs(D3DXFRAME* pFrame);
 	void UpdateSkinnedMesh(D3DXFRAME* pFrame);
 	void SetAnimationIndex(int nIndex);
+	DOUBLE GetAniTrackPeriod(int nIndex);
 
 	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
 	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }
@@ -23,6 +24,7 @@ public:
 	void SetHairTM(D3DXMATRIX* hair) { m_matHairTM = *hair; }
 	D3DXMATRIX GetHairTM() { return m_matHairTM; }
 
+private:
 	//XÆÄÀÏ
 	cAllocateHierarchy*					m_pAlloc;
 	LPD3DXFRAME							m_pFrameRoot;

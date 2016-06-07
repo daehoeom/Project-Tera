@@ -47,6 +47,13 @@ void cCollisionObject::Render( )
 void cCollisionObject::OnCollisionStay( 
 	cCollisionObject* rhs )
 {
+	this->SetCollision(true);
+}
+
+void cCollisionObject::OnNotCollision(cCollisionObject* rhs)
+{
+	if (this->GetCollision())
+		this->SetCollision(false);
 }
 
 void cCollisionObject::SetCollider( ICollider* collider )

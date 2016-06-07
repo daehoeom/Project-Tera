@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "cCollisionManager.h"
-
 #include "cCollision.h"
 #include "cBoundingBox.h"
 #include "cBoundingSphere.h"
@@ -94,6 +93,11 @@ void cCollisionManager::Update( )
 					if ( isCollised )
 					{
 						elemOp1.second->OnCollisionStay( elemOp2.second );
+					}
+
+					else if (!isCollised)
+					{
+						elemOp1.second->OnNotCollision(elemOp2.second);
 					}
 				}
 			}

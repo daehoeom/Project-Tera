@@ -15,9 +15,10 @@ cBody::cBody()
 	, m_fPassedBlendTime(0.f)
 {
 	D3DXMatrixIdentity(&m_matNeckTM);
-	D3DXMatrixIdentity(&m_matRootTM);
 	D3DXMatrixIdentity(&m_matHairTM);
 	D3DXMatrixIdentity(&m_matWorld);
+	D3DXMatrixIdentity(&m_matWeaponBackTM);
+	D3DXMatrixIdentity(&m_matWeaponHandTM);
 }
 
 cBody::~cBody()
@@ -81,7 +82,10 @@ void cBody::Update()
 	//머리와 목 로컬TM에 월드 매트릭스 곱한다.
 	m_matHairTM = m_matHairTM * m_matWorld;
 	m_matNeckTM = m_matNeckTM * m_matWorld;
-	
+	m_matTailTM = m_matTailTM * m_matWorld;
+	m_matWeaponBackTM = m_matWeaponBackTM * m_matWorld;
+	m_matWeaponHandTM = m_matWeaponHandTM * m_matWorld;
+
 	UpdateSkinnedMesh(m_pFrameRoot);
 }
 void cBody::Render()
@@ -243,20 +247,29 @@ void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
 	{
 		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
 		m_matNeckTM = pBone->CombinedTransformationMatrix;
-		//D3DXMatrixRotationX(&m_matNeckTM, D3DXToRadian(90));
 	}
 	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Bip01-Head"))
 	{
 		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
 		m_matHairTM = pBone->CombinedTransformationMatrix;
-		//D3DXMatrixRotationX(&m_matNeckTM, D3DXToRadian(90));
 	}
-	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Dummy_root"))
+	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Bip01-Spine1"))
 	{
 		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
-		m_matRootTM = pBone->CombinedTransformationMatrix;
-		//D3DXMatrixRotationX(&m_matNeckTM, D3DXToRadian(90));
+		m_matTailTM = pBone->CombinedTransformationMatrix;
 	}
+	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Weapon_Back"))
+	{
+		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
+		m_matWeaponBackTM = pBone->CombinedTransformationMatrix;
+	}
+	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("R_Sword"))
+	{
+		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
+		m_matWeaponHandTM = pBone->CombinedTransformationMatrix;
+	}
+
+
 	//-180 180 180
 	if (pFrame->pFrameSibling)
 	{

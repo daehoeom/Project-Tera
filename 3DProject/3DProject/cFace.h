@@ -16,6 +16,7 @@ public:
 	void SetupBoneMatrixPtrs(D3DXFRAME* pFrame);
 	void UpdateSkinnedMesh(D3DXFRAME* pFrame);
 	void SetAnimationIndex(int nIndex);
+	DOUBLE GetAniTrackPeriod(int nIndex);
 
 	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
 	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }

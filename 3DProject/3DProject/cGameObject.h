@@ -1,11 +1,37 @@
 #pragma once
 
-enum class ObjectTag
+enum eEnemyState
 {
-	kPlayer,
-	kMonster,
-	kBuilding,
+	ENEMY_IDLE = 0,				//몬스터 서있기
+	ENEMY_RUN = 1,				//몬스터 이동
+	ENEMY_DEATHWAIT = 2,		//몬스터 죽음
+	ENEMY_DEATH = 3,			//몬스터 죽기 직전
+	ENEMY_ATTACK = 4,			//몬스터 공격
+	ENEMY_SKILL1 = 5,			//몬스터 스킬1
+	ENEMY_SKILL2 = 6,			//몬스터 스킬2
+	ENEMY_BACKPOSITION = 7,		//몬스터 되돌아가기
+	ENEMY_CHASE = 8,			//플레이어 쫒아가기
 };
+
+enum ePlayerState
+{
+	PLAYER_BATTLEIDLE = 5,
+	PLAYER_RUN = 12,
+	PLAYER_ATTACK = 1,
+	PLAYER_SLASH = 0,
+	PLAYER_TUMBLING = 6,
+	PLAYER_SKILL1 = 26,			//강하게 내려찍기
+};
+
+enum class CollisionType
+{
+	ePlayer,
+	eMonster,
+	eBuilding,
+	eNpc,
+};
+
+
 
 class cGameObject
 {
@@ -32,6 +58,26 @@ public:
 	void Scale( const D3DXVECTOR3& scale );
 	const D3DXVECTOR3& GetScale( ) const;
 	
+	//Check Collision
+	void SetCollision(bool collision);
+	bool GetCollision( );
+
+	//Hp
+	int GetMaxHp() { return m_nMaxHp; }
+
+	void SetCurrHp(int hp) { m_nCurrHp = hp; }
+	int GetCurrHp() { return m_nCurrHp; }
+
+	void SetCollisionType(CollisionType c);
+	CollisionType GetCollisionType();
+
+	//State
+	void SetPlayerState(ePlayerState p);
+	ePlayerState GetPlayerState();
+
+	void SetEnemyState(eEnemyState e);
+	eEnemyState GetEnemyState();
+
 	/*
 		State & Component
 	*/
@@ -51,6 +97,13 @@ private:
 	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
 	bool m_isActive;
+	bool m_bIsCollision;
+	CollisionType	m_sType;
+	int m_nMaxHp;
+	int m_nCurrHp;
+
+	ePlayerState m_sPState;
+	eEnemyState m_sEState;
 };
 
 inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
@@ -92,6 +145,47 @@ inline void cGameObject::Scale( const D3DXVECTOR3& scale )
 	m_scale += scale;
 	this->UpdateWorld( );
 }
+
+inline void cGameObject::SetCollision(bool collision)
+{
+	m_bIsCollision = collision;
+}
+
+inline bool cGameObject::GetCollision()
+{
+	return m_bIsCollision;
+}
+
+inline void cGameObject::SetCollisionType(CollisionType c)
+{
+	m_sType = c;
+}
+
+inline CollisionType cGameObject::GetCollisionType()
+{
+	return m_sType;
+}
+
+inline void cGameObject::SetPlayerState(ePlayerState p)
+{
+	m_sPState = p;
+}
+
+inline ePlayerState cGameObject::GetPlayerState()
+{
+	return m_sPState;
+}
+
+inline void cGameObject::SetEnemyState(eEnemyState e)
+{
+	m_sEState = e;
+}
+
+inline eEnemyState cGameObject::GetEnemyState()
+{
+	return m_sEState;
+}
+
 
 inline void cGameObject::SetActive( bool isActive )
 {

@@ -229,3 +229,13 @@ void cFace::SetAnimationIndex(int nIndex)
 
 	SAFE_RELEASE(pAnimSet);
 }
+
+DOUBLE cFace::GetAniTrackPeriod(int nIndex)
+{
+	DOUBLE fTime = 0.f;
+	LPD3DXANIMATIONSET pAnimSet;
+	m_pAnimControl->GetAnimationSet(nIndex, &pAnimSet);
+	fTime = pAnimSet->GetPeriod();
+	SAFE_RELEASE(pAnimSet);
+	return fTime;
+}
