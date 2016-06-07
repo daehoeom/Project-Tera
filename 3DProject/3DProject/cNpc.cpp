@@ -17,6 +17,8 @@ cNpc::cNpc()
 	D3DXMatrixIdentity(&m_matLocalHair);
 	D3DXMatrixIdentity(&m_matLocalHead);
 
+	this->SetCollisionType(CollisionType::eNpc);
+
 }
 
 

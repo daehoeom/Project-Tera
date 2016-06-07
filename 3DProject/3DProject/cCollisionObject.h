@@ -13,7 +13,7 @@ public:
 	virtual void Update( ) override;
 	virtual void Render( ) override;
 	virtual void OnCollisionStay( cCollisionObject* rhs );
-
+	virtual void OnNotCollision(cCollisionObject* rhs);
 	void SetCollider( ICollider* collider );
 	std::vector<ICollider*>& GetColliderRepo();
 

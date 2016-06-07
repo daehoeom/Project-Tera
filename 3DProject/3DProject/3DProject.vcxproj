@@ -119,9 +119,11 @@
     <ClInclude Include="cPlayer.h" />
     <ClInclude Include="cRandomUtil.h" />
     <ClInclude Include="cSkyBox.h" />
+    <ClInclude Include="cTail.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="cTimeManager.h" />
     <ClInclude Include="cGameObject.h" />
+    <ClInclude Include="cWeaponMesh.h" />
     <ClInclude Include="ICollider.h" />
     <ClInclude Include="cGameObjectManager.h" />
     <ClInclude Include="IState.h" />
@@ -169,9 +171,11 @@
     <ClCompile Include="cPlayer.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
+    <ClCompile Include="cTail.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="cTimeManager.cpp" />
     <ClCompile Include="cGameObject.cpp" />
+    <ClCompile Include="cWeaponMesh.cpp" />
     <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="cGameObjectManager.cpp" />
     <ClCompile Include="IState.cpp" />

@@ -3,6 +3,8 @@
 #include "cBody.h"
 #include "cHair.h"
 #include "cFace.h"
+#include "cTail.h"
+#include "cWeaponMesh.h"
 #include "cBoundingSphere.h"
 
 cPlayer::cPlayer( ) :
@@ -10,48 +12,40 @@ cPlayer::cPlayer( ) :
 	, m_vDirection(D3DXVECTOR3(0, 0, 1))
 	, m_fSpeed(1.f)
 	, m_fAngle(0.f)
-	, m_sState(ePlayerState::PLAYER_IDLE)
+	, m_fPassTime(0.f)
+	, m_fPeriod(0.f)
+	, m_bAlive(true)
+	, m_bIsAction(false)
+	, m_bPushBehind(false)
+	, n(0)
 {
+	SetPlayerState(PLAYER_BATTLEIDLE);
+
 	//대기상태
-	m_pIdleBody = new cBody;
-	m_pIdleBody->Setup("CH/엘린", "엘린_몸_대기.X");
+	m_pBody = new cBody;
+	m_pBody->Setup("CH/Player", "Player_Body.X");
 
-	m_pIdleFace = new cFace;
-	m_pIdleFace->SetNeckTM(&m_pIdleBody->GetNeckTM());
-	m_pIdleFace->Setup("CH/엘린", "엘린_얼굴_대기.X");
+	m_pFace = new cFace;
+	m_pFace->SetNeckTM(&m_pBody->GetNeckTM());
+	m_pFace->Setup("CH/Player", "Player_Head.X");
 
-	m_pIdleHair = new cHair;
-	m_pIdleHair->SetHairTM(&m_pIdleFace->GetHairTM());
-	m_pIdleHair->Setup("CH/엘린", "엘린_헤어_대기.X");
+	m_pHair = new cHair;
+	m_pHair->SetHairTM(&m_pBody->GetHairTM());
+	m_pHair->Setup("CH/Player", "Player_Hair.X");
 
-	//공격상태
-	m_pAttackBody = new cBody;
-	m_pAttackBody->Setup("CH/엘린", "엘린_몸_공격.X");
+	m_pTail = new cTail;
+	m_pTail->SetTailTM(&m_pBody->GetTailTM());
+	m_pTail->Setup("CH/Player", "Player_Tail.X");
 
-	m_pAttackFace = new cFace;
-	m_pAttackFace->SetNeckTM(&m_pAttackBody->GetNeckTM());
-	m_pAttackFace->Setup("CH/엘린", "엘린_얼굴_공격.X");
-
-	m_pAttackHair = new cHair;
-	m_pAttackHair->SetHairTM(&m_pAttackBody->GetHairTM());
-	m_pAttackHair->Setup("CH/엘린", "엘린_헤어_공격.X");
-
-	//달리기상태
-	m_pRunBody = new cBody;
-	m_pRunBody->Setup("CH/엘린", "엘린_몸_달리기.X");
-
-	m_pRunFace = new cFace;
-	m_pRunFace->SetNeckTM(&m_pRunBody->GetNeckTM());
-	m_pRunFace->Setup("CH/엘린", "엘린_얼굴_달리기.X");
-
-	m_pRunHair = new cHair;
-	m_pRunHair->SetHairTM(&m_pRunBody->GetHairTM());
-	m_pRunHair->Setup("CH/엘린", "엘린_헤어_달리기.X");
-
-	D3DXMatrixIdentity(&m_matWorld);
-
+	m_pHand = new cWeaponMesh;
+	m_pHand->SetWeapon(&m_pBody->GetWeaponBack());
+	m_pHand->Setup("CH/Player", "Lance.X");
 
 	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f));
+
+	SetAniTrack(PLAYER_BATTLEIDLE);
+
+	this->SetCollisionType(CollisionType::ePlayer);
 
 	D3DXMATRIXA16 matLocal;
 	D3DXMatrixTranslation(&matLocal, 0, 15, 0);
@@ -60,17 +54,11 @@ cPlayer::cPlayer( ) :
 
 cPlayer::~cPlayer( )
 {
-	SAFE_DELETE( m_pIdleBody );
-	SAFE_DELETE( m_pIdleFace );
-	SAFE_DELETE( m_pIdleHair );
-
-	SAFE_DELETE( m_pAttackBody );
-	SAFE_DELETE( m_pAttackFace );
-	SAFE_DELETE( m_pAttackHair );
-
-	SAFE_DELETE( m_pRunBody );
-	SAFE_DELETE( m_pRunFace );
-	SAFE_DELETE( m_pRunHair );
+	SAFE_DELETE(m_pBody);
+	SAFE_DELETE(m_pHair);
+	SAFE_DELETE(m_pFace);
+	SAFE_DELETE(m_pTail);
+	SAFE_DELETE(m_pHand);
 }
 
 void cPlayer::Update( )
@@ -80,13 +68,21 @@ void cPlayer::Update( )
 	SetUpdateState();
 
 	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
+	
+	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		SetAniTrack(++n);
+		int q = 0;
+	}*/
 
 	KeyControl();
+
+	SetFSMState();
 }
 
 void cPlayer::Render( )
 {
-	__super::Render( );
+	//__super::Render( );
 
 	SetRenderState();
 }
@@ -95,160 +91,290 @@ void cPlayer::KeyControl()
 {
 	D3DXMATRIXA16 matR, matT;
 
-	if (KEYMANAGER->isStayKeyDown('A'))
+	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
 		m_fAngle -= 0.1f;
 	}
 
-	if (KEYMANAGER->isStayKeyDown('D'))
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		m_fAngle += 0.1f;
 	}
 
-	m_vDirection = D3DXVECTOR3(0, 0, -1);
+	m_vDirection = D3DXVECTOR3(1, 0, 0);
 	D3DXMatrixRotationY(&matR, m_fAngle);
 	D3DXVec3TransformNormal(&m_vDirection, &m_vDirection, &matR);
 
-	if (KEYMANAGER->isStayKeyDown('W'))
+	if (KEYMANAGER->isStayKeyDown(VK_UP))
 	{
-		m_sState = ePlayerState::PLAYER_RUN;
-		SetPosition(GetPosition() + m_vDirection * m_fSpeed);
+		//달리기보다 우선순위가 뒤인 행동을 하고 있을 경우 그 행동의 메시지 취소
+		if (GetPlayerState() == PLAYER_BATTLEIDLE)
+		{
+			m_bIsAction = false;
+		}
+
+		//우선순위가 높은 행동일 땐 행동변경 불가
+		if (GetPlayerState() == PLAYER_TUMBLING || GetPlayerState() == PLAYER_SKILL1)
+		{
+			m_bIsAction = true;
+		
+		}
+		else
+		{
+			SetPlayerState(PLAYER_RUN);
+			SetPosition(GetPosition() + m_vDirection * m_fSpeed);
+		}
 	}
 
-	if (KEYMANAGER->isOnceKeyUp('W'))
+	if (KEYMANAGER->isOnceKeyUp(VK_UP))
 	{
-		m_sState = ePlayerState::PLAYER_IDLE;
+		SetPlayerState(PLAYER_BATTLEIDLE);
+		SetAniTrack(PLAYER_BATTLEIDLE);
 	}
 
-	if (KEYMANAGER->isStayKeyDown('S'))
+	if (KEYMANAGER->isStayKeyDown(VK_DOWN))
 	{
-		m_sState = ePlayerState::PLAYER_RUN;
-		SetPosition(GetPosition() - m_vDirection * m_fSpeed);
+		//달리기보다 우선순위가 뒤인 행동을 하고 있을 경우 그 행동의 메시지 취소
+		if (GetPlayerState() == PLAYER_BATTLEIDLE)
+		{
+			m_bIsAction = false;
+		}
+
+		//우선순위가 높은 행동일 땐 행동변경 불가
+
+		if (GetPlayerState() == PLAYER_TUMBLING || GetPlayerState() == PLAYER_SKILL1)
+		{
+			SetPlayerState(PLAYER_RUN);
+			SetPosition(GetPosition() - m_vDirection * m_fSpeed);
+		}
+		//방향키 뒤를 눌렀을 때 한번만 뒤를 볼 것
+		if (!m_bPushBehind)
+		{
+			m_fAngle = -m_fAngle;
+			m_bPushBehind = true;
+		}
 	}
 
-	if (KEYMANAGER->isOnceKeyUp('S'))
+	if (KEYMANAGER->isOnceKeyUp(VK_DOWN))
 	{
-		m_sState = ePlayerState::PLAYER_IDLE;
+		SetPlayerState(PLAYER_BATTLEIDLE);
+
+		if (m_bPushBehind)
+		{
+			m_bPushBehind = false;
+		}
 	}
 
-	D3DXMatrixTranslation(&matT, GetPosition().x, GetPosition().y, GetPosition().z);
+	if (KEYMANAGER->isOnceKeyDown('C'))
+	{
+		//텀블링은 모든 행동에 대해서 우선순위가 가장 높다.
+		if (m_bIsAction)
+		{
+			m_bIsAction = false;
+		}
+		SetPlayerState(PLAYER_TUMBLING);
+	}
+
+	if (KEYMANAGER->isOnceKeyDown('A'))
+	{
+		if (GetPlayerState() != PLAYER_TUMBLING)
+		{
+			m_bIsAction = false;
+		}
+		SetPlayerState(PLAYER_SKILL1);
+	}
+
+	D3DXMatrixTranslation(&matT, GetPosition().x, GetPosition().y - 4.f, GetPosition().z);
 	m_matWorld = matR * matT;
+}
+
+void cPlayer::OnCollisionStay(cCollisionObject* rhs)
+{
+	//한번만 충돌체크하게
+	if (rhs->GetCollisionType() == CollisionType::eBuilding && !this->GetCollision())
+	{
+		this->SetCollision(true);
+	}
+
+	if (rhs->GetCollisionType() == CollisionType::eMonster && !this->GetCollision())
+	{
+		this->SetCollision(true);
+		rhs->SetCurrHp(rhs->GetCurrHp() - 100);
+		int a = 0;
+	}
+}
+
+void cPlayer::SetFSMState()
+{
+	switch (GetPlayerState())
+	{
+	case PLAYER_BATTLEIDLE:
+	{
+		if (!m_bIsAction)
+		{
+			SetAniTrack(PLAYER_BATTLEIDLE);
+			m_bIsAction = true;
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_BATTLEIDLE) ;
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime();
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+			}
+		}
+	}
+		break;
+
+	case PLAYER_RUN:
+	{
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_RUN);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_RUN);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime();
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+			}
+		}
+	}
+		break;
+	
+	case PLAYER_ATTACK:
+		break;
+
+	case PLAYER_TUMBLING:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_TUMBLING);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_TUMBLING);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime();
+
+			if (m_fPassTime < m_fPeriod - 0.75f)
+			{
+				SetPosition(GetPosition() + m_vDirection * (m_fPeriod - 1));
+			}
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+
+		//강하게 내려치기
+	case PLAYER_SKILL1:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_SKILL1);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL1);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime();
+
+			if (m_fPassTime < m_fPeriod - 1.0f)
+			{
+				SetPosition(GetPosition() + m_vDirection * (m_fPeriod - 1.f));
+			}
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+	}
 }
 
 void cPlayer::SetUpdateState( )
 {
-	switch (m_sState)
+	if (m_pBody)
 	{
-	case ePlayerState::PLAYER_IDLE :
-		if ( m_pIdleBody )
-		{
-			m_pIdleBody->Update( );
-			m_pIdleBody->SetWorld(&m_matWorld);
-		}
-		if (m_pIdleHair)
-		{
-			m_pIdleHair->SetHairTM(
-				&m_pIdleBody->GetHairTM( ));
-			m_pIdleHair->Update( );
-		}
-		if (m_pIdleFace)
-		{
-			m_pIdleFace->SetNeckTM(
-				&m_pIdleBody->GetNeckTM( ));
-			m_pIdleFace->Update( );
-		}
-		break;
+		m_pBody->Update();
+		m_pBody->SetWorld(&m_matWorld);
+	}
+	if (m_pHair)
+	{
+		m_pHair->SetHairTM(&m_pBody->GetHairTM());
+		m_pHair->Update();
+	}
+	if (m_pFace)
+	{
+		m_pFace->SetNeckTM(&m_pBody->GetNeckTM());
+		m_pFace->Update();
+	}
 
-	case ePlayerState::PLAYER_ATTACK:
-		if ( m_pAttackBody )
-		{
-			m_pAttackBody->Update( );
-			m_pAttackBody->SetWorld(&m_matWorld);
-		}
-		if (m_pAttackHair)
-		{
-			m_pAttackHair->SetHairTM(
-				&m_pAttackBody->GetHairTM( ));
-			m_pAttackHair->Update( );
-		}
-		if ( m_pAttackFace )
-		{
-			m_pAttackFace->SetNeckTM( &m_pAttackBody->GetNeckTM( ));
-			m_pAttackFace->Update( );
-		}
+	if (m_pTail)
+	{
+		m_pTail->SetTailTM(&m_pBody->GetTailTM());
+		m_pTail->Update();
+	}
 
-		break;
-
-	case ePlayerState::PLAYER_RUN:
-		if ( m_pRunBody )
-		{
-			m_pRunBody->Update( );
-			m_pRunBody->SetWorld(&m_matWorld);
-		}
-		if ( m_pRunHair )
-		{
-			m_pRunHair->SetHairTM( &m_pRunBody->GetHairTM( ));
-			m_pRunHair->Update( );
-		}
-		if ( m_pRunFace )
-		{
-			m_pRunFace->SetNeckTM(&m_pRunBody->GetNeckTM());
-			m_pRunFace->Update( );
-		}
-
-		break;
+	if (m_pHand)
+	{
+		m_pHand->SetWeapon(&m_pBody->GetWeaponHand());
+		m_pHand->Update();
 	}
 }
 
 void cPlayer::SetRenderState()
 {
-	switch (m_sState)
+	if (m_pBody)
 	{
-	case ePlayerState::PLAYER_IDLE:
-		if (m_pIdleBody)
-		{
-			m_pIdleBody->Render();
-		}
-		if (m_pIdleHair)
-		{
-			m_pIdleHair->Render();
-		}
-		if (m_pIdleFace)
-		{
-			m_pIdleFace->Render();
-		}
-
-		break;
-
-	case ePlayerState::PLAYER_ATTACK:
-		if (m_pAttackBody)
-		{
-			m_pAttackBody->Render();
-		}
-		if (m_pAttackHair)
-		{
-			m_pAttackHair->Render();
-		}
-		if (m_pAttackFace)
-		{
-			m_pAttackFace->Render();
-		}
-
-		break;
-
-	case ePlayerState::PLAYER_RUN:
-		if (m_pRunBody)
-		{
-			m_pRunBody->Render();
-		}
-		if (m_pRunHair)
-		{
-			m_pRunHair->Render();
-		}
-		if (m_pRunFace)
-		{
-			m_pRunFace->Render();
-		}
-		break;
+		m_pBody->Render();
 	}
+	if (m_pHair)
+	{
+		m_pHair->Render();
+	}
+	if (m_pFace)
+	{
+		m_pFace->Render();
+	}
+
+	if (m_pTail)
+	{
+		m_pTail->Render();
+	}
+
+	if (m_pHand)
+	{
+		m_pHand->Render(NULL);
+	}
+}
+
+void cPlayer::SetAniTrack(int nIndex)
+{
+	m_pBody->SetAnimationIndex(nIndex);
+	m_pHair->SetAnimationIndex(nIndex);
+	m_pFace->SetAnimationIndex(nIndex);
+	m_pTail->SetAnimationIndex(nIndex);
 }

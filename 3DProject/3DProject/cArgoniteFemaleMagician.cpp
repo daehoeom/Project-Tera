@@ -35,6 +35,20 @@ void cArgoniteFemaleMagician::Update()
 	{
 		this->GetColliderRepo()[i]->SetWorld(&m_matWorld);
 	}
+
+	if (GetEnemyState() == ENEMY_RUN || GetEnemyState() == ENEMY_IDLE)
+	{
+		D3DXMATRIXA16 matLocal;
+		D3DXMatrixIdentity(&matLocal);
+		m_pBody->SetLocal(&matLocal);
+	}
+
+	else
+	{
+		D3DXMATRIX matR;
+		D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);
+		m_pBody->SetLocal(&matR);
+	}
 }
 
 void cArgoniteFemaleMagician::Render()

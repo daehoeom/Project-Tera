@@ -200,6 +200,8 @@
     </ClInclude>
     <ClInclude Include="IState.h" />
     <ClInclude Include="cEnemySkinMesh.h" />
+    <ClInclude Include="cTail.h" />
+    <ClInclude Include="cWeaponMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -333,6 +335,8 @@
     </ClCompile>
     <ClCompile Include="IState.cpp" />
     <ClCompile Include="cEnemySkinMesh.cpp" />
+    <ClCompile Include="cTail.cpp" />
+    <ClCompile Include="cWeaponMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

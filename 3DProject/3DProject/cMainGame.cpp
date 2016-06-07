@@ -8,10 +8,9 @@
 #include "cObjLoader.h"
 #include "cGroup.h"
 #include "cNpcManager.h"
-#include "cArgoniteFemaleMagician.h"
+#include "cFatHunter.h"
 
 cPlayer* g_player = nullptr;
-
 
 cMainGame::cMainGame( )
 	: m_pGrid(nullptr)
@@ -24,7 +23,7 @@ cMainGame::cMainGame( )
 	m_pGrid = new cGrid;
 	g_player = new cPlayer;
 
-	m_pMonster = new cArgoniteFemaleMagician;
+	//m_pMonster = new cFatHunter;
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
@@ -50,7 +49,7 @@ cMainGame::~cMainGame()
 
 void cMainGame::Update()
 {
-	cCamera::Get()->Update(NULL);
+	cCamera::Get()->Update(&g_player->GetPosition());
 	cCollisionManager::Get( )->Update( );
 
 	if (g_player)

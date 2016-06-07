@@ -26,6 +26,11 @@ public:
 	virtual void PreRender( );
 	virtual void Render( ) = 0; // Debug renderer
 	virtual void PostRender( );
+
+	virtual void SetPosition(const D3DXVECTOR3& pos) = 0;
+	virtual D3DXVECTOR3& GetPosition() = 0;
+	virtual const D3DXVECTOR3& GetPosition() const = 0;
+
 	virtual void SetWorld(D3DXMATRIXA16* matWorld) { m_matWorld = *matWorld; }
 	virtual D3DXMATRIXA16 GetWorld() { return m_matWorld; }
 	virtual void SetLocal(D3DXMATRIXA16* matLocal) { m_matLocal = *matLocal; }

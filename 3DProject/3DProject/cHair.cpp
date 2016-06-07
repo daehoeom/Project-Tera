@@ -239,3 +239,13 @@ void cHair::SetAnimationIndex(int nIndex)
 
 	SAFE_RELEASE(pAnimSet);
 }
+
+DOUBLE cHair::GetAniTrackPeriod(int nIndex)
+{
+	DOUBLE fTime = 0.f;
+	LPD3DXANIMATIONSET pAnimSet;
+	m_pAnimControl->GetAnimationSet(nIndex, &pAnimSet);
+	fTime = pAnimSet->GetPeriod();
+	SAFE_RELEASE(pAnimSet);
+	return fTime;
+}

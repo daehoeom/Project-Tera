@@ -26,8 +26,14 @@ public:
 	void SetHairTM(D3DXMATRIX* hair) { m_matHairTM = *hair; }
 	D3DXMATRIX GetHairTM() { return m_matHairTM; }
 
-	void SetRootTM(D3DXMATRIX* root) { m_matRootTM = *root; }
-	D3DXMATRIX GetRootTM() { return m_matRootTM; }
+	void SetTailTM(D3DXMATRIX* tail) { m_matTailTM = *tail; }
+	D3DXMATRIX GetTailTM() { return m_matTailTM; }
+
+	void SetWeaponBack(D3DXMATRIX* weaponBack) { m_matWeaponBackTM = *weaponBack; }
+	D3DXMATRIX GetWeaponBack() { return m_matWeaponBackTM; }
+
+	void SetWeaponHand(D3DXMATRIX* weaponHand) { m_matWeaponHandTM = *weaponHand; }
+	D3DXMATRIX GetWeaponHand() { return m_matWeaponHandTM; }
 
 	void SetWorld(D3DXMATRIX* world) { m_matWorld = *world; }
 	D3DXMATRIX GetWorld() { return m_matWorld; }
@@ -49,7 +55,11 @@ private:
 
 	D3DXMATRIX					m_matNeckTM;
 	D3DXMATRIX					m_matHairTM;
-	D3DXMATRIX					m_matRootTM;
+	D3DXMATRIX					m_matTailTM;
+
+	D3DXMATRIX					m_matWeaponBackTM;
+	D3DXMATRIX					m_matWeaponHandTM;
+
 	D3DXMATRIX					m_matWorld;
 
 	//º¸°£
