@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DMapTool.h" />
-    <ClInclude Include="cBoundingBox.h" />
+    <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="cCamera.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="AbstractWindow.h" />
@@ -159,6 +159,7 @@
     <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
+    <ClInclude Include="IColliseable.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="DirectInput.h" />
@@ -182,10 +183,12 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TerrainObject.h" />
     <ClInclude Include="TilePicker.h" />
+    <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="TXMLReader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DMapTool.cpp" />
-    <ClCompile Include="cBoundingBox.cpp" />
+    <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="cCamera.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="AbstractWindow.cpp" />
@@ -196,6 +199,7 @@
     <ClCompile Include="cObject.cpp" />
     <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjLoader.cpp" />
+    <ClCompile Include="IColliseable.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
@@ -219,6 +223,8 @@
     <ClCompile Include="StringUtil.cpp" />
     <ClCompile Include="TerrainObject.cpp" />
     <ClCompile Include="TilePicker.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
+    <ClCompile Include="TXMLReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DMapTool.rc" />

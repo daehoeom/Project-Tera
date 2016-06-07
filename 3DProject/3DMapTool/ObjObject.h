@@ -1,9 +1,9 @@
 #pragma once
-#include "cGameObject.h"
+#include "IColliseable.h"
 
 
 class ObjObject :
-	public cGameObject
+	public IColliseable
 {
 public:
 	ObjObject( const std::wstring& name,
@@ -14,7 +14,7 @@ public:
 	virtual void Render( ) override;
 	virtual void Update( ) override;
 
-	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kObject; }
+	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kObj; }
 
 private:
 	std::vector<class cGroup*> m_vecGroup;

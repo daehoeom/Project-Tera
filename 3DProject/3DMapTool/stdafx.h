@@ -16,11 +16,13 @@
 #include <d3dx9.h>
 #include <CommCtrl.h>
 #include <shellapi.h>
+#include <commdlg.h>
 
 // C++ 런타임 헤더 파일입니다.
 #include <cstdlib>
 #include <memory>
 #include <string>
+#include <fstream>
 #include <set>
 #include <unordered_map>
 #include <map>

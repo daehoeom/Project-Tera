@@ -16,11 +16,13 @@ public:
 
 	// Sets
 	void AddListItem( const std::wstring& itemName );
-	
+	void ResetListItem( );
+
 	// Gets
 	class cGameObject* GetSelectedItemAsObject( );
 	void GetSelectedItemText( wchar_t* outText, int32_t maxCount ) const;
 	int32_t GetSelectedItemIndex( ) const;
+	int32_t GetListItemCount( ) const;
 
 protected:
 	LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) override;

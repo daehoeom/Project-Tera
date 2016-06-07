@@ -131,9 +131,39 @@ void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3
 			// Obj Has no Normal vector
 			if ( vecVN.size( ) == 0 )
 			{
-				MessageBox( GetFocus( ), 
-					L"노말 벡터가 없는 Obj 파일에 대한 로딩은 지원되지 않습니다.",
-					L"WARNING!", MB_OK | MB_ICONEXCLAMATION );
+				std::vector<ST_PNT_VERTEX> parsedVertices;
+				int faceVertexCount = 0;
+
+				Parser p( szBuf );
+				while ( p.Parse( ))
+				{
+					if ( p.Get( )[0] == '\n' )
+					{
+						continue;
+					}
+
+					int aIndex[3] {-1,-1,-1};
+					sscanf( p.Get( ), "%d/%d", 
+						&aIndex[0], &aIndex[1] );
+				
+					ST_PNT_VERTEX v;
+					v.p = vecV[aIndex[0]-1];
+					v.t = vecVT[aIndex[1]-1];
+					v.n = {0,1,0};
+					vecVertex.push_back( v );
+
+					++faceVertexCount;
+				}
+
+				if ( faceVertexCount != 3 )
+				{
+					MessageBox( GetFocus( ),
+						L"Triangle face 이외의 Obj 파일에 대한 로딩은 지원되지 않습니다.",
+						L"WARNING!", MB_OK | MB_ICONEXCLAMATION );
+				}
+				//MessageBox( GetFocus( ), 
+				//	L"노말 벡터가 없는 Obj 파일에 대한 로딩은 지원되지 않습니다.",
+				//	L"WARNING!", MB_OK | MB_ICONEXCLAMATION );
 			}
 			// Obj Has Normal vector
 			else
@@ -168,7 +198,6 @@ void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3
 						L"Triangle face 이외의 Obj 파일에 대한 로딩은 지원되지 않습니다.",
 						L"WARNING!", MB_OK | MB_ICONEXCLAMATION );
 				}
-
 			}
 		}
 	}

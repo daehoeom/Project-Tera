@@ -11,6 +11,10 @@ public:
 	
 	// Event Handler
 	virtual void OnIdle( ) override;
+	void OnDropFile( HDROP dropHandle );
+	void OnSaveAsClicked( );
+	void OnLoadMapClicked( );
+	void OnNewSceneClicked( );
 
 	// Deletgate
 	virtual void OnMove( AbstractWindow* sender, int x, int y );
@@ -25,6 +29,6 @@ private:
 private:
 	std::unique_ptr<char[]> m_dropQueryPath;
 	POINT m_prevPos;
-	cObjLoader m_objLoader;
+	int m_createCount;
 };
 

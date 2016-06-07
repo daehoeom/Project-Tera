@@ -20,14 +20,20 @@ IRenderable::~IRenderable( )
 	SAFE_RELEASE( m_texture );
 }
 
-void IRenderable::Update( )
+void IRenderable::SetModelPath( 
+	const std::string & modelPath )
 {
-	__super::Update( );
+	m_modelPath = modelPath;
 }
 
 void IRenderable::SetVertexBuffer( IDirect3DVertexBuffer9* vertexBuffer )
 {
 	m_vb = vertexBuffer;
+}
+
+const std::string& IRenderable::GetModelPath( ) const
+{
+	return m_modelPath;
 }
 
 IDirect3DVertexBuffer9* IRenderable::GetVertexBuffer( )

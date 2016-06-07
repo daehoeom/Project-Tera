@@ -3,16 +3,23 @@
 
 #include "PickUtil.h"
 #include "cDeviceManager.h"
+#include "BoundingBox.h"
 #include "cObjLoader.h"
 #include "cGroup.h"
 
 ObjObject::ObjObject( 
 	const std::wstring& name,
 	const std::string& filePath ) :
-	cGameObject( name )
+	IColliseable( name )
 {
 	cObjLoader objLoader;
 	objLoader.Load( filePath.c_str(), m_vecGroup, nullptr );
+	
+	this->SetModelPath( filePath );
+	this->SetCollider( new BoundingBox( 
+		objLoader.GetMinVector( ),
+		objLoader.GetMaxVector( ))
+	);
 }
 
 ObjObject::~ObjObject( )

@@ -168,6 +168,11 @@ int32_t HierarchyWindow::GetSelectedItemIndex( ) const
 	return index;
 }
 
+int32_t HierarchyWindow::GetListItemCount( ) const
+{
+	return ListView_GetItemCount( m_listHandle );
+}
+
 void HierarchyWindow::AddListItem( 
 	const std::wstring& itemName )
 {
@@ -179,6 +184,33 @@ void HierarchyWindow::AddListItem(
 	ListView_InsertItem( m_listHandle, &lvItem );
 
 	++m_layer;
+}
+
+void HierarchyWindow::ResetListItem( )
+{
+	int listItemCount = this->GetListItemCount( );
+	for ( int i = 0; i < listItemCount; ++i )
+	{
+		wchar_t currObjName[256]{ 0 };
+		
+		ListView_GetItemText( 
+			m_listHandle,
+			i, 0,
+			currObjName, 
+			256
+		);
+
+		if ( currObjName )
+		{
+			auto* obj = cGameObjectManager::Get( )->FindObject( currObjName );
+			if ( obj->GetIdenfier( ) != ObjectIdenfier::kLight &&
+				obj->GetIdenfier( ) != ObjectIdenfier::kCamera )
+			{
+				ListView_DeleteItem( m_listHandle, i-- );
+				--listItemCount;
+			}
+		}
+	}
 }
 
 void HierarchyWindow::SetupListView( HWND wndHandle )
@@ -202,3 +234,4 @@ void HierarchyWindow::SetupListView( HWND wndHandle )
 	lvCol.iSubItem = 0;
 	ListView_InsertColumn( m_listHandle, 0, &lvCol );
 }
+
