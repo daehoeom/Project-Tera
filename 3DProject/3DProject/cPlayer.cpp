@@ -17,6 +17,7 @@ cPlayer::cPlayer( ) :
 	, m_bAlive(true)
 	, m_bIsAction(false)
 	, m_bPushBehind(false)
+	, m_pCombo(nullptr)
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
@@ -41,10 +42,12 @@ cPlayer::cPlayer( ) :
 	m_pHand->SetWeapon(&m_pBody->GetWeaponBack());
 	m_pHand->Setup("CH/Player", "Lance.X");
 
+	m_pCombo = new cCommandCombo;
+
 	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f));
 
 	SetAniTrack(PLAYER_BATTLEIDLE);
-
+	//SetAniTrack(n);
 	this->SetCollisionType(CollisionType::ePlayer);
 
 	D3DXMATRIXA16 matLocal;
@@ -77,12 +80,16 @@ void cPlayer::Update( )
 
 	KeyControl();
 
+
 	SetFSMState();
+
+	m_pCombo->Update();
+
 }
 
 void cPlayer::Render( )
 {
-	//__super::Render( );
+	__super::Render( );
 
 	SetRenderState();
 }
@@ -114,12 +121,16 @@ void cPlayer::KeyControl()
 		}
 
 		//우선순위가 높은 행동일 땐 행동변경 불가
-		if (GetPlayerState() == PLAYER_TUMBLING || GetPlayerState() == PLAYER_SKILL1)
+		if (GetPlayerState() == PLAYER_TUMBLING || GetPlayerState() == PLAYER_SKILL1 || GetPlayerState() == PLAYER_SKILL2 ||
+			GetPlayerState() == PLAYER_SKILL3 || GetPlayerState() == PLAYER_SKILL4 || GetPlayerState() == PLAYER_COMBO1End ||
+			GetPlayerState() == PLAYER_COMBO1 || GetPlayerState() == PLAYER_COMBO2End || GetPlayerState() == PLAYER_COMBO2 ||
+			GetPlayerState() == PLAYER_COMBO3End || GetPlayerState() == PLAYER_COMBO3 || GetPlayerState() == PLAYER_COMBO4End ||
+			GetPlayerState() == PLAYER_COMBO4)
 		{
 			m_bIsAction = true;
-		
 		}
-		else
+
+		else 
 		{
 			SetPlayerState(PLAYER_RUN);
 			SetPosition(GetPosition() + m_vDirection * m_fSpeed);
@@ -141,12 +152,21 @@ void cPlayer::KeyControl()
 		}
 
 		//우선순위가 높은 행동일 땐 행동변경 불가
+		if (GetPlayerState() == PLAYER_TUMBLING || GetPlayerState() == PLAYER_SKILL1 || GetPlayerState() == PLAYER_SKILL2 ||
+			GetPlayerState() == PLAYER_SKILL3 || GetPlayerState() == PLAYER_SKILL4 || GetPlayerState() == PLAYER_COMBO1End ||
+			GetPlayerState() == PLAYER_COMBO1 || GetPlayerState() == PLAYER_COMBO2End || GetPlayerState() == PLAYER_COMBO2 ||
+			GetPlayerState() == PLAYER_COMBO3End || GetPlayerState() == PLAYER_COMBO3 || GetPlayerState() == PLAYER_COMBO4End ||
+			GetPlayerState() == PLAYER_COMBO4)
+		{
+			m_bIsAction = true;
+		}
 
-		if (GetPlayerState() == PLAYER_TUMBLING || GetPlayerState() == PLAYER_SKILL1)
+		else 
 		{
 			SetPlayerState(PLAYER_RUN);
 			SetPosition(GetPosition() - m_vDirection * m_fSpeed);
 		}
+
 		//방향키 뒤를 눌렀을 때 한번만 뒤를 볼 것
 		if (!m_bPushBehind)
 		{
@@ -165,6 +185,44 @@ void cPlayer::KeyControl()
 		}
 	}
 
+	if (KEYMANAGER->isOnceKeyDown('Z'))
+	{
+		if (m_bIsAction)
+		{
+			if (GetPlayerState() == PLAYER_RUN || GetPlayerState() == PLAYER_BATTLEIDLE)
+				m_bIsAction = false;
+		}
+
+		if (GetPlayerState() != PLAYER_COMBO1    || GetPlayerState() != PLAYER_COMBO2    ||
+			GetPlayerState() != PLAYER_COMBO3    || GetPlayerState() != PLAYER_COMBO4    || 
+			GetPlayerState() != PLAYER_COMBO1End || GetPlayerState() != PLAYER_COMBO2End ||
+			GetPlayerState() != PLAYER_COMBO3End || GetPlayerState() != PLAYER_COMBO4End)
+		{
+			SetPlayerState(PLAYER_COMBO1);
+		}
+
+		//평타를 한번도 하지 않았다면?
+		if (m_pCombo->GetCommand().size() == 0)
+		{
+			m_pCombo->Input(m_pBody->GetAniTrackPeriod(PLAYER_COMBO1));
+		}
+
+		else if (m_pCombo->GetCommand().size() == 1)
+		{
+			m_pCombo->Input(m_pBody->GetAniTrackPeriod(PLAYER_COMBO2));
+		}
+
+		else if (m_pCombo->GetCommand().size() == 2)
+		{
+			m_pCombo->Input(m_pBody->GetAniTrackPeriod(PLAYER_COMBO3));
+		}
+
+		else if (m_pCombo->GetCommand().size() == 3)
+		{
+			m_pCombo->Input(m_pBody->GetAniTrackPeriod(PLAYER_COMBO4));
+		}
+	}
+
 	if (KEYMANAGER->isOnceKeyDown('C'))
 	{
 		//텀블링은 모든 행동에 대해서 우선순위가 가장 높다.
@@ -172,16 +230,84 @@ void cPlayer::KeyControl()
 		{
 			m_bIsAction = false;
 		}
+
+		//평타 콤보 취소
+		m_pCombo->Destroy();
 		SetPlayerState(PLAYER_TUMBLING);
 	}
 
+	//스킬 행동 중일땐 텀블링 이외에는 캔슬할 수 없다.
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
-		if (GetPlayerState() != PLAYER_TUMBLING)
+		if (GetPlayerState() != PLAYER_TUMBLING && GetPlayerState() != PLAYER_SKILL2 && 
+			GetPlayerState() != PLAYER_SKILL3 && GetPlayerState() != PLAYER_SKILL4)
 		{
 			m_bIsAction = false;
 		}
+
+		if (GetPlayerState() == PLAYER_SKILL1)
+		{
+			m_bIsAction = true;
+		}
+
+		//평타 콤보 취소
+		m_pCombo->Destroy();
 		SetPlayerState(PLAYER_SKILL1);
+	}
+
+	if (KEYMANAGER->isOnceKeyDown('S'))
+	{
+		if (GetPlayerState() != PLAYER_TUMBLING && GetPlayerState() != PLAYER_SKILL1 && 
+			GetPlayerState() != PLAYER_SKILL3 && GetPlayerState() != PLAYER_SKILL4)
+		{
+			m_bIsAction = false;
+		}
+
+		//실행 중일땐 취소 불가
+		if (GetPlayerState() == PLAYER_SKILL2)
+		{
+			m_bIsAction = true;
+		}
+
+		//평타 콤보 취소
+		m_pCombo->Destroy();
+		SetPlayerState(PLAYER_SKILL2);
+	}
+
+	if (KEYMANAGER->isOnceKeyDown('D'))
+	{
+		if (GetPlayerState() != PLAYER_TUMBLING && GetPlayerState() != PLAYER_SKILL1 &&
+			GetPlayerState() != PLAYER_SKILL2 && GetPlayerState() != PLAYER_SKILL4)
+		{
+			m_bIsAction = false;
+		}
+
+		if (GetPlayerState() == PLAYER_SKILL3)
+		{
+			m_bIsAction = true;
+		}
+
+		//평타 콤보 취소
+		m_pCombo->Destroy();
+		SetPlayerState(PLAYER_SKILL3);
+	}
+
+	if (KEYMANAGER->isOnceKeyDown('F'))
+	{
+		if (GetPlayerState() != PLAYER_TUMBLING && GetPlayerState() != PLAYER_SKILL1 &&
+			GetPlayerState() != PLAYER_SKILL2 && GetPlayerState() != PLAYER_SKILL3)
+		{
+			m_bIsAction = false;
+		}
+
+		if (GetPlayerState() == PLAYER_SKILL4)
+		{
+			m_bIsAction = true;
+		}
+
+		//평타 콤보 취소
+		m_pCombo->Destroy();
+		SetPlayerState(PLAYER_SKILL4);
 	}
 
 	D3DXMatrixTranslation(&matT, GetPosition().x, GetPosition().y - 4.f, GetPosition().z);
@@ -219,7 +345,7 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime();
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 
 			if (m_fPassTime > m_fPeriod)
 			{
@@ -242,7 +368,7 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime();
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 
 			if (m_fPassTime > m_fPeriod)
 			{
@@ -253,10 +379,199 @@ void cPlayer::SetFSMState()
 		}
 	}
 		break;
-	
-	case PLAYER_ATTACK:
+
+	case PLAYER_COMBO1:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_COMBO1);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				if (m_pCombo->GetCommand().size() > 1)
+					SetPlayerState(PLAYER_COMBO2);
+
+				else if (m_pCombo->GetCommand().size() <= 1)
+					SetPlayerState(PLAYER_COMBO1End);
+			}
+		}
 		break;
 
+	case PLAYER_COMBO1End:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_COMBO1End);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1End);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+
+	case PLAYER_COMBO2:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_COMBO2);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				if (m_pCombo->GetCommand().size() > 2)
+					SetPlayerState(PLAYER_COMBO3);
+
+				else if (m_pCombo->GetCommand().size() <= 2)
+					SetPlayerState(PLAYER_COMBO2End);
+			}
+		}
+		break;
+
+	case PLAYER_COMBO2End:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_COMBO2End);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2End);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+
+	
+
+	case PLAYER_COMBO3:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_COMBO3);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				if (m_pCombo->GetCommand().size() > 3)
+					SetPlayerState(PLAYER_COMBO4);
+
+				else if (m_pCombo->GetCommand().size() <= 3)
+					SetPlayerState(PLAYER_COMBO3End);
+			}
+		}
+		break;
+
+	case PLAYER_COMBO3End:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_COMBO3End);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3End);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+
+	
+
+	case PLAYER_COMBO4End:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_COMBO4End);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4End);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+
+	case PLAYER_COMBO4:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_COMBO4);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_COMBO4End);
+			}
+		}
+		break;
+	
 	case PLAYER_TUMBLING:
 		if (!m_bIsAction)
 		{
@@ -267,7 +582,7 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime();
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 
 			if (m_fPassTime < m_fPeriod - 0.75f)
 			{
@@ -295,12 +610,81 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime();
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 
 			if (m_fPassTime < m_fPeriod - 1.0f)
 			{
 				SetPosition(GetPosition() + m_vDirection * (m_fPeriod - 1.f));
 			}
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+
+		//슬래쉬
+	case PLAYER_SKILL2:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_SKILL2);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL2);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+
+		//강하게 옆으로찍기
+	case PLAYER_SKILL3:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_SKILL3);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL3);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+		}
+		break;
+
+		//회오리 치기
+	case PLAYER_SKILL4:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_SKILL4);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL4);
+		}
+
+		else if (m_bIsAction)
+		{
+			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 
 			if (m_fPassTime > m_fPeriod)
 			{

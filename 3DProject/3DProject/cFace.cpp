@@ -70,7 +70,7 @@ void cFace::Update()
 		}
 	}
 
-	m_pAnimControl->AdvanceTime(fAniTime, NULL);
+	m_pAnimControl->AdvanceTime(g_pTimeManager->GetDeltaTime() / fAniTime, NULL);
 
 	D3DXMATRIX matW;
 	matW = m_matNeckTM;

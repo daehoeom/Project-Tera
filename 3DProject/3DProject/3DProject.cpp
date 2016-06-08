@@ -20,7 +20,7 @@ HWND g_hWnd;
 std::unique_ptr<cMainGame>	g_pMainGame;
 
 //애니메이션 타임
-float fAniTime = 0.0125f;
+float fAniTime = 1.5f;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM				MyRegisterClass(HINSTANCE hInstance);

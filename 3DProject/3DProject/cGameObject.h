@@ -16,11 +16,22 @@ enum eEnemyState
 enum ePlayerState
 {
 	PLAYER_BATTLEIDLE = 5,
-	PLAYER_RUN = 12,
-	PLAYER_ATTACK = 1,
-	PLAYER_SLASH = 0,
+	PLAYER_RUN = 46,
 	PLAYER_TUMBLING = 6,
 	PLAYER_SKILL1 = 26,			//강하게 내려찍기
+	PLAYER_SKILL2 = 0,			//슬래쉬
+	PLAYER_SKILL3 = 27,			//강하게 옆으로 찍기
+	PLAYER_SKILL4 = 28,			//회오리치기
+	PLAYER_COMBO1End = 1,		//플레이어 콤보1 시작
+	PLAYER_COMBO1 = 2,			//플레이어 콤보1
+	PLAYER_COMBO2End = 3,		//플레이어 콤보2 시작
+	PLAYER_COMBO2 = 4,			//플레이어 콤보2
+	PLAYER_COMBO3End = 7,		//플레이어 콤보3 시작
+	PLAYER_COMBO3 = 8,			//플레이어 콤보3
+	PLAYER_COMBO4End = 16,	//플레이어 콤보4 시작
+	PLAYER_COMBO4 = 17,			//플레이어 콤보4
+	PLAYER_DEATH = 25,			//플레이어 데스
+	PLAYER_DEATHWAIT = 24,		//플레이어 데스웨잇
 };
 
 enum class CollisionType

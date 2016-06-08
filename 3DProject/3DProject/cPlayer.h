@@ -1,9 +1,8 @@
 #pragma once
 #include "cCollisionObject.h"
+#include "cCommandCombo.h"
 
 #define TUMBLINGRANGE 150.f
-
-
 
 class cTail;
 class cBody;
@@ -34,6 +33,7 @@ private:
 	cFace*			m_pFace;
 	cTail*			m_pTail;
 	cWeaponMesh*	m_pHand;
+	cCommandCombo*	m_pCombo;
 
 	D3DXMATRIXA16	m_matWorld;
 	D3DXVECTOR3		m_vDirection;

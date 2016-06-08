@@ -38,6 +38,9 @@ public:
 	void SetWorld(D3DXMATRIX* world) { m_matWorld = *world; }
 	D3DXMATRIX GetWorld() { return m_matWorld; }
 
+	void SetBlend(bool check) { m_bCheckBlend = check;}
+	bool GetBlend() { return m_bCheckBlend; }
+
 private:
 	//XÆÄÀÏ
 	cAllocateHierarchy*			m_pAlloc;
@@ -66,5 +69,6 @@ private:
 	bool						m_bIsBlend;
 	float						m_fPassedBlendTime;
 	float						m_fBlendTime;
+	bool						m_bCheckBlend;
 };
 

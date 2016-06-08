@@ -92,6 +92,7 @@
     <ClInclude Include="cCollision.h" />
     <ClInclude Include="cCollisionManager.h" />
     <ClInclude Include="cCollisionObject.h" />
+    <ClInclude Include="cCommandCombo.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="cDyingGhillieDhu.h" />
     <ClInclude Include="cEnemy.h" />
@@ -105,6 +106,8 @@
     <ClInclude Include="cHair.h" />
     <ClInclude Include="cKalanHeavyWarrior.h" />
     <ClInclude Include="cKeyManager.h" />
+    <ClInclude Include="cLoadImage.h" />
+    <ClInclude Include="cLoadingScene.h" />
     <ClInclude Include="cMadmadDuo.h" />
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cMtlTex.h" />
@@ -117,8 +120,10 @@
     <ClInclude Include="cParticle_Firework.h" />
     <ClInclude Include="cPixie.h" />
     <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="cProgressBar.h" />
     <ClInclude Include="cRandomUtil.h" />
     <ClInclude Include="cSkyBox.h" />
+    <ClInclude Include="cSoundManager.h" />
     <ClInclude Include="cTail.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="cTimeManager.h" />
@@ -144,6 +149,7 @@
     <ClCompile Include="cCollision.cpp" />
     <ClCompile Include="cCollisionManager.cpp" />
     <ClCompile Include="cCollisionObject.cpp" />
+    <ClCompile Include="cCommandCombo.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cDyingGhillieDhu.cpp" />
     <ClCompile Include="cEnemy.cpp" />
@@ -157,6 +163,8 @@
     <ClCompile Include="cHair.cpp" />
     <ClCompile Include="cKalanHeavyWarrior.cpp" />
     <ClCompile Include="cKeyManager.cpp" />
+    <ClCompile Include="cLoadImage.cpp" />
+    <ClCompile Include="cLoadingScene.cpp" />
     <ClCompile Include="cMadmadDuo.cpp" />
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
@@ -169,8 +177,10 @@
     <ClCompile Include="cParticle_Firework.cpp" />
     <ClCompile Include="cPixie.cpp" />
     <ClCompile Include="cPlayer.cpp" />
+    <ClCompile Include="cProgressBar.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
+    <ClCompile Include="cSoundManager.cpp" />
     <ClCompile Include="cTail.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="cTimeManager.cpp" />

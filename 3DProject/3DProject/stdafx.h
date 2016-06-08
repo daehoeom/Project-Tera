@@ -32,6 +32,7 @@
 #include <tchar.h>
 #include "cDeviceManager.h"
 #include "cTimeManager.h"
+#include "cSoundManager.h"
 #include "cTextureManager.h"
 #include "cGameObjectManager.h"
 #include "cKeyManager.h"

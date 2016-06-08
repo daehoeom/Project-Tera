@@ -8,7 +8,7 @@
 #include "cObjLoader.h"
 #include "cGroup.h"
 #include "cNpcManager.h"
-#include "cFatHunter.h"
+#include "cGiantStone.h"
 
 cPlayer* g_player = nullptr;
 
@@ -20,10 +20,13 @@ cMainGame::cMainGame( )
 {
 	SetupManagers();
 
+	/*SOUNDMANAGER->addSound("배경음", "./BGM/War_Start_00.ogg");
+	SOUNDMANAGER->play("배경음", 1.f);*/
+
 	m_pGrid = new cGrid;
 	g_player = new cPlayer;
 
-	//m_pMonster = new cFatHunter;
+	//m_pMonster = new cGiantStone;
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
@@ -132,4 +135,5 @@ void cMainGame::SetupManagers( )
 	cKeyManager::Get( );
 	cGameObjectManager::Get( );
 	cCollisionManager::Get( );
+	cSoundManager::Get();
 }

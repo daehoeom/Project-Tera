@@ -11,6 +11,7 @@ cBody::cBody()
 	, m_pBuffer(nullptr)
 	, m_ft(0.1f)
 	, m_bIsBlend(false)
+	, m_bCheckBlend(true)
 	, m_fBlendTime(0.2f)
 	, m_fPassedBlendTime(0.f)
 {
@@ -76,7 +77,7 @@ void cBody::Update()
 		}
 	}
 
-	m_pAnimControl->AdvanceTime(fAniTime, NULL);
+	m_pAnimControl->AdvanceTime(g_pTimeManager->GetDeltaTime() / fAniTime, NULL);
 	GetNeckWorld(m_pFrameRoot, nullptr);
 
 	//머리와 목 로컬TM에 월드 매트릭스 곱한다.
@@ -305,7 +306,11 @@ void cBody::SetAnimationIndex(int nIndex)
 	m_pAnimControl->SetTrackPosition(0, 0.f);
 	m_pAnimControl->SetTrackDesc(1, &desc);
 
-	m_bIsBlend = true;
+	if (m_bCheckBlend)
+		m_bIsBlend = true;
+
+	else if (!m_bCheckBlend)
+		m_bIsBlend = false;
 
 	SAFE_RELEASE(pAnimSet);
 }

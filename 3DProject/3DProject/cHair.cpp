@@ -66,7 +66,7 @@ void cHair::Update()
 		}
 	}
 
-	m_pAnimControl->AdvanceTime(fAniTime, NULL);
+	m_pAnimControl->AdvanceTime(g_pTimeManager->GetDeltaTime() / fAniTime, NULL);
 
 	D3DXMATRIX matW;
 
@@ -80,8 +80,6 @@ void cHair::Render()
 {
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	g_pD3DDevice->LightEnable(0, true);
-	//g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-	//D3DXMatrixIdentity(&m_pFrame->TransformationMatrix);
 	ST_BONE* pBone = (ST_BONE*)m_pFrameRoot;
 	RecursiveFrameRender(pBone, &pBone->CombinedTransformationMatrix);
 	g_pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);

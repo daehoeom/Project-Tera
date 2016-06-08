@@ -6,7 +6,7 @@ class cSkyBox;
 class cObjLoader;
 class cGroup;
 class cNpcManager;
-class cFatHunter;
+class cGiantStone;
 
 class cMainGame
 {
@@ -26,6 +26,6 @@ private:
 	cSkyBox*						m_pSkyBox;
 	cObjLoader*						m_pLoader;
 	cNpcManager*					m_pNpc;
-	cFatHunter*		m_pMonster;
+	cGiantStone*		m_pMonster;
 	std::vector<cGroup*>			m_vecGroup;
 };
