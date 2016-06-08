@@ -137,7 +137,7 @@ LRESULT MainSurfaceWindow::MessageProc(
 				break;
 
 			case ID_MENU_LOAD_LOADSCENE:
-				this->OnLoadMapClicked( );
+				this->OnLoadSceneClicked( );
 				break;
 				
 			case ID_MENU_NEWSCENE:
@@ -205,7 +205,7 @@ void MainSurfaceWindow::OnDropFile(
 		break;
 
 	case ExtensionTable::kXML:
-		this->OnLoadMapClicked( m_dropQueryPath.get( ));
+		this->OnLoadSceneClicked( m_dropQueryPath.get( ));
 		break;
 
 	case ExtensionTable::kObj:
@@ -375,7 +375,7 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 	ofs.close( );
 }
 
-void MainSurfaceWindow::OnLoadMapClicked( 
+void MainSurfaceWindow::OnLoadSceneClicked(
 	const char* loadPath )
 {
 	this->OnNewSceneClicked( );
@@ -430,6 +430,7 @@ void MainSurfaceWindow::OnLoadMapClicked(
 			switch ( objID )
 			{
 			case ObjectIdenfier::kObj:
+				++m_createCount;
 				newObject = new ObjObject( objName, modelPath );
 				break;
 			case ObjectIdenfier::kX:

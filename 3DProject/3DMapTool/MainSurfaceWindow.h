@@ -15,7 +15,7 @@ public:
 protected:
 	void OnDropFile( HDROP dropHandle );
 	void OnSaveAsClicked( );
-	void OnLoadMapClicked( const char* loadPath = nullptr );
+	void OnLoadSceneClicked( const char* loadPath = nullptr );
 	void OnNewSceneClicked( );
 
 	// Deletgate
