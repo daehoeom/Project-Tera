@@ -13,6 +13,7 @@ public:
 	virtual void OnIdle( ) override;
 	void OnItemDoubleClicked( LPNMLISTVIEW );
 	void OnItemClicked( LPNMLISTVIEW );
+	void OnItemKeyDown( WORD virtualKey );
 
 	// Sets
 	void AddListItem( const std::wstring& itemName );
@@ -33,7 +34,6 @@ private:
 
 private:
 	HWND m_listHandle;
-	int m_currSelectedItem;
 	int m_layer;
 };
 

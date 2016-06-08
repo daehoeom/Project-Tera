@@ -4,6 +4,7 @@
 #include "TXMLReader.h"
 #include "Console.h"
 #include "resource.h"
+#include "PickingTile.h"
 #include "cDeviceManager.h"
 #include "cGameObjectManager.h"
 #include "ObjObject.h"
@@ -196,7 +197,6 @@ void MainSurfaceWindow::OnDropFile(
 
 	ExtensionTable extension = AnalyzeExtension(
 		m_dropQueryPath.get( ) );
-
 	cGameObject* newObject = nullptr;
 
 	switch ( extension )
@@ -228,8 +228,14 @@ void MainSurfaceWindow::OnDropFile(
 		break;
 	}
 
+	// Set position As mouse
+	PickingTile* pickTile = static_cast<PickingTile*>(
+		cGameObjectManager::Get( )->FindObject( L"PickingTile" ));
+	D3DXVECTOR3 pickPos = CalculatePickPos( pickTile );
+
 	if ( newObject )
 	{
+		newObject->SetPosition( pickPos );
 		cGameObjectManager::Get( )->AddObject( newObject );
 	}
 }
@@ -246,14 +252,7 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 	ofn.nMaxFile = MAX_PATH;
 	ofn.lpstrDefExt = "xml";
 
-	if ( GetSaveFileNameA( &ofn ) == 0 )
-	{
-		MessageBox( GetFocus( ),
-			L"씬 저장에 실패했습니다.",
-			L"WARNING!",
-			MB_OK | MB_ICONEXCLAMATION
-		);
-	}
+	GetSaveFileNameA( &ofn );
 
 	std::wofstream ofs( openFileName );
 	ofs << "<?xml version=""\"1.0""\" encoding=""\"UTF-8""\"?>\n";
@@ -378,13 +377,10 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 void MainSurfaceWindow::OnLoadSceneClicked(
 	const char* loadPath )
 {
-	this->OnNewSceneClicked( );
-
 	OPENFILENAMEA ofn{ 0 };
 	char openFileName[MAX_PATH] {0};
 	if ( !loadPath )
 	{
-
 		ofn.lStructSize = sizeof( OPENFILENAME );
 		ofn.hwndOwner = this->GetWindowHandle( );
 		ofn.lpstrFilter = "모든 파일(*.*)\0*.*\0";
@@ -396,6 +392,8 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 			return;
 		}
 	}
+
+	this->OnNewSceneClicked( );
 
 	std::unique_ptr<tgon::TXMLReader> xmlReader;
 	if ( loadPath )

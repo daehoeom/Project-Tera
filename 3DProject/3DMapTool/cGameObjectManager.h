@@ -19,7 +19,8 @@ public:
 	void Render( );
 
 	void AddObject( cGameObject* pObject );
-	void DeleteObject( const std::wstring& key );
+	void EraseObject( const std::wstring& key ); // Delete only key
+	void DeleteObject( const std::wstring& key ); // Delete from heap
 	void ResetAllObject( );
 	cGameObject* FindObject( const std::wstring& key );
 
@@ -41,6 +42,12 @@ inline void cGameObjectManager::AddObject(
 	m_objMap.insert( std::make_pair( obj->GetName( ), obj ) );
 }
 
+inline void cGameObjectManager::EraseObject( 
+	const std::wstring& key )
+{
+	m_objMap.erase( key );
+}
+
 inline cGameObject* cGameObjectManager::FindObject(
 	const std::wstring& key )
 {
@@ -55,6 +62,14 @@ inline void cGameObjectManager::DeleteObject(
 	{
 		SAFE_DELETE( iter->second );
 		m_objMap.erase( key );
+	}
+	else
+	{
+		MessageBox( GetFocus( ),
+			L"삭제하려는 대상을 찾을 수 없습니다.",
+			L"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
 	}
 }
 

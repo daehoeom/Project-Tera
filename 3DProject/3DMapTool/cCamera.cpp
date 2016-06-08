@@ -52,11 +52,11 @@ void cCameraObject::SetTarget( cGameObject * target )
 
 void cCameraObject::UpdateInput( const D3DXMATRIXA16& matRot )
 {
-	float speed = 0.3;
+	float speed = 0.5;
 	if ( cDirectInput::Get( )->GetKeyboardState(
-		KeyState::PRESS, DIK_LSHIFT ) )
+		KeyState::PRESS, DIK_LSHIFT ))
 	{
-		speed = 1.f;
+		speed = 3.f;
 	}
 
 	// Keyboard

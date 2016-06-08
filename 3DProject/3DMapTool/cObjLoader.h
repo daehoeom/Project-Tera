@@ -80,8 +80,7 @@ public:
 	~cObjLoader(void);
 
 	void Load(IN const char* szFullPath,
-		OUT std::vector<cGroup*>& vecGroup,
-		IN D3DXMATRIXA16* mat = NULL);
+		OUT std::vector<cGroup*>& vecGroup );
 
 	void LoadMtlLib(const char* szFullPath);
 
