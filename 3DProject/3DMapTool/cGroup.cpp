@@ -1,13 +1,11 @@
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "cGroup.h"
 #include "cMtlTex.h"
-
 #include "cDeviceManager.h"
 
 cGroup::cGroup(void)
 	: m_pMtlTex(NULL)
 {
-	D3DXMatrixIsIdentity(&m_matWorld);
 }
 
 
@@ -23,8 +21,7 @@ void cGroup::Render()
 		g_pD3DDevice->SetMaterial(&m_pMtlTex->GetMtl());
 		g_pD3DDevice->SetTexture(0, m_pMtlTex->GetTexture());
 	}
-	
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
+
 	g_pD3DDevice->SetFVF(ST_PNT_VERTEX::FVF);
 	g_pD3DDevice->DrawPrimitiveUP(
 		D3DPT_TRIANGLELIST,
