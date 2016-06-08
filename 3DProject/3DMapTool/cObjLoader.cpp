@@ -8,10 +8,16 @@
 
 #pragma warning( disable: 4996 )
 
-cObjLoader::cObjLoader(void)
+
+cObjLoader::cObjLoader(void) :
+	m_vMin({ std::numeric_limits<float>::max( )-1,
+		std::numeric_limits<float>::max( )-1,
+		std::numeric_limits<float>::max( )-1}),
+	m_vMax({ std::numeric_limits<float>::min( )+1,
+		std::numeric_limits<float>::min( )+1,
+		std::numeric_limits<float>::min( )+1})
 {
 }
-
 
 cObjLoader::~cObjLoader(void)
 {
@@ -38,6 +44,7 @@ void cObjLoader::Load(
 			L"WARNING!",
 			MB_OK | MB_ICONEXCLAMATION
 		);
+		return;
 	}
 
 	auto EndGroupFunc = [&]( )
@@ -113,6 +120,15 @@ void cObjLoader::Load(
 			{
 				float x, y, z;
 				sscanf(szBuf, "%*s %f %f %f", &x, &y, &z);
+
+				m_vMin.x = std::min( m_vMin.x, x );
+				m_vMin.y = std::min( m_vMin.y, y );
+				m_vMin.z = std::min( m_vMin.z, z );
+				
+				m_vMax.x = std::max( m_vMax.x, x );
+				m_vMax.y = std::max( m_vMax.y, y );
+				m_vMax.z = std::max( m_vMax.z, z );
+
 				vecV.push_back(D3DXVECTOR3(x, y, z));
 			}
 		}

@@ -14,7 +14,8 @@ HierarchyWindow::HierarchyWindow( HWND parentWndHandle ) :
 		parentWndHandle, this->MakeWindowClass( ),
 		0, 0, HierarchyWindowWidth, HierarchyWindowHeight 
 	),
-	m_layer( 0 )
+	m_layer( 0 ),
+	m_listHandle( nullptr )
 {
 }
 
@@ -147,6 +148,11 @@ void HierarchyWindow::OnIdle( )
 void HierarchyWindow::OnItemDoubleClicked( 
 	LPNMLISTVIEW lpListView )
 {
+	if ( !m_listHandle )
+	{
+		return;
+	}
+
 	auto* object = this->GetSelectedItemAsObject( );
 	if ( object )
 	{
@@ -175,6 +181,11 @@ void HierarchyWindow::OnItemDoubleClicked(
 void HierarchyWindow::OnItemClicked( 
 	LPNMLISTVIEW lpListView )
 {
+	if ( !m_listHandle )
+	{
+		return;
+	}
+
 	auto* object = this->GetSelectedItemAsObject( );
 	if ( object )
 	{
@@ -187,6 +198,11 @@ void HierarchyWindow::OnItemClicked(
 void HierarchyWindow::OnItemKeyDown( 
 	WORD virtualKey )
 {
+	if ( !m_listHandle )
+	{
+		return;
+	}
+
 	switch ( virtualKey )
 	{
 	case VK_DELETE:
@@ -226,6 +242,11 @@ void HierarchyWindow::OnItemKeyDown(
 
 cGameObject* HierarchyWindow::GetSelectedItemAsObject( )
 {
+	if ( !m_listHandle )
+	{
+		return nullptr;
+	}
+
 	wchar_t findObjName[256]{ 0 };
 	ListView_GetItemText( m_listHandle,
 		this->GetSelectedItemIndex( ), 0,
@@ -243,6 +264,12 @@ cGameObject* HierarchyWindow::GetSelectedItemAsObject( )
 void HierarchyWindow::GetSelectedItemText(
 	wchar_t* outText, int32_t maxCount ) const
 {
+	if ( !m_listHandle )
+	{
+		return;
+	}
+
+
 	ListView_GetItemText( m_listHandle,
 		this->GetSelectedItemIndex( ),
 		0,
@@ -252,6 +279,11 @@ void HierarchyWindow::GetSelectedItemText(
 
 int32_t HierarchyWindow::GetSelectedItemIndex( ) const
 {
+	if ( !m_listHandle )
+	{
+		return -1;
+	}
+
 	int32_t index = ListView_GetNextItem( m_listHandle,
 		-1, LVNI_ALL | LVNI_SELECTED );
 
@@ -260,12 +292,22 @@ int32_t HierarchyWindow::GetSelectedItemIndex( ) const
 
 int32_t HierarchyWindow::GetListItemCount( ) const
 {
+	if ( !m_listHandle )
+	{
+		return 0;
+	}
+
 	return ListView_GetItemCount( m_listHandle );
 }
 
 void HierarchyWindow::AddListItem( 
 	const std::wstring& itemName )
 {
+	if ( !m_listHandle )
+	{
+		return;
+	}
+
 	LVITEMW lvItem;
 	lvItem.mask = LVIF_TEXT;
 	lvItem.iItem = m_layer;
@@ -278,6 +320,11 @@ void HierarchyWindow::AddListItem(
 
 void HierarchyWindow::ResetListItem( )
 {
+	if ( !m_listHandle )
+	{
+		return;
+	}
+
 	int listItemCount = this->GetListItemCount( );
 	for ( int i = 0; i < listItemCount; ++i )
 	{
