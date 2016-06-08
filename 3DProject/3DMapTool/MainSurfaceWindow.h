@@ -11,16 +11,17 @@ public:
 	
 	// Event Handler
 	virtual void OnIdle( ) override;
+
+protected:
 	void OnDropFile( HDROP dropHandle );
 	void OnSaveAsClicked( );
-	void OnLoadMapClicked( );
+	void OnLoadSceneClicked( const char* loadPath = nullptr );
 	void OnNewSceneClicked( );
 
 	// Deletgate
 	virtual void OnMove( AbstractWindow* sender, int x, int y );
 	virtual void OnSize( AbstractWindow* sender, int width, int height );
 
-protected:
 	LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) override;
 	
 private:

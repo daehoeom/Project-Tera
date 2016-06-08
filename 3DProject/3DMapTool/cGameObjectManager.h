@@ -19,7 +19,8 @@ public:
 	void Render( );
 
 	void AddObject( cGameObject* pObject );
-	void DeleteObject( const std::wstring& key );
+	void EraseObject( const std::wstring& key ); // Delete only key
+	void DeleteObject( const std::wstring& key ); // Delete from heap
 	void ResetAllObject( );
 	cGameObject* FindObject( const std::wstring& key );
 
@@ -41,6 +42,12 @@ inline void cGameObjectManager::AddObject(
 	m_objMap.insert( std::make_pair( obj->GetName( ), obj ) );
 }
 
+inline void cGameObjectManager::EraseObject( 
+	const std::wstring& key )
+{
+	m_objMap.erase( key );
+}
+
 inline cGameObject* cGameObjectManager::FindObject(
 	const std::wstring& key )
 {
@@ -56,39 +63,33 @@ inline void cGameObjectManager::DeleteObject(
 		SAFE_DELETE( iter->second );
 		m_objMap.erase( key );
 	}
+	else
+	{
+		MessageBox( GetFocus( ),
+			L"삭제하려는 대상을 찾을 수 없습니다.",
+			L"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
+	}
 }
 
 inline void cGameObjectManager::ResetAllObject( )
 {
-	map<string, SerialdMsg::SerialFunction_t>::iterator pm_it = port_map.begin( );
-	while ( pm_it != port_map.end( ) )
+	for ( auto iter = m_objMap.begin( ); 
+		iter != m_objMap.end( );) 
 	{
-		if ( pm_it->second == delete_this_id )
+		if ( iter->second->GetIdenfier( ) != ObjectIdenfier::kLight &&
+			iter->second->GetIdenfier( ) != ObjectIdenfier::kCamera &&
+			iter->second->GetIdenfier( ) != ObjectIdenfier::kPickTile )
 		{
-			port_map.erase( pm_it++ );  // Use iterator.
-										// Note the post increment.
-										// Increments the iterator but returns the
-										// original value for use by erase 
+			SAFE_DELETE( iter->second );
+			m_objMap.erase( iter++ );
 		}
 		else
 		{
-			++pm_it;           // Can use pre-increment in this case
-							   // To make sure you have the efficient version
+			++iter;
 		}
 	}
-
-	/*auto iter = m_objMap.begin( );
-	while ( iter != m_objMap.end( ) )
-	{
-		if ( iter->second == delete_this_id )
-		{
-			pm_it = port_map.erase( pm_it );
-		}
-		else
-		{
-			++pm_it;
-		}
-	}*/
 }
 
 inline cGameObjectManager::iterator cGameObjectManager::begin()

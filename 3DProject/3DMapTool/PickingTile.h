@@ -11,11 +11,15 @@ public:
 	virtual void Update( ) override;
 	virtual void Render( ) override;
 
-	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kUnknown; }
+	virtual ObjectIdenfier GetIdenfier( ) const override { return ObjectIdenfier::kPickTile; }
 
 private:
-	virtual void OnPickDown( const D3DXVECTOR3& pickPos ) const override;
-	virtual void OnPickStay( const D3DXVECTOR3& pickPos ) const override;
-	virtual void OnPickUp( const D3DXVECTOR3& pickPos ) const override;
+	virtual void OnPickDown( const D3DXVECTOR3& pickPos ) override;
+	virtual void OnPickStay( const D3DXVECTOR3& pickPos ) override;
+	virtual void OnPickUp( const D3DXVECTOR3& pickPos ) override;
+
+private:
+	bool m_isLButtonClicked;
+	D3DXVECTOR3 m_prevPickPos;
 };
 

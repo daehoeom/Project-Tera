@@ -14,8 +14,7 @@ HierarchyWindow::HierarchyWindow( HWND parentWndHandle ) :
 		parentWndHandle, this->MakeWindowClass( ),
 		0, 0, HierarchyWindowWidth, HierarchyWindowHeight 
 	),
-	m_layer( 0 ),
-	m_currSelectedItem( -1 )
+	m_layer( 0 )
 {
 }
 
@@ -57,6 +56,57 @@ LRESULT HierarchyWindow::MessageProc(
 
 				case LVN_ITEMCHANGED:
 					this->OnItemClicked( lpListView );
+					break;
+
+				case LVN_KEYDOWN:
+					{
+						LPNMLVKEYDOWN pnkd = ( LPNMLVKEYDOWN )lParam;
+						this->OnItemKeyDown( pnkd->wVKey );
+					}
+					break;
+
+				case LVN_ENDLABELEDIT:
+					{
+						LPNMLVDISPINFOW di = reinterpret_cast<LPNMLVDISPINFOW>( lParam );
+
+						if ( di->item.pszText != nullptr ) 
+						{
+							// From
+							wchar_t currSelectedItemText[256] {0};
+							this->GetSelectedItemText( currSelectedItemText, 256 );
+
+							// To
+							const wchar_t* convToItemText = di->item.pszText;
+
+
+							cGameObject* currGameObj = cGameObjectManager::Get( )->FindObject( 
+								currSelectedItemText );
+
+							if ( currGameObj )
+							{
+								if ( currGameObj->GetIdenfier( ) == ObjectIdenfier::kCamera ||
+									currGameObj->GetIdenfier( ) == ObjectIdenfier::kLight ||
+									currGameObj->GetIdenfier( ) == ObjectIdenfier::kPickTile )
+								{
+									MessageBox( GetFocus( ),
+										L"이름 변경이 불가능한 객체입니다.",
+										L"WARNING!",
+										MB_OK | MB_ICONEXCLAMATION
+									);
+									return FALSE;
+								}
+
+								cGameObjectManager::Get( )->EraseObject( 
+									currGameObj->GetName( ));
+								currGameObj->SetName( convToItemText );
+								
+								cGameObjectManager::Get( )->AddObject( 
+									currGameObj );
+							}
+
+							return TRUE;
+						}
+					}
 					break;
 				}
 			}
@@ -131,6 +181,46 @@ void HierarchyWindow::OnItemClicked(
 		g_inspectorWnd->SetPositionData( object->GetPosition( ));
 		g_inspectorWnd->SetRotationData( object->GetAngle( ));
 		g_inspectorWnd->SetScaleData( object->GetScale( ));
+	}
+}
+
+void HierarchyWindow::OnItemKeyDown( 
+	WORD virtualKey )
+{
+	switch ( virtualKey )
+	{
+	case VK_DELETE:
+		{
+			const int32_t selectedItemIndex =
+				this->GetSelectedItemIndex( );
+
+			// Selected something
+			if ( selectedItemIndex != -1 )
+			{
+				wchar_t selectedObjName[256] {0};
+				this->GetSelectedItemText( selectedObjName, 256 );
+
+				auto* findObj = cGameObjectManager::Get( )->FindObject( selectedObjName );
+				if ( findObj )
+				{
+					if ( findObj->GetIdenfier( ) == ObjectIdenfier::kLight ||
+						findObj->GetIdenfier( ) == ObjectIdenfier::kCamera ||
+						findObj->GetIdenfier( ) == ObjectIdenfier::kPickTile )
+					{
+						MessageBox( this->GetWindowHandle( ),
+							L"지울 수 없는 객체입니다.",
+							L"WARNING!",
+							MB_OK | MB_ICONEXCLAMATION
+						);
+						break;
+					}
+
+					cGameObjectManager::Get( )->DeleteObject( selectedObjName );
+					ListView_DeleteItem( m_listHandle, selectedItemIndex );
+				}
+			}
+		}
+		break;
 	}
 }
 
@@ -221,7 +311,7 @@ void HierarchyWindow::SetupListView( HWND wndHandle )
 	m_listHandle = CreateWindowEx( 
 		NULL, 
 		WC_LISTVIEW, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER |
-		LVS_REPORT | LVS_SINGLESEL, -1, -1, rt.right+2, rt.bottom+2,
+		LVS_REPORT | LVS_SINGLESEL | LVS_EDITLABELS, -1, -1, rt.right+2, rt.bottom+2,
 		wndHandle,
 		NULL, GetModuleHandle( 0 ), NULL 
 	);

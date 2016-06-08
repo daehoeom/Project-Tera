@@ -7,16 +7,15 @@
 
 
 PickingTile::PickingTile( ) :
-	IPickable( L"PickingTile", new TilePicker( 10000 ))
+	IPickable( L"PickingTile", new TilePicker( 10000 )),
+	m_isLButtonClicked( false ),
+	m_prevPickPos( {0,0,0} )
 {
 }
 
 PickingTile::~PickingTile( )
 {
 }
-
-static bool isLButtonClicked = false;
-static D3DXVECTOR3 prevPickPos{ 0, 0, 0 };
 
 void PickingTile::Update( )
 {
@@ -29,26 +28,26 @@ void PickingTile::Render( )
 }
 
 void PickingTile::OnPickDown( 
-	const D3DXVECTOR3& pickPos ) const
+	const D3DXVECTOR3& pickPos )
 {
-	prevPickPos = pickPos;
+	m_prevPickPos = pickPos;
 }
 
 void PickingTile::OnPickStay(
-	const D3DXVECTOR3& pickPos ) const
+	const D3DXVECTOR3& pickPos )
 {
 	if ( g_hierarchyWnd->GetSelectedItemIndex( ) != -1 )
 	{
 		auto selectedObject = g_hierarchyWnd->GetSelectedItemAsObject( );
-		selectedObject->Move( pickPos-prevPickPos );
+		selectedObject->Move( pickPos-m_prevPickPos );
 	}
 
-	prevPickPos = pickPos;
+	m_prevPickPos = pickPos;
 }
 
 void PickingTile::OnPickUp( 
-	const D3DXVECTOR3& pickPos ) const
+	const D3DXVECTOR3& pickPos )
 {
-	prevPickPos = pickPos;
-	isLButtonClicked = false;
+	m_prevPickPos = pickPos;
+	m_isLButtonClicked = false;
 }

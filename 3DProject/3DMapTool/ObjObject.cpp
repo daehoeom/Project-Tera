@@ -13,7 +13,7 @@ ObjObject::ObjObject(
 	IColliseable( name )
 {
 	cObjLoader objLoader;
-	objLoader.Load( filePath.c_str(), m_vecGroup, nullptr );
+	objLoader.Load( filePath.c_str(), m_vecGroup );
 	
 	this->SetModelPath( filePath );
 	this->SetCollider( new BoundingBox( 

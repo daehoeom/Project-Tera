@@ -7,6 +7,7 @@ enum ObjectIdenfier
 	kObj,
 	kX,
 	kRaw,
+	kPickTile,
 	kUnknown,
 };
 
@@ -34,6 +35,8 @@ public:
 	void Scale( const D3DXVECTOR3& scale );
 	const D3DXVECTOR3& GetScale( ) const;
 	
+	void SetName( const std::wstring& objName );
+
 	/*
 		State & Component
 	*/
@@ -159,6 +162,12 @@ inline const D3DXVECTOR3& cGameObject::GetAngle( ) const
 inline const D3DXVECTOR3& cGameObject::GetScale( ) const
 {
 	return m_scale;
+}
+
+inline void cGameObject::SetName( 
+	const std::wstring& objName )
+{
+	m_objName = objName;
 }
 
 inline const std::wstring& cGameObject::GetName( ) const

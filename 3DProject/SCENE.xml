@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object_3>
+	<ObjectName>object_3</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>C:\Users\ggomdyu\Desktop\GitHub\3DProject\3DMapTool\Resource\box.obj</ModelPath>
+	<BoundingBox
+		minX="0.000000" minY="0.000000" minZ="0.000000"
+		maxX="0.000000" maxY="0.000000" maxZ="0.000000">
+	</BoundingBox>
+	<Position x="-0.803344" y="0.000002" z="13.817331"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="1.000000" y="1.000000" z="1.000000"></Scale>
+	<End></End>
+</object_3>
+<object_0>
+	<ObjectName>object_0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>C:\Users\ggomdyu\Desktop\GitHub\3DProject\3DMapTool\Resource\box.obj</ModelPath>
+	<BoundingBox
+		minX="0.000000" minY="0.000000" minZ="0.000000"
+		maxX="0.000000" maxY="0.000000" maxZ="0.000000">
+	</BoundingBox>
+	<Position x="-9.986719" y="-0.000008" z="3.229437"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="1.000000" y="1.000000" z="1.000000"></Scale>
+	<End></End>
+</object_0>
+<object_1>
+	<ObjectName>object_1</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>C:\Users\ggomdyu\Desktop\GitHub\3DProject\3DMapTool\Resource\box.obj</ModelPath>
+	<BoundingBox
+		minX="0.000000" minY="0.000000" minZ="0.000000"
+		maxX="0.000000" maxY="0.000000" maxZ="0.000000">
+	</BoundingBox>
+	<Position x="2.828702" y="0.000000" z="-3.648396"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="1.000000" y="1.000000" z="1.000000"></Scale>
+	<End></End>
+</object_1>
+<object_2>
+	<ObjectName>object_2</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>C:\Users\ggomdyu\Desktop\GitHub\3DProject\3DMapTool\Resource\box.obj</ModelPath>
+	<BoundingBox
+		minX="0.000000" minY="0.000000" minZ="0.000000"
+		maxX="0.000000" maxY="0.000000" maxZ="0.000000">
+	</BoundingBox>
+	<Position x="12.180636" y="0.000004" z="9.678150"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="1.000000" y="1.000000" z="1.000000"></Scale>
+	<End></End>
+</object_2>

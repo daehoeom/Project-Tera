@@ -4,6 +4,7 @@
 #include "TXMLReader.h"
 #include "Console.h"
 #include "resource.h"
+#include "PickingTile.h"
 #include "cDeviceManager.h"
 #include "cGameObjectManager.h"
 #include "ObjObject.h"
@@ -22,6 +23,7 @@ namespace
 enum ExtensionTable
 {
 	kX,
+	kXML,
 	kRaw8,
 	kRaw16,
 	kObj,
@@ -52,6 +54,10 @@ ExtensionTable AnalyzeExtension(
 	else if ( extension == "raw" )
 	{
 		return ExtensionTable::kObj;
+	}
+	else if ( extension == "xml" )
+	{
+		return ExtensionTable::kXML;
 	}
 	else
 	{
@@ -131,8 +137,8 @@ LRESULT MainSurfaceWindow::MessageProc(
 				DialogBox(GetModuleHandle(nullptr), MAKEINTRESOURCE(IDD_ABOUTBOX), wndHandle, About);
 				break;
 
-			case ID_MENU_LOAD_LOADMAP:
-				this->OnLoadMapClicked( );
+			case ID_MENU_LOAD_LOADSCENE:
+				this->OnLoadSceneClicked( );
 				break;
 				
 			case ID_MENU_NEWSCENE:
@@ -183,33 +189,35 @@ void MainSurfaceWindow::OnIdle( )
 	cGameObjectManager::Get( )->Render( );
 }
 
-
 void MainSurfaceWindow::OnDropFile( 
 	HDROP dropHandle )
 {
 	DragQueryFileA( dropHandle, 0,
 		&m_dropQueryPath[0], MAX_PATH );
 
-	static int32_t hierarchyObjIndex = 0;
 	ExtensionTable extension = AnalyzeExtension(
 		m_dropQueryPath.get( ) );
-
 	cGameObject* newObject = nullptr;
 
 	switch ( extension )
 	{
 	case ExtensionTable::kX:
 		break;
-	case ExtensionTable::kObj:
-	{
-		std::wstring str = L"object_";
-		str += std::to_wstring( m_createCount++ );
 
-		newObject = new ObjObject( str.c_str( ),
-			m_dropQueryPath.get( ));
-		g_hierarchyWnd->AddListItem( str );
-	}
-	break;
+	case ExtensionTable::kXML:
+		this->OnLoadSceneClicked( m_dropQueryPath.get( ));
+		break;
+
+	case ExtensionTable::kObj:
+		{
+			std::wstring str = L"object_";
+			str += std::to_wstring( m_createCount++ );
+
+			newObject = new ObjObject( str.c_str( ),
+				m_dropQueryPath.get( ));
+			g_hierarchyWnd->AddListItem( str );
+		}
+		break;
 
 	case ExtensionTable::kUnknown:
 		MessageBox( this->GetWindowHandle( ), 
@@ -220,19 +228,33 @@ void MainSurfaceWindow::OnDropFile(
 		break;
 	}
 
+	// Set position As mouse
+	PickingTile* pickTile = static_cast<PickingTile*>(
+		cGameObjectManager::Get( )->FindObject( L"PickingTile" ));
+	D3DXVECTOR3 pickPos = CalculatePickPos( pickTile );
+
 	if ( newObject )
 	{
+		newObject->SetPosition( pickPos );
 		cGameObjectManager::Get( )->AddObject( newObject );
 	}
 }
 
 void MainSurfaceWindow::OnSaveAsClicked( )
 {
-	OPENFILENAME ofn {0};
+	OPENFILENAMEA ofn{ 0 };
+	char openFileName[MAX_PATH]{ 0 };
+
 	ofn.lStructSize = sizeof( OPENFILENAME );
 	ofn.hwndOwner = this->GetWindowHandle( );
+	ofn.lpstrFilter = "(*.xml)\0*.*\0";
+	ofn.lpstrFile = openFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.lpstrDefExt = "xml";
 
-	std::wofstream ofs( "E:/wow.xml" );
+	GetSaveFileNameA( &ofn );
+
+	std::wofstream ofs( openFileName );
 	ofs << "<?xml version=""\"1.0""\" encoding=""\"UTF-8""\"?>\n";
 	
 	for ( auto iter = cGameObjectManager::Get( )->begin( );
@@ -241,7 +263,8 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 	{
 		if ( iter->second->GetIdenfier( ) == ObjectIdenfier::kCamera ||
 			iter->second->GetIdenfier( ) == ObjectIdenfier::kLight ||
-			iter->second->GetIdenfier( ) == ObjectIdenfier::kUnknown )
+			iter->second->GetIdenfier( ) == ObjectIdenfier::kUnknown ||
+			iter->second->GetIdenfier( ) == ObjectIdenfier::kPickTile )
 		{
 			continue;
 		}
@@ -351,175 +374,190 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 	ofs.close( );
 }
 
-void MainSurfaceWindow::OnLoadMapClicked( )
+void MainSurfaceWindow::OnLoadSceneClicked(
+	const char* loadPath )
 {
-	this->OnNewSceneClicked( );
-
 	OPENFILENAMEA ofn{ 0 };
 	char openFileName[MAX_PATH] {0};
-
-	ofn.lStructSize = sizeof( OPENFILENAME );
-	ofn.hwndOwner = this->GetWindowHandle( );
-	ofn.lpstrFilter = "모든 파일(*.*)\0*.*\0";
-	ofn.lpstrFile = openFileName;
-	ofn.nMaxFile = MAX_PATH;
-
-	if ( GetOpenFileNameA( &ofn ) != 0 )
+	if ( !loadPath )
 	{
-		tgon::TXMLReader xmlReader( ofn.lpstrFile );
-		if ( xmlReader.fail( ))
+		ofn.lStructSize = sizeof( OPENFILENAME );
+		ofn.hwndOwner = this->GetWindowHandle( );
+		ofn.lpstrFilter = "모든 파일(*.*)\0*.*\0";
+		ofn.lpstrFile = openFileName;
+		ofn.nMaxFile = MAX_PATH;
+
+		if ( GetOpenFileNameA( &ofn ) == 0 )
 		{
-			MessageBox( GetFocus( ),
-				L"XML 로딩에 실패했습니다.",
-				L"WARNING!",
-				MB_OK | MB_ICONEXCLAMATION
-			);
-		}
-		
-		cGameObject* newObject = nullptr;
-		std::wstring objName;
-		D3DXVECTOR3 pos{0,0,0}, rot{0,0,0}, scale{0,0,0};
-		BoundingBox* bb = nullptr;
-		ObjectIdenfier objID = ObjectIdenfier::kUnknown;
-		std::string modelPath;
-
-		for ( const auto& xmlNodeElem : xmlReader )
-		{
-			if ( !strcmp( "End", xmlNodeElem->Value( ) ) )
-			{
-				switch ( objID )
-				{
-				case ObjectIdenfier::kObj:
-					newObject = new ObjObject( objName, modelPath );
-					break;
-				case ObjectIdenfier::kX:
-					break;
-				}
-				
-				newObject->SetPosition( pos );
-				newObject->SetAngle( rot );
-				newObject->SetScale( scale );
-
-				cGameObjectManager::Get( )->AddObject( 
-					newObject );
-				g_hierarchyWnd->AddListItem( newObject->GetName( ));
-			}
-			else if ( !strcmp( "ObjectName", xmlNodeElem->Value( )))
-			{
-				const char* objCharName = xmlNodeElem->FirstChild( )->Value( );
-				wchar_t objWcharName[256] {0};
-				std::mbstowcs( objWcharName, objCharName, 256 );
-
-				objName = objWcharName;
-			}
-			else if ( !strcmp( "Type", xmlNodeElem->Value( )))
-			{
-				if ( !strcmp( xmlNodeElem->FirstChild( )->Value(), 
-					"obj" ))
-				{
-					objID = ObjectIdenfier::kObj;
-				}
-				else if ( !strcmp( xmlNodeElem->FirstChild( )->Value(),
-					"x" ))
-				{
-					objID = ObjectIdenfier::kX;
-				}
-			}
-			else if ( !strcmp( "ModelPath", xmlNodeElem->Value( ) ) )
-			{
-				modelPath = xmlNodeElem->FirstChild( )
-					->Value( );
-			}
-			else if ( !strcmp( "BoundingBox", xmlNodeElem->Value( ) ) )
-			{
-			}
-			else if ( !strcmp( "Position", xmlNodeElem->Value( )))
-			{
-				tinyxml2::XMLElement* elem = xmlNodeElem->ToElement( );
-				if ( elem )
-				{
-					const tinyxml2::XMLAttribute* xAttr = 
-						elem->FirstAttribute( );
-					const tinyxml2::XMLAttribute* yAttr = 
-						xAttr->Next( );
-					const tinyxml2::XMLAttribute* zAttr = 
-						yAttr->Next( );
-
-					pos = { xAttr->FloatValue( ),
-						yAttr->FloatValue( ),
-						zAttr->FloatValue( )
-					};
-				}
-				else
-				{
-					MessageBox( GetFocus( ),
-						L"알 수 없는 Element 형식입니다.",
-						L"WARNING!",
-						MB_OK | MB_ICONEXCLAMATION
-					);
-				}
-			}
-			else if ( !strcmp( "Rotation", xmlNodeElem->Value( ) ) )
-			{
-				tinyxml2::XMLElement* elem = xmlNodeElem->ToElement( );
-				if ( elem )
-				{
-					const tinyxml2::XMLAttribute* xAttr = 
-						elem->FirstAttribute( );
-					const tinyxml2::XMLAttribute* yAttr = 
-						xAttr->Next( );
-					const tinyxml2::XMLAttribute* zAttr = 
-						yAttr->Next( );
-
-					rot = { xAttr->FloatValue( ),
-						yAttr->FloatValue( ),
-						zAttr->FloatValue( )
-					};
-				}
-				else
-				{
-					MessageBox( GetFocus( ),
-						L"알 수 없는 Element 형식입니다.",
-						L"WARNING!",
-						MB_OK | MB_ICONEXCLAMATION
-					);
-				}
-			}
-			else if ( !strcmp( "Scale", xmlNodeElem->Value( ) ) )
-			{
-				tinyxml2::XMLElement* elem = xmlNodeElem->ToElement( );
-				if ( elem )
-				{
-					const tinyxml2::XMLAttribute* xAttr =
-						elem->FirstAttribute( );
-					const tinyxml2::XMLAttribute* yAttr =
-						xAttr->Next( );
-					const tinyxml2::XMLAttribute* zAttr =
-						yAttr->Next( );
-
-					scale = { xAttr->FloatValue( ),
-						yAttr->FloatValue( ),
-						zAttr->FloatValue( )
-					};
-				}
-				else
-				{
-					MessageBox( GetFocus( ),
-						L"알 수 없는 Element 형식입니다.",
-						L"WARNING!",
-						MB_OK | MB_ICONEXCLAMATION
-					);
-				}
-			}
-
-			Log( xmlNodeElem->Value( ), L"\n" );
+			return;
 		}
 	}
 
+	this->OnNewSceneClicked( );
+
+	std::unique_ptr<tgon::TXMLReader> xmlReader;
+	if ( loadPath )
+	{
+		xmlReader.reset( new tgon::TXMLReader( loadPath ));
+	}
+	else // OFN
+	{
+		xmlReader.reset( new tgon::TXMLReader( openFileName ));
+	}
+	
+	if ( xmlReader->fail( ))
+	{
+		MessageBox( GetFocus( ),
+			L"XML 로딩에 실패했습니다.",
+			L"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
+	}
+		
+	cGameObject* newObject = nullptr;
+	std::wstring objName;
+	D3DXVECTOR3 pos{0,0,0}, rot{0,0,0}, scale{0,0,0};
+	BoundingBox* bb = nullptr;
+	ObjectIdenfier objID = ObjectIdenfier::kUnknown;
+	std::string modelPath;
+
+	for ( const auto& xmlNodeElem : *xmlReader )
+	{
+		if ( !strcmp( "End", xmlNodeElem->Value( ) ) )
+		{
+			switch ( objID )
+			{
+			case ObjectIdenfier::kObj:
+				++m_createCount;
+				newObject = new ObjObject( objName, modelPath );
+				break;
+			case ObjectIdenfier::kX:
+				break;
+			}
+				
+			newObject->SetPosition( pos );
+			newObject->SetAngle( rot );
+			newObject->SetScale( scale );
+
+			cGameObjectManager::Get( )->AddObject( 
+				newObject );
+			g_hierarchyWnd->AddListItem( newObject->GetName( ));
+		}
+		else if ( !strcmp( "ObjectName", xmlNodeElem->Value( )))
+		{
+			const char* objCharName = xmlNodeElem->FirstChild( )->Value( );
+			wchar_t objWcharName[256] {0};
+			std::mbstowcs( objWcharName, objCharName, 256 );
+
+			objName = objWcharName;
+		}
+		else if ( !strcmp( "Type", xmlNodeElem->Value( )))
+		{
+			if ( !strcmp( xmlNodeElem->FirstChild( )->Value(), 
+				"obj" ))
+			{
+				objID = ObjectIdenfier::kObj;
+			}
+			else if ( !strcmp( xmlNodeElem->FirstChild( )->Value(),
+				"x" ))
+			{
+				objID = ObjectIdenfier::kX;
+			}
+		}
+		else if ( !strcmp( "ModelPath", xmlNodeElem->Value( ) ) )
+		{
+			modelPath = xmlNodeElem->FirstChild( )
+				->Value( );
+		}
+		else if ( !strcmp( "BoundingBox", xmlNodeElem->Value( ) ) )
+		{
+		}
+		else if ( !strcmp( "Position", xmlNodeElem->Value( )))
+		{
+			tinyxml2::XMLElement* elem = xmlNodeElem->ToElement( );
+			if ( elem )
+			{
+				const tinyxml2::XMLAttribute* xAttr = 
+					elem->FirstAttribute( );
+				const tinyxml2::XMLAttribute* yAttr = 
+					xAttr->Next( );
+				const tinyxml2::XMLAttribute* zAttr = 
+					yAttr->Next( );
+
+				pos = { xAttr->FloatValue( ),
+					yAttr->FloatValue( ),
+					zAttr->FloatValue( )
+				};
+			}
+			else
+			{
+				MessageBox( GetFocus( ),
+					L"알 수 없는 Element 형식입니다.",
+					L"WARNING!",
+					MB_OK | MB_ICONEXCLAMATION
+				);
+			}
+		}
+		else if ( !strcmp( "Rotation", xmlNodeElem->Value( ) ) )
+		{
+			tinyxml2::XMLElement* elem = xmlNodeElem->ToElement( );
+			if ( elem )
+			{
+				const tinyxml2::XMLAttribute* xAttr = 
+					elem->FirstAttribute( );
+				const tinyxml2::XMLAttribute* yAttr = 
+					xAttr->Next( );
+				const tinyxml2::XMLAttribute* zAttr = 
+					yAttr->Next( );
+
+				rot = { xAttr->FloatValue( ),
+					yAttr->FloatValue( ),
+					zAttr->FloatValue( )
+				};
+			}
+			else
+			{
+				MessageBox( GetFocus( ),
+					L"알 수 없는 Element 형식입니다.",
+					L"WARNING!",
+					MB_OK | MB_ICONEXCLAMATION
+				);
+			}
+		}
+		else if ( !strcmp( "Scale", xmlNodeElem->Value( ) ) )
+		{
+			tinyxml2::XMLElement* elem = xmlNodeElem->ToElement( );
+			if ( elem )
+			{
+				const tinyxml2::XMLAttribute* xAttr =
+					elem->FirstAttribute( );
+				const tinyxml2::XMLAttribute* yAttr =
+					xAttr->Next( );
+				const tinyxml2::XMLAttribute* zAttr =
+					yAttr->Next( );
+
+				scale = { xAttr->FloatValue( ),
+					yAttr->FloatValue( ),
+					zAttr->FloatValue( )
+				};
+			}
+			else
+			{
+				MessageBox( GetFocus( ),
+					L"알 수 없는 Element 형식입니다.",
+					L"WARNING!",
+					MB_OK | MB_ICONEXCLAMATION
+				);
+			}
+		}
+
+		Log( xmlNodeElem->Value( ), L"\n" );
+	}
 }
 
 void MainSurfaceWindow::OnNewSceneClicked( )
 {
+	m_createCount = 0;
 	g_hierarchyWnd->ResetListItem( );
 	cGameObjectManager::Get( )->ResetAllObject();
 }

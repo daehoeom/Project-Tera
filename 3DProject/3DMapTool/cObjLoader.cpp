@@ -1,20 +1,14 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "cObjLoader.h"
 #include "cMtlTex.h"
 #include "cGroup.h"
 #include "cTextureManager.h"
+
 #include "StringUtil.h"
-#include <numeric>
 
 #pragma warning( disable: 4996 )
 
-cObjLoader::cObjLoader(void) :
-	m_vMin({ std::numeric_limits<float>::max( )-1,
-		std::numeric_limits<float>::max( )-1,
-		std::numeric_limits<float>::max( )-1}),
-	m_vMax({ std::numeric_limits<float>::min( )+1,
-		std::numeric_limits<float>::min( )+1,
-		std::numeric_limits<float>::min( )+1})
+cObjLoader::cObjLoader(void)
 {
 }
 
@@ -23,7 +17,9 @@ cObjLoader::~cObjLoader(void)
 {
 }
 
-void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATRIXA16* mat /*= NULL*/)
+void cObjLoader::Load(
+	const char* szFullPath, 
+	std::vector<cGroup*>& vecGroup )
 {
 	std::vector<D3DXVECTOR3> vecV;
 	std::vector<D3DXVECTOR2> vecVT;
@@ -32,62 +28,72 @@ void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3
 	std::string sMtlName;
 
 	FILE* fp = NULL;
-
 	fopen_s(&fp, szFullPath, "r");
-
-	assert(fp != NULL && "ÆÄÀÏÀÌ ¾ø½À´Ï´Ù.");
-
-	while (true)
+	
+	if ( !fp )
 	{
-		if (feof(fp))
-			break;
+		MessageBox( 
+			GetFocus( ),
+			L"obj íŒŒì¼ì´ ì¡´ìž¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.",
+			L"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
+	}
 
+	auto EndGroupFunc = [&]( )
+	{
+		if ( !vecVertex.empty( ))
+		{
+			cGroup* pGroup = new cGroup;
+			pGroup->SetMtlTex( m_mapMtlTex[sMtlName] );
+			pGroup->SetVertex( vecVertex );
+			vecGroup.push_back( pGroup );
+
+			vecVertex.clear( );
+		}
+	};
+
+	bool isGroupStart = false;
+	while ( !feof( fp ))
+	{
 		char szBuf[1024] = { '\0', };
 		fgets(szBuf, 1024, fp);
 
-		if (strlen(szBuf) == 0)
+		if ( strlen( szBuf ) == 0 )
 			continue;
 
 		//OutputDebugString(szBuf);
-		if (szBuf[0] == '#')
+		
+		if ( szBuf[0] == '#' ||
+			szBuf[0] == '\n' )
 		{
-			continue;
+			// If created a group, end it
+			if ( isGroupStart )
+			{
+				EndGroupFunc( );
+				isGroupStart = false;
+			}
 		}
 		else if (szBuf[0] == 'm')
 		{
 			std::string szMtlPath;
 			szMtlPath.resize( 1024 );
-			sscanf(szBuf, "%*s %s", &szMtlPath[0] );
-
-			auto a = GetPathWithoutFileName( szFullPath );
-			auto b = GetFileNameFromPath( szMtlPath );
+			sscanf( szBuf, "%*s %s", &szMtlPath[0] );
 
 			szMtlPath = 
-				a+b
-				;
+				GetPathWithoutFileName( szFullPath ) +
+				GetFileNameFromPath( szMtlPath );
 
-			LoadMtlLib( szMtlPath.c_str() );
+			LoadMtlLib( szMtlPath.c_str( ) );
 		}
 		else if (szBuf[0] == 'g')
 		{
-			if (vecVertex.empty() == false)
+			if ( isGroupStart )
 			{
-				if (mat)
-				{
-					for (size_t i = 0; i < vecVertex.size(); ++i)
-					{
-						D3DXVec3TransformCoord(&vecVertex[i].p, &vecVertex[i].p, mat);
-						D3DXVec3TransformNormal(&vecVertex[i].n, &vecVertex[i].n, mat);
-					}
-				}
-
-				cGroup* pGroup = new cGroup;
-				pGroup->SetMtlTex(m_mapMtlTex[sMtlName]);
-				pGroup->SetVertex(vecVertex);
-				vecGroup.push_back(pGroup);
-
-				vecVertex.clear();
+				EndGroupFunc( );
+				//isGroupStart = false;
 			}
+			isGroupStart = true;
 		}
 		else if (szBuf[0] == 'v')
 		{
@@ -107,15 +113,6 @@ void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3
 			{
 				float x, y, z;
 				sscanf(szBuf, "%*s %f %f %f", &x, &y, &z);
-				
-				m_vMin.x = std::min( m_vMin.x, x );
-				m_vMin.y = std::min( m_vMin.y, y );
-				m_vMin.z = std::min( m_vMin.z, z );
-				
-				m_vMax.x = std::max( m_vMax.x, x );
-				m_vMax.y = std::max( m_vMax.y, y );
-				m_vMax.z = std::max( m_vMax.z, z );
-
 				vecV.push_back(D3DXVECTOR3(x, y, z));
 			}
 		}
@@ -127,102 +124,49 @@ void cObjLoader::Load(const char* szFullPath, std::vector<cGroup*>& vecGroup, D3
 		}
 		else if (szBuf[0] == 'f')
 		{
-			// Stored as PTN sequence
-			// Obj Has no Normal vector
-			if ( vecVN.size( ) == 0 )
+			int aIndex[3][3];
+			sscanf(szBuf, "%*s %d/%d/%d %d/%d/%d %d/%d/%d",
+				&aIndex[0][0], &aIndex[0][1], &aIndex[0][2],
+				&aIndex[1][0], &aIndex[1][1], &aIndex[1][2],
+				&aIndex[2][0], &aIndex[2][1], &aIndex[2][2]);
+			for (int i = 0; i < 3; ++i)
 			{
-				std::vector<ST_PNT_VERTEX> parsedVertices;
-				int faceVertexCount = 0;
-
-				Parser p( szBuf );
-				while ( p.Parse( ))
-				{
-					if ( p.Get( )[0] == '\n' )
-					{
-						continue;
-					}
-
-					int aIndex[3] {-1,-1,-1};
-					sscanf( p.Get( ), "%d/%d", 
-						&aIndex[0], &aIndex[1] );
-				
-					ST_PNT_VERTEX v;
-					v.p = vecV[aIndex[0]-1];
-					v.t = vecVT[aIndex[1]-1];
-					v.n = {0,1,0};
-					vecVertex.push_back( v );
-
-					++faceVertexCount;
-				}
-
-				if ( faceVertexCount != 3 )
-				{
-					MessageBox( GetFocus( ),
-						L"Triangle face ÀÌ¿ÜÀÇ Obj ÆÄÀÏ¿¡ ´ëÇÑ ·ÎµùÀº Áö¿øµÇÁö ¾Ê½À´Ï´Ù.",
-						L"WARNING!", MB_OK | MB_ICONEXCLAMATION );
-				}
-				//MessageBox( GetFocus( ), 
-				//	L"³ë¸» º¤ÅÍ°¡ ¾ø´Â Obj ÆÄÀÏ¿¡ ´ëÇÑ ·ÎµùÀº Áö¿øµÇÁö ¾Ê½À´Ï´Ù.",
-				//	L"WARNING!", MB_OK | MB_ICONEXCLAMATION );
-			}
-			// Obj Has Normal vector
-			else
-			{
-				std::vector<ST_PNT_VERTEX> parsedVertices;
-				int faceVertexCount = 0;
-
-				Parser p( szBuf );
-				while ( p.Parse( ) )
-				{
-					if ( p.Get( )[0] == '\n' )
-					{
-						continue;
-					}
-
-					int aIndex[3] {-1,-1,-1};
-					sscanf( p.Get( ), "%d/%d/%d", 
-						&aIndex[0], &aIndex[1], &aIndex[2] );
-				
-					ST_PNT_VERTEX v;
-					v.p = vecV[aIndex[0]-1];
-					v.t = vecVT[aIndex[1]-1];
-					v.n = vecVN[aIndex[2]-1];
-					vecVertex.push_back( v );
-
-					++faceVertexCount;
-				}
-
-				if ( faceVertexCount != 3 )
-				{
-					MessageBox( GetFocus( ),
-						L"Triangle face ÀÌ¿ÜÀÇ Obj ÆÄÀÏ¿¡ ´ëÇÑ ·ÎµùÀº Áö¿øµÇÁö ¾Ê½À´Ï´Ù.",
-						L"WARNING!", MB_OK | MB_ICONEXCLAMATION );
-				}
+				ST_PNT_VERTEX v;
+				v.p = vecV[aIndex[i][0] - 1];
+				v.t = vecVT[aIndex[i][1] - 1];
+				v.n = vecVN[aIndex[i][2] - 1];
+				vecVertex.push_back(v);
 			}
 		}
 	}
 
-	for (auto& iter : m_mapMtlTex)
+	for (auto& it : m_mapMtlTex)
 	{
-		SAFE_RELEASE(iter.second);
+		SAFE_RELEASE(it.second);
 	}
 
 	fclose(fp);
 }
 
-void cObjLoader::LoadMtlLib(const char* szFullPath)
+void cObjLoader::LoadMtlLib(
+	const char* szFullPath)
 {
 	FILE* fp = NULL;
 	fopen_s(&fp, szFullPath, "r");
 
 	if ( !fp )
 	{
-		std::string str = "¸ÓÅ×¸®¾ó ·Îµù¿¡ ½ÇÆÐÇß½À´Ï´Ù. (";
-		str += szFullPath;
-		str += ')';
+		std::string errMsg = 
+			std::string( "ì•Œ ìˆ˜ ì—†ëŠ” ë©”í…Œë¦¬ì–¼ ê²½ë¡œê°€ ë°œê²¬ë˜ì—ˆìŠµë‹ˆë‹¤. ( " ) +
+			std::string( szFullPath ) + 
+			std::string( " )" );
 
-		MessageBoxA( GetFocus( ), str.c_str( ),
-			"WARNING!", MB_OK | MB_ICONEXCLAMATION );
+		MessageBoxA(
+			GetFocus( ),
+			errMsg.c_str( ),
+			"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
 	}
 
 	std::string sMtlName;
@@ -251,9 +195,11 @@ void cObjLoader::LoadMtlLib(const char* szFullPath)
 			SAFE_RELEASE(m_mapMtlTex[sMtlName]);
 			m_mapMtlTex[sMtlName] = new cMtlTex;
 		}
-		else if (szBuf[0] == 'K')
+		else if (szBuf[0] == 'K' || 
+			szBuf[1] == 'K' )
 		{
-			if (szBuf[1] == 'a')
+			if (szBuf[1] == 'a' ||
+				szBuf[2] == 'a' )
 			{
 				float r, g, b;
 				sscanf(szBuf, "%*s %f %f %f", &r, &g, &b);
@@ -264,7 +210,8 @@ void cObjLoader::LoadMtlLib(const char* szFullPath)
 				stMtl.Ambient.b = b;
 				stMtl.Ambient.a = 1.0f;
 			}
-			else if (szBuf[1] == 'd')
+			else if (szBuf[1] == 'd' ||
+				szBuf[2] == 'd' )
 			{
 				float r, g, b;
 				sscanf(szBuf, "%*s %f %f %f", &r, &g, &b);
@@ -275,7 +222,8 @@ void cObjLoader::LoadMtlLib(const char* szFullPath)
 				stMtl.Diffuse.b = b;
 				stMtl.Diffuse.a = 1.0f;
 			}
-			else if (szBuf[1] == 's')
+			else if (szBuf[1] == 's' ||
+				szBuf[2] == 's' )
 			{
 				float r, g, b;
 				sscanf(szBuf, "%*s %f %f %f", &r, &g, &b);
@@ -287,30 +235,22 @@ void cObjLoader::LoadMtlLib(const char* szFullPath)
 				stMtl.Specular.a = 1.0f;
 			}
 		}
-		else if (szBuf[0] == 'm')
+		else if ( strstr( szBuf, "map_Kd" ))
 		{
 			std::string szTexPath;
-			szTexPath.resize( 1024 );
-			sscanf(szBuf, "%*s %s", &szTexPath[0]);
-
-			auto a = GetPathWithoutFileName( szFullPath );
-			auto b = GetFileNameFromPath( szTexPath );
+			szTexPath.resize( 1024, '\0' );
+			sscanf( szBuf, "%*s %s", &szTexPath[0] );
 
 			szTexPath =
-				a +
-				b;
+				GetPathWithoutFileName( szFullPath ) +
+				GetFileNameFromPath( szTexPath );
 
 			LPDIRECT3DTEXTURE9 pTexture = NULL;
-			pTexture = g_pTextureManager->GetTexture(szTexPath);
+			pTexture = g_pTextureManager->GetTexture( szTexPath );
 
-			m_mapMtlTex[sMtlName]->SetTexture(pTexture);
+			m_mapMtlTex[sMtlName]->SetTexture( pTexture );
 		}
 	}
 
-	auto mtrl = m_mapMtlTex.find( sMtlName )->second->GetMtl( );
-
 	fclose(fp);
 }
-
-
-#pragma warning( default: 4996 )

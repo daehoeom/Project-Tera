@@ -30,6 +30,12 @@ LPDIRECT3DTEXTURE9 cTextureManager::GetTexture(std::string szFullPath)
 
 		else
 		{
+			MessageBox(
+				GetFocus( ),
+				"텍스처 로딩에 실패했습니다.",
+				"WARNING!",
+				MB_OK | MB_ICONEXCLAMATION
+			);
 			return NULL;
 		}
 	}
