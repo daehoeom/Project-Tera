@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "HierarchyWindow.h"
 
+#include "BoundingBox.h"
 #include "resource.h"
 #include "cGameObject.h"
 #include "cGameObjectManager.h"
@@ -39,7 +40,22 @@ INT_PTR CALLBACK ColliderMsgProc(
 				g_hierarchyWnd->GetSelectedItemAsObject( ));
 			if ( object )
 			{
-				object->
+				auto* boundingBox = static_cast<BoundingBox*>( 
+					object->GetCollider( ));
+
+				SetDlgItemText( wndHandle, IDC_MINXPOS, 
+					std::to_wstring( boundingBox->GetMin( ).x ).c_str( ));
+				SetDlgItemText( wndHandle, IDC_MINYPOS, 
+					std::to_wstring( boundingBox->GetMin( ).y ).c_str( ));
+				SetDlgItemText( wndHandle, IDC_MINZPOS, 
+					std::to_wstring( boundingBox->GetMin( ).z ).c_str( ));
+
+				SetDlgItemText( wndHandle, IDC_MAXXPOS, 
+					std::to_wstring( boundingBox->GetMax( ).x ).c_str( ));
+				SetDlgItemText( wndHandle, IDC_MAXYPOS, 
+					std::to_wstring( boundingBox->GetMax( ).y ).c_str( ));
+				SetDlgItemText( wndHandle, IDC_MAXZPOS, 
+					std::to_wstring( boundingBox->GetMax( ).z ).c_str( ));
 			}
 		}
 		break;
@@ -48,12 +64,39 @@ INT_PTR CALLBACK ColliderMsgProc(
 		switch ( wParam ) 
 		{
 		case IDAABBOK:
-			//pParam->value=GetDlgItemInt(hDlg,IDC_EDINT,NULL,TRUE);
-			//EndDialog(hDlg,IDOK);
+			{
+				wchar_t buf[256];
+				auto* object = static_cast<IColliseable*>(
+					g_hierarchyWnd->GetSelectedItemAsObject( ) 
+				);
+				
+				BoundingBox* boundingBox = static_cast<BoundingBox*>(
+						object->GetCollider( ));
+				
+				D3DXVECTOR3 vMin;
+				GetDlgItemText( wndHandle, IDC_MINXPOS, buf, 256 );
+				vMin.x = _wtof( buf );
+				GetDlgItemText( wndHandle, IDC_MINYPOS, buf, 256 );
+				vMin.y = _wtof( buf );
+				GetDlgItemText( wndHandle, IDC_MINZPOS, buf, 256 );
+				vMin.z = _wtof( buf );
+
+				D3DXVECTOR3 vMax;
+				GetDlgItemText( wndHandle, IDC_MAXXPOS, buf, 256 );
+				vMax.x = _wtof( buf );
+				GetDlgItemText( wndHandle, IDC_MAXYPOS, buf, 256 );
+				vMax.y = _wtof( buf );
+				GetDlgItemText( wndHandle, IDC_MAXZPOS, buf, 256 );
+				vMax.z = _wtof( buf );
+
+				boundingBox->SetMinMax( vMin, vMax );
+
+				EndDialog( wndHandle, IDAABBOK );
+			}
 			return TRUE;
 
 		case IDAABBCANCEL:
-			EndDialog( wndHandle, IDCANCEL );
+			EndDialog( wndHandle, IDAABBCANCEL );
 			return TRUE;
 		}
 		break;
@@ -96,7 +139,12 @@ LRESULT HierarchyWindow::MessageProc(
 
 				case NM_RCLICK:
 					{
-						if ( this->GetSelectedItemIndex( ) != -1 )
+						auto* object = GetSelectedItemAsObject( );
+
+						if ( object &&
+							object->GetIdenfier( ) != ObjectIdenfier::kCamera &&
+							object->GetIdenfier( ) != ObjectIdenfier::kLight &&
+							object->GetIdenfier( ) != ObjectIdenfier::kPickTile )
 						{
 							DialogBox( GetModuleHandle( nullptr ), 
 								MAKEINTRESOURCE( IDD_AABB ), 

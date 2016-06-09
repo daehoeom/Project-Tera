@@ -12,18 +12,15 @@ BoundingBox::BoundingBox(
 	m_vertices( 8 ),
 	m_indices( 36 )
 {
-	DWORD color = 0xffffff;
-	const float interval = 0.1f;
-
 	// vertices of a unit cube
-	m_vertices[0] = {{ min.x-interval, min.y-interval, min.z-interval}, color };
-	m_vertices[1] = {{ min.x-interval, max.y+interval, min.z-interval}, color };
-	m_vertices[2] = {{ max.x+interval, max.y+interval, min.z-interval}, color };
-	m_vertices[3] = {{ max.x+interval, min.y-interval, min.z-interval}, color };
-	m_vertices[4] = {{ min.x-interval, min.y-interval, max.z+interval}, color };
-	m_vertices[5] = {{ min.x-interval, max.y+interval, max.z+interval}, color };
-	m_vertices[6] = {{ max.x+interval, max.y+interval, max.z+interval}, color };
-	m_vertices[7] = {{ max.x+interval, min.y-interval, max.z+interval}, color };
+	m_vertices[0] = {{ min.x-m_interval, min.y-m_interval, min.z-m_interval}, m_color };
+	m_vertices[1] = {{ min.x-m_interval, max.y+m_interval, min.z-m_interval}, m_color };
+	m_vertices[2] = {{ max.x+m_interval, max.y+m_interval, min.z-m_interval}, m_color };
+	m_vertices[3] = {{ max.x+m_interval, min.y-m_interval, min.z-m_interval}, m_color };
+	m_vertices[4] = {{ min.x-m_interval, min.y-m_interval, max.z+m_interval}, m_color };
+	m_vertices[5] = {{ min.x-m_interval, max.y+m_interval, max.z+m_interval}, m_color };
+	m_vertices[6] = {{ max.x+m_interval, max.y+m_interval, max.z+m_interval}, m_color };
+	m_vertices[7] = {{ max.x+m_interval, min.y-m_interval, max.z+m_interval}, m_color };
 
 	// front side
 	m_indices[0] = 0; m_indices[1] = 1; m_indices[2] = 2;
@@ -53,8 +50,10 @@ void BoundingBox::Update( )
 {
 }
 
-void BoundingBox::Render( )
+void BoundingBox::Render( 
+	const D3DXMATRIXA16& TM )
 {
+	g_pD3DDevice->SetTransform( D3DTS_WORLD, &TM );
 	g_pD3DDevice->SetTexture( 0, nullptr );
 	g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 	g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILLMODE::D3DFILL_WIREFRAME );
@@ -73,4 +72,19 @@ void BoundingBox::Render( )
 
 	g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILLMODE::D3DFILL_SOLID );
 	g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, TRUE );
+}
+
+void BoundingBox::SetMinMax( const D3DXVECTOR3 & min, const D3DXVECTOR3 & max )
+{
+	m_min = min;
+	m_max = max;
+
+	m_vertices[0] = {{ min.x, min.y, min.z}, m_color };
+	m_vertices[1] = {{ min.x, max.y, min.z}, m_color };
+	m_vertices[2] = {{ max.x, max.y, min.z}, m_color };
+	m_vertices[3] = {{ max.x, min.y, min.z}, m_color };
+	m_vertices[4] = {{ min.x, min.y, max.z}, m_color };
+	m_vertices[5] = {{ min.x, max.y, max.z}, m_color };
+	m_vertices[6] = {{ max.x, max.y, max.z}, m_color };
+	m_vertices[7] = {{ max.x, min.y, max.z}, m_color };
 }

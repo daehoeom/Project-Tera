@@ -26,7 +26,7 @@ void IColliseable::Render( )
 {
 	if ( m_isDebugRender )
 	{
-		m_collider->Render( );
+		m_collider->Render( this->GetWorld( ));
 	}
 }
 
