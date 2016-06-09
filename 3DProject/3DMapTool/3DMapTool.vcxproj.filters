@@ -43,17 +43,11 @@
     <Filter Include="hpp\Misc\Utility">
       <UniqueIdentifier>{c51ea835-45b1-44c7-80d5-62aeb05ec5ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Loader">
-      <UniqueIdentifier>{55c651de-cf2a-4427-81ea-e303225747eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="cpp\Loader">
       <UniqueIdentifier>{562af6f0-88f3-42b2-bd23-a93b6986e2c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="cpp\Loader\Obj">
       <UniqueIdentifier>{71255efa-0dc2-463b-8230-9fb767e821f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Loader\Obj">
-      <UniqueIdentifier>{38c03fd2-d70e-4229-975e-96c9da7dee97}</UniqueIdentifier>
     </Filter>
     <Filter Include="hpp\Misc\MtlTex">
       <UniqueIdentifier>{3fc7ec8b-ea1d-448b-9e8e-675c7e4d1ad7}</UniqueIdentifier>
@@ -127,6 +121,12 @@
     <Filter Include="hpp\XML">
       <UniqueIdentifier>{f3b5764e-9fb4-4309-968e-3ad0b6fbfede}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hpp\Loader">
+      <UniqueIdentifier>{55c651de-cf2a-4427-81ea-e303225747eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Loader\Obj">
+      <UniqueIdentifier>{38c03fd2-d70e-4229-975e-96c9da7dee97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -163,10 +163,10 @@
       <Filter>hpp\Window</Filter>
     </ClInclude>
     <ClInclude Include="cObjLoader.h">
-      <Filter>Loader\Obj</Filter>
+      <Filter>hpp\Loader\Obj</Filter>
     </ClInclude>
     <ClInclude Include="cGroup.h">
-      <Filter>Loader\Obj</Filter>
+      <Filter>hpp\Loader\Obj</Filter>
     </ClInclude>
     <ClInclude Include="cMtlTex.h">
       <Filter>hpp\Misc\MtlTex</Filter>
