@@ -2,8 +2,8 @@
 #include "TestScene.h"
 
 
-TestScene::TestScene( 
-	const std::string& xmlPath )
+TestScene::TestScene( const std::string& xmlPath ) :
+	IScene( xmlPath )
 {
 }
 

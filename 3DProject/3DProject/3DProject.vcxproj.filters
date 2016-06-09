@@ -248,6 +248,9 @@
       <Filter>Scene\Interface</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="ObjObject.h">
+      <Filter>Object\Building</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -419,6 +422,9 @@
       <Filter>Scene\Interface</Filter>
     </ClCompile>
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="ObjObject.cpp">
+      <Filter>Object\Building</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

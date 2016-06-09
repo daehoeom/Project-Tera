@@ -39,8 +39,6 @@ enum class CollisionType
 	eNpc,
 };
 
-
-
 class cGameObject
 {
 public:

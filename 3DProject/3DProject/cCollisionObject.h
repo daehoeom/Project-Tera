@@ -7,7 +7,7 @@ class cCollisionObject :
 	public ICollisionDelegate
 {
 public:
-	cCollisionObject( const std::string& objName );
+	explicit cCollisionObject( const std::string& objName );
 	virtual ~cCollisionObject( );
 
 	//Check Collision
