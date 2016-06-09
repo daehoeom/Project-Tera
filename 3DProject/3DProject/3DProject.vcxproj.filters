@@ -225,6 +225,7 @@
     <ClInclude Include="cWeaponMesh.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="Console.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">

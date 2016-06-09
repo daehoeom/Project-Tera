@@ -11,6 +11,7 @@ enum eEnemyState
 	ENEMY_SKILL2 = 6,			//몬스터 스킬2
 	ENEMY_BACKPOSITION = 7,		//몬스터 되돌아가기
 	ENEMY_CHASE = 8,			//플레이어 쫒아가기
+	ENEMY_NOTHING
 };
 
 enum ePlayerState
@@ -65,10 +66,6 @@ public:
 	void Scale( const D3DXVECTOR3& scale );
 	const D3DXVECTOR3& GetScale( ) const;
 	
-	//Check Collision
-	void SetCollision(bool collision);
-	bool GetCollision( );
-
 	//Hp
 	int GetMaxHp() { return m_nMaxHp; }
 
@@ -104,11 +101,10 @@ private:
 	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
 	bool m_isActive;
-	bool m_bIsCollision;
 	CollisionType	m_sType;
 	int m_nMaxHp;
 	int m_nCurrHp;
-
+	
 	ePlayerState m_sPState;
 	eEnemyState m_sEState;
 };
@@ -153,16 +149,6 @@ inline void cGameObject::Scale( const D3DXVECTOR3& scale )
 	this->UpdateWorld( );
 }
 
-inline void cGameObject::SetCollision(bool collision)
-{
-	m_bIsCollision = collision;
-}
-
-inline bool cGameObject::GetCollision()
-{
-	return m_bIsCollision;
-}
-
 inline void cGameObject::SetCollisionType(CollisionType c)
 {
 	m_sType = c;
@@ -192,7 +178,6 @@ inline eEnemyState cGameObject::GetEnemyState()
 {
 	return m_sEState;
 }
-
 
 inline void cGameObject::SetActive( bool isActive )
 {

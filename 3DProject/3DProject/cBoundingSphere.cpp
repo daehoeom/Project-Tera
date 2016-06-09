@@ -19,7 +19,7 @@ cBoundingSphere::~cBoundingSphere()
 
 void cBoundingSphere::Update()
 {
-	m_matWorld = m_matLocal * m_matWorld;
+	m_matWorld *= m_matLocal;
 	m_vPosition = D3DXVECTOR3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 }
 

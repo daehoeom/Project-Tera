@@ -46,5 +46,5 @@ private:
 	bool			m_bIsAction;
 	bool			m_bAlive;
 	bool			m_bPushBehind;
-	int				n;
+	float			n;
 };

@@ -116,6 +116,7 @@
     <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="cParticle_Base.h" />
     <ClInclude Include="cParticle_Firework.h" />
     <ClInclude Include="cPixie.h" />

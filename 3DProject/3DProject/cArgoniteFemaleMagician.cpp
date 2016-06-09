@@ -12,7 +12,6 @@ cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 	m_pBody->SetLocal(&matR);
 
 	//무조건 몬스터 생성시 포지션 잡아줘야댐
-	SetPosition(D3DXVECTOR3(-300.f, 0.f, 30.f));
 
 	D3DXMATRIXA16 matT;
 	D3DXMatrixTranslation(&matT, 0, 50, 0);
@@ -48,18 +47,12 @@ void cArgoniteFemaleMagician::Update()
 		this->GetColliderRepo()[i]->SetPosition(vPos);
 	}
 
-	if (GetEnemyState() == ENEMY_RUN || GetEnemyState() == ENEMY_IDLE)
+	if (GetEnemyState() == ENEMY_DEATH)
 	{
-		D3DXMATRIXA16 matLocal;
-		D3DXMatrixIdentity(&matLocal);
-		m_pBody->SetLocal(&matLocal);
-	}
+		SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.23f, GetPosition().z));
 
-	else
-	{
-		D3DXMATRIX matR;
-		D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);
-		m_pBody->SetLocal(&matR);
+		//이동량만큼 월드매트릭스 수정
+		D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z); 
 	}
 }
 

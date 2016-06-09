@@ -97,7 +97,8 @@ void cCollisionManager::Update( )
 
 					else if (!isCollised)
 					{
-						elemOp1.second->OnNotCollision(elemOp2.second);
+						if (elemOp1.second->GetCollision())
+							elemOp1.second->SetCollision(false);
 					}
 				}
 			}

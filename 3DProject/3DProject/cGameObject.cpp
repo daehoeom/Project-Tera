@@ -11,7 +11,6 @@ cGameObject::cGameObject( const std::string& objName ) :
 	m_pos( 0.f, 0.f, 0.f ),
 	m_angle( 0.f, 0.f, 0.f ),
 	m_scale( 1.f, 1.f, 1.f ), 
-	m_bIsCollision(false),
 	m_nMaxHp(1000),
 	m_nCurrHp(1000)
 {

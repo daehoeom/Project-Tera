@@ -7,8 +7,8 @@
 
 cCollisionObject::cCollisionObject(
 	const std::string& objName ) :
-
 	cGameObject( objName )
+	, m_bIsCollision(false)
 {
 	cCollisionManager::Get( )->AddObject( this );
 }
@@ -26,7 +26,6 @@ cCollisionObject::~cCollisionObject( )
 void cCollisionObject::Update( )
 {
 	__super::Update( );
-
 
 	for (auto colliderElem : m_collider)
 	{
@@ -48,12 +47,6 @@ void cCollisionObject::OnCollisionStay(
 	cCollisionObject* rhs )
 {
 	this->SetCollision(true);
-}
-
-void cCollisionObject::OnNotCollision(cCollisionObject* rhs)
-{
-	if (this->GetCollision())
-		this->SetCollision(false);
 }
 
 void cCollisionObject::SetCollider( ICollider* collider )

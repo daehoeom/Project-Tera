@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "cEnemy.h"
 #include "cEnemySkinMesh.h"
-
+#include "Console.h"
 
 cEnemy::cEnemy()
 	:cCollisionObject("monster")
@@ -13,6 +13,7 @@ cEnemy::cEnemy()
 	, m_vOrigin(0, 0, 0)
 	, m_vDirection(1, 0, 0)
 {
+	SetCurrHp(50);
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 
@@ -33,20 +34,36 @@ void cEnemy::Update()
 
 	//몬스터가 움직일 수 있는 일정 범위
 	float Length = D3DXVec3Length(&(GetPosition() - m_vOrigin));
-
 	//몬스터와 플레이어의 사이 거리 
 	float Distance = D3DXVec3Length(&(GetPosition() - g_player->GetPosition()));
 
+	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+	m_pBody->SetAnimationIndex(++n);
+	}*/
+
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		this->SetCurrHp(50);
+		SetEnemyState(ENEMY_IDLE);
+		this->SetActive(true);
+		m_bIsAction = true;
+		m_fPassTime = 0.f;
+		m_fPeriod = 0.f;
+	}
+
 	//몬스터의 HP가 0인데 아직 죽음 처리가 안되었다면
-	if (GetCurrHp() < 0.f && !this->IsActive())
+	if (GetCurrHp() < 0.f && this->IsActive())
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_DEATH)
 		{
-			SetEnemyState(ENEMY_DEATH);
-
 			//실행 중인 행동을 중지하고 현재상태의 행동을 할 것
 			m_bIsAction = false;
+
+			//모든 죽음 처리가 다 끝났으므로 살아있다는 것을 false 시킨다.
+			this->SetActive(false);
+			SetEnemyState(ENEMY_DEATH);
 		}
 	}
 
@@ -63,21 +80,8 @@ void cEnemy::Update()
 		}
 	}
 
-	//만약 몬스터의 상태가 되돌아가기가 아니라면 플레이어 쫒기
-	else if (abs(Distance) < 100.f && this->IsActive() && GetEnemyState() != ENEMY_BACKPOSITION)
-	{
-		//해당 이벤트가 실행 중이 아님
-		if (GetEnemyState() != ENEMY_CHASE && GetEnemyState() != ENEMY_ATTACK)
-		{
-			SetEnemyState(ENEMY_CHASE);
-
-			//실행 중인 행동을 중지하고 현재상태의 행동을 할 것
-			m_bIsAction = false;
-		}
-	}
-
 	//몬스터가 일정 범위를 넘어가면 다시 되돌아 올 것
-	else if (abs(Length) > 300.f && this->IsActive())
+	else if (abs(Length) > 600.f && this->IsActive())
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_BACKPOSITION && GetEnemyState() != ENEMY_CHASE &&
@@ -90,21 +94,18 @@ void cEnemy::Update()
 		}
 	}
 
-	//뭔지 모르겟음;;
-	//if (GetEnemyState() == ENEMY_RUN || GetEnemyState() == ENEMY_IDLE)
-	//{
-	//	D3DXMATRIXA16 matLocal;
-	//	D3DXMatrixIdentity(&matLocal);
-	//	m_pBody->SetLocal(&matLocal);
-	//}
+	//만약 몬스터의 상태가 되돌아가기가 아니라면 플레이어 쫒기
+	else if (abs(Distance) < 300.f && this->IsActive() && GetEnemyState() != ENEMY_BACKPOSITION)
+	{
+		//해당 이벤트가 실행 중이 아님
+		if (GetEnemyState() != ENEMY_CHASE && GetEnemyState() != ENEMY_ATTACK)
+		{
+			SetEnemyState(ENEMY_CHASE);
 
-	//else
-	//{
-	//	D3DXMATRIX matR;
-	//	D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);
-	//	m_pBody->SetLocal(&matR);
-	//}
-
+			//실행 중인 행동을 중지하고 현재상태의 행동을 할 것
+			m_bIsAction = false;
+		}
+	}
 
 	ActionState();
 
@@ -152,20 +153,21 @@ void cEnemy::ActionState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime();
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 	}
-
 	break;
+
 	case ENEMY_DEATH:
 	{
 		//이 행동에 대한 메시지를 방금 받았으면
 		if (!m_bIsAction)
 		{
-			m_pBody->SetAnimationIndex(ENEMY_DEATH);
 			m_bIsAction = true;
-			m_fPeriod = m_pBody->GetAniTrackPeriod(3) - 0.25f;
+			m_pBody->SetAnimationIndex(ENEMY_DEATH);
+			m_fPassTime = 0.f;
+			m_fPeriod = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 1.7f;
 		}
 
 		if (m_bIsAction)
@@ -176,14 +178,13 @@ void cEnemy::ActionState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetEnemyState(ENEMY_DEATHWAIT);
-
-				//모든 죽음 처리가 다 끝났으므로 살아있다는 것을 false 시킨다.
-				this->SetActive(false);
 			}
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime();
+				Log(m_fPassTime);
+				Log("\n");
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 	}
@@ -196,7 +197,7 @@ void cEnemy::ActionState()
 		{
 			m_pBody->SetAnimationIndex(ENEMY_DEATHWAIT);
 			m_bIsAction = true;
-			m_fPeriod = 3.f;
+			m_fPeriod = m_pBody->GetAniTrackPeriod(ENEMY_DEATHWAIT);
 		}
 
 		if (m_bIsAction)
@@ -206,12 +207,12 @@ void cEnemy::ActionState()
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
-				SetEnemyState(ENEMY_DEATHWAIT);
+				SetEnemyState(ENEMY_NOTHING);
 			}
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime();
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 	}
@@ -227,6 +228,7 @@ void cEnemy::ActionState()
 			//달리기 모션으로 바꾸어 준다.
 			m_bIsAction = true;
 			m_pBody->SetAnimationIndex(ENEMY_RUN);
+			int a = 0;
 		}
 
 		if (m_bIsAction)
@@ -251,10 +253,7 @@ void cEnemy::ActionState()
 					&-D3DXVECTOR3(m_vDirection.x, m_vDirection.y, m_vDirection.z),
 					&D3DXVECTOR3(0, 1, 0));
 
-
 				D3DXMatrixTranspose(&matR, &matR);
-
-				//D3DXMatrixTranspose(&matR, &matR);
 
 				m_matWorld = matR * Move();
 			}
@@ -274,6 +273,7 @@ void cEnemy::ActionState()
 			m_pBody->SetAnimationIndex(ENEMY_RUN);
 			m_bIsAction = true;
 			m_fAngle = RotateAngle();
+			int a = 0;
 		}
 
 		if (m_bIsAction)
@@ -289,7 +289,7 @@ void cEnemy::ActionState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime();
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 				m_matWorld = Rotate() * Move();
 			}
 		}
@@ -328,7 +328,7 @@ void cEnemy::ActionState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime();
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 	}
@@ -346,10 +346,13 @@ void cEnemy::ActionState()
 		{
 			m_bIsAction = true;
 			m_pBody->SetAnimationIndex(ENEMY_RUN);
+			int a = 0;
 		}
 
 		if (m_bIsAction)
 		{
+			float Length = D3DXVec3Length(&(GetPosition() - m_vOrigin));
+			
 			//플레이어와 멀어졌다면 계속 따라갈 것
 			D3DXMATRIX matR, matTemp;
 
@@ -368,6 +371,12 @@ void cEnemy::ActionState()
 			matR *= matTemp;*/
 
 			m_matWorld = matR * Move();
+			
+			//일정 범위를 넘어섰거나, 플레이어와 충분히 거리가 벌려졌다면
+			if (abs(Length) > 600.f || abs(Distance) > 300.f)
+			{
+				SetEnemyState(ENEMY_BACKPOSITION);
+			}
 		}
 	}
 	break;

@@ -7,6 +7,7 @@
 #include "cWeaponMesh.h"
 #include "cBoundingSphere.h"
 #include "cBoundingBox.h"
+#include "Console.h"
 
 cPlayer::cPlayer( ) :
 	cCollisionObject( "Player" )
@@ -55,10 +56,9 @@ cPlayer::cPlayer( ) :
 	this->GetColliderRepo()[0]->SetPosition(vPos);
 
 	//무기 충돌체
-	this->SetCollider(new cBoundingBox(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(10, 90, 10)));
-	this->GetColliderRepo()[1]->SetLocal(&(D3DXMATRIXA16)m_pBody->GetWeaponHand());
+	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
 	vPos = D3DXVECTOR3(GetPosition().x + matLocal._41, GetPosition().y + matLocal._42, GetPosition().z + matLocal._43);
-	this->GetColliderRepo()[0]->SetPosition(vPos);
+	this->GetColliderRepo()[1]->SetPosition(vPos);
 
 	SetAniTrack(PLAYER_BATTLEIDLE);
 	this->SetCollisionType(CollisionType::ePlayer);
@@ -326,13 +326,18 @@ void cPlayer::OnCollisionStay(cCollisionObject* rhs)
 		this->SetCollision(true);
 	}
 
-	if (rhs->GetCollisionType() == CollisionType::eMonster && !this->GetCollision() && 
-		GetPlayerState() == PLAYER_COMBO1 && GetPlayerState() == PLAYER_COMBO2 && GetPlayerState() == PLAYER_COMBO3 &&
-		GetPlayerState() == PLAYER_COMBO4)
+	if (rhs->GetCollisionType() == CollisionType::eMonster && !this->GetCollision() &&
+		rhs->IsActive())
 	{
-		this->SetCollision(true);
-		rhs->SetCurrHp(rhs->GetCurrHp() - 100);
-		int a = 0;
+		if (GetPlayerState() == PLAYER_COMBO1 || GetPlayerState() == PLAYER_COMBO2 || GetPlayerState() == PLAYER_COMBO3 ||
+			GetPlayerState() == PLAYER_COMBO4)
+		{
+			//Log( "충돌하엿음");
+
+			this->SetCollision(true);
+			rhs->SetCurrHp(rhs->GetCurrHp() - 100);
+			int a = 0;
+		}
 	}
 }
 
@@ -705,15 +710,19 @@ void cPlayer::SetUpdateState( )
 		m_pTail->SetTailTM(&m_pBody->GetTailTM());
 		m_pTail->Update();
 	}
-
+	
 	if (m_pHand)
 	{
 		m_pHand->SetWeapon(&m_pBody->GetWeaponHand());
 		m_pHand->Update();
 	}
 
+	//무기 위치 셋팅하려고 만든거임 건들 ㄴㄴ
+	D3DXMATRIXA16 matLocal;
+	D3DXMatrixTranslation(&matLocal, 1, 45, 0);
+	matLocal *= (D3DXMATRIXA16)m_pBody->GetWeaponHand();
 	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
-	this->GetColliderRepo()[1]->SetWorld(&(D3DXMATRIXA16)m_pBody->GetWeaponHand());
+	this->GetColliderRepo()[1]->SetWorld(&matLocal);
 }
 
 void cPlayer::SetRenderState()
