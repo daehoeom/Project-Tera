@@ -6,7 +6,9 @@ IColliseable::IColliseable(
 	const std::wstring& objName,
 	ICollider* collider ) :
 	IRenderable( objName ),
-	m_collider( collider )
+
+	m_collider( collider ),
+	m_isDebugRender( true )
 {
 }
 
@@ -22,12 +24,10 @@ void IColliseable::Update( )
 
 void IColliseable::Render( )
 {
-#ifdef _DEBUG
 	if ( m_isDebugRender )
 	{
 		m_collider->Render( );
 	}
-#endif
 }
 
 void IColliseable::SetCollider(

@@ -8,7 +8,7 @@ class IColliseable :
 public:
 	explicit IColliseable( const std::wstring& objName,
 		 ICollider* collider = nullptr );
-	virtual ~IColliseable( );
+	virtual ~IColliseable( ) = 0;
 
 	virtual void Update( ) override;
 	virtual void Render( ) override;

@@ -231,9 +231,6 @@
     <ClInclude Include="IPicker.h">
       <Filter>hpp\Object\Picker\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="ICollider.h">
-      <Filter>hpp\Object\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="BoundingBox.h">
       <Filter>hpp\Object\Collider</Filter>
     </ClInclude>
@@ -245,6 +242,9 @@
     </ClInclude>
     <ClInclude Include="TXMLReader.h">
       <Filter>hpp\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollider.h">
+      <Filter>hpp\Object\Collider\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -332,12 +332,6 @@
     <ClCompile Include="IPicker.cpp">
       <Filter>cpp\Object\Picker</Filter>
     </ClCompile>
-    <ClCompile Include="ICollider.cpp">
-      <Filter>cpp\Object\Collider\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingBox.cpp">
-      <Filter>hpp\Object\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="IColliseable.cpp">
       <Filter>cpp\Object\Interface</Filter>
     </ClCompile>
@@ -346,6 +340,9 @@
     </ClCompile>
     <ClCompile Include="TXMLReader.cpp">
       <Filter>cpp\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>cpp\Object\Collider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

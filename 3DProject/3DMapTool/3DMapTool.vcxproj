@@ -203,7 +203,6 @@
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="DirectInput.cpp" />
     <ClCompile Include="HierarchyWindow.cpp" />
-    <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="IO.cpp" />
     <ClCompile Include="IPickable.cpp" />
