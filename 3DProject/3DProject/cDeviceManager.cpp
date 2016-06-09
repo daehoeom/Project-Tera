@@ -65,12 +65,7 @@ cDeviceManager::~cDeviceManager()
 	{
 		ULONG ul = m_pD3DDevice->Release( );
 
-		/*#ifdef _DEBUG*/
 		assert( ul == 0 && "디바이스를 이용하여 생성한 객체 중 소멸되지 않은 객체가 있습니다." );
-		
-
-		/*#endif*/
-
 	}
 }
 

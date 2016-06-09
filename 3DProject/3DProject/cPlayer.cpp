@@ -40,7 +40,7 @@ cPlayer::cPlayer( ) :
 	m_pTail->Setup("CH/Player", "Player_Tail.X");
 
 	m_pHand = new cWeaponMesh;
-	m_pHand->SetWeapon(&m_pBody->GetWeaponBack());
+	m_pHand->SetWeapon(&m_pBody->GetWeaponHand());
 	m_pHand->Setup("CH/Player", "Lance.X");
 
 	//콤보 클래스
@@ -55,6 +55,10 @@ cPlayer::cPlayer( ) :
 	this->GetColliderRepo()[0]->SetPosition(vPos);
 
 	//무기 충돌체
+	this->SetCollider(new cBoundingBox(D3DXVECTOR3(0, 0, 0), D3DXVECTOR3(10, 90, 10)));
+	this->GetColliderRepo()[1]->SetLocal(&(D3DXMATRIXA16)m_pBody->GetWeaponHand());
+	vPos = D3DXVECTOR3(GetPosition().x + matLocal._41, GetPosition().y + matLocal._42, GetPosition().z + matLocal._43);
+	this->GetColliderRepo()[0]->SetPosition(vPos);
 
 	SetAniTrack(PLAYER_BATTLEIDLE);
 	this->SetCollisionType(CollisionType::ePlayer);
@@ -75,7 +79,6 @@ void cPlayer::Update( )
 
 	SetUpdateState();
 
-	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
 	
 	if (this->IsActive())
 	{
@@ -323,7 +326,9 @@ void cPlayer::OnCollisionStay(cCollisionObject* rhs)
 		this->SetCollision(true);
 	}
 
-	if (rhs->GetCollisionType() == CollisionType::eMonster && !this->GetCollision())
+	if (rhs->GetCollisionType() == CollisionType::eMonster && !this->GetCollision() && 
+		GetPlayerState() == PLAYER_COMBO1 && GetPlayerState() == PLAYER_COMBO2 && GetPlayerState() == PLAYER_COMBO3 &&
+		GetPlayerState() == PLAYER_COMBO4)
 	{
 		this->SetCollision(true);
 		rhs->SetCurrHp(rhs->GetCurrHp() - 100);
@@ -706,6 +711,9 @@ void cPlayer::SetUpdateState( )
 		m_pHand->SetWeapon(&m_pBody->GetWeaponHand());
 		m_pHand->Update();
 	}
+
+	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
+	this->GetColliderRepo()[1]->SetWorld(&(D3DXMATRIXA16)m_pBody->GetWeaponHand());
 }
 
 void cPlayer::SetRenderState()
