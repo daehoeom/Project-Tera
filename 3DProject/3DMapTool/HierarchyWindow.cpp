@@ -6,6 +6,7 @@
 #include "cGameObjectManager.h"
 #include "cCamera.h"
 #include "InspectorWindow.h"
+#include "IColliseable.h"
 
 
 HierarchyWindow::HierarchyWindow( HWND parentWndHandle ) :
@@ -30,6 +31,34 @@ INT_PTR CALLBACK ColliderMsgProc(
 	WPARAM wParam,
 	LPARAM lParam )
 {
+	switch ( msg )
+	{
+	case WM_INITDIALOG:
+		{
+			auto* object = static_cast<IColliseable*>(
+				g_hierarchyWnd->GetSelectedItemAsObject( ));
+			if ( object )
+			{
+				object->
+			}
+		}
+		break;
+
+	case WM_COMMAND:
+		switch ( wParam ) 
+		{
+		case IDAABBOK:
+			//pParam->value=GetDlgItemInt(hDlg,IDC_EDINT,NULL,TRUE);
+			//EndDialog(hDlg,IDOK);
+			return TRUE;
+
+		case IDAABBCANCEL:
+			EndDialog( wndHandle, IDCANCEL );
+			return TRUE;
+		}
+		break;
+	}
+
 	return 0;
 }
 
@@ -67,13 +96,13 @@ LRESULT HierarchyWindow::MessageProc(
 
 				case NM_RCLICK:
 					{
-						CreateDialogParam(
-							GetModuleHandle( nullptr ),
-							MAKEINTRESOURCE( IDD_AABB ),
-							this->GetWindowHandle( ),
-							ColliderMsgProc,
-							this->GetSelectedItemIndex()
-						);
+						if ( this->GetSelectedItemIndex( ) != -1 )
+						{
+							DialogBox( GetModuleHandle( nullptr ), 
+								MAKEINTRESOURCE( IDD_AABB ), 
+								wndHandle, 
+								ColliderMsgProc );
+						}
 					}
 					break;
 
