@@ -1,18 +1,31 @@
-#include "StdAfx.h"
+﻿#include "StdAfx.h"
 #include "cObjLoader.h"
 #include "cMtlTex.h"
 #include "cGroup.h"
+#include "cTextureManager.h"
 
-cObjLoader::cObjLoader(void)
+#include "StringUtil.h"
+
+#pragma warning( disable: 4996 )
+
+
+cObjLoader::cObjLoader(void) :
+	m_vMin({ std::numeric_limits<float>::max( )-1,
+		std::numeric_limits<float>::max( )-1,
+		std::numeric_limits<float>::max( )-1}),
+	m_vMax({ std::numeric_limits<float>::min( )+1,
+		std::numeric_limits<float>::min( )+1,
+		std::numeric_limits<float>::min( )+1})
 {
 }
-
 
 cObjLoader::~cObjLoader(void)
 {
 }
 
-void cObjLoader::Load(char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATRIXA16* mat /*= NULL*/)
+void cObjLoader::Load(
+	const char* szFullPath, 
+	std::vector<cGroup*>& vecGroup )
 {
 	std::vector<D3DXVECTOR3> vecV;
 	std::vector<D3DXVECTOR2> vecVT;
@@ -21,53 +34,73 @@ void cObjLoader::Load(char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATR
 	std::string sMtlName;
 
 	FILE* fp = NULL;
-
 	fopen_s(&fp, szFullPath, "r");
-
-	assert(fp != NULL && "������ �����ϴ�.");
-
-	while (true)
+	
+	if ( !fp )
 	{
-		if (feof(fp))
-			break;
+		MessageBox( 
+			GetFocus( ),
+			L"obj 파일이 존재하지 않습니다.",
+			L"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
+		return;
+	}
 
+	auto EndGroupFunc = [&]( )
+	{
+		if ( !vecVertex.empty( ))
+		{
+			cGroup* pGroup = new cGroup;
+			pGroup->SetMtlTex( m_mapMtlTex[sMtlName] );
+			pGroup->SetVertex( vecVertex );
+			vecGroup.push_back( pGroup );
+
+			vecVertex.clear( );
+		}
+	};
+
+	bool isGroupStart = false;
+	while ( !feof( fp ))
+	{
 		char szBuf[1024] = { '\0', };
 		fgets(szBuf, 1024, fp);
 
-		if (strlen(szBuf) == 0)
+		if ( strlen( szBuf ) == 0 )
 			continue;
 
 		//OutputDebugString(szBuf);
-		if (szBuf[0] == '#')
+		
+		if ( szBuf[0] == '#' ||
+			szBuf[0] == '\n' )
 		{
-			continue;
+			// If created a group, end it
+			if ( isGroupStart )
+			{
+				EndGroupFunc( );
+				isGroupStart = false;
+			}
 		}
 		else if (szBuf[0] == 'm')
 		{
-			char szMtlPath[1024];
-			sscanf(szBuf, "%*s %s", szMtlPath);
-			LoadMtlLib(szMtlPath);
+			std::string szMtlPath;
+			szMtlPath.resize( 1024 );
+			sscanf( szBuf, "%*s %s", &szMtlPath[0] );
+
+			szMtlPath = 
+				GetPathWithoutFileName( szFullPath ) +
+				GetFileNameFromPath( szMtlPath );
+
+			LoadMtlLib( szMtlPath.c_str( ) );
 		}
 		else if (szBuf[0] == 'g')
 		{
-			if (vecVertex.empty() == false)
+			if ( isGroupStart )
 			{
-				if (mat)
-				{
-					for (size_t i = 0; i < vecVertex.size(); ++i)
-					{
-						D3DXVec3TransformCoord(&vecVertex[i].p, &vecVertex[i].p, mat);
-						D3DXVec3TransformNormal(&vecVertex[i].n, &vecVertex[i].n, mat);
-					}
-				}
-
-				cGroup* pGroup = new cGroup;
-				pGroup->SetMtlTex(m_mapMtlTex[sMtlName]);
-				pGroup->SetVertex(vecVertex);
-				vecGroup.push_back(pGroup);
-
-				vecVertex.clear();
+				EndGroupFunc( );
+				//isGroupStart = false;
 			}
+			isGroupStart = true;
 		}
 		else if (szBuf[0] == 'v')
 		{
@@ -87,6 +120,15 @@ void cObjLoader::Load(char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATR
 			{
 				float x, y, z;
 				sscanf(szBuf, "%*s %f %f %f", &x, &y, &z);
+
+				m_vMin.x = std::min( m_vMin.x, x );
+				m_vMin.y = std::min( m_vMin.y, y );
+				m_vMin.z = std::min( m_vMin.z, z );
+				
+				m_vMax.x = std::max( m_vMax.x, x );
+				m_vMax.y = std::max( m_vMax.y, y );
+				m_vMax.z = std::max( m_vMax.z, z );
+
 				vecV.push_back(D3DXVECTOR3(x, y, z));
 			}
 		}
@@ -114,7 +156,7 @@ void cObjLoader::Load(char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATR
 		}
 	}
 
-	for each(auto it in m_mapMtlTex)
+	for (auto& it : m_mapMtlTex)
 	{
 		SAFE_RELEASE(it.second);
 	}
@@ -122,11 +164,26 @@ void cObjLoader::Load(char* szFullPath, std::vector<cGroup*>& vecGroup, D3DXMATR
 	fclose(fp);
 }
 
-void cObjLoader::LoadMtlLib(char* szFullPath)
+void cObjLoader::LoadMtlLib(
+	const char* szFullPath)
 {
 	FILE* fp = NULL;
-
 	fopen_s(&fp, szFullPath, "r");
+
+	if ( !fp )
+	{
+		std::string errMsg = 
+			std::string( "알 수 없는 메테리얼 경로가 발견되었습니다. ( " ) +
+			std::string( szFullPath ) + 
+			std::string( " )" );
+
+		MessageBoxA(
+			GetFocus( ),
+			errMsg.c_str( ),
+			"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
+	}
 
 	std::string sMtlName;
 
@@ -154,9 +211,11 @@ void cObjLoader::LoadMtlLib(char* szFullPath)
 			SAFE_RELEASE(m_mapMtlTex[sMtlName]);
 			m_mapMtlTex[sMtlName] = new cMtlTex;
 		}
-		else if (szBuf[0] == 'K')
+		else if (szBuf[0] == 'K' || 
+			szBuf[1] == 'K' )
 		{
-			if (szBuf[1] == 'a')
+			if (szBuf[1] == 'a' ||
+				szBuf[2] == 'a' )
 			{
 				float r, g, b;
 				sscanf(szBuf, "%*s %f %f %f", &r, &g, &b);
@@ -167,7 +226,8 @@ void cObjLoader::LoadMtlLib(char* szFullPath)
 				stMtl.Ambient.b = b;
 				stMtl.Ambient.a = 1.0f;
 			}
-			else if (szBuf[1] == 'd')
+			else if (szBuf[1] == 'd' ||
+				szBuf[2] == 'd' )
 			{
 				float r, g, b;
 				sscanf(szBuf, "%*s %f %f %f", &r, &g, &b);
@@ -178,7 +238,8 @@ void cObjLoader::LoadMtlLib(char* szFullPath)
 				stMtl.Diffuse.b = b;
 				stMtl.Diffuse.a = 1.0f;
 			}
-			else if (szBuf[1] == 's')
+			else if (szBuf[1] == 's' ||
+				szBuf[2] == 's' )
 			{
 				float r, g, b;
 				sscanf(szBuf, "%*s %f %f %f", &r, &g, &b);
@@ -190,15 +251,20 @@ void cObjLoader::LoadMtlLib(char* szFullPath)
 				stMtl.Specular.a = 1.0f;
 			}
 		}
-		else if (szBuf[0] == 'm')
+		else if ( strstr( szBuf, "map_Kd" ))
 		{
-			char szTexPath[1024];
-			sscanf(szBuf, "%*s %s", szTexPath);
+			std::string szTexPath;
+			szTexPath.resize( 1024, '\0' );
+			sscanf( szBuf, "%*s %s", &szTexPath[0] );
+
+			szTexPath =
+				GetPathWithoutFileName( szFullPath ) +
+				GetFileNameFromPath( szTexPath );
 
 			LPDIRECT3DTEXTURE9 pTexture = NULL;
-			pTexture = g_pTextureManager->GetTexture(szTexPath);
+			pTexture = g_pTextureManager->GetTexture( szTexPath );
 
-			m_mapMtlTex[sMtlName]->SetTexture(pTexture);
+			m_mapMtlTex[sMtlName]->SetTexture( pTexture );
 		}
 	}
 
