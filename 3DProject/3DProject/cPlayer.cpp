@@ -174,6 +174,7 @@ void cPlayer::KeyControl()
 		{
 			m_fAngle = m_fAngle - D3DX_PI;
 			m_bPushBehind = true;
+			int a = 0;
 		}
 	}
 
