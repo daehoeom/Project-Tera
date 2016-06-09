@@ -23,6 +23,16 @@ HierarchyWindow::~HierarchyWindow( )
 {
 }
 
+
+INT_PTR CALLBACK ColliderMsgProc(
+	HWND wndHandle,
+	UINT msg,
+	WPARAM wParam,
+	LPARAM lParam )
+{
+	return 0;
+}
+
 LRESULT HierarchyWindow::MessageProc( 
 	HWND wndHandle, 
 	UINT msg, 
@@ -53,6 +63,18 @@ LRESULT HierarchyWindow::MessageProc(
 				{
 				case NM_DBLCLK:
 					this->OnItemDoubleClicked( lpListView );
+					break;
+
+				case NM_RCLICK:
+					{
+						CreateDialogParam(
+							GetModuleHandle( nullptr ),
+							MAKEINTRESOURCE( IDD_AABB ),
+							this->GetWindowHandle( ),
+							ColliderMsgProc,
+							this->GetSelectedItemIndex()
+						);
+					}
 					break;
 
 				case LVN_ITEMCHANGED:

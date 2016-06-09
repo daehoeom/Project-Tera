@@ -12,10 +12,6 @@ BoundingBox::BoundingBox(
 	m_vertices( 8 ),
 	m_indices( 36 )
 {
-	//		111
-	//
-	//-1-1-1
-
 	DWORD color = 0xffffff;
 	const float interval = 0.1f;
 
@@ -50,6 +46,10 @@ BoundingBox::BoundingBox(
 }
 
 BoundingBox::~BoundingBox( )
+{
+}
+
+void BoundingBox::Update( )
 {
 }
 

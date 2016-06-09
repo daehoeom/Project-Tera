@@ -11,6 +11,7 @@ public:
 		const D3DXVECTOR3& max );
 	virtual ~BoundingBox( );
 
+	virtual void Update( ) override;
 	virtual void Render( ) override;
 
 	const D3DXVECTOR3& GetMin( ) const { return m_min; }

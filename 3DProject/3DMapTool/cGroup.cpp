@@ -3,11 +3,11 @@
 #include "cMtlTex.h"
 #include "cDeviceManager.h"
 
+
 cGroup::cGroup(void)
 	: m_pMtlTex(NULL)
 {
 }
-
 
 cGroup::~cGroup(void)
 {
