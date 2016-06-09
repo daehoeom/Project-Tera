@@ -38,6 +38,7 @@ void PickingTile::OnPickStay(
 {
 	if ( g_hierarchyWnd->GetSelectedItemIndex( ) != -1 )
 	{
+		g_wasSomethingChanged = true;
 		auto selectedObject = g_hierarchyWnd->GetSelectedItemAsObject( );
 		selectedObject->Move( pickPos-m_prevPickPos );
 	}

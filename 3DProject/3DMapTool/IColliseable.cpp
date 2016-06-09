@@ -20,6 +20,8 @@ IColliseable::~IColliseable( )
 void IColliseable::Update( )
 {
 	__super::Update( );
+
+	m_collider->Update( this->GetWorld( ));
 }
 
 void IColliseable::Render( )

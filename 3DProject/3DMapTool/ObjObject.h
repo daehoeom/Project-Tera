@@ -7,7 +7,8 @@ class ObjObject :
 {
 public:
 	ObjObject( const std::wstring& name,
-			   const std::string& filePath );
+			   const std::string& filePath,
+			   ICollider* collider = nullptr );
 	virtual ~ObjObject( );
 
 public:

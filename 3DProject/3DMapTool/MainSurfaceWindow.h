@@ -14,7 +14,7 @@ public:
 
 protected:
 	void OnDropFile( HDROP dropHandle );
-	void OnSaveAsClicked( );
+	bool OnSaveAsClicked( );
 	void OnLoadSceneClicked( const char* loadPath = nullptr );
 	void OnNewSceneClicked( );
 
