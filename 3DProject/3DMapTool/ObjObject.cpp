@@ -33,6 +33,8 @@ ObjObject::~ObjObject( )
 
 void ObjObject::Render( )
 {
+	__super::Render( );
+
 	g_pD3DDevice->SetTransform( D3DTS_WORLD, &this->GetWorld( ));
 
 	for ( auto& p : m_vecGroup )

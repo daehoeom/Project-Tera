@@ -6,16 +6,12 @@ class BoundingBox :
 	public ICollider
 {
 public:
-	BoundingBox( 
-		const D3DXVECTOR3& min, 
-		const D3DXVECTOR3& max ) :
-		m_min( min ),
-		m_max( max ) {}
-	virtual ~BoundingBox( ) {}
+	BoundingBox(
+		const D3DXVECTOR3& min,
+		const D3DXVECTOR3& max );
+	virtual ~BoundingBox( );
 
-#ifdef _DEBUG
 	virtual void Render( ) override;
-#endif
 
 	const D3DXVECTOR3& GetMin( ) const { return m_min; }
 	const D3DXVECTOR3& GetMax( ) const { return m_max; }
@@ -23,4 +19,6 @@ public:
 private:
 	D3DXVECTOR3 m_min;
 	D3DXVECTOR3 m_max;
+	std::vector<ST_PC_VERTEX> m_vertices;
+	std::vector<DWORD> m_indices;
 };
