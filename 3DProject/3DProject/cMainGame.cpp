@@ -8,7 +8,7 @@
 #include "cObjLoader.h"
 #include "cGroup.h"
 #include "cNpcManager.h"
-#include "cGiantStone.h"
+#include "cArgoniteFemaleMagician.h"
 
 cPlayer* g_player = nullptr;
 
@@ -26,7 +26,7 @@ cMainGame::cMainGame( )
 	m_pGrid = new cGrid;
 	g_player = new cPlayer;
 
-	//m_pMonster = new cGiantStone;
+	m_pMonster = new cArgoniteFemaleMagician;
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);

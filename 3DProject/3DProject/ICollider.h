@@ -27,6 +27,7 @@ public:
 	virtual void Render( ) = 0; // Debug renderer
 	virtual void PostRender( );
 
+	//바운딩 구 포지션
 	virtual void SetPosition(const D3DXVECTOR3& pos) = 0;
 	virtual D3DXVECTOR3& GetPosition() = 0;
 	virtual const D3DXVECTOR3& GetPosition() const = 0;

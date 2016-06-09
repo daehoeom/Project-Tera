@@ -35,9 +35,7 @@ protected:
 	float				m_fAngle;
 	float				m_fPeriod;
 	float				m_fPassTime;
-
 	bool				m_bIsAction;
-	bool				m_bAlive;
 
 	int					n;
 };

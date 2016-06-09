@@ -16,14 +16,11 @@ public:
 public:
 	virtual eColliderType GetColliderType( ) const;
 
-	D3DXVECTOR3 GetMinimum() const 
-	{
-		return m_vMin; 
-	}
-	D3DXVECTOR3 GetMaximum() const 
-	{ 
-		return m_vMax;
-	}
+	D3DXVECTOR3 GetMinimum() const  { return m_vMin; }
+	void SetMinumum(D3DXVECTOR3& vMin) { m_vMin = vMin; }
+
+	D3DXVECTOR3 GetMaximum() const { return m_vMax; }
+	void SetMaximum(D3DXVECTOR3& vMax) { m_vMax = vMax; }
 
 	D3DXMATRIXA16 GetLocal() { return m_matLocalTM; }
 	void SetLocal(D3DXMATRIXA16* local) { m_matLocalTM = *local; }

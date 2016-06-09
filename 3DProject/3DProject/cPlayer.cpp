@@ -6,6 +6,7 @@
 #include "cTail.h"
 #include "cWeaponMesh.h"
 #include "cBoundingSphere.h"
+#include "cBoundingBox.h"
 
 cPlayer::cPlayer( ) :
 	cCollisionObject( "Player" )
@@ -42,17 +43,21 @@ cPlayer::cPlayer( ) :
 	m_pHand->SetWeapon(&m_pBody->GetWeaponBack());
 	m_pHand->Setup("CH/Player", "Lance.X");
 
+	//콤보 클래스
 	m_pCombo = new cCommandCombo;
 
+	//몸통 충돌체
 	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f));
-
-	SetAniTrack(PLAYER_BATTLEIDLE);
-	//SetAniTrack(n);
-	this->SetCollisionType(CollisionType::ePlayer);
-
 	D3DXMATRIXA16 matLocal;
 	D3DXMatrixTranslation(&matLocal, 0, 15, 0);
 	this->GetColliderRepo()[0]->SetLocal(&matLocal);
+	D3DXVECTOR3 vPos(GetPosition().x + matLocal._41, GetPosition().y + matLocal._42, GetPosition().z + matLocal._43);
+	this->GetColliderRepo()[0]->SetPosition(vPos);
+
+	//무기 충돌체
+
+	SetAniTrack(PLAYER_BATTLEIDLE);
+	this->SetCollisionType(CollisionType::ePlayer);
 }
 
 cPlayer::~cPlayer( )
@@ -72,19 +77,20 @@ void cPlayer::Update( )
 
 	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
 	
-	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	if (this->IsActive())
 	{
-		SetAniTrack(++n);
-		int q = 0;
-	}*/
-
-	KeyControl();
-
+		KeyControl();
+	}
 
 	SetFSMState();
 
 	m_pCombo->Update();
 
+	if (this->GetCurrHp() <= 0 && this->IsActive() && GetPlayerState() != PLAYER_DEATH)
+	{
+		m_bIsAction = false;
+		SetPlayerState(PLAYER_DEATH);
+	}
 }
 
 void cPlayer::Render( )
@@ -122,10 +128,8 @@ void cPlayer::KeyControl()
 
 		//우선순위가 높은 행동일 땐 행동변경 불가
 		if (GetPlayerState() == PLAYER_TUMBLING || GetPlayerState() == PLAYER_SKILL1 || GetPlayerState() == PLAYER_SKILL2 ||
-			GetPlayerState() == PLAYER_SKILL3 || GetPlayerState() == PLAYER_SKILL4 || GetPlayerState() == PLAYER_COMBO1End ||
-			GetPlayerState() == PLAYER_COMBO1 || GetPlayerState() == PLAYER_COMBO2End || GetPlayerState() == PLAYER_COMBO2 ||
-			GetPlayerState() == PLAYER_COMBO3End || GetPlayerState() == PLAYER_COMBO3 || GetPlayerState() == PLAYER_COMBO4End ||
-			GetPlayerState() == PLAYER_COMBO4)
+			GetPlayerState() == PLAYER_SKILL3 || GetPlayerState() == PLAYER_SKILL4 || GetPlayerState() == PLAYER_COMBO1 ||
+			GetPlayerState() == PLAYER_COMBO2 || GetPlayerState() == PLAYER_COMBO3 || GetPlayerState() == PLAYER_COMBO4)
 		{
 			m_bIsAction = true;
 		}
@@ -153,10 +157,8 @@ void cPlayer::KeyControl()
 
 		//우선순위가 높은 행동일 땐 행동변경 불가
 		if (GetPlayerState() == PLAYER_TUMBLING || GetPlayerState() == PLAYER_SKILL1 || GetPlayerState() == PLAYER_SKILL2 ||
-			GetPlayerState() == PLAYER_SKILL3 || GetPlayerState() == PLAYER_SKILL4 || GetPlayerState() == PLAYER_COMBO1End ||
-			GetPlayerState() == PLAYER_COMBO1 || GetPlayerState() == PLAYER_COMBO2End || GetPlayerState() == PLAYER_COMBO2 ||
-			GetPlayerState() == PLAYER_COMBO3End || GetPlayerState() == PLAYER_COMBO3 || GetPlayerState() == PLAYER_COMBO4End ||
-			GetPlayerState() == PLAYER_COMBO4)
+			GetPlayerState() == PLAYER_SKILL3 || GetPlayerState() == PLAYER_SKILL4 || GetPlayerState() == PLAYER_COMBO1 || 
+			GetPlayerState() == PLAYER_COMBO2 || GetPlayerState() == PLAYER_COMBO3 || GetPlayerState() == PLAYER_COMBO4)
 		{
 			m_bIsAction = true;
 		}
@@ -164,13 +166,13 @@ void cPlayer::KeyControl()
 		else 
 		{
 			SetPlayerState(PLAYER_RUN);
-			SetPosition(GetPosition() - m_vDirection * m_fSpeed);
+			SetPosition(GetPosition() + m_vDirection * m_fSpeed);
 		}
 
 		//방향키 뒤를 눌렀을 때 한번만 뒤를 볼 것
 		if (!m_bPushBehind)
 		{
-			m_fAngle = -m_fAngle;
+			m_fAngle = m_fAngle - D3DX_PI;
 			m_bPushBehind = true;
 		}
 	}
@@ -193,10 +195,8 @@ void cPlayer::KeyControl()
 				m_bIsAction = false;
 		}
 
-		if (GetPlayerState() != PLAYER_COMBO1    || GetPlayerState() != PLAYER_COMBO2    ||
-			GetPlayerState() != PLAYER_COMBO3    || GetPlayerState() != PLAYER_COMBO4    || 
-			GetPlayerState() != PLAYER_COMBO1End || GetPlayerState() != PLAYER_COMBO2End ||
-			GetPlayerState() != PLAYER_COMBO3End || GetPlayerState() != PLAYER_COMBO4End)
+		if (GetPlayerState() != PLAYER_COMBO1 || GetPlayerState() != PLAYER_COMBO2 ||
+			GetPlayerState() != PLAYER_COMBO3 || GetPlayerState() != PLAYER_COMBO4)
 		{
 			SetPlayerState(PLAYER_COMBO1);
 		}
@@ -345,13 +345,16 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
+			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 	}
@@ -368,13 +371,16 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
+			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 	}
@@ -385,13 +391,11 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO1);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1) + 0.27f;
 		}
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
@@ -401,29 +405,12 @@ void cPlayer::SetFSMState()
 					SetPlayerState(PLAYER_COMBO2);
 
 				else if (m_pCombo->GetCommand().size() <= 1)
-					SetPlayerState(PLAYER_COMBO1End);
+					SetPlayerState(PLAYER_BATTLEIDLE);
 			}
-		}
-		break;
 
-	case PLAYER_COMBO1End:
-		if (!m_bIsAction)
-		{
-			m_bIsAction = true;
-			SetAniTrack(PLAYER_COMBO1End);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1End);
-		}
-
-		else if (m_bIsAction)
-		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
-			if (m_fPassTime > m_fPeriod)
+			else if (m_fPassTime < m_fPeriod)
 			{
-				m_bIsAction = false;
-				m_fPassTime = 0.f;
-				m_fPeriod = 0.f;
-				SetPlayerState(PLAYER_BATTLEIDLE);
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 		break;
@@ -433,63 +420,41 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO2);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2) + 0.35f;
 		}
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
+
 				if (m_pCombo->GetCommand().size() > 2)
 					SetPlayerState(PLAYER_COMBO3);
 
 				else if (m_pCombo->GetCommand().size() <= 2)
-					SetPlayerState(PLAYER_COMBO2End);
+					SetPlayerState(PLAYER_BATTLEIDLE);
 			}
-		}
-		break;
 
-	case PLAYER_COMBO2End:
-		if (!m_bIsAction)
-		{
-			m_bIsAction = true;
-			SetAniTrack(PLAYER_COMBO2End);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2End);
-		}
-
-		else if (m_bIsAction)
-		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
-			if (m_fPassTime > m_fPeriod)
+			else if (m_fPassTime < m_fPeriod)
 			{
-				m_bIsAction = false;
-				m_fPassTime = 0.f;
-				m_fPeriod = 0.f;
-				SetPlayerState(PLAYER_BATTLEIDLE);
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 		break;
-
-	
 
 	case PLAYER_COMBO3:
 		if (!m_bIsAction)
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO3);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3) + 0.19f;
 		}
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
@@ -498,54 +463,13 @@ void cPlayer::SetFSMState()
 				if (m_pCombo->GetCommand().size() > 3)
 					SetPlayerState(PLAYER_COMBO4);
 
-				else if (m_pCombo->GetCommand().size() <= 3)
-					SetPlayerState(PLAYER_COMBO3End);
+				if (m_pCombo->GetCommand().size() <= 3)
+					SetPlayerState(PLAYER_BATTLEIDLE);
 			}
-		}
-		break;
 
-	case PLAYER_COMBO3End:
-		if (!m_bIsAction)
-		{
-			m_bIsAction = true;
-			SetAniTrack(PLAYER_COMBO3End);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3End);
-		}
-
-		else if (m_bIsAction)
-		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
-			if (m_fPassTime > m_fPeriod)
+			else if (m_fPassTime < m_fPeriod)
 			{
-				m_bIsAction = false;
-				m_fPassTime = 0.f;
-				m_fPeriod = 0.f;
-				SetPlayerState(PLAYER_BATTLEIDLE);
-			}
-		}
-		break;
-
-	
-
-	case PLAYER_COMBO4End:
-		if (!m_bIsAction)
-		{
-			m_bIsAction = true;
-			SetAniTrack(PLAYER_COMBO4End);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4End);
-		}
-
-		else if (m_bIsAction)
-		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
-			if (m_fPassTime > m_fPeriod)
-			{
-				m_bIsAction = false;
-				m_fPassTime = 0.f;
-				m_fPeriod = 0.f;
-				SetPlayerState(PLAYER_BATTLEIDLE);
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 		break;
@@ -555,19 +479,22 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO4);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4) + 0.19f;
 		}
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
-				SetPlayerState(PLAYER_COMBO4End);
+				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 		break;
@@ -582,8 +509,6 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime < m_fPeriod - 0.75f)
 			{
 				SetPosition(GetPosition() + m_vDirection * (m_fPeriod - 1));
@@ -595,6 +520,11 @@ void cPlayer::SetFSMState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 		break;
@@ -610,8 +540,6 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime < m_fPeriod - 1.0f)
 			{
 				SetPosition(GetPosition() + m_vDirection * (m_fPeriod - 1.f));
@@ -623,6 +551,11 @@ void cPlayer::SetFSMState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 		break;
@@ -638,14 +571,17 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 		break;
@@ -661,14 +597,17 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetPlayerState(PLAYER_BATTLEIDLE);
+			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}
 		break;
@@ -684,8 +623,6 @@ void cPlayer::SetFSMState()
 
 		else if (m_bIsAction)
 		{
-			m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
-
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
@@ -693,6 +630,47 @@ void cPlayer::SetFSMState()
 				m_fPeriod = 0.f;
 				SetPlayerState(PLAYER_BATTLEIDLE);
 			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+			}
+		}
+		break;
+
+	case PLAYER_DEATH:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_DEATH);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATH) - 0.2f;
+		}
+
+		else if (m_bIsAction)
+		{
+			if (m_fPassTime > m_fPeriod)
+			{
+				m_bIsAction = false;
+				m_fPassTime = 0.f;
+				m_fPeriod = 0.f;
+				SetPlayerState(PLAYER_DEATHWAIT);
+				this->SetActive(false);
+			}
+
+			else if (m_fPassTime < m_fPeriod)
+			{
+				SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.08f, GetPosition().z));
+				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+			}
+		}
+		break;
+
+	case PLAYER_DEATHWAIT:
+		if (!m_bIsAction)
+		{
+			m_bIsAction = true;
+			SetAniTrack(PLAYER_DEATHWAIT);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATHWAIT);
 		}
 		break;
 	}
