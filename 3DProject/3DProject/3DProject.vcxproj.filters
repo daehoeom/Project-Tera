@@ -55,6 +55,15 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{8707ce46-649e-4380-8b3d-7ecdd8a83b1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{b3c545b3-094a-4b55-be28-9324fddeb129}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{ec31ea00-989e-40a6-970d-3af70c868b17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Interface">
+      <UniqueIdentifier>{61ea6d0d-c4a5-4e3b-b9d1-103a4c4d8bd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -226,6 +235,18 @@
       <Filter>Misc\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Console.h" />
+    <ClInclude Include="TXMLReader.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="cSceneManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="IScene.h">
+      <Filter>Scene\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -383,6 +404,18 @@
     </ClCompile>
     <ClCompile Include="cCommandCombo.cpp">
       <Filter>Misc\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="TXMLReader.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="cSceneManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="IScene.cpp">
+      <Filter>Scene\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

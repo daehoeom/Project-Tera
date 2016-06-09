@@ -132,11 +132,15 @@
     <ClInclude Include="cWeaponMesh.h" />
     <ClInclude Include="ICollider.h" />
     <ClInclude Include="cGameObjectManager.h" />
+    <ClInclude Include="IScene.h" />
     <ClInclude Include="IState.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="cSceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="TXMLReader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DProject.cpp" />
@@ -189,11 +193,15 @@
     <ClCompile Include="cWeaponMesh.cpp" />
     <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="cGameObjectManager.cpp" />
+    <ClCompile Include="IScene.cpp" />
     <ClCompile Include="IState.cpp" />
+    <ClCompile Include="cSceneManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="tinyxml2.cpp" />
+    <ClCompile Include="TXMLReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc" />
