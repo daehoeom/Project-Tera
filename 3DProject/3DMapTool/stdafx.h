@@ -94,6 +94,9 @@ extern std::unique_ptr<MainSurfaceWindow> g_mainSurfaceWnd;
 extern std::unique_ptr<InspectorWindow> g_inspectorWnd;
 extern std::unique_ptr<HierarchyWindow> g_hierarchyWnd;
 
+extern bool g_wasSomethingChanged;
+
+
 struct ST_SPHERE
 {
 	D3DXVECTOR3 position;

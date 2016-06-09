@@ -7,19 +7,31 @@
 #include "cObjLoader.h"
 #include "cGroup.h"
 
+
 ObjObject::ObjObject( 
-	const std::wstring& name,
-	const std::string& filePath ) :
+	const std::wstring& name, 
+	const std::string& filePath, 
+	ICollider* collider ) :
 	IColliseable( name )
 {
 	cObjLoader objLoader;
 	objLoader.Load( filePath.c_str(), m_vecGroup );
 	
 	this->SetModelPath( filePath );
-	this->SetCollider( new BoundingBox( 
-		objLoader.GetMinVector( ),
-		objLoader.GetMaxVector( ))
-	);
+
+	// Using Custom collider
+	if ( collider )
+	{
+		this->SetCollider( collider );
+	}
+	// Or ( automatically created collider )
+	else
+	{
+		this->SetCollider( new BoundingBox( 
+			objLoader.GetMinVector( ),
+			objLoader.GetMaxVector( ))
+		);
+	}
 }
 
 ObjObject::~ObjObject( )
@@ -45,4 +57,5 @@ void ObjObject::Render( )
 
 void ObjObject::Update( )
 {
+	__super::Update( );
 }

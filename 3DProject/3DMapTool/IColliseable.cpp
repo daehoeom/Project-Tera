@@ -20,13 +20,15 @@ IColliseable::~IColliseable( )
 void IColliseable::Update( )
 {
 	__super::Update( );
+
+	m_collider->Update( this->GetWorld( ));
 }
 
 void IColliseable::Render( )
 {
 	if ( m_isDebugRender )
 	{
-		m_collider->Render( this->GetWorld( ));
+		m_collider->Render( );
 	}
 }
 

@@ -90,7 +90,8 @@ INT_PTR CALLBACK ColliderMsgProc(
 				vMax.z = _wtof( buf );
 
 				boundingBox->SetMinMax( vMin, vMax );
-
+				
+				g_wasSomethingChanged = true;
 				EndDialog( wndHandle, IDAABBOK );
 			}
 			return TRUE;
@@ -146,10 +147,12 @@ LRESULT HierarchyWindow::MessageProc(
 							object->GetIdenfier( ) != ObjectIdenfier::kLight &&
 							object->GetIdenfier( ) != ObjectIdenfier::kPickTile )
 						{
-							DialogBox( GetModuleHandle( nullptr ), 
+							DialogBoxParam( GetModuleHandle( nullptr ), 
 								MAKEINTRESOURCE( IDD_AABB ), 
-								wndHandle, 
-								ColliderMsgProc );
+								nullptr, 
+								ColliderMsgProc,
+								0
+							);
 						}
 					}
 					break;
@@ -196,6 +199,7 @@ LRESULT HierarchyWindow::MessageProc(
 									return FALSE;
 								}
 
+								g_wasSomethingChanged = true;
 								cGameObjectManager::Get( )->EraseObject( 
 									currGameObj->GetName( ));
 								currGameObj->SetName( convToItemText );
@@ -330,6 +334,7 @@ void HierarchyWindow::OnItemKeyDown(
 						break;
 					}
 
+					g_wasSomethingChanged = true;
 					cGameObjectManager::Get( )->DeleteObject( selectedObjName );
 					ListView_DeleteItem( m_listHandle, selectedItemIndex );
 				}

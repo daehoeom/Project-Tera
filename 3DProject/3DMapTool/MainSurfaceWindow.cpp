@@ -127,6 +127,22 @@ LRESULT MainSurfaceWindow::MessageProc(
 		this->OnDropFile( reinterpret_cast<HDROP>( wParam ));
 		break;
 
+	case WM_CLOSE:
+		if ( g_wasSomethingChanged )
+		{
+			if ( MessageBox( this->GetWindowHandle( ),
+				L"변경된 내용이 있습니다. 저장하시겠습니까?",
+				L"WARNING!",
+				MB_YESNO ) == IDYES )
+			{
+				if ( !this->OnSaveAsClicked( ) )
+				{
+					return 0;
+				}
+			}
+		}
+		break;
+
 	case WM_COMMAND:
 		{
 			int wmId = LOWORD(wParam);
@@ -235,12 +251,13 @@ void MainSurfaceWindow::OnDropFile(
 
 	if ( newObject )
 	{
+		g_wasSomethingChanged = true;
 		newObject->SetPosition( pickPos );
 		cGameObjectManager::Get( )->AddObject( newObject );
 	}
 }
 
-void MainSurfaceWindow::OnSaveAsClicked( )
+bool MainSurfaceWindow::OnSaveAsClicked( )
 {
 	OPENFILENAMEA ofn{ 0 };
 	char openFileName[MAX_PATH]{ 0 };
@@ -252,7 +269,10 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 	ofn.nMaxFile = MAX_PATH;
 	ofn.lpstrDefExt = "xml";
 
-	GetSaveFileNameA( &ofn );
+	if ( GetSaveFileNameA( &ofn ) == 0 )
+	{
+		return false;
+	}
 
 	std::wofstream ofs( openFileName );
 	ofs << "<?xml version=""\"1.0""\" encoding=""\"UTF-8""\"?>\n";
@@ -311,28 +331,6 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 			ofs << buf;
 		}
 
-		// Bounding Box
-		if ( iter->second->GetIdenfier( ) == ObjectIdenfier::kObj )
-		{
-			auto* objObject = static_cast<ObjObject*>( iter->second );
-			auto* boundingBox = static_cast<BoundingBox*>( 
-				objObject->GetCollider( ));
-
-			sprintf_s( buf,
-				"	<BoundingBox\n\
-		minX=""\"%f\" minY=""\"%f\" minZ=""\"%f\"\n\
-		maxX=""\"%f\" maxY=""\"%f\" maxZ=""\"%f\">\n\
-	</BoundingBox>\n",
-				boundingBox->GetMin( ).x,
-				boundingBox->GetMin( ).y,
-				boundingBox->GetMin( ).z,
-				boundingBox->GetMax( ).x,
-				boundingBox->GetMax( ).y,
-				boundingBox->GetMax( ).z
-			);
-			ofs << buf;
-		}
-
 		// Position
 		sprintf_s( buf, 
 			"	<Position x=""\"%f\" y=""\"%f\" z=""\"%f\"></Position>\n",
@@ -360,9 +358,29 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 		);
 		ofs << buf;
 
+		// Bounding Box
+		if ( iter->second->GetIdenfier( ) == ObjectIdenfier::kObj )
+		{
+			auto* objObject = static_cast<ObjObject*>( iter->second );
+			auto* boundingBox = static_cast<BoundingBox*>( 
+				objObject->GetCollider( ));
+			
+			sprintf_s( buf,
+				"	<BoundingBox\n\
+		minX=""\"%f\" minY=""\"%f\" minZ=""\"%f\"\n\
+		maxX=""\"%f\" maxY=""\"%f\" maxZ=""\"%f\">\n\
+	</BoundingBox>\n",
+				boundingBox->GetMin( ).x,
+				boundingBox->GetMin( ).y,
+				boundingBox->GetMin( ).z,
+				boundingBox->GetMax( ).x,
+				boundingBox->GetMax( ).y,
+				boundingBox->GetMax( ).z
+			);
+			ofs << buf;
+		}
 
 		ofs << "	<End></End>\n";
-
 
 		std::wcstombs( buf,
 			iter->second->GetName( ).c_str( ), 256 );
@@ -372,11 +390,29 @@ void MainSurfaceWindow::OnSaveAsClicked( )
 	}
 
 	ofs.close( );
+	g_wasSomethingChanged = false;
+
+	return true;
 }
 
 void MainSurfaceWindow::OnLoadSceneClicked(
 	const char* loadPath )
 {
+	if ( g_wasSomethingChanged )
+	{
+		if ( MessageBox( this->GetWindowHandle( ),
+				L"변경된 내용이 있습니다. 저장하시겠습니까?",
+				L"WARNING!",
+				MB_YESNO ) == IDYES )
+		{
+			// If Saving ㄹcanceled, escape this function
+			if ( !this->OnSaveAsClicked( ))
+			{
+				return;
+			}
+		}
+	}
+
 	OPENFILENAMEA ofn{ 0 };
 	char openFileName[MAX_PATH] {0};
 	if ( !loadPath )
@@ -393,14 +429,16 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 		}
 	}
 
+	// Delete all of object
 	this->OnNewSceneClicked( );
 
+	// Begin reading XML
 	std::unique_ptr<tgon::TXMLReader> xmlReader;
 	if ( loadPath )
 	{
 		xmlReader.reset( new tgon::TXMLReader( loadPath ));
 	}
-	else // OFN
+	else
 	{
 		xmlReader.reset( new tgon::TXMLReader( openFileName ));
 	}
@@ -417,7 +455,7 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 	cGameObject* newObject = nullptr;
 	std::wstring objName;
 	D3DXVECTOR3 pos{0,0,0}, rot{0,0,0}, scale{0,0,0};
-	BoundingBox* bb = nullptr;
+	ICollider* collider = nullptr;
 	ObjectIdenfier objID = ObjectIdenfier::kUnknown;
 	std::string modelPath;
 
@@ -429,7 +467,7 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 			{
 			case ObjectIdenfier::kObj:
 				++m_createCount;
-				newObject = new ObjObject( objName, modelPath );
+				newObject = new ObjObject( objName, modelPath, collider );
 				break;
 			case ObjectIdenfier::kX:
 				break;
@@ -442,6 +480,10 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 			cGameObjectManager::Get( )->AddObject( 
 				newObject );
 			g_hierarchyWnd->AddListItem( newObject->GetName( ));
+
+			// Reset Items
+			newObject = nullptr;
+			collider = nullptr;
 		}
 		else if ( !strcmp( "ObjectName", xmlNodeElem->Value( )))
 		{
@@ -469,8 +511,33 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 			modelPath = xmlNodeElem->FirstChild( )
 				->Value( );
 		}
-		else if ( !strcmp( "BoundingBox", xmlNodeElem->Value( ) ) )
+		else if ( !strcmp( "BoundingBox", xmlNodeElem->Value( )))
 		{
+			tinyxml2::XMLElement* elem = xmlNodeElem->ToElement( );
+			if ( elem )
+			{
+				const tinyxml2::XMLAttribute* minXAttr =
+					elem->FirstAttribute( );
+				const tinyxml2::XMLAttribute* minYAttr =
+					minXAttr->Next( );
+				const tinyxml2::XMLAttribute* minZAttr =
+					minYAttr->Next( );
+
+				const tinyxml2::XMLAttribute* maxXAttr =
+					minZAttr->Next( );
+				const tinyxml2::XMLAttribute* maxYAttr =
+					maxXAttr->Next( );
+				const tinyxml2::XMLAttribute* maxZAttr =
+					maxYAttr->Next( );
+
+				collider = new BoundingBox( 
+					{ minXAttr->FloatValue( ), 
+					  minYAttr->FloatValue( ), 
+					  minZAttr->FloatValue( )}, 
+					{ maxXAttr->FloatValue( ), 
+					  maxYAttr->FloatValue( ), 
+					  maxZAttr->FloatValue( )});
+			}
 		}
 		else if ( !strcmp( "Position", xmlNodeElem->Value( )))
 		{
@@ -524,7 +591,7 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 				);
 			}
 		}
-		else if ( !strcmp( "Scale", xmlNodeElem->Value( ) ) )
+		else if ( !strcmp( "Scale", xmlNodeElem->Value( )))
 		{
 			tinyxml2::XMLElement* elem = xmlNodeElem->ToElement( );
 			if ( elem )
@@ -553,10 +620,29 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 
 		Log( xmlNodeElem->Value( ), L"\n" );
 	}
+
+	g_wasSomethingChanged = false;
 }
 
 void MainSurfaceWindow::OnNewSceneClicked( )
 {
+	if ( g_wasSomethingChanged )
+	{
+		if ( MessageBox( this->GetWindowHandle( ),
+			L"변경된 내용이 있습니다. 저장하시겠습니까?",
+			L"WARNING!",
+			MB_YESNO ) == IDYES )
+		{
+			// If Saving canceled, escape this function
+			if ( !this->OnSaveAsClicked( ))
+			{
+				Log( L"Saving canceled, Escape OnNewSceneClicked" );
+				return;
+			}
+		}
+	}
+	g_wasSomethingChanged = false;
+
 	m_createCount = 0;
 	g_hierarchyWnd->ResetListItem( );
 	cGameObjectManager::Get( )->ResetAllObject();

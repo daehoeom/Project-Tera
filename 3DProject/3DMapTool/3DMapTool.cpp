@@ -23,6 +23,7 @@ std::unique_ptr<InspectorWindow> g_inspectorWnd;
 std::unique_ptr<HierarchyWindow> g_hierarchyWnd;
 
 HINSTANCE g_instHandle;
+bool g_wasSomethingChanged = false;
 
 #ifdef _DEBUG
 	#define _CRTDBG_MAP_ALLOC

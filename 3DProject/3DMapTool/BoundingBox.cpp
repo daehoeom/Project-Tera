@@ -46,14 +46,18 @@ BoundingBox::~BoundingBox( )
 {
 }
 
-void BoundingBox::Update( )
-{
-}
-
-void BoundingBox::Render( 
+void BoundingBox::Update(
 	const D3DXMATRIXA16& TM )
 {
-	g_pD3DDevice->SetTransform( D3DTS_WORLD, &TM );
+	m_matOwnerWorld = &TM;
+}
+
+void BoundingBox::Render( )
+{
+	if ( !m_matOwnerWorld )
+		return;
+
+	g_pD3DDevice->SetTransform( D3DTS_WORLD, m_matOwnerWorld );
 	g_pD3DDevice->SetTexture( 0, nullptr );
 	g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
 	g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILLMODE::D3DFILL_WIREFRAME );
