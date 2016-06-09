@@ -18,9 +18,10 @@ public:
 	void SetRadius( float radius ) { m_fRadius = radius; }
 
 	void SetPosition(const D3DXVECTOR3& vPos) override { m_vPosition = vPos; }
+
 	D3DXVECTOR3& GetPosition() override { return m_vPosition; };
 	const D3DXVECTOR3& GetPosition() const override { return m_vPosition; };
-
+	
 private:
 	ID3DXMesh*		sphereMesh;
 	float			m_fRadius;
