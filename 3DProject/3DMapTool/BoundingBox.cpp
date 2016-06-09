@@ -2,7 +2,7 @@
 #include "BoundingBox.h"
 
 #include "cDeviceManager.h"
-
+#include "Console.h"
 
 BoundingBox::BoundingBox( 
 	const D3DXVECTOR3& min, 
