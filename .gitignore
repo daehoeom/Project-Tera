@@ -167,8 +167,6 @@ $RECYCLE.BIN/
 *.db
 /TGON_ModelJoy/lib
 *.opendb
-*.lib
-*.dll
 /3DProject/3DMapTool/Debug
 /3DProject/3DProject/CH
 /3DProject/3DProject/Debug
