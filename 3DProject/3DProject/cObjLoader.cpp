@@ -3,7 +3,6 @@
 #include "cMtlTex.h"
 #include "cGroup.h"
 #include "cTextureManager.h"
-
 #include "StringUtil.h"
 
 #pragma warning( disable: 4996 )
@@ -40,8 +39,8 @@ void cObjLoader::Load(
 	{
 		MessageBox( 
 			GetFocus( ),
-			L"obj 파일이 존재하지 않습니다.",
-			L"WARNING!",
+			"obj 파일이 존재하지 않습니다.",
+			"WARNING!",
 			MB_OK | MB_ICONEXCLAMATION
 		);
 		return;

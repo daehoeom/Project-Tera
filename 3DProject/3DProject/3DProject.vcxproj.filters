@@ -251,6 +251,7 @@
     <ClInclude Include="ObjObject.h">
       <Filter>Object\Building</Filter>
     </ClInclude>
+    <ClInclude Include="StringUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -425,6 +426,7 @@
     <ClCompile Include="ObjObject.cpp">
       <Filter>Object\Building</Filter>
     </ClCompile>
+    <ClCompile Include="StringUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">
