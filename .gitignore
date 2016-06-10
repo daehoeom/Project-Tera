@@ -14,7 +14,6 @@
 [Dd]ebug\
 [Rr]elease\
 [Bb]in/
-[Ll]ib/
 [Oo]bj/
 [Tt]hirdparty/
 [Rr]esource/
@@ -161,11 +160,8 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
-/TGON_ModelJoy/include/boost_1_60_0/boost
-/TGON_ModelJoy/include/boost_1_60_0/boost
 *.db
 *.db
-/TGON_ModelJoy/lib
 *.opendb
 /3DProject/3DMapTool/Debug
 /3DProject/3DProject/CH
