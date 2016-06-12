@@ -121,6 +121,7 @@
     <ClInclude Include="cParticle_Firework.h" />
     <ClInclude Include="cPixie.h" />
     <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="cPlayerWeapon.h" />
     <ClInclude Include="cProgressBar.h" />
     <ClInclude Include="cRandomUtil.h" />
     <ClInclude Include="cSkyBox.h" />
@@ -134,7 +135,7 @@
     <ClInclude Include="cGameObjectManager.h" />
     <ClInclude Include="IScene.h" />
     <ClInclude Include="IState.h" />
-    <ClInclude Include="ObjObject.h" />
+    <ClInclude Include="cBuildingObject.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="cSceneManager.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="cParticle_Firework.cpp" />
     <ClCompile Include="cPixie.cpp" />
     <ClCompile Include="cPlayer.cpp" />
+    <ClCompile Include="cPlayerWeapon.cpp" />
     <ClCompile Include="cProgressBar.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
@@ -199,7 +201,7 @@
     <ClCompile Include="IScene.cpp" />
     <ClCompile Include="IState.cpp" />
     <ClCompile Include="cSceneManager.cpp" />
-    <ClCompile Include="ObjObject.cpp" />
+    <ClCompile Include="cBuildingObject.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

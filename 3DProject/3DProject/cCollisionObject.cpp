@@ -5,10 +5,9 @@
 #include "ICollider.h"
 
 
-cCollisionObject::cCollisionObject(
+cCollisionObject::cCollisionObject( 
 	const std::string& objName ) :
 	cGameObject( objName )
-	, m_bIsCollision(false)
 {
 	cCollisionManager::Get( )->AddObject( this );
 }
@@ -17,17 +16,16 @@ cCollisionObject::~cCollisionObject( )
 {
 	cCollisionManager::Get( )->EraseObject( this );
 
-	for (ICollider* elem : m_collider)
+	for ( auto& elem : m_colliderRepo )
 	{
-		SAFE_DELETE(elem);
+		SAFE_DELETE( elem );
 	}
 }
 
 void cCollisionObject::Update( )
 {
 	__super::Update( );
-
-	for (auto colliderElem : m_collider)
+	for ( auto& colliderElem : m_colliderRepo )
 	{
 		colliderElem->Update();
 	}
@@ -36,25 +34,32 @@ void cCollisionObject::Update( )
 void cCollisionObject::Render( )
 {
 	__super::Render( );
-
-	for (auto colliderElem : m_collider)
+	for ( auto& colliderElem : m_colliderRepo )
 	{
 		colliderElem->Render();
 	}
 }
 
 void cCollisionObject::OnCollisionStay( 
+	int colliderIndex,
 	cCollisionObject* rhs )
 {
-	this->SetCollision(true);
 }
 
-void cCollisionObject::SetCollider( ICollider* collider )
+void cCollisionObject::OnCollisionEnter( 
+	int colliderIndex,
+	cCollisionObject* rhs )
 {
-	m_collider.push_back( collider );
 }
 
-std::vector<ICollider*>& cCollisionObject::GetColliderRepo()
+void cCollisionObject::OnCollisionEnd( 
+	int colliderIndex,
+	cCollisionObject* rhs )
 {
-	return m_collider;
+}
+
+void cCollisionObject::AddCollider( ICollider* collider )
+{
+	m_colliderRepo.push_back( collider );
+	m_collidedRepo.push_back( bool( false ));
 }

@@ -9,12 +9,12 @@ cFatHunter::cFatHunter()
 
 	D3DXMATRIXA16 matT;
 	D3DXMatrixTranslation(&matT, 0, 50, 0);
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 30.f));
+	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 30.f));
 	this->GetColliderRepo()[0]->SetLocal(&matT);
 	this->SetPosition(D3DXVECTOR3(GetPosition().x + 0, GetPosition().y + 50, GetPosition().z + 0));
 
 	D3DXMatrixTranslation(&matT, 0, 30, 0);
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 30.f));
+	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 30.f));
 	this->GetColliderRepo()[1]->SetLocal(&matT);
 	this->GetColliderRepo()[1]->SetPosition(D3DXVECTOR3(GetPosition().x + 0, GetPosition().y + 30, GetPosition().z + 0));
 }

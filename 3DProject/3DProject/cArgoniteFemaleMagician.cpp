@@ -15,7 +15,7 @@ cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 
 	D3DXMATRIXA16 matT;
 	D3DXMatrixTranslation(&matT, 0, 50, 0);
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
+	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
 
 	//밑의 코드는 바운딩체크 할 구 위치 잡아주는 거
 	this->GetColliderRepo()[0]->SetLocal(&matT);
@@ -23,7 +23,7 @@ cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 	this->GetColliderRepo()[0]->SetPosition(vPos);
 
 	D3DXMatrixTranslation(&matT, 0, 30, 0);
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
+	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
 	this->GetColliderRepo()[1]->SetLocal(&matT);
 	vPos = D3DXVECTOR3(GetPosition().x + matT._41, GetPosition().y + matT._42, GetPosition().z + matT._43);
 	this->GetColliderRepo()[1]->SetPosition(vPos);

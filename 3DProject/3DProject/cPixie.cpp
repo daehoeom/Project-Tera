@@ -9,7 +9,7 @@ cPixie::cPixie()
 
 	D3DXMATRIXA16 matT;
 	D3DXMatrixTranslation(&matT, 0, 30, 0);
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 15.f));
+	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 15.f));
 	this->GetColliderRepo()[0]->SetLocal(&matT);
 }
 

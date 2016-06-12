@@ -12,6 +12,8 @@ cEnemy::cEnemy()
 	, m_bIsAction(false)
 	, m_vOrigin(0, 0, 0)
 	, m_vDirection(1, 0, 0)
+	, m_fAttackCurrDelay( 0.f )
+	, m_fAttackMaxTime( 1.5f )
 {
 	SetCurrHp(50);
 	SetEnemyState(ENEMY_IDLE);
@@ -36,6 +38,12 @@ void cEnemy::Update()
 	float Length = D3DXVec3Length(&(GetPosition() - m_vOrigin));
 	//몬스터와 플레이어의 사이 거리 
 	float Distance = D3DXVec3Length(&(GetPosition() - g_player->GetPosition()));
+
+	m_fAttackCurrDelay += g_pTimeManager->GetDeltaTime( );
+	if ( m_fAttackCurrDelay >= m_fAttackMaxTime )
+	{
+		m_fAttackCurrDelay = m_fAttackMaxTime;
+	}
 
 	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
@@ -412,3 +420,4 @@ float cEnemy::RotateAngle()
 
 	return Angle;
 }
+

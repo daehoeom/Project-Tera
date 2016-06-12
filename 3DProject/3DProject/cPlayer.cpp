@@ -4,16 +4,19 @@
 #include "cHair.h"
 #include "cFace.h"
 #include "cTail.h"
+#include "cCollisionManager.h"
 #include "cWeaponMesh.h"
 #include "cBoundingSphere.h"
 #include "cBoundingBox.h"
 #include "Console.h"
+#include "cEnemy.h"
+#include "cPlayerWeapon.h"
+
 
 cPlayer::cPlayer( ) :
 	cCollisionObject( "Player" )
 	, m_vDirection(D3DXVECTOR3(0, 0, 1))
 	, m_fSpeed(1.f)
-	, m_fAngle(0.f)
 	, m_fPassTime(0.f)
 	, m_fPeriod(0.f)
 	, m_bAlive(true)
@@ -23,6 +26,7 @@ cPlayer::cPlayer( ) :
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
+	this->SetPosition({ 0.f, 0.f, 100.f });
 
 	//대기상태
 	m_pBody = new cBody;
@@ -48,18 +52,20 @@ cPlayer::cPlayer( ) :
 	m_pCombo = new cCommandCombo;
 
 	//몸통 충돌체
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f));
+	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 9.f));
 	D3DXMATRIXA16 matLocal;
 	D3DXMatrixTranslation(&matLocal, 0, 15, 0);
 	this->GetColliderRepo()[0]->SetLocal(&matLocal);
 	D3DXVECTOR3 vPos(GetPosition().x + matLocal._41, GetPosition().y + matLocal._42, GetPosition().z + matLocal._43);
 	this->GetColliderRepo()[0]->SetPosition(vPos);
 
-	//무기 충돌체
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
-	vPos = D3DXVECTOR3(GetPosition().x + matLocal._41, GetPosition().y + matLocal._42, GetPosition().z + matLocal._43);
-	this->GetColliderRepo()[1]->SetPosition(vPos);
-
+	// 무기 충돌체
+	m_playerWeapon = new cPlayerWeapon( 
+		D3DXVECTOR3(GetPosition().x + matLocal._41, GetPosition().y + matLocal._42, GetPosition().z + matLocal._43),
+		matLocal,
+		this
+	);
+	
 	SetAniTrack(PLAYER_BATTLEIDLE);
 	this->SetCollisionType(CollisionType::ePlayer);
 }
@@ -88,8 +94,11 @@ void cPlayer::Update( )
 	SetFSMState();
 
 	m_pCombo->Update();
+	m_playerWeapon->Update( );
 
-	if (this->GetCurrHp() <= 0 && this->IsActive() && GetPlayerState() != PLAYER_DEATH)
+	if (this->GetCurrHp() <= 0 && 
+		this->IsActive() && 
+		GetPlayerState() != PLAYER_DEATH)
 	{
 		m_bIsAction = false;
 		SetPlayerState(PLAYER_DEATH);
@@ -99,6 +108,7 @@ void cPlayer::Update( )
 void cPlayer::Render( )
 {
 	__super::Render( );
+	m_playerWeapon->Render( );
 
 	SetRenderState();
 }
@@ -109,16 +119,15 @@ void cPlayer::KeyControl()
 
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		m_fAngle -= 0.1f;
+		this->Rotate({ 0.f, -0.1f, 0.f });
 	}
-
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
-		m_fAngle += 0.1f;
+		this->Rotate({ 0.f, 0.1f, 0.f });
 	}
 
-	m_vDirection = D3DXVECTOR3(1, 0, 0);
-	D3DXMatrixRotationY(&matR, m_fAngle);
+	m_vDirection = D3DXVECTOR3( 1, 0, 0 );
+	D3DXMatrixRotationY( &matR, this->GetAngle( ).y );
 	D3DXVec3TransformNormal(&m_vDirection, &m_vDirection, &matR);
 
 	if (KEYMANAGER->isStayKeyDown(VK_UP))
@@ -175,7 +184,7 @@ void cPlayer::KeyControl()
 		//방향키 뒤를 눌렀을 때 한번만 뒤를 볼 것
 		if (!m_bPushBehind)
 		{
-			m_fAngle = m_fAngle - D3DX_PI;
+			this->GetAngle( ).y = this->GetAngle( ).y - D3DX_PI;
 			m_bPushBehind = true;
 			int a = 0;
 		}
@@ -280,8 +289,10 @@ void cPlayer::KeyControl()
 
 	if (KEYMANAGER->isOnceKeyDown('D'))
 	{
-		if (GetPlayerState() != PLAYER_TUMBLING && GetPlayerState() != PLAYER_SKILL1 &&
-			GetPlayerState() != PLAYER_SKILL2 && GetPlayerState() != PLAYER_SKILL4)
+		if (GetPlayerState() != PLAYER_TUMBLING && 
+			GetPlayerState() != PLAYER_SKILL1 &&
+			GetPlayerState() != PLAYER_SKILL2 && 
+			GetPlayerState() != PLAYER_SKILL4)
 		{
 			m_bIsAction = false;
 		}
@@ -318,27 +329,41 @@ void cPlayer::KeyControl()
 	m_matWorld = matR * matT;
 }
 
-void cPlayer::OnCollisionStay(cCollisionObject* rhs)
+void cPlayer::OnCollisionEnter(
+	int colliderIndex,
+	cCollisionObject* rhs )
 {
-	//한번만 충돌체크하게
-	if (rhs->GetCollisionType() == CollisionType::eBuilding && !this->GetCollision())
+	switch ( colliderIndex )
 	{
-		this->SetCollision(true);
-	}
-
-	if (rhs->GetCollisionType() == CollisionType::eMonster && !this->GetCollision() &&
-		rhs->IsActive())
-	{
-		if (GetPlayerState() == PLAYER_COMBO1 || GetPlayerState() == PLAYER_COMBO2 || GetPlayerState() == PLAYER_COMBO3 ||
-			GetPlayerState() == PLAYER_COMBO4)
+	case 0:
 		{
-			//Log( "충돌하엿음");
-
-			this->SetCollision(true);
-			rhs->SetCurrHp(rhs->GetCurrHp() - 100);
-			int a = 0;
+			this->Move( -m_vDirection*m_fSpeed*2 );
 		}
+		break;
 	}
+}
+
+void cPlayer::OnCollisionStay( 
+	int colliderIndex, 
+	cCollisionObject* rhs )
+{
+	switch ( colliderIndex )
+	{
+	case 0:
+		{
+			this->Move( -m_vDirection*m_fSpeed );
+		}
+		break;
+	}
+
+
+}
+
+void cPlayer::OnCollisionEnd( 
+	int colliderIndex, 
+	cCollisionObject* rhs )
+{
+	Log( "End\n" );
 }
 
 void cPlayer::SetFSMState()
@@ -656,7 +681,6 @@ void cPlayer::SetFSMState()
 			SetAniTrack(PLAYER_DEATH);
 			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATH) - 0.2f;
 		}
-
 		else if (m_bIsAction)
 		{
 			if (m_fPassTime > m_fPeriod)
@@ -722,7 +746,7 @@ void cPlayer::SetUpdateState( )
 	D3DXMatrixTranslation(&matLocal, 1, 45, 0);
 	matLocal *= (D3DXMATRIXA16)m_pBody->GetWeaponHand();
 	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
-	this->GetColliderRepo()[1]->SetWorld(&matLocal);
+	m_playerWeapon->GetColliderRepo()[0]->SetWorld(&matLocal);
 }
 
 void cPlayer::SetRenderState()

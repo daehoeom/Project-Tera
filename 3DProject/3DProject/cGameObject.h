@@ -1,5 +1,8 @@
 #pragma once
 
+/*
+*/
+
 enum eEnemyState
 {
 	ENEMY_IDLE = 0,				//몬스터 서있기
@@ -33,6 +36,7 @@ enum ePlayerState
 
 enum class CollisionType
 {
+	eUnknown,
 	ePlayer,
 	eMonster,
 	eBuilding,
@@ -45,24 +49,25 @@ public:
 	cGameObject( const std::string& objName );
 	virtual ~cGameObject( );
 
-	virtual void Update( );
 	virtual void Render( );
+	virtual void Update( );
 
 public:
-	void SetPosition( const D3DXVECTOR3& pos );
-	void Move( const D3DXVECTOR3& pos );
-	D3DXVECTOR3& GetPosition();
-	const D3DXVECTOR3& GetPosition() const;
+	virtual void SetPosition( const D3DXVECTOR3& pos );
+	virtual void Move( const D3DXVECTOR3& pos );
+	virtual D3DXVECTOR3& GetPosition();
+	virtual const D3DXVECTOR3& GetPosition() const;
 
 	// Roatation
-	void SetAngle( const D3DXVECTOR3& rot );
-	void Rotate( const D3DXVECTOR3& rot );
-	const D3DXVECTOR3& GetAngle( ) const;
+	virtual void SetAngle( const D3DXVECTOR3& rot );
+	virtual void Rotate( const D3DXVECTOR3& rot );
+	virtual D3DXVECTOR3& GetAngle( );
+	virtual const D3DXVECTOR3& GetAngle( ) const;
 	
 	// Scale
-	void SetScale( const D3DXVECTOR3& scale );
-	void Scale( const D3DXVECTOR3& scale );
-	const D3DXVECTOR3& GetScale( ) const;
+	virtual void SetScale( const D3DXVECTOR3& scale );
+	virtual void Scale( const D3DXVECTOR3& scale );
+	virtual const D3DXVECTOR3& GetScale( ) const;
 	
 	//Hp
 	int GetMaxHp() { return m_nMaxHp; }
@@ -89,11 +94,15 @@ public:
 	const std::string& GetName( ) const;
 	D3DXMATRIXA16& GetWorld( );
 
+protected:
+	const D3DXVECTOR3& GetPrevPos( ) const;
+
 private:
 	void UpdateWorld( );
 
 private:
 	D3DXVECTOR3 m_pos;
+	D3DXVECTOR3 m_prevPos;
 	D3DXVECTOR3 m_angle;
 	D3DXVECTOR3 m_scale;
 	D3DXMATRIXA16 m_matWorld;
@@ -109,6 +118,7 @@ private:
 
 inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
 {
+	m_prevPos = m_pos;
 	m_pos = pos;
 	m_matWorld._41 = pos.x;
 	m_matWorld._42 = pos.y;
@@ -117,6 +127,7 @@ inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
 
 inline void cGameObject::Move( const D3DXVECTOR3& pos )
 {
+	m_prevPos = m_pos;
 	m_pos += pos;
 	m_matWorld._41 += pos.x;
 	m_matWorld._42 += pos.y;
@@ -192,6 +203,11 @@ inline const D3DXVECTOR3& cGameObject::GetPosition() const
 	return m_pos;
 }
 
+inline D3DXVECTOR3& cGameObject::GetAngle( )
+{
+	return m_angle;
+}
+
 inline const D3DXVECTOR3& cGameObject::GetAngle( ) const
 {
 	return m_angle;
@@ -210,6 +226,11 @@ inline const std::string& cGameObject::GetName( ) const
 inline D3DXMATRIXA16& cGameObject::GetWorld( )
 {
 	return m_matWorld;
+}
+
+inline const D3DXVECTOR3& cGameObject::GetPrevPos( ) const
+{
+	return m_prevPos;
 }
 
 inline bool cGameObject::IsActive( ) const

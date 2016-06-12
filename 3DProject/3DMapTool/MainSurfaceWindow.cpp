@@ -229,7 +229,7 @@ void MainSurfaceWindow::OnDropFile(
 			std::wstring str = L"object_";
 			str += std::to_wstring( m_createCount++ );
 
-			newObject = new ObjObject( str.c_str( ),
+			newObject = new cBuildingObject( str.c_str( ),
 				m_dropQueryPath.get( ));
 			g_hierarchyWnd->AddListItem( str );
 		}
@@ -322,7 +322,7 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 		// Model Path
 		if ( iter->second->GetIdenfier( ) == ObjectIdenfier::kObj )
 		{
-			auto* objObject = static_cast<ObjObject*>( iter->second );
+			auto* objObject = static_cast<cBuildingObject*>( iter->second );
 
 			sprintf_s( buf,
 				"	<ModelPath>%s</ModelPath>\n",
@@ -361,7 +361,7 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 		// Bounding Box
 		if ( iter->second->GetIdenfier( ) == ObjectIdenfier::kObj )
 		{
-			auto* objObject = static_cast<ObjObject*>( iter->second );
+			auto* objObject = static_cast<cBuildingObject*>( iter->second );
 			auto* boundingBox = static_cast<BoundingBox*>( 
 				objObject->GetCollider( ));
 			
@@ -467,7 +467,7 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 			{
 			case ObjectIdenfier::kObj:
 				++m_createCount;
-				newObject = new ObjObject( objName, modelPath, collider );
+				newObject = new cBuildingObject( objName, modelPath, collider );
 				break;
 			case ObjectIdenfier::kX:
 				break;
