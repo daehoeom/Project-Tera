@@ -12,6 +12,7 @@ cMainGame::cMainGame( )
 	SetupManagers();
 
 	g_player = new cPlayer;
+	cCamera::Get( )->SetFollowingTarget( g_player );
 
 	/*SOUNDMANAGER->addSound("배경음", "./BGM/War_Start_00.ogg");
 	SOUNDMANAGER->play("배경음", 1.f);*/
@@ -27,7 +28,7 @@ cMainGame::~cMainGame( )
 
 void cMainGame::Update( )
 {
-	cCamera::Get( )->Update( &g_player->GetPosition( ));
+	cCamera::Get( )->Update( );
 	
 	cSceneManager::Get( )->Update( );
 	cCollisionManager::Get( )->Update( );
