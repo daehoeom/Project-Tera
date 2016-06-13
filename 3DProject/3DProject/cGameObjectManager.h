@@ -1,4 +1,21 @@
-// Copyright 2014 Jun-ho Cha
+/*
+cGameObjectManager는
+등록된 오브젝트의
+
+Update
+Render
+Delete를 자동으로 호출해준다.
+
+사용 방법은
+
+cGameObjectManager::AddObject( new SomeObject( ... ));
+
+AddObject는 추가된 객체의 포인터를 반환해서
+이 객체 포인터를 따로 사용하고 싶다면 따로 저장해서 쓰면 된다.
+
+( 원래의 사용 의도는 일단 이렇게. )
+
+*/
 
 #pragma once
 #include "Singleton.h"

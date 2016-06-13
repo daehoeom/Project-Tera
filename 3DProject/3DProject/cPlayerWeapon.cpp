@@ -35,7 +35,7 @@ void cPlayerWeapon::OnCollisionEnter(
 	cCollisionObject * rhs )
 {
 	assert( this->GetOwner( ));
-	Log( "Enter\n" );
+	Log( "WeaponEnter\n" );
 
 
 	if ( rhs->GetCollisionType( ) == 
@@ -61,5 +61,19 @@ void cPlayerWeapon::OnCollisionEnter(
 		}
 	}
 	
+}
+
+void cPlayerWeapon::OnCollisionStay( 
+	int colliderIndex, 
+	cCollisionObject * rhs )
+{
+	Log( "WeaponStay\n" );
+}
+
+void cPlayerWeapon::OnCollisionEnd( 
+	int colliderIndex, 
+	cCollisionObject * rhs )
+{
+	Log( "WeaponEnd\n" );
 }
 

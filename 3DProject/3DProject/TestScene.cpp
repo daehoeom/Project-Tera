@@ -18,16 +18,12 @@
 
 
 TestScene::TestScene( 
-	const std::string& xmlPath )
-	: m_pGrid( nullptr )
-	, m_pLoader( nullptr )
-	, m_pNpc( nullptr )
-	, m_pMonster( nullptr )
+	const std::string& xmlPath ) :
+		m_pMonster( nullptr )
 {
-	m_pGrid = new cGrid;
 	m_pMonster = new cArgoniteKallashGuardLeader;
 	m_pMonster2 = new cArgoniteKallashGuardLeader;
-	m_pMonster2->SetPosition( { 0.f, 0.f, 400.f } );
+	m_pMonster2->SetPosition({ 0.f, 0.f, 400.f });
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	m_pLoader = new cObjLoader;
@@ -38,10 +34,6 @@ TestScene::TestScene(
 
 TestScene::~TestScene( )
 {
-	SAFE_DELETE( m_pGrid );
-	SAFE_DELETE( g_player );
-	SAFE_DELETE( m_pLoader );
-	SAFE_DELETE( m_pNpc );
 	SAFE_DELETE( m_pMonster );
 
 	for ( auto buildObj : m_buildingObjectRepo )
@@ -52,22 +44,10 @@ TestScene::~TestScene( )
 
 void TestScene::Render( )
 {
-	//±×¸®µå ·»´õ
-	if (m_pGrid)
-	{
-		m_pGrid->Render();
-	}
-
 	//ÇÃ·¹ÀÌ¾î ·»´õ
 	if (g_player)
 	{
 		g_player->Render();
-	}
-
-	//Npc ·»´õ
-	if (m_pNpc)
-	{
-		m_pNpc->Render();
 	}
 
 	//¸ó½ºÅÍ ·»´õ
@@ -90,11 +70,6 @@ void TestScene::Update( )
 	if ( g_player )
 	{
 		g_player->Update( );
-	}
-
-	if ( m_pNpc )
-	{
-		m_pNpc->Update( );
 	}
 
 	if ( m_pMonster )
@@ -174,12 +149,12 @@ void TestScene::ReadXML( const std::string& xmlPath )
 					maxYAttr->Next( );
 
 				collider = new cBoundingBox(
-					{ minXAttr->FloatValue( ),
-					  minYAttr->FloatValue( ),
-					  minZAttr->FloatValue( )},
-					{ maxXAttr->FloatValue( ),
-					  maxYAttr->FloatValue( ),
-					  maxZAttr->FloatValue( )});
+					{ -100.f ,
+					  -100.f ,
+					  -100.f },
+					{ 100.f,
+					  100.f,
+					  100.f});
 			}
 		}
 		else if ( !strcmp( "Position", xmlNodeElem->Value( )))

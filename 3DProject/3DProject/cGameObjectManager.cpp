@@ -13,6 +13,7 @@ cGameObjectManager::~cGameObjectManager()
 
 void cGameObjectManager::Update()
 {
+	// Why??
 	/*for ( auto& object : m_objMap )
 	{
 		if ( object.second->IsActive( ))

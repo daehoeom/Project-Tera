@@ -1,7 +1,7 @@
 #pragma once
-#include "cBuildingObject.h"
 #include "IScene.h"
 
+class cBuildingObject;
 class cPlayer;
 class cGrid;
 class cSkyBox;
@@ -24,10 +24,7 @@ private:
 	void ReadXML( const std::string& xmlPath );
 
 private:
-	cGrid* m_pGrid;
 	cSkyBox* m_pSkyBox;
-	cObjLoader* m_pLoader;
-	cNpcManager* m_pNpc;
 	cArgoniteKallashGuardLeader* m_pMonster;
 	cArgoniteKallashGuardLeader* m_pMonster2;
 	std::vector<cBuildingObject*> m_buildingObjectRepo;

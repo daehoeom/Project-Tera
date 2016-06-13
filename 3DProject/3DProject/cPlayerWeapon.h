@@ -43,5 +43,7 @@ public:
 	virtual ~cPlayerWeapon( );
 
 	virtual void OnCollisionEnter( int colliderIndex, cCollisionObject* rhs ) override;
+	virtual void OnCollisionStay( int colliderIndex, cCollisionObject* rhs ) override;
+	virtual void OnCollisionEnd( int colliderIndex, cCollisionObject* rhs ) override;
 };
 

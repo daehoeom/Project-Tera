@@ -22,7 +22,13 @@ cPlayer::cPlayer( ) :
 	, m_bAlive(true)
 	, m_bIsAction(false)
 	, m_bPushBehind(false)
-	, m_pCombo(nullptr)
+	, m_pCombo( nullptr )
+	, m_playerWeapon( nullptr )
+	, m_pTail( nullptr )
+	, m_pHair( nullptr )
+	, m_pFace( nullptr )
+	, m_pBody( nullptr )
+	, m_pHand(nullptr)
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
@@ -31,7 +37,7 @@ cPlayer::cPlayer( ) :
 	//대기상태
 	m_pBody = new cBody;
 	m_pBody->Setup("CH/Player", "Player_Body.X");
-
+	
 	m_pFace = new cFace;
 	m_pFace->SetNeckTM(&m_pBody->GetNeckTM());
 	m_pFace->Setup("CH/Player", "Player_Head.X");
@@ -77,6 +83,8 @@ cPlayer::~cPlayer( )
 	SAFE_DELETE(m_pFace);
 	SAFE_DELETE(m_pTail);
 	SAFE_DELETE(m_pHand);
+	SAFE_DELETE(m_pCombo);
+	SAFE_DELETE(m_playerWeapon);
 }
 
 void cPlayer::Update( )
@@ -93,8 +101,15 @@ void cPlayer::Update( )
 
 	SetFSMState();
 
-	m_pCombo->Update();
-	m_playerWeapon->Update( );
+	if ( m_pCombo )
+	{
+		m_pCombo->Update();
+	}
+
+	if ( m_playerWeapon )
+	{
+		m_playerWeapon->Update( );
+	}
 
 	if (this->GetCurrHp() <= 0 && 
 		this->IsActive() && 
@@ -108,7 +123,11 @@ void cPlayer::Update( )
 void cPlayer::Render( )
 {
 	__super::Render( );
-	m_playerWeapon->Render( );
+	
+	if ( m_playerWeapon )
+	{
+		m_playerWeapon->Render( );
+	}
 
 	SetRenderState();
 }
@@ -333,6 +352,9 @@ void cPlayer::OnCollisionEnter(
 	int colliderIndex,
 	cCollisionObject* rhs )
 {
+	Log( "PlayerEnter\n" );
+
+
 	switch ( colliderIndex )
 	{
 	case 0:
@@ -347,6 +369,9 @@ void cPlayer::OnCollisionStay(
 	int colliderIndex, 
 	cCollisionObject* rhs )
 {
+	Log( "PlayerStay\n" );
+
+
 	switch ( colliderIndex )
 	{
 	case 0:
@@ -363,7 +388,7 @@ void cPlayer::OnCollisionEnd(
 	int colliderIndex, 
 	cCollisionObject* rhs )
 {
-	Log( "End\n" );
+	Log( "PlayerEnd\n" );
 }
 
 void cPlayer::SetFSMState()
@@ -746,7 +771,10 @@ void cPlayer::SetUpdateState( )
 	D3DXMatrixTranslation(&matLocal, 1, 45, 0);
 	matLocal *= (D3DXMATRIXA16)m_pBody->GetWeaponHand();
 	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
-	m_playerWeapon->GetColliderRepo()[0]->SetWorld(&matLocal);
+	if ( m_playerWeapon )
+	{
+		m_playerWeapon->GetColliderRepo()[0]->SetWorld(&matLocal);
+	}
 }
 
 void cPlayer::SetRenderState()
