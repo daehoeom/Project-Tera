@@ -94,7 +94,6 @@ void cHair::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 
 	matW = pFrame->TransformationMatrix * (*pParentWorldTM);
 	pBone->CombinedTransformationMatrix = matW;
-	//g_pD3DDevice->SetTransform(D3DTS_WORLD, &pBone->matWorldTM);
 
 	//m_pMesh->DrawSubset(0);//·»´õ
 	if (pBone->pMeshContainer)

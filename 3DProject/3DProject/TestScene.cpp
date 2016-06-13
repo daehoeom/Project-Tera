@@ -15,7 +15,7 @@
 #include "cNpcManager.h"
 #include "cSceneManager.h"
 #include "cArgoniteKallashGuardLeader.h"
-
+#include "cSkyBox.h"
 
 TestScene::TestScene( 
 	const std::string& xmlPath )
@@ -23,11 +23,16 @@ TestScene::TestScene(
 	, m_pLoader( nullptr )
 	, m_pNpc( nullptr )
 	, m_pMonster( nullptr )
+	, m_pSkyBox( nullptr )
 {
 	m_pGrid = new cGrid;
 	m_pMonster = new cArgoniteKallashGuardLeader;
 	m_pMonster2 = new cArgoniteKallashGuardLeader;
 	m_pMonster2->SetPosition( { 0.f, 0.f, 400.f } );
+
+	m_pSkyBox = new cSkyBox;
+	m_pSkyBox->Setup();
+
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	m_pLoader = new cObjLoader;
@@ -43,6 +48,7 @@ TestScene::~TestScene( )
 	SAFE_DELETE( m_pLoader );
 	SAFE_DELETE( m_pNpc );
 	SAFE_DELETE( m_pMonster );
+	SAFE_DELETE( m_pSkyBox );
 
 	for ( auto buildObj : m_buildingObjectRepo )
 	{
@@ -52,12 +58,19 @@ TestScene::~TestScene( )
 
 void TestScene::Render( )
 {
+	//스카이박스 렌더
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Render();
+	}
+
 	//그리드 렌더
 	if (m_pGrid)
 	{
 		m_pGrid->Render();
 	}
 
+	
 	//플레이어 렌더
 	if (g_player)
 	{
@@ -103,7 +116,14 @@ void TestScene::Update( )
 	}
 
 	if ( m_pMonster2 )
+	{
 		m_pMonster2->Update( );
+	}
+	
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Update();
+	}
 
 }
 

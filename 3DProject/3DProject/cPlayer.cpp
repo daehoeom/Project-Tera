@@ -23,6 +23,9 @@ cPlayer::cPlayer( ) :
 	, m_bIsAction(false)
 	, m_bPushBehind(false)
 	, m_pCombo(nullptr)
+	, m_pEffect(nullptr)
+	, m_pRenderTarget(nullptr)
+	, m_pDepthStencil(nullptr)
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
@@ -77,6 +80,10 @@ cPlayer::~cPlayer( )
 	SAFE_DELETE(m_pFace);
 	SAFE_DELETE(m_pTail);
 	SAFE_DELETE(m_pHand);
+
+	SAFE_RELEASE(m_pDepthStencil);
+	SAFE_RELEASE(m_pEffect);
+	SAFE_RELEASE(m_pRenderTarget);
 }
 
 void cPlayer::Update( )

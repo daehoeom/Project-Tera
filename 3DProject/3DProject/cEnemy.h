@@ -15,7 +15,7 @@ public:
 	virtual void Update() override;
 	virtual void Render() override;
 	virtual void ActionState();
-	virtual void OnCollisionStay(cCollisionObject* rhs) override;
+	virtual void OnCollisionStay(cCollisionObject* rhs) override ;
 
 	//몬스터 움직이기
 	virtual D3DXMATRIXA16 Move();
