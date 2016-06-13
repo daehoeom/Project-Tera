@@ -33,13 +33,15 @@ void cBoundingBox::Update( )
 
 void cBoundingBox::Render()
 {
-	this->PreRender( );
+	if ( m_isDebugRender )
+	{
+		this->PreRender( );
+		
+		g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorldTM);
+		m_pBox->DrawSubset( 0 );
 
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorldTM);
-	g_pD3DDevice->SetTexture( 0, nullptr );
-	m_pBox->DrawSubset( 0 );
-
-	this->PostRender( );
+		this->PostRender( );
+	}
 }
 
 

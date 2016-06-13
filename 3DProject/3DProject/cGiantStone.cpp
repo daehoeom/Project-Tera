@@ -9,7 +9,7 @@ cGiantStone::cGiantStone()
 
 	D3DXMATRIXA16 matT;
 	D3DXMatrixTranslation(&matT, 0, 50, 0);
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 50.f));
+	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 50.f));
 	this->GetColliderRepo()[0]->SetLocal(&matT);
 }
 

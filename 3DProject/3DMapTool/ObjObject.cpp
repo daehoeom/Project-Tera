@@ -8,7 +8,7 @@
 #include "cGroup.h"
 
 
-ObjObject::ObjObject( 
+cBuildingObject::cBuildingObject( 
 	const std::wstring& name, 
 	const std::string& filePath, 
 	ICollider* collider ) :
@@ -34,7 +34,7 @@ ObjObject::ObjObject(
 	}
 }
 
-ObjObject::~ObjObject( )
+cBuildingObject::~cBuildingObject( )
 {
 	for each( auto p in m_vecGroup )
 	{
@@ -43,7 +43,7 @@ ObjObject::~ObjObject( )
 	m_vecGroup.clear( );
 }
 
-void ObjObject::Render( )
+void cBuildingObject::Render( )
 {
 	__super::Render( );
 
@@ -55,7 +55,7 @@ void ObjObject::Render( )
 	}
 }
 
-void ObjObject::Update( )
+void cBuildingObject::Update( )
 {
 	__super::Update( );
 }

@@ -60,7 +60,7 @@ void cNpc::Setup(char* szFolder, char* szFile)
 
 	//m_pBound = ;
 
-	this->SetCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
+	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
 }
 
 void cNpc::Update()

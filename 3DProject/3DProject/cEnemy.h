@@ -22,6 +22,9 @@ public:
 	virtual D3DXMATRIXA16 Rotate();
 	virtual float RotateAngle();
 
+	void ResetAttackDelay( );
+	bool IsAbleAttacked( );
+
 protected:
 	cEnemySkinMesh*		m_pBody;		//몬스터 바디
 
@@ -40,5 +43,16 @@ protected:
 	bool				m_bIsAction;
 
 	int					n;
+	float				m_fAttackCurrDelay;
+	float				m_fAttackMaxTime;
 };
 
+inline void cEnemy::ResetAttackDelay( )
+{
+	m_fAttackCurrDelay = 0.f;
+}
+
+inline bool cEnemy::IsAbleAttacked( )
+{
+	return ( m_fAttackMaxTime - m_fAttackCurrDelay ) <= 0.001f;
+}

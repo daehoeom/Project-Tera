@@ -23,10 +23,11 @@ cGameObject::~cGameObject( )
 	cGameObjectManager::Get()->EraseObject(this->GetName());
 }
 
-void cGameObject::Update( )
+void cGameObject::Render( )
 {
+
 }
 
-void cGameObject::Render( )
+void cGameObject::Update( )
 {
 }

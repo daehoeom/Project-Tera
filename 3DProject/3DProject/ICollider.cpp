@@ -13,25 +13,14 @@ ICollider::ICollider( ) :
 
 void ICollider::PreRender( )
 {
-	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING,FALSE );
-	g_pD3DDevice->SetTexture( 0, nullptr );
-
-	if ( m_isDebugRender )
-	{
-		g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
-	}
-
+	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING, FALSE );
+	g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
 }
 
 void ICollider::PostRender( )
 {
-	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING,
-		TRUE );
-
-	if ( m_isDebugRender )
-	{
-		g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
-	}
+	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING, TRUE );
+	g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 }
 
 

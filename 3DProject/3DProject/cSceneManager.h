@@ -2,12 +2,12 @@
 #include "Singleton.h"
 #include "IScene.h"
 
-class SceneManager :
-	public TSingleton<SceneManager>
+class cSceneManager :
+	public TSingleton<cSceneManager>
 {
 public:
-	SceneManager( );
-	virtual ~SceneManager( );
+	cSceneManager( );
+	virtual ~cSceneManager( );
 
 	void LoadScene( IScene* newScene );
 	void Render( );

@@ -2,14 +2,14 @@
 #include "IColliseable.h"
 
 
-class ObjObject :
+class cBuildingObject :
 	public IColliseable
 {
 public:
-	ObjObject( const std::wstring& name,
+	cBuildingObject( const std::wstring& name,
 			   const std::string& filePath,
 			   ICollider* collider = nullptr );
-	virtual ~ObjObject( );
+	virtual ~cBuildingObject( );
 
 public:
 	virtual void Render( ) override;

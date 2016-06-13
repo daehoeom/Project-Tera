@@ -52,6 +52,8 @@ cDeviceManager::cDeviceManager()
 			break;
 		}
 	}
+
+	this->SetupLight( );
 }
 
 
@@ -67,6 +69,23 @@ cDeviceManager::~cDeviceManager()
 
 		assert( ul == 0 && "디바이스를 이용하여 생성한 객체 중 소멸되지 않은 객체가 있습니다." );
 	}
+}
+
+void cDeviceManager::SetupLight( )
+{
+	D3DXVECTOR3 vDir( 1, -1, 1 );
+	D3DXVec3Normalize( &vDir, &vDir );
+
+	D3DLIGHT9 stLight;
+	ZeroMemory( &stLight, sizeof( D3DLIGHT9 ) );
+	stLight.Type = D3DLIGHT_DIRECTIONAL;
+	stLight.Ambient = D3DXCOLOR(  0.8f, 0.8f, 0.8f, 1.0f );
+	stLight.Diffuse = D3DXCOLOR(  0.8f, 0.8f, 0.8f, 1.0f );
+	stLight.Specular = D3DXCOLOR( 0.8f, 0.8f, 0.8f, 1.0f );
+	stLight.Direction = vDir;
+	
+	g_pD3DDevice->SetLight( 0, &stLight );
+	g_pD3DDevice->LightEnable( 0, true );
 }
 
 LPDIRECT3DDEVICE9 cDeviceManager::GetDevice()

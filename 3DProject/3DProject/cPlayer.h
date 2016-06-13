@@ -9,6 +9,7 @@ class cBody;
 class cHair;
 class cFace;
 class cWeaponMesh;
+class cPlayerWeapon;
 
 class cPlayer : 
 	public cCollisionObject
@@ -19,8 +20,13 @@ public:
 
 	virtual void Update( ) override;
 	virtual void Render( ) override;
-	virtual void OnCollisionStay(cCollisionObject* rhs) override;
 
+public:
+	virtual void OnCollisionEnter( int colliderIndex, cCollisionObject* rhs ) override;
+	virtual void OnCollisionStay( int colliderIndex, cCollisionObject* rhs ) override;
+	virtual void OnCollisionEnd( int colliderIndex, cCollisionObject* rhs ) override;
+
+public:
 	void SetUpdateState();	//상태에 따라 업데이트를 다르게 진행
 	void SetRenderState();	//상태에 따라 렌더를 다르게 진행
 	void SetFSMState();
@@ -33,6 +39,7 @@ private:
 	cFace*			m_pFace;
 	cTail*			m_pTail;
 	cWeaponMesh*	m_pHand;
+	cPlayerWeapon*	m_playerWeapon;
 	cCommandCombo*	m_pCombo;
 
 	D3DXMATRIXA16	m_matWorld;
@@ -46,7 +53,6 @@ private:
 	LPDIRECT3DSURFACE9 m_pDepthStencil;
 
 	float			m_fSpeed;
-	float			m_fAngle;
 	float			m_fPassTime;
 	float			m_fPeriod;
 

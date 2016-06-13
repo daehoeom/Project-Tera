@@ -1,23 +1,23 @@
 #include "stdafx.h"
 #include "cSceneManager.h"
 
-SceneManager::SceneManager( ) :
+cSceneManager::cSceneManager( ) :
 	m_currScene( nullptr )
 {
 }
 
-SceneManager::~SceneManager( )
+cSceneManager::~cSceneManager( )
 {
 	SAFE_DELETE( m_currScene );
 }
 
-void SceneManager::LoadScene( IScene * newScene )
+void cSceneManager::LoadScene( IScene * newScene )
 {
 	SAFE_DELETE( m_currScene );
 	m_currScene = newScene;
 }
 
-void SceneManager::Render( )
+void cSceneManager::Render( )
 {
 	if ( m_currScene )
 	{
@@ -25,7 +25,7 @@ void SceneManager::Render( )
 	}
 }
 
-void SceneManager::Update( )
+void cSceneManager::Update( )
 {
 	if ( m_currScene )
 	{

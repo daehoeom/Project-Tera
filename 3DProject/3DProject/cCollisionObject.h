@@ -6,20 +6,45 @@ class cCollisionObject :
 	public cGameObject,
 	public ICollisionDelegate
 {
+	using _ColliderRepoTy = std::vector<ICollider*>;
+	using _HadCollidedRepoTy = std::vector<bool>;
+
 public:
 	explicit cCollisionObject( const std::string& objName );
 	virtual ~cCollisionObject( );
 
-	//Check Collision
-	void SetCollision(bool collision) { m_bIsCollision = collision; }
-	bool GetCollision() { return m_bIsCollision; }
 	virtual void Update( ) override;
 	virtual void Render( ) override;
-	virtual void OnCollisionStay( cCollisionObject* rhs );
-	void SetCollider( ICollider* collider );
-	std::vector<ICollider*>& GetColliderRepo();
+	
+	//Check Collision
+	void SetCollision( int colliderIndex, bool isCollided );
+	bool GetCollision( int colliderIndex ) const;
+	virtual void OnCollisionStay( int colliderIndex, cCollisionObject* rhs );
+	virtual void OnCollisionEnter( int colliderIndex, cCollisionObject* rhs );
+	virtual void OnCollisionEnd( int colliderIndex, cCollisionObject* rhs );
+	void AddCollider( ICollider* collider );
+	const _ColliderRepoTy& GetColliderRepo( ) const;
 
 private:
-	bool m_bIsCollision;
-	std::vector<ICollider*> m_collider;
+	_HadCollidedRepoTy m_collidedRepo;
+	_ColliderRepoTy m_colliderRepo;
 };
+
+
+inline void cCollisionObject::SetCollision( 
+	int colliderIndex, 
+	bool isCollided )
+{
+	m_collidedRepo[colliderIndex] = isCollided;
+}
+
+inline bool cCollisionObject::GetCollision( int colliderIndex ) const
+{
+	return m_collidedRepo[colliderIndex];
+}
+
+inline const cCollisionObject::_ColliderRepoTy& 
+	cCollisionObject::GetColliderRepo( ) const
+{
+	return m_colliderRepo;
+}

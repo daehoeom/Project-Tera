@@ -12,9 +12,10 @@ cEnemy::cEnemy()
 	, m_bIsAction(false)
 	, m_vOrigin(0, 0, 0)
 	, m_vDirection(1, 0, 0)
-	, m_fDeathTime(0.f)
+	, m_fAttackCurrDelay( 0.f )
+	, m_fAttackMaxTime( 1.5f )
 {
-	SetCurrHp(1000);
+	SetCurrHp(50);
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 
@@ -37,6 +38,12 @@ void cEnemy::Update()
 	float Length = D3DXVec3Length(&(GetPosition() - m_vOrigin));
 	//몬스터와 플레이어의 사이 거리 
 	float Distance = D3DXVec3Length(&(GetPosition() - g_player->GetPosition()));
+
+	m_fAttackCurrDelay += g_pTimeManager->GetDeltaTime( );
+	if ( m_fAttackCurrDelay >= m_fAttackMaxTime )
+	{
+		m_fAttackCurrDelay = m_fAttackMaxTime;
+	}
 
 	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
@@ -69,7 +76,7 @@ void cEnemy::Update()
 	}
 
 	//만약 몬스터의 위치가 플레이어와 가깝다면 공격모션
-	else if (abs(Distance) < 20.f && this->IsActive() && GetEnemyState() != ENEMY_BACKPOSITION)
+	else if (abs(Distance) < 50.f && this->IsActive() && GetEnemyState() != ENEMY_BACKPOSITION)
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_ATTACK)
@@ -82,7 +89,7 @@ void cEnemy::Update()
 	}
 
 	//몬스터가 일정 범위를 넘어가면 다시 되돌아 올 것
-	else if (abs(Length) > 300.f && this->IsActive())
+	else if (abs(Length) > 600.f && this->IsActive())
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_BACKPOSITION && GetEnemyState() != ENEMY_CHASE &&
@@ -96,7 +103,7 @@ void cEnemy::Update()
 	}
 
 	//만약 몬스터의 상태가 되돌아가기가 아니라면 플레이어 쫒기
-	else if (abs(Distance) < 100.f && this->IsActive() && GetEnemyState() != ENEMY_BACKPOSITION)
+	else if (abs(Distance) < 300.f && this->IsActive() && GetEnemyState() != ENEMY_BACKPOSITION)
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_CHASE && GetEnemyState() != ENEMY_ATTACK)
@@ -114,14 +121,6 @@ void cEnemy::Update()
 	{
 		m_pBody->Update();
 		m_pBody->SetWorld(&m_matWorld);
-	}
-
-	for (size_t i = 0; i < this->GetColliderRepo().size(); i++)
-	{
-		this->GetColliderRepo()[i]->SetWorld(&m_matWorld);
-		D3DXMATRIXA16 mat = this->GetColliderRepo()[i]->GetLocal() * this->GetColliderRepo()[i]->GetWorld();
-		D3DXVECTOR3 vPos = D3DXVECTOR3(mat._41, mat._42, mat._43);
-		this->GetColliderRepo()[i]->SetPosition(vPos);
 	}
 }
 
@@ -176,11 +175,12 @@ void cEnemy::ActionState()
 			m_bIsAction = true;
 			m_pBody->SetAnimationIndex(ENEMY_DEATH);
 			m_fPassTime = 0.f;
+			m_fPeriod = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 1.7f;
 		}
 
 		if (m_bIsAction)
 		{
-			if (m_fPassTime > m_fDeathTime)
+			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
@@ -188,7 +188,7 @@ void cEnemy::ActionState()
 				SetEnemyState(ENEMY_DEATHWAIT);
 			}
 
-			else if (m_fPassTime < m_fDeathTime)
+			else if (m_fPassTime < m_fPeriod)
 			{
 				Log(m_fPassTime);
 				Log("\n");
@@ -281,6 +281,7 @@ void cEnemy::ActionState()
 			m_pBody->SetAnimationIndex(ENEMY_RUN);
 			m_bIsAction = true;
 			m_fAngle = RotateAngle();
+			int a = 0;
 		}
 
 		if (m_bIsAction)
@@ -322,7 +323,7 @@ void cEnemy::ActionState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 
-				if (abs(Distance) < 20.f)
+				if (abs(Distance) < 50.f)
 				{
 					SetEnemyState(ENEMY_ATTACK);
 				}
@@ -401,20 +402,6 @@ D3DXMATRIXA16 cEnemy::Move()
 	return matT;
 }
 
-void cEnemy::OnCollisionStay(cCollisionObject* rhs)
-{
-	//if (rhs->GetCollisionType() == CollisionType::ePlayer && !this->GetCollision())
-	//{
-	//	if (GetEnemyState() == ENEMY_ATTACK)
-	//	{
-	//		Log("충돌하였음");
-	//		this->SetCollision(true);
-	//		rhs->SetCurrHp(rhs->GetCurrHp() - 100);
-	//		int a = 0;
-	//	}
-	//}
-}
-
 D3DXMATRIXA16 cEnemy::Rotate()
 {
 	D3DXMATRIXA16 matR;
@@ -433,3 +420,4 @@ float cEnemy::RotateAngle()
 
 	return Angle;
 }
+
