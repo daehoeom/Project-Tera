@@ -277,21 +277,41 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 	std::wofstream ofs( openFileName );
 	ofs << "<?xml version=""\"1.0""\" encoding=""\"UTF-8""\"?>\n";
 	
-	for ( auto iter = cGameObjectManager::Get( )->begin( );
-		iter != cGameObjectManager::Get( )->end( );
-		++iter )
+	const int32_t objCount = g_hierarchyWnd->GetListItemCount( );
+	for ( int32_t i = 0; i < objCount; ++i )
 	{
-		if ( iter->second->GetIdenfier( ) == ObjectIdenfier::kCamera ||
-			iter->second->GetIdenfier( ) == ObjectIdenfier::kLight ||
-			iter->second->GetIdenfier( ) == ObjectIdenfier::kUnknown ||
-			iter->second->GetIdenfier( ) == ObjectIdenfier::kPickTile )
+		auto* selectedObject = g_hierarchyWnd->
+			GetItemAsObjectByIndex( i );
+		if ( !selectedObject )
+		{
+			std::wstring errString = L"Could not save file. (";
+			
+			wchar_t objectTextThatCouldNotFound[256] {0};
+			g_hierarchyWnd->GetItemAsTextByIndex( 
+				objectTextThatCouldNotFound, 256, i );
+			errString += objectTextThatCouldNotFound;
+			errString += L")";
+
+			MessageBox( GetFocus( ),
+				errString.c_str( ),
+				L"WARNING!",
+				MB_OK | MB_ICONEXCLAMATION 
+			);
+			continue;
+		}
+
+
+		if ( selectedObject->GetIdenfier( ) == ObjectIdenfier::kCamera ||
+			selectedObject->GetIdenfier( ) == ObjectIdenfier::kLight ||
+			selectedObject->GetIdenfier( ) == ObjectIdenfier::kUnknown ||
+			selectedObject->GetIdenfier( ) == ObjectIdenfier::kPickTile )
 		{
 			continue;
 		}
 
 		char buf[256];
 		std::wcstombs( buf, 
-			iter->second->GetName( ).c_str(), 256 );
+			selectedObject->GetName( ).c_str(), 256 );
 
 		// Name
 		ofs << "<";
@@ -304,7 +324,7 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 		ofs << "</ObjectName>\n";
 
 		// Type
-		switch ( iter->second->GetIdenfier( ))
+		switch ( selectedObject->GetIdenfier( ))
 		{
 		case ObjectIdenfier::kObj:
 			ofs << "	<Type>obj</Type>\n";
@@ -320,9 +340,9 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 		}
 
 		// Model Path
-		if ( iter->second->GetIdenfier( ) == ObjectIdenfier::kObj )
+		if ( selectedObject->GetIdenfier( ) == ObjectIdenfier::kObj )
 		{
-			auto* objObject = static_cast<cBuildingObject*>( iter->second );
+			auto* objObject = static_cast<cBuildingObject*>( selectedObject );
 
 			sprintf_s( buf,
 				"	<ModelPath>%s</ModelPath>\n",
@@ -334,34 +354,34 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 		// Position
 		sprintf_s( buf, 
 			"	<Position x=""\"%f\" y=""\"%f\" z=""\"%f\"></Position>\n",
-			iter->second->GetPosition( ).x,
-			iter->second->GetPosition( ).y,
-			iter->second->GetPosition( ).z
+			selectedObject->GetPosition( ).x,
+			selectedObject->GetPosition( ).y,
+			selectedObject->GetPosition( ).z
 		);
 		ofs << buf;
 
 		// Rotation
 		sprintf_s( buf,
 			"	<Rotation x=""\"%f\" y=""\"%f\" z=""\"%f\"></Rotation>\n",
-			iter->second->GetAngle( ).x,
-			iter->second->GetAngle( ).y,
-			iter->second->GetAngle( ).z
+			selectedObject->GetAngle( ).x,
+			selectedObject->GetAngle( ).y,
+			selectedObject->GetAngle( ).z
 		);
 		ofs << buf;
 
 		// Scale
 		sprintf_s( buf,
 			"	<Scale x=""\"%f\" y=""\"%f\" z=""\"%f\"></Scale>\n",
-			iter->second->GetScale( ).x,
-			iter->second->GetScale( ).y,
-			iter->second->GetScale( ).z
+			selectedObject->GetScale( ).x,
+			selectedObject->GetScale( ).y,
+			selectedObject->GetScale( ).z
 		);
 		ofs << buf;
 
 		// Bounding Box
-		if ( iter->second->GetIdenfier( ) == ObjectIdenfier::kObj )
+		if ( selectedObject->GetIdenfier( ) == ObjectIdenfier::kObj )
 		{
-			auto* objObject = static_cast<cBuildingObject*>( iter->second );
+			auto* objObject = static_cast<cBuildingObject*>( selectedObject );
 			auto* boundingBox = static_cast<BoundingBox*>( 
 				objObject->GetCollider( ));
 			
@@ -383,7 +403,7 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 		ofs << "	<End></End>\n";
 
 		std::wcstombs( buf,
-			iter->second->GetName( ).c_str( ), 256 );
+			selectedObject->GetName( ).c_str( ), 256 );
 		ofs << "</";
 		ofs << buf;
 		ofs << ">\n";

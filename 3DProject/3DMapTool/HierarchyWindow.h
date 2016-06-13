@@ -21,9 +21,13 @@ public:
 
 	// Gets
 	class cGameObject* GetSelectedItemAsObject( );
+	class cGameObject* GetItemAsObjectByIndex( int32_t index );
+	void GetItemAsTextByIndex( wchar_t* outText, int32_t maxCount, int32_t index );
 	void GetSelectedItemText( wchar_t* outText, int32_t maxCount ) const;
 	int32_t GetSelectedItemIndex( ) const;
 	int32_t GetListItemCount( ) const;
+
+
 
 protected:
 	LRESULT MessageProc( HWND, UINT, WPARAM, LPARAM ) override;

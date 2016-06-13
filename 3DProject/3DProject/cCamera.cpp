@@ -9,32 +9,58 @@ cCamera::cCamera(void)
 	, m_isLButtonDown(false)
 	, m_fRotX(0.0f)
 	, m_fRotY(0.0f)
-	, m_fDist(500)
+	, m_fDist(100)
+	, m_followTarget( nullptr )
+	, m_cameraHeight( 20.f )
 {
-	RECT rc;
-	GetClientRect( g_hWnd, &rc );
-	D3DXMATRIXA16 matProj;
-	D3DXMatrixPerspectiveFovLH( &matProj, D3DX_PI / 4.0f, rc.right / ( float )rc.bottom, 1, 3000 );
-	g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
+	this->SetupProjection( D3DX_PI/4.0f, 1.f, 3000.f );
 }
-
 
 cCamera::~cCamera(void)
 {
 }
 
-void cCamera::Update(D3DXVECTOR3* pTarget/* = NULL*/)
+void cCamera::SetupProjection( 
+	float fovy,
+	float nearZ,
+	float farZ )
+{
+	assert( g_hWnd );
+
+	RECT rc;
+	GetClientRect( g_hWnd, &rc );
+
+	D3DXMATRIXA16 matProj;
+	D3DXMatrixPerspectiveFovLH( &matProj, fovy, rc.right/( float )rc.bottom, nearZ, farZ );
+	g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
+}
+
+void cCamera::SetupView( 
+	const D3DXVECTOR3& eye, 
+	const D3DXVECTOR3& lookAt )
+{
+	const D3DXVECTOR3 up( 0, 1, 0 );
+	
+	D3DXMATRIXA16 matView;
+	D3DXMatrixLookAtLH( &matView, &eye, &lookAt, &up );
+	g_pD3DDevice->SetTransform( D3DTS_VIEW, &matView );
+}
+
+void cCamera::Update( )
 {
 	m_vEye = D3DXVECTOR3(0, 0, -m_fDist);
 	D3DXMATRIXA16 matRotX, matRotY;
 	D3DXMatrixRotationX(&matRotX, m_fRotX);
-	D3DXMatrixRotationY(&matRotY, m_fRotY);
+	D3DXMatrixRotationY(&matRotY, 
+		m_followTarget->GetAngle( ).y + D3DXToRadian( 90 ));
 	D3DXMATRIXA16 matRot = matRotX * matRotY;
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matRot);
-	if (pTarget)
+	
+	if ( m_followTarget )
 	{
-		m_vEye = m_vEye + *pTarget;
-		m_vLookAt = *pTarget;
+		m_vEye = m_vEye + m_followTarget->GetPosition( );
+		m_vLookAt = m_followTarget->GetPosition( );
+		m_vLookAt.y += m_cameraHeight;
 	}
 	D3DXMATRIXA16 matView;
 
@@ -62,7 +88,7 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			ptCurrMouse.x = LOWORD(lParam);
 			ptCurrMouse.y = HIWORD(lParam);
 			m_fRotX += (ptCurrMouse.y - m_ptPrevMouse.y) / 100.0f;
-			m_fRotY += (ptCurrMouse.x - m_ptPrevMouse.x) / 100.0f;
+			//m_fRotY += (ptCurrMouse.x - m_ptPrevMouse.x) / 100.0f;
 			m_ptPrevMouse = ptCurrMouse;
 			if (m_fRotX >= D3DX_PI / 2.0f - EPSILON)
 			{
