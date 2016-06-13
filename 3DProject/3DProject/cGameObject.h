@@ -254,3 +254,4 @@ inline void cGameObject::UpdateWorld( )
 
 	m_matWorld = matScale * matRot * matTrans;
 }
+

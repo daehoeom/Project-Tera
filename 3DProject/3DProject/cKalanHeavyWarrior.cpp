@@ -7,6 +7,9 @@ cKalanHeavyWarrior::cKalanHeavyWarrior()
 	m_pBody = new cEnemySkinMesh;
 	m_pBody->Setup("./CH/KalanHeavyWarrior", "KalanHeavyWarrior.X");
 
+	SetPosition(D3DXVECTOR3(0.f, -2.f, 0.f));
+	Move();
+
 	D3DXMatrixTranslation(&m_matLocal, 0, -15, 0);
 
 	D3DXMATRIXA16 matT;
@@ -25,9 +28,12 @@ void cKalanHeavyWarrior::Update()
 {
 	__super::Update();
 
-	for (auto& elem : this->GetColliderRepo())
+	if (GetEnemyState() == ENEMY_DEATH)
 	{
-		elem->SetWorld(&m_matWorld);
+		SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y, GetPosition().z));
+		m_fDeathTime = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 2.5f;
+		//이동량만큼 월드매트릭스 수정
+		D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 	}
 }
 

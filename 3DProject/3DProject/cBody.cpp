@@ -9,6 +9,7 @@ cBody::cBody()
 	, m_pFrameRoot(nullptr)
 	, m_pMesh(nullptr)
 	, m_pBuffer(nullptr)
+	, m_pEffect(nullptr)
 	, m_ft(0.1f)
 	, m_bIsBlend(false)
 	, m_bCheckBlend(true)
@@ -25,9 +26,9 @@ cBody::cBody()
 cBody::~cBody()
 {
 	D3DXFrameDestroy(m_pFrameRoot, m_pAlloc);
-	//m_pAlloc->DestroyFrame(m_pFrame);
 	SAFE_DELETE(m_pAlloc);
 	SAFE_RELEASE(m_pMesh);
+	SAFE_RELEASE(m_pEffect);
 }
 
 void cBody::Setup(char* FolderName, char* FileName)
@@ -114,14 +115,13 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 	D3DXMATRIXA16 matWorld;
 
 	matWorld = pBone->CombinedTransformationMatrix * m_matWorld;
-
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 
 	//m_pMesh->DrawSubset(0);//·»´õ
 	if (pBone->pMeshContainer)
 	{
 		ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
-		//g_pD3DDevice->SetTexture(0, pFrame->pMeshContainer->pMaterials);
+		
 		for (size_t i = 0; i < pBoneMesh->dwNumSubset; ++i)
 		{
 			g_pD3DDevice->SetTexture(0, pBoneMesh->vecTexture[i]);
@@ -323,4 +323,44 @@ DOUBLE cBody::GetAniTrackPeriod(int nIndex)
 	fTime = pAnimSet->GetPeriod();
 	SAFE_RELEASE(pAnimSet);
 	return fTime;
+}
+
+LPD3DXEFFECT cBody::LoadEffect(const char* fileName)
+{
+	LPD3DXEFFECT effect = nullptr;
+
+	LPD3DXBUFFER error = nullptr;
+	DWORD shaderFlag = 0;
+
+#ifdef _DEBUG
+	shaderFlag = shaderFlag | D3DXSHADER_DEBUG;
+#endif
+
+	D3DXCreateEffectFromFileA(
+		g_pD3DDevice,
+		fileName,
+		nullptr,
+		nullptr,
+		shaderFlag,
+		nullptr,
+		&effect,
+		&error);
+
+	if (error != nullptr || effect == nullptr)
+	{
+		int size = error->GetBufferSize();
+		char* str = new char[size];
+
+		sprintf_s(str, size, (const char*)error->GetBufferPointer());
+		OutputDebugStringA(str);
+		SAFE_RELEASE(error);
+		if (str)
+		{
+			delete[] str;
+		}
+
+		return nullptr;
+	}
+
+	return effect;
 }

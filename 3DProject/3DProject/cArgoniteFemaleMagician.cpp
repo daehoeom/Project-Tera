@@ -39,18 +39,10 @@ void cArgoniteFemaleMagician::Update()
 {
 	__super::Update();
 
-	for (size_t i = 0; i < this->GetColliderRepo().size(); i++)
-	{
-		this->GetColliderRepo()[i]->SetWorld(&m_matWorld);
-		D3DXMATRIXA16 mat = this->GetColliderRepo()[i]->GetLocal() * this->GetColliderRepo()[i]->GetWorld();
-		D3DXVECTOR3 vPos = D3DXVECTOR3(mat._41, mat._42, mat._43);
-		this->GetColliderRepo()[i]->SetPosition(vPos);
-	}
-
 	if (GetEnemyState() == ENEMY_DEATH)
 	{
 		SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.23f, GetPosition().z));
-
+		m_fDeathTime = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 1.7f;
 		//이동량만큼 월드매트릭스 수정
 		D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z); 
 	}

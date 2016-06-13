@@ -69,7 +69,6 @@ cGrid::cGrid( int nLine /*= 30*/, float fInterval /*= 1.0f*/ )
 cGrid::~cGrid(void)
 {
 	SAFE_RELEASE(m_pVB);
-
 }
 
 void cGrid::Render()

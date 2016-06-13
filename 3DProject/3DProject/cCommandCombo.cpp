@@ -3,7 +3,7 @@
 
 
 cCommandCombo::cCommandCombo()
-	: m_fCommandClear(5.f)
+	: m_fCommandClear(13.f)
 	, m_fCommandTime(0.f)
 {
 }

@@ -19,6 +19,7 @@ public:
 	void SetAnimationIndex(int nIndex);
 	LPD3DXFRAME& GetFrameRoot();
 	DOUBLE GetAniTrackPeriod(int nIndex);
+	LPD3DXEFFECT LoadEffect(const char* fileName);
 
 	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
 	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }
@@ -46,6 +47,7 @@ private:
 	cAllocateHierarchy*			m_pAlloc;
 	LPD3DXFRAME					m_pFrameRoot;
 	LPD3DXFRAME					m_pFrameRootOrigin;
+	LPD3DXEFFECT				m_pEffect;
 
 	//string						
 	std::string					m_sPath;
