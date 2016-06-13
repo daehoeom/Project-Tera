@@ -6,7 +6,7 @@ class cSkyBox;
 class cObjLoader;
 class cGroup;
 class cNpcManager;
-class cArgoniteKallashGuardLeader;
+class cMadmadDuo;
 
 class cMainGame
 {
@@ -26,6 +26,6 @@ private:
 	cSkyBox*						m_pSkyBox;
 	cObjLoader*						m_pLoader;
 	cNpcManager*					m_pNpc;
-	cArgoniteKallashGuardLeader*		m_pMonster;
+	cMadmadDuo*				m_pMonster;
 	std::vector<cGroup*>			m_vecGroup;
 };

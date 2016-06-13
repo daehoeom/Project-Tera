@@ -186,19 +186,10 @@
     <ClInclude Include="cNpcManager.h">
       <Filter>Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cDyingGhillieDhu.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="cEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="cFatHunter.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="cGiantStone.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="cKalanHeavyWarrior.h">
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="cMadmadDuo.h">
@@ -362,19 +353,10 @@
     <ClCompile Include="cNpcManager.cpp">
       <Filter>Misc\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="cDyingGhillieDhu.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="cEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="cFatHunter.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="cGiantStone.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="cKalanHeavyWarrior.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="cMadmadDuo.cpp">

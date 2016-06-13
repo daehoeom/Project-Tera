@@ -20,6 +20,9 @@ cPlayer::cPlayer( ) :
 	, m_bIsAction(false)
 	, m_bPushBehind(false)
 	, m_pCombo(nullptr)
+	, m_pEffect(nullptr)
+	, m_pDepthStencil(nullptr)
+	, m_pRenderTarget(nullptr)
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
@@ -71,6 +74,10 @@ cPlayer::~cPlayer( )
 	SAFE_DELETE(m_pFace);
 	SAFE_DELETE(m_pTail);
 	SAFE_DELETE(m_pHand);
+
+	SAFE_RELEASE(m_pDepthStencil);
+	SAFE_RELEASE(m_pEffect);
+	SAFE_RELEASE(m_pRenderTarget);
 }
 
 void cPlayer::Update( )
@@ -332,7 +339,7 @@ void cPlayer::OnCollisionStay(cCollisionObject* rhs)
 		if (GetPlayerState() == PLAYER_COMBO1 || GetPlayerState() == PLAYER_COMBO2 || GetPlayerState() == PLAYER_COMBO3 ||
 			GetPlayerState() == PLAYER_COMBO4)
 		{
-			//Log( "Ãæµ¹ÇÏ¿³À½");
+			Log( "Ãæµ¹ÇÏ¿³À½");
 
 			this->SetCollision(true);
 			rhs->SetCurrHp(rhs->GetCurrHp() - 100);
@@ -401,6 +408,7 @@ void cPlayer::SetFSMState()
 		if (!m_bIsAction)
 		{
 			m_bIsAction = true;
+			m_fPassTime = 0.f;
 			SetAniTrack(PLAYER_COMBO1);
 			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1) + 0.27f;
 		}
@@ -412,7 +420,8 @@ void cPlayer::SetFSMState()
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
-				if (m_pCombo->GetCommand().size() > 1)
+
+				if (m_pCombo->GetCommand().size() > 1 && GetPlayerState() == PLAYER_COMBO1)
 					SetPlayerState(PLAYER_COMBO2);
 
 				else if (m_pCombo->GetCommand().size() <= 1)
@@ -430,6 +439,7 @@ void cPlayer::SetFSMState()
 		if (!m_bIsAction)
 		{
 			m_bIsAction = true;
+			m_fPassTime = 0.f;
 			SetAniTrack(PLAYER_COMBO2);
 			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2) + 0.35f;
 		}
@@ -442,7 +452,7 @@ void cPlayer::SetFSMState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 
-				if (m_pCombo->GetCommand().size() > 2)
+				if (m_pCombo->GetCommand().size() > 2 && GetPlayerState() == PLAYER_COMBO2)
 					SetPlayerState(PLAYER_COMBO3);
 
 				else if (m_pCombo->GetCommand().size() <= 2)
@@ -460,6 +470,7 @@ void cPlayer::SetFSMState()
 		if (!m_bIsAction)
 		{
 			m_bIsAction = true;
+			m_fPassTime = 0.f;
 			SetAniTrack(PLAYER_COMBO3);
 			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3) + 0.19f;
 		}
@@ -471,10 +482,11 @@ void cPlayer::SetFSMState()
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
-				if (m_pCombo->GetCommand().size() > 3)
+
+				if (m_pCombo->GetCommand().size() > 3 && GetPlayerState() == PLAYER_COMBO3)
 					SetPlayerState(PLAYER_COMBO4);
 
-				if (m_pCombo->GetCommand().size() <= 3)
+				else if (m_pCombo->GetCommand().size() <= 3)
 					SetPlayerState(PLAYER_BATTLEIDLE);
 			}
 
@@ -489,6 +501,7 @@ void cPlayer::SetFSMState()
 		if (!m_bIsAction)
 		{
 			m_bIsAction = true;
+			m_fPassTime = 0.f;
 			SetAniTrack(PLAYER_COMBO4);
 			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4) + 0.19f;
 		}
@@ -654,7 +667,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_DEATH);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATH) - 0.2f;
+			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATH) + 0.2f;
 		}
 
 		else if (m_bIsAction)
@@ -670,7 +683,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.08f, GetPosition().z));
+				SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.05f, GetPosition().z));
 				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
 			}
 		}

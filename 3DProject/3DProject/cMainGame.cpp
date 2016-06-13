@@ -8,8 +8,8 @@
 #include "cObjLoader.h"
 #include "cGroup.h"
 #include "cNpcManager.h"
-#include "cArgoniteKallashGuardLeader.h"
-
+#include "cMadmadDuo.h"
+#include "cSkyBox.h"
 cPlayer* g_player = nullptr;
 
 cMainGame::cMainGame( )
@@ -26,7 +26,10 @@ cMainGame::cMainGame( )
 	m_pGrid = new cGrid;
 	g_player = new cPlayer;
 
-	m_pMonster = new cArgoniteKallashGuardLeader;
+	m_pMonster = new cMadmadDuo;
+
+	m_pSkyBox = new cSkyBox;
+	m_pSkyBox->Setup();
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
@@ -40,7 +43,8 @@ cMainGame::~cMainGame()
 	SAFE_DELETE( g_player);
 	SAFE_DELETE( m_pLoader );
 	SAFE_DELETE( m_pNpc );
-	SAFE_DELETE(m_pMonster);
+	SAFE_DELETE( m_pMonster );
+	SAFE_DELETE( m_pSkyBox );
 
 	for each(auto p in m_vecGroup)
 	{
@@ -54,6 +58,11 @@ void cMainGame::Update()
 {
 	cCamera::Get()->Update(&g_player->GetPosition());
 	cCollisionManager::Get( )->Update( );
+
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Update();
+	}
 
 	if (g_player)
 	{
@@ -106,6 +115,11 @@ void cMainGame::Render()
 	if (m_pNpc)
 	{
 		m_pNpc->Render();
+	}
+
+	if (m_pSkyBox)
+	{
+		m_pSkyBox->Render();
 	}
 
 	//몬스터 렌더

@@ -37,6 +37,13 @@ private:
 
 	D3DXMATRIXA16	m_matWorld;
 	D3DXVECTOR3		m_vDirection;
+	
+	//¹°Ã¼ ±×¸²ÀÚ
+	LPD3DXEFFECT	m_pEffect;
+
+	//±×¸²ÀÚ¸Ê ·»´õÅ¸±ê
+	LPDIRECT3DTEXTURE9 m_pRenderTarget;
+	LPDIRECT3DSURFACE9 m_pDepthStencil;
 
 	float			m_fSpeed;
 	float			m_fAngle;
