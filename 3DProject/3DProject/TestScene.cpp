@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "TestScene.h"
-
 #include "TXMLReader.h"
 #include "cBuildingObject.h"
 #include "cBoundingBox.h"	
-
 #include "cPlayer.h"
 #include "cBoundingBox.h"
 #include "cGameObjectManager.h"
@@ -28,6 +26,7 @@ TestScene::TestScene(
 
 	m_pSkyBox = new cSkyBox;
 	m_pSkyBox->Setup( );
+
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	m_pLoader = new cObjLoader;
