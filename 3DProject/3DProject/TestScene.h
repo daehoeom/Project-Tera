@@ -24,6 +24,5 @@ private:
 	void ReadXML( const std::string& xmlPath );
 
 private:
-	cSkyBox* m_pSkyBox;
 	std::vector<cBuildingObject*> m_buildingObjectRepo;
 };

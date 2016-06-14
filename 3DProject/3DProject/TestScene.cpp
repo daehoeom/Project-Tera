@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "TestScene.h"
+
 #include "TXMLReader.h"
 #include "cBuildingObject.h"
 #include "cBoundingBox.h"	
+
 #include "cPlayer.h"
 #include "cBoundingBox.h"
 #include "cGameObjectManager.h"
@@ -24,8 +26,9 @@ TestScene::TestScene(
 	);
 	monster2->SetPosition({ 0.f, 0.f, -150.f });
 
-	m_pSkyBox = new cSkyBox;
-	m_pSkyBox->Setup( );
+	cGameObjectManager::Get( )->AddObject(
+		"SkyBox", new cSkyBox
+	);
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
@@ -37,8 +40,6 @@ TestScene::TestScene(
 
 TestScene::~TestScene( )
 {
-	SAFE_DELETE( m_pSkyBox );
-
 	for ( auto buildObj : m_buildingObjectRepo )
 	{
 		SAFE_DELETE( buildObj );
@@ -53,11 +54,6 @@ void TestScene::Render( )
 		g_player->Render();
 	}
 
-	if ( m_pSkyBox )
-	{
-		m_pSkyBox->Render( );
-	}
-
 	// °Ç¹° ·»´õ
 	for ( auto elem : m_buildingObjectRepo )
 	{
@@ -70,11 +66,6 @@ void TestScene::Update( )
 	if ( g_player )
 	{
 		g_player->Update( );
-	}
-
-	if ( m_pSkyBox )
-	{
-		m_pSkyBox->Update( );
 	}
 }
 
