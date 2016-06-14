@@ -3,14 +3,14 @@
 
 
 cSkyBox::cSkyBox()
-	: m_pVertexBuffer(NULL)
+	: m_pVertexBuffer( nullptr )
 {
-	for (size_t i = 0; i < _countof(m_pTexture); i++)
+	for ( size_t i = 0; i < _countof( m_pTexture ); ++i )
 	{
 		m_pTexture[i] = nullptr;
 	}
-	
-	D3DXMatrixIdentity(&m_matWorld);
+
+	this->Setup( );
 }
 
 
@@ -118,7 +118,7 @@ void cSkyBox::Setup()
 
 void cSkyBox::Render()
 {
-	g_pD3DDevice->SetTransform(D3DTS_WORLD, &m_matWorld);
+	g_pD3DDevice->SetTransform(D3DTS_WORLD, &this->GetWorld( ));
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	g_pD3DDevice->SetStreamSource(0, m_pVertexBuffer, 0, sizeof(ST_PT_VERTEX));
 	g_pD3DDevice->SetFVF(ST_PT_VERTEX::FVF);
