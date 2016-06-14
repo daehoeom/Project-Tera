@@ -7,6 +7,7 @@ class cCamera :
 public:
 	void Update(D3DXVECTOR3* pTarget = NULL);
 	void WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	D3DXVECTOR3 GetEye() { return m_vEye; }
 
 protected:
 	cCamera( );

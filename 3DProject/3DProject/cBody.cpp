@@ -9,7 +9,6 @@ cBody::cBody()
 	, m_pFrameRoot(nullptr)
 	, m_pMesh(nullptr)
 	, m_pBuffer(nullptr)
-	, m_pEffect(nullptr)
 	, m_ft(0.1f)
 	, m_bIsBlend(false)
 	, m_bCheckBlend(true)
@@ -26,9 +25,9 @@ cBody::cBody()
 cBody::~cBody()
 {
 	D3DXFrameDestroy(m_pFrameRoot, m_pAlloc);
+	//m_pAlloc->DestroyFrame(m_pFrame);
 	SAFE_DELETE(m_pAlloc);
 	SAFE_RELEASE(m_pMesh);
-	SAFE_RELEASE(m_pEffect);
 }
 
 void cBody::Setup(char* FolderName, char* FileName)
@@ -115,13 +114,14 @@ void cBody::RecursiveFrameRender(D3DXFRAME* pFrame, D3DXMATRIX* pParentWorldTM)
 	D3DXMATRIXA16 matWorld;
 
 	matWorld = pBone->CombinedTransformationMatrix * m_matWorld;
+
 	g_pD3DDevice->SetTransform(D3DTS_WORLD, &matWorld);
 
 	//m_pMesh->DrawSubset(0);//·»´õ
 	if (pBone->pMeshContainer)
 	{
 		ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
-		
+		//g_pD3DDevice->SetTexture(0, pFrame->pMeshContainer->pMaterials);
 		for (size_t i = 0; i < pBoneMesh->dwNumSubset; ++i)
 		{
 			g_pD3DDevice->SetTexture(0, pBoneMesh->vecTexture[i]);
@@ -248,6 +248,7 @@ void cBody::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
 	{
 		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
 		m_matNeckTM = pBone->CombinedTransformationMatrix;
+		int a = 0;
 	}
 	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Bip01-Head"))
 	{

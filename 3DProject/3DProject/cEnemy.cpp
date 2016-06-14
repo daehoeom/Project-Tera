@@ -43,11 +43,6 @@ void cEnemy::Update()
 		m_fAttackCurrDelay = m_fAttackMaxTime;
 	}
 
-	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
-	m_pBody->SetAnimationIndex(++n);
-	}*/
-
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
 		this->SetCurrHp(50);

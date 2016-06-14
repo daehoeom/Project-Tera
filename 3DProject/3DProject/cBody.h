@@ -47,7 +47,6 @@ private:
 	cAllocateHierarchy*			m_pAlloc;
 	LPD3DXFRAME					m_pFrameRoot;
 	LPD3DXFRAME					m_pFrameRootOrigin;
-	LPD3DXEFFECT				m_pEffect;
 
 	//string						
 	std::string					m_sPath;
