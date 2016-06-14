@@ -17,7 +17,7 @@ public:
 	virtual eColliderType GetColliderType( ) const;
 
 	void SetPosition(const D3DXVECTOR3& pos) override { m_vMin = pos; }
-
+	
 	D3DXVECTOR3& GetPosition() override { return m_vMax - m_vMin; }
 	const D3DXVECTOR3& GetPosition() const override	{ return m_vMax - m_vMin; }
 
@@ -37,14 +37,17 @@ public:
 	void SetWorld(D3DXMATRIXA16* world) override { m_matWorldTM = *world; }
 
 private:
-	ID3DXMesh*		m_pBox;
+	void SetupVertexAndIndex( );
+
+private:
 	bool			m_bWireDraw;
 	D3DXVECTOR3		m_vMin;
 	D3DXVECTOR3		m_vMax;
 	D3DXVECTOR3		m_vChange;
 	D3DXMATRIXA16   m_matLocalTM;
 	D3DXMATRIXA16	m_matWorldTM;
-
+	std::vector<ST_PC_VERTEX> m_vertices;
+	std::vector<DWORD> m_indices;
 };
 
 inline eColliderType cBoundingBox::GetColliderType( ) const

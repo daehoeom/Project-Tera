@@ -12,7 +12,7 @@ class TXMLReader
 	using _NodeRepoTy = std::vector<XMLNode*>;
 
 public:
-	TXMLReader( const char* xmlPath );
+	explicit TXMLReader( const char* xmlPath );
 	virtual ~TXMLReader( );
 
 	using iterator = _NodeRepoTy::iterator;

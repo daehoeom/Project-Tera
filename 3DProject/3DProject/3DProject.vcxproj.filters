@@ -38,12 +38,6 @@
     <Filter Include="Object\Abstract">
       <UniqueIdentifier>{8136d43f-a3f6-4571-b1a9-58c073dd6594}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Abstract\Collider">
-      <UniqueIdentifier>{083c0eec-c5f6-4334-8fed-04abd05fb489}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Abstract\Collider\Interface">
-      <UniqueIdentifier>{51da7a26-107c-4fda-8455-33af7fc5f65a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="XML">
       <UniqueIdentifier>{b3c545b3-094a-4b55-be28-9324fddeb129}</UniqueIdentifier>
     </Filter>
@@ -66,6 +60,12 @@
     </Filter>
     <Filter Include="Object\Enemy">
       <UniqueIdentifier>{8707ce46-649e-4380-8b3d-7ecdd8a83b1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Abstract\Collider">
+      <UniqueIdentifier>{083c0eec-c5f6-4334-8fed-04abd05fb489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Abstract\Collider\Interface">
+      <UniqueIdentifier>{51da7a26-107c-4fda-8455-33af7fc5f65a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

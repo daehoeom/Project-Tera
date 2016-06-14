@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "cBoundingSphere.h"
 #include "cGameObject.h"
+#include "Console.h"
 
 cBoundingSphere::cBoundingSphere( D3DXVECTOR3 Pos, float radius ) :
 	 sphereMesh( nullptr ) 
