@@ -2,9 +2,8 @@
 #include "cLoadImage.h"
 
 
-cLoadImage::cLoadImage()
-	:cGameObject("Loading")
-	, m_isDebugRender(true)
+cLoadImage::cLoadImage() : 
+	m_isDebugRender(true)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 }

@@ -10,7 +10,7 @@ class cCollisionObject :
 	using _HadCollidedRepoTy = std::vector<bool>;
 
 public:
-	explicit cCollisionObject( const std::string& objName );
+	cCollisionObject( );
 	virtual ~cCollisionObject( );
 
 	virtual void Update( ) override;

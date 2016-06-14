@@ -5,9 +5,8 @@ class IWeapon :
 	public cCollisionObject
 {
 public:
-	IWeapon( const std::string& objName, cGameObject* owner ) :
-		m_owner( owner ),
-		cCollisionObject( objName )
+	explicit IWeapon( cGameObject* owner ) :
+		m_owner( owner )
 	{
 	}
 	virtual ~IWeapon( )

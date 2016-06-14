@@ -5,25 +5,29 @@
 #include "cBuildingObject.h"
 #include "cBoundingBox.h"	
 
-#include "cGrid.h"
 #include "cPlayer.h"
 #include "cBoundingBox.h"
-#include "cCollisionManager.h"
 #include "cGameObjectManager.h"
-#include "cObjLoader.h"
 #include "cGroup.h"
 #include "cNpcManager.h"
-#include "cSceneManager.h"
+#include "cSkyBox.h"
 #include "cArgoniteKallashGuardLeader.h"
 
 
 TestScene::TestScene( 
-	const std::string& xmlPath ) :
-		m_pMonster( nullptr )
+	const std::string& xmlPath )
 {
-	m_pMonster = new cArgoniteKallashGuardLeader;
-	m_pMonster2 = new cArgoniteKallashGuardLeader;
-	m_pMonster2->SetPosition({ 0.f, 0.f, 400.f });
+	cGameObjectManager::Get( )->AddObject(
+		"Monster1", new cArgoniteKallashGuardLeader 
+	);
+
+	auto* monster2 = cGameObjectManager::Get( )->AddObject( 
+		"Monster2", new cArgoniteKallashGuardLeader 
+	);
+	monster2->SetPosition({ 0.f, 0.f, -150.f });
+
+	m_pSkyBox = new cSkyBox;
+	m_pSkyBox->Setup( );
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	m_pLoader = new cObjLoader;
@@ -34,7 +38,7 @@ TestScene::TestScene(
 
 TestScene::~TestScene( )
 {
-	SAFE_DELETE( m_pMonster );
+	SAFE_DELETE( m_pSkyBox );
 
 	for ( auto buildObj : m_buildingObjectRepo )
 	{
@@ -50,13 +54,10 @@ void TestScene::Render( )
 		g_player->Render();
 	}
 
-	//¸ó½ºÅÍ ·»´õ
-	if (m_pMonster)
+	if ( m_pSkyBox )
 	{
-		m_pMonster->Render();
+		m_pSkyBox->Render( );
 	}
-	if ( m_pMonster2 )
-		m_pMonster2->Render( );
 
 	// °Ç¹° ·»´õ
 	for ( auto elem : m_buildingObjectRepo )
@@ -72,14 +73,10 @@ void TestScene::Update( )
 		g_player->Update( );
 	}
 
-	if ( m_pMonster )
+	if ( m_pSkyBox )
 	{
-		m_pMonster->Update( );
+		m_pSkyBox->Update( );
 	}
-
-	if ( m_pMonster2 )
-		m_pMonster2->Update( );
-
 }
 
 void TestScene::ReadXML( const std::string& xmlPath )
@@ -104,7 +101,10 @@ void TestScene::ReadXML( const std::string& xmlPath )
 	{
 		if ( !strcmp( "End", xmlNodeElem->Value( )))
 		{
-			cBuildingObject* newObject = new cBuildingObject( objName, modelPath );
+			//cGameObjectManager::AddObject( )
+
+			cBuildingObject* newObject = new cBuildingObject( 
+				modelPath );
 			m_buildingObjectRepo.push_back( newObject );
 
 			if ( collider )

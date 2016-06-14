@@ -33,10 +33,14 @@ public:
 
 public:
 	void Update( );
+	void Render( );
 
-	void AddObject( cGameObject* pObject );
-	void EraseObject( const std::string& key );
+public:
+	template <class _ObjectTy>
+	_ObjectTy* AddObject( const std::string& name, _ObjectTy* obj );
+
 	cGameObject* FindObject( const std::string& key );
+	void EraseObject( const std::string& key );
 
 	iterator begin( );
 	iterator end( );
@@ -49,10 +53,15 @@ private:
 	ObjectMap m_objMap;
 };
 
-inline void cGameObjectManager::AddObject(
-	cGameObject* obj )
+template<class _ObjectTy>
+inline _ObjectTy* cGameObjectManager::AddObject( 
+	const std::string& name, 
+	_ObjectTy* obj )
 {
-	m_objMap.insert( std::make_pair( obj->GetName( ), obj ) );
+	obj->SetName( name );
+	m_objMap.insert( std::make_pair( name, obj ));
+
+	return obj;
 }
 
 inline cGameObject* cGameObjectManager::FindObject(

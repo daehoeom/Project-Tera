@@ -31,6 +31,7 @@ void cMainGame::Update( )
 	cCamera::Get( )->Update( );
 	
 	cSceneManager::Get( )->Update( );
+	cGameObjectManager::Get( )->Update( );
 	cCollisionManager::Get( )->Update( );
 	
 	g_pTimeManager->Update();
@@ -48,6 +49,7 @@ void cMainGame::Render()
 	g_pD3DDevice->BeginScene();
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	
+	cGameObjectManager::Get( )->Render( );
 	cSceneManager::Get( )->Render( );
 	
 	g_pD3DDevice->EndScene();

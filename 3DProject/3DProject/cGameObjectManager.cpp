@@ -3,27 +3,37 @@
 
 #include "cCollision.h"
 
+
 cGameObjectManager::cGameObjectManager()
 {
 }
 
 cGameObjectManager::~cGameObjectManager()
 {
+	for ( auto& gameObjElem : m_objMap )
+	{
+		SAFE_DELETE( gameObjElem.second );
+	}
 }
 
 void cGameObjectManager::Update()
 {
-	// Why??
-	/*for ( auto& object : m_objMap )
+	for ( auto& object : m_objMap )
 	{
-		if ( object.second->IsActive( ))
-		{
+		//if ( object.second->IsActive( ))
+		//{
 			object.second->Update( );
-		}
-	}*/
+		//}
+	}
+}
 
-	for (auto& object : m_objMap)
+void cGameObjectManager::Render( )
+{
+	for ( auto& object : m_objMap )
 	{
-		object.second->Update();
+		//if ( object.second->IsActive( ))
+		//{
+			object.second->Render( );
+		//}
 	}
 }

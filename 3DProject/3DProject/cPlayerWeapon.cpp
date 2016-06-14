@@ -10,7 +10,7 @@ cPlayerWeapon::cPlayerWeapon(
 	const D3DXVECTOR3& vPos,
 	const D3DXMATRIXA16& matLocal,
 	cGameObject* owner ) :
-		IWeapon( "cPlayerWeapon", owner )
+		IWeapon( owner )
 {
 	// 무기 충돌체
 	this->AddCollider( new cBoundingSphere(
@@ -22,7 +22,7 @@ cPlayerWeapon::cPlayerWeapon(
 			GetPosition( ).z+matLocal._43 ) 
 	);
 	
-	this->SetCollisionType(CollisionType::ePlayer);
+	this->SetObjectType(ObjectType::ePlayer);
 }
 
 
@@ -38,8 +38,8 @@ void cPlayerWeapon::OnCollisionEnter(
 	Log( "WeaponEnter\n" );
 
 
-	if ( rhs->GetCollisionType( ) == 
-		CollisionType::eMonster )
+	if ( rhs->GetObjectType( ) == 
+		ObjectType::eMonster )
 	{
 		switch ( static_cast<cPlayer*>( this->GetOwner( ))
 			->GetPlayerState( ))

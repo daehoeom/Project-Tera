@@ -25,7 +25,5 @@ private:
 
 private:
 	cSkyBox* m_pSkyBox;
-	cArgoniteKallashGuardLeader* m_pMonster;
-	cArgoniteKallashGuardLeader* m_pMonster2;
 	std::vector<cBuildingObject*> m_buildingObjectRepo;
 };

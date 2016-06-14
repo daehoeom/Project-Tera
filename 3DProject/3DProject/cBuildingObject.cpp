@@ -8,10 +8,7 @@
 
 
 cBuildingObject::cBuildingObject( 
-	const std::string& name, 
-	const std::string& objFilePath ) :
-
-	cCollisionObject( name )
+	const std::string& objFilePath )
 {
 	cObjLoader loader;
 	loader.Load( objFilePath.c_str( ), m_groupRepo );
