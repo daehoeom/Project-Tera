@@ -14,9 +14,8 @@
 
 
 cPlayer::cPlayer( ) :
-	cCollisionObject( "Player" )
-	, m_vDirection(D3DXVECTOR3(0, 0, 1))
-	, m_fSpeed(1.f)
+	m_vDirection(D3DXVECTOR3(0, 0, 1))
+	, m_fSpeed(2.f)
 	, m_fPassTime(0.f)
 	, m_fPeriod(0.f)
 	, m_bAlive(true)
@@ -70,7 +69,7 @@ cPlayer::cPlayer( ) :
 	);
 	
 	SetAniTrack(PLAYER_BATTLEIDLE);
-	this->SetCollisionType(CollisionType::ePlayer);
+	this->SetObjectType(ObjectType::ePlayer);
 }
 
 cPlayer::~cPlayer( )
@@ -93,18 +92,13 @@ void cPlayer::Update( )
 	SetUpdateState();
 
 	
-	if (this->IsActive())
-	{
-		KeyControl();
-	}
-
+	KeyControl();
 	SetFSMState();
 
 	m_pCombo->Update();
 	m_playerWeapon->Update( );
 
 	if (this->GetCurrHp() <= 0 && 
-		this->IsActive() && 
 		GetPlayerState() != PLAYER_DEATH)
 	{
 		m_bIsAction = false;
@@ -696,7 +690,7 @@ void cPlayer::SetFSMState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetPlayerState(PLAYER_DEATHWAIT);
-				this->SetActive(false);
+				this->SetDead(true);
 			}
 
 			else if (m_fPassTime < m_fPeriod)

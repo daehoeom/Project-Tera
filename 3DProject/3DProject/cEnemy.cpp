@@ -4,8 +4,7 @@
 #include "Console.h"
 
 cEnemy::cEnemy()
-	:cCollisionObject("monster")
-	, m_pBody(nullptr)
+	: m_pBody(nullptr)
 	, n(0)
 	, m_fSpeed(0.5f)
 	, m_fAngle(0.f)
@@ -17,7 +16,7 @@ cEnemy::cEnemy()
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 
-	this->SetCollisionType(CollisionType::eMonster);
+	this->SetObjectType(ObjectType::eMonster);
 
 	D3DXMatrixIdentity(&m_matLocal);
 	D3DXMatrixIdentity(&matT);
@@ -47,14 +46,14 @@ void cEnemy::Update()
 	{
 		this->SetCurrHp(50);
 		SetEnemyState(ENEMY_IDLE);
-		this->SetActive(true);
+		this->SetDead(false);
 		m_bIsAction = true;
 		m_fPassTime = 0.f;
 		m_fPeriod = 0.f;
 	}
 
 	//몬스터의 HP가 0인데 아직 죽음 처리가 안되었다면
-	if (GetCurrHp() < 0.f && this->IsActive())
+	if (GetCurrHp() < 0.f && !this->IsDead())
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_DEATH)
@@ -63,13 +62,13 @@ void cEnemy::Update()
 			m_bIsAction = false;
 
 			//모든 죽음 처리가 다 끝났으므로 살아있다는 것을 false 시킨다.
-			this->SetActive(false);
+			this->SetDead(true);
 			SetEnemyState(ENEMY_DEATH);
 		}
 	}
 
 	//만약 몬스터의 위치가 플레이어와 가깝다면 공격모션
-	else if (abs(Distance) < 20.f && this->IsActive() && GetEnemyState() != ENEMY_BACKPOSITION)
+	else if (abs(Distance) < 20.f && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_ATTACK)
@@ -82,7 +81,7 @@ void cEnemy::Update()
 	}
 
 	//몬스터가 일정 범위를 넘어가면 다시 되돌아 올 것
-	else if (abs(Length) > 300.f && this->IsActive())
+	else if (abs(Length) > 300.f && !this->IsDead())
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_BACKPOSITION && GetEnemyState() != ENEMY_CHASE &&
@@ -96,7 +95,7 @@ void cEnemy::Update()
 	}
 
 	//만약 몬스터의 상태가 되돌아가기가 아니라면 플레이어 쫒기
-	else if (abs(Distance) < 100.f && this->IsActive() && GetEnemyState() != ENEMY_BACKPOSITION)
+	else if (abs(Distance) < 100.f && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_CHASE && GetEnemyState() != ENEMY_ATTACK)

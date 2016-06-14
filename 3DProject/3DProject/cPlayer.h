@@ -1,5 +1,5 @@
 #pragma once
-#include "cCollisionObject.h"
+#include "cUnitObject.h"
 #include "cCommandCombo.h"
 
 #define TUMBLINGRANGE 150.f
@@ -10,9 +10,25 @@ class cHair;
 class cFace;
 class cWeaponMesh;
 class cPlayerWeapon;
+enum ePlayerState
+{
+	PLAYER_BATTLEIDLE = 5,
+	PLAYER_RUN = 46,
+	PLAYER_TUMBLING = 6,
+	PLAYER_SKILL1 = 26,			//강하게 내려찍기
+	PLAYER_SKILL2 = 0,			//슬래쉬
+	PLAYER_SKILL3 = 27,			//강하게 옆으로 찍기
+	PLAYER_SKILL4 = 28,			//회오리치기
+	PLAYER_COMBO1 = 2,			//플레이어 콤보1
+	PLAYER_COMBO2 = 4,			//플레이어 콤보2
+	PLAYER_COMBO3 = 8,			//플레이어 콤보3
+	PLAYER_COMBO4 = 17,			//플레이어 콤보4
+	PLAYER_DEATH = 25,			//플레이어 데스
+	PLAYER_DEATHWAIT = 24,		//플레이어 데스웨잇
+};
 
 class cPlayer : 
-	public cCollisionObject
+	public cUnitObject
 {
 public:
 	cPlayer( );
@@ -27,6 +43,9 @@ public:
 	virtual void OnCollisionEnd( int colliderIndex, cCollisionObject* rhs ) override;
 
 public:
+	void SetPlayerState( ePlayerState p );
+	ePlayerState GetPlayerState( );
+
 	void SetUpdateState();	//상태에 따라 업데이트를 다르게 진행
 	void SetRenderState();	//상태에 따라 렌더를 다르게 진행
 	void SetFSMState();
@@ -34,6 +53,8 @@ public:
 	void SetAniTrack(int nIndex);
 
 private:
+	ePlayerState	m_sPState;
+	
 	cBody*			m_pBody;
 	cHair*			m_pHair;
 	cFace*			m_pFace;
@@ -61,3 +82,13 @@ private:
 	bool			m_bPushBehind;
 	float			n;
 };
+
+inline void cPlayer::SetPlayerState(ePlayerState p)
+{
+	m_sPState = p;
+}
+
+inline ePlayerState cPlayer::GetPlayerState()
+{
+	return m_sPState;
+}

@@ -365,8 +365,34 @@ cGameObject* HierarchyWindow::GetSelectedItemAsObject( )
 	return cGameObjectManager::Get( )->FindObject( findObjName );
 }
 
+cGameObject* HierarchyWindow::GetItemAsObjectByIndex( 
+	int32_t index )
+{
+	wchar_t outText[256] {0};
+	ListView_GetItemText( m_listHandle,
+		index,
+		0,
+		outText,
+		256 );
+
+	return cGameObjectManager::Get( )->FindObject( outText );
+}
+
+void HierarchyWindow::GetItemAsTextByIndex( 
+	wchar_t* outText, 
+	int32_t maxCount,
+	int32_t index )
+{
+	ListView_GetItemText( m_listHandle,
+		index,
+		0,
+		outText,
+		maxCount );
+}
+
 void HierarchyWindow::GetSelectedItemText(
-	wchar_t* outText, int32_t maxCount ) const
+	wchar_t* outText, 
+	int32_t maxCount ) const
 {
 	if ( !m_listHandle )
 	{
@@ -462,7 +488,7 @@ void HierarchyWindow::SetupListView( HWND wndHandle )
 	m_listHandle = CreateWindowEx( 
 		NULL, 
 		WC_LISTVIEW, NULL, WS_CHILD | WS_VISIBLE | WS_BORDER |
-		LVS_REPORT | LVS_SINGLESEL | LVS_EDITLABELS, -1, -1, rt.right+2, rt.bottom+2,
+		LVS_SORTASCENDING | LVS_REPORT | LVS_SINGLESEL | LVS_EDITLABELS, -1, -1, rt.right+2, rt.bottom+2,
 		wndHandle,
 		NULL, GetModuleHandle( 0 ), NULL 
 	);

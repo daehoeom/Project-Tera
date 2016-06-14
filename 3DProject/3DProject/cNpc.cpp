@@ -6,8 +6,7 @@
 #include "cBoundingSphere.h"
 
 cNpc::cNpc()
-	: cCollisionObject("npc")
-	, m_pBody(nullptr)
+	: m_pBody(nullptr)
 	, m_pHair(nullptr)
 	, m_pFace(nullptr)
 	, m_pBound(nullptr)
@@ -17,7 +16,7 @@ cNpc::cNpc()
 	D3DXMatrixIdentity(&m_matLocalHair);
 	D3DXMatrixIdentity(&m_matLocalHead);
 
-	this->SetCollisionType(CollisionType::eNpc);
+	this->SetObjectType(ObjectType::eNpc);
 
 }
 

@@ -1,40 +1,7 @@
 #pragma once
+#include "cGameObjectManager.h"
 
-/*
-*/
-
-enum eEnemyState
-{
-	ENEMY_IDLE = 0,				//몬스터 서있기
-	ENEMY_RUN = 1,				//몬스터 이동
-	ENEMY_DEATHWAIT = 2,		//몬스터 죽음
-	ENEMY_DEATH = 3,			//몬스터 죽기 직전
-	ENEMY_ATTACK = 4,			//몬스터 공격
-	ENEMY_SKILL1 = 5,			//몬스터 스킬1
-	ENEMY_SKILL2 = 6,			//몬스터 스킬2
-	ENEMY_BACKPOSITION = 7,		//몬스터 되돌아가기
-	ENEMY_CHASE = 8,			//플레이어 쫒아가기
-	ENEMY_NOTHING
-};
-
-enum ePlayerState
-{
-	PLAYER_BATTLEIDLE = 5,
-	PLAYER_RUN = 46,
-	PLAYER_TUMBLING = 6,
-	PLAYER_SKILL1 = 26,			//강하게 내려찍기
-	PLAYER_SKILL2 = 0,			//슬래쉬
-	PLAYER_SKILL3 = 27,			//강하게 옆으로 찍기
-	PLAYER_SKILL4 = 28,			//회오리치기
-	PLAYER_COMBO1 = 2,			//플레이어 콤보1
-	PLAYER_COMBO2 = 4,			//플레이어 콤보2
-	PLAYER_COMBO3 = 8,			//플레이어 콤보3
-	PLAYER_COMBO4 = 17,			//플레이어 콤보4
-	PLAYER_DEATH = 25,			//플레이어 데스
-	PLAYER_DEATHWAIT = 24,		//플레이어 데스웨잇
-};
-
-enum class CollisionType
+enum class ObjectType
 {
 	eUnknown,
 	ePlayer,
@@ -46,13 +13,14 @@ enum class CollisionType
 class cGameObject
 {
 public:
-	cGameObject( const std::string& objName );
+	cGameObject( );
 	virtual ~cGameObject( );
 
 	virtual void Render( );
 	virtual void Update( );
 
 public:
+	// Position
 	virtual void SetPosition( const D3DXVECTOR3& pos );
 	virtual void Move( const D3DXVECTOR3& pos );
 	virtual D3DXVECTOR3& GetPosition();
@@ -69,56 +37,42 @@ public:
 	virtual void Scale( const D3DXVECTOR3& scale );
 	virtual const D3DXVECTOR3& GetScale( ) const;
 	
-	//Hp
-	int GetMaxHp() { return m_nMaxHp; }
-
-	void SetCurrHp(int hp) { m_nCurrHp = hp; }
-	int GetCurrHp() { return m_nCurrHp; }
-
-	void SetCollisionType(CollisionType c);
-	CollisionType GetCollisionType();
-
-	//State
-	void SetPlayerState(ePlayerState p);
-	ePlayerState GetPlayerState();
-
-	void SetEnemyState(eEnemyState e);
-	eEnemyState GetEnemyState();
-
-	/*
-		State & Component
-	*/
+	// Transform과 동시에 월드 행렬을 가져옵니다.
+	const D3DXMATRIXA16& GetWorld( ) const;
+	
+	// 오브젝트의 자동 Update, Render 여부를 세팅하거나 가져옵니다.
+	// 이 오브젝트가 cGameObjectManager에 AddObject되지 않는 경우
+	// 이 함수들은 사용되지 않습니다.
 	void SetActive( bool isActive );
 	bool IsActive( ) const;
 	
+	// 이 오브젝트의 이름을 세팅하거나 가져옵니다.
+	// 이 이름은 각 오브젝트마다 중복되어서는 안됩니다.
+	void SetName( const std::string& name );
 	const std::string& GetName( ) const;
-	D3DXMATRIXA16& GetWorld( );
 
-protected:
-	const D3DXVECTOR3& GetPrevPos( ) const;
+	// 오브젝트의 형식을 세팅합니다.
+	void SetObjectType( ObjectType objectType );
+	
+	// 오브젝트의 형식을 가져옵니다.
+	ObjectType GetObjectType( ) const;
+
 
 private:
 	void UpdateWorld( );
 
 private:
 	D3DXVECTOR3 m_pos;
-	D3DXVECTOR3 m_prevPos;
 	D3DXVECTOR3 m_angle;
 	D3DXVECTOR3 m_scale;
 	D3DXMATRIXA16 m_matWorld;
 	std::string m_objName;
 	bool m_isActive;
-	CollisionType	m_sType;
-	int m_nMaxHp;
-	int m_nCurrHp;
-	
-	ePlayerState m_sPState;
-	eEnemyState m_sEState;
+	ObjectType	m_objectType;
 };
 
 inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
 {
-	m_prevPos = m_pos;
 	m_pos = pos;
 	m_matWorld._41 = pos.x;
 	m_matWorld._42 = pos.y;
@@ -127,7 +81,6 @@ inline void cGameObject::SetPosition( const D3DXVECTOR3& pos )
 
 inline void cGameObject::Move( const D3DXVECTOR3& pos )
 {
-	m_prevPos = m_pos;
 	m_pos += pos;
 	m_matWorld._41 += pos.x;
 	m_matWorld._42 += pos.y;
@@ -158,37 +111,19 @@ inline void cGameObject::Scale( const D3DXVECTOR3& scale )
 	this->UpdateWorld( );
 }
 
-inline void cGameObject::SetCollisionType(CollisionType c)
+inline void cGameObject::SetObjectType( 
+	ObjectType objectType )
 {
-	m_sType = c;
+	m_objectType = objectType;
 }
 
-inline CollisionType cGameObject::GetCollisionType()
+inline ObjectType cGameObject::GetObjectType( ) const
 {
-	return m_sType;
+	return m_objectType;
 }
 
-inline void cGameObject::SetPlayerState(ePlayerState p)
-{
-	m_sPState = p;
-}
-
-inline ePlayerState cGameObject::GetPlayerState()
-{
-	return m_sPState;
-}
-
-inline void cGameObject::SetEnemyState(eEnemyState e)
-{
-	m_sEState = e;
-}
-
-inline eEnemyState cGameObject::GetEnemyState()
-{
-	return m_sEState;
-}
-
-inline void cGameObject::SetActive( bool isActive )
+inline void cGameObject::SetActive( 
+	bool isActive )
 {
 	m_isActive = isActive;
 }
@@ -218,19 +153,36 @@ inline const D3DXVECTOR3& cGameObject::GetScale( ) const
 	return m_scale;
 }
 
+inline void cGameObject::SetName(
+	const std::string& newObjName )
+{
+	// 기존 오브젝트 맵의 key를 새로운 key로 변경하는 처리가 추가됩니다.
+
+	//cGameObject* object = 
+	//	cGameObjectManager::Get( )->FindObject( m_objName );
+	//// cGameObjectManager 내에 저장된 오브젝트입니까?
+	//if ( object )
+	//{
+	//	// 기존의 key를 erase한 뒤
+	//	cGameObjectManager::Get( )->EraseObject( m_objName );
+	//	
+	//	// 새로운 key로 object를 등록합니다.
+	//	cGameObjectManager::Get( )->AddObject( 
+	//		newObjName, this 
+	//	);
+	//}
+
+	m_objName = newObjName;
+}
+
 inline const std::string& cGameObject::GetName( ) const
 {
 	return m_objName;
 }
 
-inline D3DXMATRIXA16& cGameObject::GetWorld( )
+inline const D3DXMATRIXA16& cGameObject::GetWorld( ) const
 {
 	return m_matWorld;
-}
-
-inline const D3DXVECTOR3& cGameObject::GetPrevPos( ) const
-{
-	return m_prevPos;
 }
 
 inline bool cGameObject::IsActive( ) const

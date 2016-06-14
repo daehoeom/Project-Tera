@@ -15,6 +15,8 @@ void ICollider::PreRender( )
 {
 	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING, FALSE );
 	g_pD3DDevice->SetRenderState( D3DRS_FILLMODE, D3DFILL_WIREFRAME );
+	g_pD3DDevice->SetTexture( 0, nullptr );
+
 }
 
 void ICollider::PostRender( )

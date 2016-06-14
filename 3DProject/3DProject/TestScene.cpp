@@ -5,34 +5,29 @@
 #include "cBuildingObject.h"
 #include "cBoundingBox.h"	
 
-#include "cGrid.h"
 #include "cPlayer.h"
 #include "cBoundingBox.h"
-#include "cCollisionManager.h"
 #include "cGameObjectManager.h"
-#include "cObjLoader.h"
 #include "cGroup.h"
 #include "cNpcManager.h"
-#include "cSceneManager.h"
-#include "cArgoniteKallashGuardLeader.h"
 #include "cSkyBox.h"
+#include "cArgoniteKallashGuardLeader.h"
+
 
 TestScene::TestScene( 
 	const std::string& xmlPath )
-	: m_pGrid( nullptr )
-	, m_pLoader( nullptr )
-	, m_pNpc( nullptr )
-	, m_pMonster( nullptr )
-	, m_pSkyBox( nullptr )
 {
-	m_pGrid = new cGrid;
-	m_pMonster = new cArgoniteKallashGuardLeader;
-	m_pMonster2 = new cArgoniteKallashGuardLeader;
-	m_pMonster2->SetPosition( { 0.f, 0.f, 400.f } );
+	cGameObjectManager::Get( )->AddObject(
+		"Monster1", new cArgoniteKallashGuardLeader 
+	);
+
+	auto* monster2 = cGameObjectManager::Get( )->AddObject( 
+		"Monster2", new cArgoniteKallashGuardLeader 
+	);
+	monster2->SetPosition({ 0.f, 0.f, -150.f });
 
 	m_pSkyBox = new cSkyBox;
-	m_pSkyBox->Setup();
-
+	m_pSkyBox->Setup( );
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	m_pLoader = new cObjLoader;
@@ -43,11 +38,6 @@ TestScene::TestScene(
 
 TestScene::~TestScene( )
 {
-	SAFE_DELETE( m_pGrid );
-	SAFE_DELETE( g_player );
-	SAFE_DELETE( m_pLoader );
-	SAFE_DELETE( m_pNpc );
-	SAFE_DELETE( m_pMonster );
 	SAFE_DELETE( m_pSkyBox );
 
 	for ( auto buildObj : m_buildingObjectRepo )
@@ -58,38 +48,16 @@ TestScene::~TestScene( )
 
 void TestScene::Render( )
 {
-	//½ºÄ«ÀÌ¹Ú½º ·»´õ
-	if (m_pSkyBox)
-	{
-		m_pSkyBox->Render();
-	}
-
-	//±×¸®µå ·»´õ
-	if (m_pGrid)
-	{
-		m_pGrid->Render();
-	}
-
-	
 	//ÇÃ·¹ÀÌ¾î ·»´õ
 	if (g_player)
 	{
 		g_player->Render();
 	}
 
-	//Npc ·»´õ
-	if (m_pNpc)
+	if ( m_pSkyBox )
 	{
-		m_pNpc->Render();
+		m_pSkyBox->Render( );
 	}
-
-	//¸ó½ºÅÍ ·»´õ
-	if (m_pMonster)
-	{
-		m_pMonster->Render();
-	}
-	if ( m_pMonster2 )
-		m_pMonster2->Render( );
 
 	// °Ç¹° ·»´õ
 	for ( auto elem : m_buildingObjectRepo )
@@ -105,26 +73,10 @@ void TestScene::Update( )
 		g_player->Update( );
 	}
 
-	if ( m_pNpc )
+	if ( m_pSkyBox )
 	{
-		m_pNpc->Update( );
+		m_pSkyBox->Update( );
 	}
-
-	if ( m_pMonster )
-	{
-		m_pMonster->Update( );
-	}
-
-	if ( m_pMonster2 )
-	{
-		m_pMonster2->Update( );
-	}
-	
-	if (m_pSkyBox)
-	{
-		m_pSkyBox->Update();
-	}
-
 }
 
 void TestScene::ReadXML( const std::string& xmlPath )
@@ -149,7 +101,10 @@ void TestScene::ReadXML( const std::string& xmlPath )
 	{
 		if ( !strcmp( "End", xmlNodeElem->Value( )))
 		{
-			cBuildingObject* newObject = new cBuildingObject( objName, modelPath );
+			//cGameObjectManager::AddObject( )
+
+			cBuildingObject* newObject = new cBuildingObject( 
+				modelPath );
 			m_buildingObjectRepo.push_back( newObject );
 
 			if ( collider )
@@ -194,12 +149,12 @@ void TestScene::ReadXML( const std::string& xmlPath )
 					maxYAttr->Next( );
 
 				collider = new cBoundingBox(
-					{ minXAttr->FloatValue( ),
-					  minYAttr->FloatValue( ),
-					  minZAttr->FloatValue( )},
-					{ maxXAttr->FloatValue( ),
-					  maxYAttr->FloatValue( ),
-					  maxZAttr->FloatValue( )});
+					{ -100.f ,
+					  -100.f ,
+					  -100.f },
+					{ 100.f,
+					  100.f,
+					  100.f});
 			}
 		}
 		else if ( !strcmp( "Position", xmlNodeElem->Value( )))

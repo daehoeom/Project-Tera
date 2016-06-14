@@ -5,8 +5,7 @@ class cBuildingObject :
 	public cCollisionObject
 {
 public:
-	explicit cBuildingObject( const std::string& name,
-							  const std::string& objFilePath );
+	explicit cBuildingObject( const std::string& objFilePath );
 	virtual ~cBuildingObject( );
 
 public:

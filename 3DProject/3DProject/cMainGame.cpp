@@ -12,25 +12,28 @@ cMainGame::cMainGame( )
 	SetupManagers();
 
 	g_player = new cPlayer;
+	cCamera::Get( )->SetFollowingTarget( g_player );
 
 	/*SOUNDMANAGER->addSound("배경음", "./BGM/War_Start_00.ogg");
 	SOUNDMANAGER->play("배경음", 1.f);*/
 	cSceneManager::Get( )->LoadScene( 
-		new TestScene( "./Scene.xml" ));
+		new TestScene( "C:/Users/ggomdyu/Desktop/Scene.xml" ));
 }
 
 cMainGame::~cMainGame( )
 {
+	SAFE_DELETE( g_player );
 	g_pTextureManager->Destroy( );
 }
 
 void cMainGame::Update( )
 {
-	cCamera::Get( )->Update( &g_player->GetPosition( ));
-
+	cCamera::Get( )->Update( );
+	
 	cSceneManager::Get( )->Update( );
+	cGameObjectManager::Get( )->Update( );
 	cCollisionManager::Get( )->Update( );
-
+	
 	g_pTimeManager->Update();
 }
 
@@ -42,12 +45,13 @@ void cMainGame::Render()
 		D3DCOLOR_XRGB(47, 121, 112),
 		1.0f, 0
 	);
-
+	
 	g_pD3DDevice->BeginScene();
 	g_pD3DDevice->SetRenderState(D3DRS_LIGHTING, false);
 	
+	cGameObjectManager::Get( )->Render( );
 	cSceneManager::Get( )->Render( );
-
+	
 	g_pD3DDevice->EndScene();
 	g_pD3DDevice->Present(NULL, NULL, NULL, NULL);
 }

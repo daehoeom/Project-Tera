@@ -10,7 +10,7 @@ class cCollisionObject :
 	using _HadCollidedRepoTy = std::vector<bool>;
 
 public:
-	explicit cCollisionObject( const std::string& objName );
+	cCollisionObject( );
 	virtual ~cCollisionObject( );
 
 	virtual void Update( ) override;
@@ -23,13 +23,16 @@ public:
 	virtual void OnCollisionEnter( int colliderIndex, cCollisionObject* rhs );
 	virtual void OnCollisionEnd( int colliderIndex, cCollisionObject* rhs );
 	void AddCollider( ICollider* collider );
+
+	// 곧 콜라이더를 GameObject마다 하나씩만 가지도록 해야할
+	// 것 같네요
+	// 일케 안하믄 너무 힘드네여..;;
 	const _ColliderRepoTy& GetColliderRepo( ) const;
 
 private:
 	_HadCollidedRepoTy m_collidedRepo;
 	_ColliderRepoTy m_colliderRepo;
 };
-
 
 inline void cCollisionObject::SetCollision( 
 	int colliderIndex, 

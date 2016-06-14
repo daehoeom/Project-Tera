@@ -1,12 +1,24 @@
 #pragma once
-
-#include "cCollisionObject.h"
+#include "cUnitObject.h"
 #include "cBoundingSphere.h"
 
 class cEnemySkinMesh;
+enum eEnemyState
+{
+	ENEMY_IDLE = 0,				//몬스터 서있기
+	ENEMY_RUN = 1,				//몬스터 이동
+	ENEMY_DEATHWAIT = 2,		//몬스터 죽음
+	ENEMY_DEATH = 3,			//몬스터 죽기 직전
+	ENEMY_ATTACK = 4,			//몬스터 공격
+	ENEMY_SKILL1 = 5,			//몬스터 스킬1
+	ENEMY_SKILL2 = 6,			//몬스터 스킬2
+	ENEMY_BACKPOSITION = 7,		//몬스터 되돌아가기
+	ENEMY_CHASE = 8,			//플레이어 쫒아가기
+	ENEMY_NOTHING
+};
 
 class cEnemy :
-	public cCollisionObject
+	public cUnitObject
 {
 public:
 	cEnemy();
@@ -22,10 +34,14 @@ public:
 	virtual D3DXMATRIXA16 Rotate();
 	virtual float RotateAngle();
 
+	void SetEnemyState( eEnemyState e );
+	eEnemyState GetEnemyState( );
 	void ResetAttackDelay( );
 	bool IsAbleAttacked( );
 
 protected:
+	eEnemyState m_sEState;
+
 	cEnemySkinMesh*		m_pBody;		//몬스터 바디
 
 	D3DXMATRIXA16		m_matWorld;	//몬스터의 월드매트릭스
@@ -55,4 +71,14 @@ inline void cEnemy::ResetAttackDelay( )
 inline bool cEnemy::IsAbleAttacked( )
 {
 	return ( m_fAttackMaxTime - m_fAttackCurrDelay ) <= 0.001f;
+}
+
+inline void cEnemy::SetEnemyState( eEnemyState e )
+{
+	m_sEState = e;
+}
+
+inline eEnemyState cEnemy::GetEnemyState( )
+{
+	return m_sEState;
 }

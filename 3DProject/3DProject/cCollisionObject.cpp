@@ -5,9 +5,7 @@
 #include "ICollider.h"
 
 
-cCollisionObject::cCollisionObject( 
-	const std::string& objName ) :
-	cGameObject( objName )
+cCollisionObject::cCollisionObject( )
 {
 	cCollisionManager::Get( )->AddObject( this );
 }

@@ -21,7 +21,10 @@ public:
 	D3DXVECTOR3& GetPosition() override { return m_vMax - m_vMin; }
 	const D3DXVECTOR3& GetPosition() const override	{ return m_vMax - m_vMin; }
 
-	D3DXVECTOR3 GetMinimum() const  { return m_vMin; }
+	D3DXVECTOR3 GetMinimum() const  
+	{ 
+		return m_vMin; 
+	}
 	void SetMinumum(D3DXVECTOR3& vMin) { m_vMin = vMin; }
 
 	D3DXVECTOR3 GetMaximum() const { return m_vMax; }

@@ -189,19 +189,10 @@
     <ClInclude Include="cNpcManager.h">
       <Filter>Manager\Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cDyingGhillieDhu.h">
-      <Filter>Object\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="cEnemy.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="cFatHunter.h">
-      <Filter>Object\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="cGiantStone.h">
-      <Filter>Object\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="cKalanHeavyWarrior.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="cMadmadDuo.h">
@@ -264,6 +255,7 @@
     <ClInclude Include="cPlayerWeapon.h">
       <Filter>Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="cUnitObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -374,19 +366,10 @@
     <ClCompile Include="cNpcManager.cpp">
       <Filter>Manager\Misc\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="cDyingGhillieDhu.cpp">
-      <Filter>Object\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="cEnemy.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="cFatHunter.cpp">
-      <Filter>Object\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="cGiantStone.cpp">
-      <Filter>Object\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="cKalanHeavyWarrior.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="cMadmadDuo.cpp">
@@ -446,6 +429,7 @@
     <ClCompile Include="cPlayerWeapon.cpp">
       <Filter>Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="cUnitObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">
