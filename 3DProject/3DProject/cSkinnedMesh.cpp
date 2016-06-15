@@ -41,6 +41,7 @@ cSkinnedMesh::cSkinnedMesh()
 
 cSkinnedMesh::~cSkinnedMesh()
 {
+	this->Destroy( );
 }
 
 void cSkinnedMesh::Load(char* szDirectory, char* szFilename)

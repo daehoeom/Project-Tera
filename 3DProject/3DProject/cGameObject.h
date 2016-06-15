@@ -1,5 +1,4 @@
 #pragma once
-#include "cGameObjectManager.h"
 
 enum class ObjectType
 {
@@ -151,28 +150,6 @@ inline const D3DXVECTOR3& cGameObject::GetAngle( ) const
 inline const D3DXVECTOR3& cGameObject::GetScale( ) const
 {
 	return m_scale;
-}
-
-inline void cGameObject::SetName(
-	const std::string& newObjName )
-{
-	// 기존 오브젝트 맵의 key를 새로운 key로 변경하는 처리가 추가됩니다.
-
-	//cGameObject* object = 
-	//	cGameObjectManager::Get( )->FindObject( m_objName );
-	//// cGameObjectManager 내에 저장된 오브젝트입니까?
-	//if ( object )
-	//{
-	//	// 기존의 key를 erase한 뒤
-	//	cGameObjectManager::Get( )->EraseObject( m_objName );
-	//	
-	//	// 새로운 key로 object를 등록합니다.
-	//	cGameObjectManager::Get( )->AddObject( 
-	//		newObjName, this 
-	//	);
-	//}
-
-	m_objName = newObjName;
 }
 
 inline const std::string& cGameObject::GetName( ) const
