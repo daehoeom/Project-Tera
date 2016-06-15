@@ -24,6 +24,10 @@ private:
 	// 객체마다 생성
 	LPD3DXANIMATIONCONTROLLER	m_pAnimController;
 
+	bool						m_isBleding;
+	float						m_fPassedBlendTime;
+	float						m_fBlendTime;
+
 public:
 	cSkinnedMesh(char* szFolder, char* szFilename);
 	~cSkinnedMesh(void);

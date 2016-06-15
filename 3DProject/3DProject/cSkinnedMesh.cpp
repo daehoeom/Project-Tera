@@ -7,6 +7,9 @@ cSkinnedMesh::cSkinnedMesh(char* szFolder, char* szFilename)
 	, m_dwWorkingPaletteSize(0)
 	, m_pmWorkingPalette(NULL)
 	, m_pEffect(NULL)
+	, m_isBleding(false)
+	, m_fPassedBlendTime(0.f)
+	, m_fBlendTime(0.2f)
 {
 	cSkinnedMesh* pSkinnedMesh = g_pSkinnedMeshManager->GetSkinnedMesh(szFolder, szFilename);
 
@@ -82,6 +85,26 @@ void cSkinnedMesh::Load(char* szDirectory, char* szFilename)
 
 void cSkinnedMesh::UpdateAndRender()
 {
+	if (m_isBleding)
+	{
+		m_fPassedBlendTime += g_pTimeManager->GetDeltaTime();
+
+		if (m_fPassedBlendTime > m_fBlendTime)
+		{
+			m_isBleding = false;
+			m_pAnimController->SetTrackWeight(0, 1.f);
+			m_pAnimController->SetTrackEnable(1, false);
+			m_fPassedBlendTime = 0.f;
+		}
+
+		else
+		{
+			float fWeight = m_fPassedBlendTime / m_fBlendTime;
+			m_pAnimController->SetTrackWeight(0, fWeight);
+			m_pAnimController->SetTrackWeight(1, 1.f - fWeight);
+		}
+	}
+
 	if (m_pAnimController)
 	{
 		m_pAnimController->AdvanceTime(g_pTimeManager->GetDeltaTime(), NULL);
@@ -307,11 +330,24 @@ void cSkinnedMesh::SetupBoneMatrixPtrs(ST_BONE* pBone)
 
 void cSkinnedMesh::SetAnimationIndex(int nIndex)
 {
-	if (!m_pAnimController)
+	if (m_pAnimController == NULL)
 		return;
-	LPD3DXANIMATIONSET pAnimSet = NULL;
+
+	LPD3DXANIMATIONSET pAnimSet = NULL;						//새로운 애니메이션을 저장할 애니메이션 셋 포인터
+
+	D3DXTRACK_DESC desc;
+	m_pAnimController->GetTrackDesc(0, &desc);
+
+	m_pAnimController->GetTrackAnimationSet(0, &pAnimSet);
+	m_pAnimController->SetTrackAnimationSet(1, pAnimSet);
+
 	m_pAnimController->GetAnimationSet(nIndex, &pAnimSet);
 	m_pAnimController->SetTrackAnimationSet(0, pAnimSet);
+	m_pAnimController->SetTrackPosition(0, 0.f);
+	m_pAnimController->SetTrackDesc(1, &desc);
+
+	m_isBleding = true;
+
 	SAFE_RELEASE(pAnimSet);
 }
 

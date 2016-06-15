@@ -369,6 +369,7 @@ void cPlayer::SetFSMState()
 		{
 			SetAniTrack(PLAYER_BATTLEIDLE);
 			m_bIsAction = true;
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_BATTLEIDLE) ;
 		}
 
@@ -395,6 +396,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_RUN);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_RUN);
 		}
 
@@ -420,6 +422,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO1);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO1);
 		}
 
@@ -449,6 +452,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO2);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO2);
 		}
 
@@ -479,6 +483,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO3);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO3);
 		}
 
@@ -508,6 +513,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO4);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO4);
 		}
 
@@ -533,6 +539,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_TUMBLING);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_TUMBLING);
 		}
 
@@ -564,6 +571,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL1);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_SKILL1);
 		}
 
@@ -595,6 +603,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL2);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_SKILL2);
 		}
 
@@ -621,6 +630,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL3);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_SKILL3);
 		}
 
@@ -647,6 +657,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL4);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_SKILL4);
 		}
 
@@ -672,6 +683,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_DEATH);
+			m_fPassTime = 0.f;
 			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_DEATH);
 		}
 		else if (m_bIsAction)
