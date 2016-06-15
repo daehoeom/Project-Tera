@@ -11,7 +11,7 @@ protected:
 
 public:
 	cGroup(void);
-	~cGroup(void);
+	virtual ~cGroup(void);
 
 	void Render();
 };
