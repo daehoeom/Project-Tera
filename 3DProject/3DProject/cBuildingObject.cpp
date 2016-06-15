@@ -8,18 +8,19 @@
 
 
 cBuildingObject::cBuildingObject( 
-	const std::string& objFilePath )
+	const std::string& objFilePath ) :
+	m_objLoader( new cObjLoader )
 {
-	cObjLoader loader;
-	loader.Load( objFilePath.c_str( ), m_groupRepo );
+	m_objLoader->Load( objFilePath.c_str( ), m_groupRepo );
 }
 
 cBuildingObject::~cBuildingObject( )
 {
 	for ( auto elem : m_groupRepo )
 	{
-		SAFE_RELEASE( elem );
+		SAFE_DELETE( elem );
 	}
+	SAFE_DELETE( m_objLoader );
 }
 
 void cBuildingObject::Render( )

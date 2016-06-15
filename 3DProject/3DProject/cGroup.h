@@ -2,7 +2,7 @@
 
 #include "cMtlTex.h"
 
-class cGroup : public cObject
+class cGroup
 {
 protected:
 	SYNTHESIZE_PASS_BY_REF(std::vector<ST_PNT_VERTEX>, m_vecVertex, Vertex);

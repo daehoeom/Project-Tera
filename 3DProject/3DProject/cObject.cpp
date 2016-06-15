@@ -11,7 +11,7 @@ cObject::cObject(void)
 
 cObject::~cObject(void)
 {
-	g_pObjectManager->RemoveObject(this);
+	//g_pObjectManager->RemoveObject( this );
 	assert(m_nRefCount == 0 && "이러지 마라..");
 }
 

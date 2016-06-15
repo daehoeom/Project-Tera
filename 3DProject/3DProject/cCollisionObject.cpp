@@ -12,7 +12,7 @@ cCollisionObject::cCollisionObject( )
 
 cCollisionObject::~cCollisionObject( )
 {
-	//cCollisionManager::Get( )->EraseObject( this );
+	cCollisionManager::Get( )->EraseObject( this );
 
 	for ( auto& elem : m_colliderRepo )
 	{

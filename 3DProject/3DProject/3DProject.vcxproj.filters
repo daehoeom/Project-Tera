@@ -386,9 +386,6 @@
     <ClCompile Include="StringUtil.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="cBuildingObject.cpp">
       <Filter>Object\Building</Filter>
     </ClCompile>
@@ -398,6 +395,9 @@
     <ClCompile Include="cUnitObject.cpp" />
     <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cSkinnedMesh.cpp" />
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">
