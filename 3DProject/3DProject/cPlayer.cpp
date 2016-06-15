@@ -70,6 +70,9 @@ cPlayer::~cPlayer( )
 		SAFE_DELETE(m_vecSkinnedMesh[i]);
 	}
 
+	SAFE_DELETE(m_pCombo);
+	SAFE_DELETE(m_playerWeapon);
+
 	SAFE_RELEASE(m_pDepthStencil);
 	SAFE_RELEASE(m_pEffect);
 	SAFE_RELEASE(m_pRenderTarget);
@@ -366,7 +369,7 @@ void cPlayer::SetFSMState()
 		{
 			SetAniTrack(PLAYER_BATTLEIDLE);
 			m_bIsAction = true;
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_BATTLEIDLE) ;
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_BATTLEIDLE) ;
 		}
 
 		else if (m_bIsAction)
@@ -380,7 +383,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 	}
@@ -392,7 +395,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_RUN);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_RUN);
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_RUN);
 		}
 
 		else if (m_bIsAction)
@@ -406,7 +409,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 	}
@@ -417,7 +420,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO1);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1) + 0.27f;
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO1);
 		}
 
 		else if (m_bIsAction)
@@ -436,7 +439,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -446,7 +449,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO2);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2) + 0.35f;
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO2);
 		}
 
 		else if (m_bIsAction)
@@ -466,7 +469,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -476,7 +479,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO3);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3) + 0.19f;
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO3);
 		}
 
 		else if (m_bIsAction)
@@ -495,7 +498,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -505,7 +508,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO4);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4) + 0.19f;
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO4);
 		}
 
 		else if (m_bIsAction)
@@ -520,7 +523,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -530,7 +533,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_TUMBLING);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_TUMBLING);
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_TUMBLING);
 		}
 
 		else if (m_bIsAction)
@@ -550,7 +553,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -561,7 +564,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL1);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL1);
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_SKILL1);
 		}
 
 		else if (m_bIsAction)
@@ -581,7 +584,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -592,7 +595,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL2);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL2);
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_SKILL2);
 		}
 
 		else if (m_bIsAction)
@@ -607,7 +610,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -618,7 +621,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL3);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL3);
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_SKILL3);
 		}
 
 		else if (m_bIsAction)
@@ -633,7 +636,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -644,7 +647,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL4);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL4);
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_SKILL4);
 		}
 
 		else if (m_bIsAction)
@@ -659,7 +662,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -669,7 +672,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_DEATH);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATH) - 0.2f;
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_DEATH);
 		}
 		else if (m_bIsAction)
 		{
@@ -685,7 +688,7 @@ void cPlayer::SetFSMState()
 			else if (m_fPassTime < m_fPeriod)
 			{
 				SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.08f, GetPosition().z));
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 			}
 		}
 		break;
@@ -695,7 +698,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_DEATHWAIT);
-			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATHWAIT);
+			m_fPeriod = m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_DEATHWAIT);
 		}
 		break;
 	}

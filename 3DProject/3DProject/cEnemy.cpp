@@ -156,7 +156,7 @@ void cEnemy::ActionState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime();
 			}
 		}
 	}
@@ -186,7 +186,7 @@ void cEnemy::ActionState()
 			{
 				Log(m_fPassTime);
 				Log("\n");
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime();
 			}
 		}
 	}
@@ -214,7 +214,7 @@ void cEnemy::ActionState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime();
 			}
 		}
 	}
@@ -291,7 +291,7 @@ void cEnemy::ActionState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
 				m_matWorld = Rotate() * Move();
 			}
 		}
@@ -330,7 +330,7 @@ void cEnemy::ActionState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() / fAniTime;
+				m_fPassTime += g_pTimeManager->GetDeltaTime();
 			}
 		}
 	}

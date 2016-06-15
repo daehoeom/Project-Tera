@@ -20,10 +20,10 @@ TestScene::TestScene(
 		"Monster1", new cArgoniteKallashGuardLeader 
 	);
 
-	auto* monster2 = cGameObjectManager::Get( )->AddObject( 
+	/*auto* monster2 = cGameObjectManager::Get( )->AddObject( 
 		"Monster2", new cArgoniteKallashGuardLeader 
 	);
-	monster2->SetPosition({ 0.f, 0.f, -150.f });
+	monster2->SetPosition({ 0.f, 0.f, -150.f });*/
 
 	cGameObjectManager::Get( )->AddObject(
 		"SkyBox", new cSkyBox
