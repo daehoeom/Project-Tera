@@ -10,10 +10,7 @@ cGameObjectManager::cGameObjectManager()
 
 cGameObjectManager::~cGameObjectManager()
 {
-	for ( auto& gameObjElem : m_objMap )
-	{
-		SAFE_DELETE( gameObjElem.second );
-	}
+	this->ResetAllObject( );
 }
 
 void cGameObjectManager::Update()
@@ -36,4 +33,14 @@ void cGameObjectManager::Render( )
 			object.second->Render( );
 		//}
 	}
+}
+
+void cGameObjectManager::ResetAllObject( )
+{
+	for ( auto& objElem : m_objMap )
+	{
+		SAFE_DELETE( objElem.second );
+	}
+
+	m_objMap.clear( );
 }

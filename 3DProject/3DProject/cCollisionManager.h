@@ -12,6 +12,7 @@ public:
 
 	void AddObject( cCollisionObject* target );
 	void EraseObject( cCollisionObject* target );
+	void ClearAllObject( );
 
 	iterator begin( );
 	iterator end( );

@@ -163,6 +163,12 @@ void cCollisionManager::EraseObject(
 	{
 		const uintptr_t key =
 			reinterpret_cast<uintptr_t>( target );
+		
 		m_collisionMap.erase( key );
 	}
+}
+
+void cCollisionManager::ClearAllObject( )
+{
+	m_collisionMap.clear( );
 }

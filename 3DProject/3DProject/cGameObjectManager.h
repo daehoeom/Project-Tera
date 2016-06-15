@@ -41,6 +41,9 @@ public:
 
 	cGameObject* FindObject( const std::string& key );
 	void EraseObject( const std::string& key );
+	
+	// 모든 등록된 오브젝트를 파괴합니다.
+	void ResetAllObject( );
 
 	iterator begin( );
 	iterator end( );
