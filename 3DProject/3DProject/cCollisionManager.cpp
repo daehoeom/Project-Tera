@@ -90,10 +90,10 @@ void cCollisionManager::Update( )
 			else if ( op1CollType == eColliderType::kSphere &&
 				op2CollType == eColliderType::kBox )
 			{
-				isCollided = cCollision::IsBoxToSphere(
-					static_cast<const cBoundingBox&>(
-						*op1Collider ),
+				isCollided = cCollision::IsSphereToBox(
 					static_cast<const cBoundingSphere&>(
+						*op1Collider ),
+					static_cast<const cBoundingBox&>(
 						*op2Collider )
 				);
 			}

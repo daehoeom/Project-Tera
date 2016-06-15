@@ -69,6 +69,12 @@ void TestScene::Update( )
 	{
 		g_player->Update( );
 	}
+
+	// °Ç¹° ¾÷µ«
+	for ( auto elem : m_buildingObjectRepo )
+	{
+		elem->Update( );
+	}
 }
 
 void TestScene::ReadXML( const std::string& xmlPath )
@@ -106,10 +112,13 @@ void TestScene::ReadXML( const std::string& xmlPath )
 			newObject->SetPosition( pos );
 			newObject->SetAngle( rot );
 			newObject->SetScale( scale );
+			newObject->SetName( objName );
 
 			// Reset Items
 			newObject = nullptr;
 			collider = nullptr;
+			objName.clear( );
+			modelPath.clear( );
 		}
 		else if ( !strcmp( "ObjectName", xmlNodeElem->Value( )))
 		{
@@ -140,13 +149,46 @@ void TestScene::ReadXML( const std::string& xmlPath )
 				const tinyxml2::XMLAttribute* maxZAttr =
 					maxYAttr->Next( );
 
+				D3DXMATRIXA16 matScale;
+				D3DXMatrixScaling( &matScale, 
+					scale.x, 
+					scale.y, 
+					scale.z );
+
+				D3DXMATRIXA16 matRot, matRotX, matRotY, matRotZ;
+				D3DXMatrixRotationX( &matRotX, rot.x );
+				D3DXMatrixRotationY( &matRotY, rot.y );
+				D3DXMatrixRotationZ( &matRotZ, rot.z );
+				matRot = matRotX * matRotY * matRotZ;
+
+				D3DXMATRIXA16 matTrans;
+				D3DXMatrixTranslation( &matTrans, pos.x, pos.y, pos.z );
+
+				D3DXMATRIXA16 matWorld = 
+					matScale * matRot * matTrans;
+
+				D3DXVECTOR3 min(
+					minXAttr->FloatValue( ),
+					minYAttr->FloatValue( ),
+					minZAttr->FloatValue( )
+				);
+				D3DXVECTOR3 max(
+					maxXAttr->FloatValue( ),
+					maxYAttr->FloatValue( ),
+					maxZAttr->FloatValue( )
+				);
+				
+				D3DXVec3TransformCoord( &min, &min, &matWorld );
+				D3DXVec3TransformCoord( &max, &max, &matWorld );
+
 				collider = new cBoundingBox(
-					{ -100.f ,
-					  -100.f ,
-					  -100.f },
-					{ 100.f,
-					  100.f,
-					  100.f});
+					{ min.x, 
+					  min.y, 
+					  min.z },
+					{ max.x, 
+					  max.y, 
+					  max.z }
+				);
 			}
 		}
 		else if ( !strcmp( "Position", xmlNodeElem->Value( )))
