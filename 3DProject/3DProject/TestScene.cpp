@@ -15,6 +15,7 @@
 TestScene::TestScene( 
 	const std::string& xmlPath )
 {
+
 	cGameObjectManager::Get( )->AddObject(
 		"Monster1", new cArgoniteKallashGuardLeader 
 	);
@@ -27,7 +28,6 @@ TestScene::TestScene(
 	cGameObjectManager::Get( )->AddObject(
 		"SkyBox", new cSkyBox
 	);
-
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);

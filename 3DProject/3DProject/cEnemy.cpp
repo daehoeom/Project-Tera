@@ -106,7 +106,7 @@ void cEnemy::Update()
 	}
 
 	ActionState();
-
+	
 	for (size_t i = 0; i < this->GetColliderRepo().size(); i++)
 	{
 		this->GetColliderRepo()[i]->SetWorld(&m_matWorld);
@@ -114,6 +114,8 @@ void cEnemy::Update()
 		D3DXVECTOR3 vPos = D3DXVECTOR3(mat._41, mat._42, mat._43);
 		this->GetColliderRepo()[i]->SetPosition(vPos);
 	}
+
+	m_pBody->SetPosition(this->GetPosition());
 }
 
 void cEnemy::Render()
