@@ -2,11 +2,7 @@
 
 #include "cCollisionObject.h"
 
-class cBody;
-class cHair;
-class cFace;
-class cBoundingSphere;
-
+class cSkinnedMesh;
 class cNpc : 
 	public cCollisionObject
 {
@@ -25,19 +21,14 @@ public:
 	void SetType(eNpcType e) { m_sType = e; }
 	eNpcType GetType() { return m_sType; }
 
-	cBoundingSphere* GetSphere() { return m_pBound; }
-	void SetSphere(cBoundingSphere* bound) { m_pBound = bound; }
 private:
-	cBody*				m_pBody;
-	cHair*				m_pHair;
-	cFace*				m_pFace;
+	std::vector<cSkinnedMesh*>	m_vecSkinnedMesh;
 
 	D3DXMATRIXA16		m_matWorld;
 	D3DXMATRIX			m_matLocalHair;
 	D3DXMATRIX			m_matLocalHead;
-
+	
 	float				m_fAngle;
-	cBoundingSphere*	m_pBound;
 
 	eNpcType			m_sType;
 };

@@ -2,7 +2,8 @@
 #include "cUnitObject.h"
 #include "cBoundingSphere.h"
 
-class cEnemySkinMesh;
+class cSkinnedMesh;
+
 enum eEnemyState
 {
 	ENEMY_IDLE = 0,				//몬스터 서있기
@@ -42,7 +43,7 @@ public:
 protected:
 	eEnemyState m_sEState;
 
-	cEnemySkinMesh*		m_pBody;		//몬스터 바디
+	cSkinnedMesh*		m_pBody;
 
 	D3DXMATRIXA16		m_matWorld;	//몬스터의 월드매트릭스
 	D3DXMATRIXA16		m_matLocal;

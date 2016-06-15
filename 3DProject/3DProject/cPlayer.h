@@ -4,11 +4,7 @@
 
 #define TUMBLINGRANGE 150.f
 
-class cTail;
-class cBody;
-class cHair;
-class cFace;
-class cWeaponMesh;
+class cSkinnedMesh;
 class cPlayerWeapon;
 enum ePlayerState
 {
@@ -55,11 +51,7 @@ public:
 private:
 	ePlayerState	m_sPState;
 	
-	cBody*			m_pBody;
-	cHair*			m_pHair;
-	cFace*			m_pFace;
-	cTail*			m_pTail;
-	cWeaponMesh*	m_pHand;
+	std::vector<cSkinnedMesh*> m_vecSkinnedMesh;
 	cPlayerWeapon*	m_playerWeapon;
 	cCommandCombo*	m_pCombo;
 

@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "TestScene.h"
-
 #include "TXMLReader.h"
 #include "cBuildingObject.h"
 #include "cBoundingBox.h"	
-
 #include "cPlayer.h"
 #include "cBoundingBox.h"
 #include "cGameObjectManager.h"
@@ -29,6 +27,10 @@ TestScene::TestScene(
 	cGameObjectManager::Get( )->AddObject(
 		"SkyBox", new cSkyBox
 	);
+
+	cGameObjectManager::Get()->AddObject(
+		"Npc", new cNpc("")
+		);
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);

@@ -1,16 +1,12 @@
 #include "stdafx.h"
 #include "cPlayer.h"
-#include "cBody.h"
-#include "cHair.h"
-#include "cFace.h"
-#include "cTail.h"
 #include "cCollisionManager.h"
-#include "cWeaponMesh.h"
 #include "cBoundingSphere.h"
 #include "cBoundingBox.h"
 #include "Console.h"
 #include "cEnemy.h"
 #include "cPlayerWeapon.h"
+#include "cSkinnedMesh.h"
 
 
 cPlayer::cPlayer( ) :
@@ -31,7 +27,7 @@ cPlayer::cPlayer( ) :
 	this->SetPosition({ 0.f, 0.f, 100.f });
 
 	//대기상태
-	m_pBody = new cBody;
+	/*m_pBody = new cBody;
 	m_pBody->Setup("CH/Player", "Player_Body.X");
 
 	m_pFace = new cFace;
@@ -48,7 +44,27 @@ cPlayer::cPlayer( ) :
 
 	m_pHand = new cWeaponMesh;
 	m_pHand->SetWeapon(&m_pBody->GetWeaponHand());
-	m_pHand->Setup("CH/Player", "Lance.X");
+	m_pHand->Setup("CH/Player", "Lance.X");*/
+
+	cSkinnedMesh* pBody = new cSkinnedMesh("./CH/Player/", "Player_Body.X");
+	pBody->SetPosition(D3DXVECTOR3(0, 0, 0));
+	m_vecSkinnedMesh.push_back(pBody);
+
+	cSkinnedMesh* pHead = new cSkinnedMesh("./CH/Player/", "Player_Head.X");
+	pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
+	m_vecSkinnedMesh.push_back(pHead);
+
+	cSkinnedMesh* pHair = new cSkinnedMesh("./CH/Player/", "Player_Hair.X");
+	pHair->SetPosition(D3DXVECTOR3(0, 0, 0));
+	m_vecSkinnedMesh.push_back(pHair);
+
+	cSkinnedMesh* pTail = new cSkinnedMesh("./CH/Player/", "Player_Tail.X");
+	pTail->SetPosition(D3DXVECTOR3(0, 0, 0));
+	m_vecSkinnedMesh.push_back(pTail);
+
+	cSkinnedMesh* pWeapon = new cSkinnedMesh("./CH/Player/", "Lance.X");
+	pWeapon->SetPosition(D3DXVECTOR3(0, 0, 0));
+	m_vecSkinnedMesh.push_back(pWeapon);
 
 	//콤보 클래스
 	m_pCombo = new cCommandCombo;
@@ -74,11 +90,10 @@ cPlayer::cPlayer( ) :
 
 cPlayer::~cPlayer( )
 {
-	SAFE_DELETE(m_pBody);
-	SAFE_DELETE(m_pHair);
-	SAFE_DELETE(m_pFace);
-	SAFE_DELETE(m_pTail);
-	SAFE_DELETE(m_pHand);
+	for (size_t i = 0; i < m_vecSkinnedMesh.size(); i++)
+	{
+		SAFE_DELETE(m_vecSkinnedMesh[i]);
+	}
 
 	SAFE_RELEASE(m_pDepthStencil);
 	SAFE_RELEASE(m_pEffect);
@@ -218,22 +233,22 @@ void cPlayer::KeyControl()
 		//평타를 한번도 하지 않았다면?
 		if (m_pCombo->GetCommand().size() == 0)
 		{
-			m_pCombo->Input(m_pBody->GetAniTrackPeriod(PLAYER_COMBO1));
+			m_pCombo->Input(m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO1));
 		}
 
 		else if (m_pCombo->GetCommand().size() == 1)
 		{
-			m_pCombo->Input(m_pBody->GetAniTrackPeriod(PLAYER_COMBO2));
+			m_pCombo->Input(m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO2));
 		}
 
 		else if (m_pCombo->GetCommand().size() == 2)
 		{
-			m_pCombo->Input(m_pBody->GetAniTrackPeriod(PLAYER_COMBO3));
+			m_pCombo->Input(m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO3));
 		}
 
 		else if (m_pCombo->GetCommand().size() == 3)
 		{
-			m_pCombo->Input(m_pBody->GetAniTrackPeriod(PLAYER_COMBO4));
+			m_pCombo->Input(m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO4));
 		}
 	}
 
@@ -377,7 +392,7 @@ void cPlayer::SetFSMState()
 		{
 			SetAniTrack(PLAYER_BATTLEIDLE);
 			m_bIsAction = true;
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_BATTLEIDLE) ;
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_BATTLEIDLE) ;
 		}
 
 		else if (m_bIsAction)
@@ -403,7 +418,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_RUN);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_RUN);
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_RUN);
 		}
 
 		else if (m_bIsAction)
@@ -428,7 +443,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO1);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1) + 0.27f;
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO1) + 0.27f;
 		}
 
 		else if (m_bIsAction)
@@ -457,7 +472,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO2);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2) + 0.35f;
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO2) + 0.35f;
 		}
 
 		else if (m_bIsAction)
@@ -487,7 +502,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO3);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3) + 0.19f;
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO3) + 0.19f;
 		}
 
 		else if (m_bIsAction)
@@ -516,7 +531,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_COMBO4);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4) + 0.19f;
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_COMBO4) + 0.19f;
 		}
 
 		else if (m_bIsAction)
@@ -541,7 +556,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_TUMBLING);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_TUMBLING);
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_TUMBLING);
 		}
 
 		else if (m_bIsAction)
@@ -572,7 +587,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL1);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL1);
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL1);
 		}
 
 		else if (m_bIsAction)
@@ -603,7 +618,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL2);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL2);
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL2);
 		}
 
 		else if (m_bIsAction)
@@ -629,7 +644,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL3);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL3);
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL3);
 		}
 
 		else if (m_bIsAction)
@@ -655,7 +670,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_SKILL4);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL4);
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_SKILL4);
 		}
 
 		else if (m_bIsAction)
@@ -680,7 +695,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_DEATH);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATH) - 0.2f;
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATH) - 0.2f;
 		}
 		else if (m_bIsAction)
 		{
@@ -706,7 +721,7 @@ void cPlayer::SetFSMState()
 		{
 			m_bIsAction = true;
 			SetAniTrack(PLAYER_DEATHWAIT);
-			m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATHWAIT);
+			//m_fPeriod = m_pBody->GetAniTrackPeriod(PLAYER_DEATHWAIT);
 		}
 		break;
 	}
@@ -714,72 +729,44 @@ void cPlayer::SetFSMState()
 
 void cPlayer::SetUpdateState( )
 {
-	if (m_pBody)
-	{
-		m_pBody->Update();
-		m_pBody->SetWorld(&m_matWorld);
-	}
-	if (m_pHair)
-	{
-		m_pHair->SetHairTM(&m_pBody->GetHairTM());
-		m_pHair->Update();
-	}
-	if (m_pFace)
-	{
-		m_pFace->SetNeckTM(&m_pBody->GetNeckTM());
-		m_pFace->Update();
-	}
-
-	if (m_pTail)
-	{
-		m_pTail->SetTailTM(&m_pBody->GetTailTM());
-		m_pTail->Update();
-	}
+	//플레이어의 현재 위치를 넣어줌
+	//몸통
+	m_vecSkinnedMesh[0]->SetPosition(this->GetPosition());
 	
-	if (m_pHand)
-	{
-		m_pHand->SetWeapon(&m_pBody->GetWeaponHand());
-		m_pHand->Update();
-	}
+	//머리
+	m_vecSkinnedMesh[1]->SetLocal(&m_vecSkinnedMesh[0]->GetNeckTM());
+
+	//헤어
+	m_vecSkinnedMesh[2]->SetLocal(&m_vecSkinnedMesh[1]->GetHairTM());
+
+	//꼬리
+	m_vecSkinnedMesh[3]->SetLocal(&m_vecSkinnedMesh[0]->GetTailTM());
+
+	//플레이어
+	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
+
+	//무기
+	m_vecSkinnedMesh[4]->SetLocal(&m_vecSkinnedMesh[0]->GetWeaponTM());
 
 	//무기 위치 셋팅하려고 만든거임 건들 ㄴㄴ
 	D3DXMATRIXA16 matLocal;
-	D3DXMatrixTranslation(&matLocal, 1, 45, 0);
-	matLocal *= (D3DXMATRIXA16)m_pBody->GetWeaponHand();
-	this->GetColliderRepo()[0]->SetWorld(&m_matWorld);
+	D3DXMatrixTranslation(&matLocal, 1, 60, 0);
+	matLocal *= (D3DXMATRIXA16)m_vecSkinnedMesh[0]->GetWeaponTM();
 	m_playerWeapon->GetColliderRepo()[0]->SetWorld(&matLocal);
 }
 
 void cPlayer::SetRenderState()
 {
-	if (m_pBody)
+	for (size_t i = 0; i < m_vecSkinnedMesh.size(); i++)
 	{
-		m_pBody->Render();
-	}
-	if (m_pHair)
-	{
-		m_pHair->Render();
-	}
-	if (m_pFace)
-	{
-		m_pFace->Render();
-	}
-
-	if (m_pTail)
-	{
-		m_pTail->Render();
-	}
-
-	if (m_pHand)
-	{
-		m_pHand->Render(NULL);
+		m_vecSkinnedMesh[i]->UpdateAndRender();
 	}
 }
 
 void cPlayer::SetAniTrack(int nIndex)
 {
-	m_pBody->SetAnimationIndex(nIndex);
-	m_pHair->SetAnimationIndex(nIndex);
-	m_pFace->SetAnimationIndex(nIndex);
-	m_pTail->SetAnimationIndex(nIndex);
+	for (size_t i = 0; i < m_vecSkinnedMesh.size(); i++)
+	{
+		m_vecSkinnedMesh[i]->SetAnimationIndex(nIndex);
+	}
 }

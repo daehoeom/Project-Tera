@@ -150,15 +150,6 @@
     <ClInclude Include="cCollisionObject.h">
       <Filter>Object\Abstract</Filter>
     </ClInclude>
-    <ClInclude Include="cBody.h">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="cFace.h">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="cHair.h">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="cGameObjectManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
@@ -210,9 +201,6 @@
     <ClInclude Include="cCommandCombo.h">
       <Filter>Manager\Misc\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="cEnemySkinMesh.h">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="cLoadImage.h">
       <Filter>Manager\Misc\Utility</Filter>
     </ClInclude>
@@ -220,12 +208,6 @@
       <Filter>Manager\Misc\Utility</Filter>
     </ClInclude>
     <ClInclude Include="cProgressBar.h">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="cTail.h">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="cWeaponMesh.h">
       <Filter>Manager\Misc\Utility</Filter>
     </ClInclude>
     <ClInclude Include="TXMLReader.h">
@@ -256,6 +238,8 @@
       <Filter>Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="cUnitObject.h" />
+    <ClInclude Include="cSkinnedMeshManager.h" />
+    <ClInclude Include="cSkinnedMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -327,15 +311,6 @@
     <ClCompile Include="cCollisionObject.cpp">
       <Filter>Object\Abstract</Filter>
     </ClCompile>
-    <ClCompile Include="cBody.cpp">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="cFace.cpp">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="cHair.cpp">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="cGameObjectManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -381,9 +356,6 @@
     <ClCompile Include="cSoundManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="cEnemySkinMesh.cpp">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="cLoadImage.cpp">
       <Filter>Manager\Misc\Utility</Filter>
     </ClCompile>
@@ -391,12 +363,6 @@
       <Filter>Manager\Misc\Utility</Filter>
     </ClCompile>
     <ClCompile Include="cProgressBar.cpp">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="cTail.cpp">
-      <Filter>Manager\Misc\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="cWeaponMesh.cpp">
       <Filter>Manager\Misc\Utility</Filter>
     </ClCompile>
     <ClCompile Include="IState.cpp">
@@ -430,6 +396,8 @@
       <Filter>Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="cUnitObject.cpp" />
+    <ClCompile Include="cSkinnedMeshManager.cpp" />
+    <ClCompile Include="cSkinnedMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

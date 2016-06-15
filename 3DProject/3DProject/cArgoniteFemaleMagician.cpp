@@ -1,15 +1,14 @@
 #include "stdafx.h"
 #include "cArgoniteFemaleMagician.h"
-#include "cEnemySkinMesh.h"
 
 cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 {
-	m_pBody = new cEnemySkinMesh;
-	m_pBody->Setup("./CH/ArgoniteFemaleMagician", "ArgoniteFemaleMagician.X");
+	//m_pBody = new cEnemySkinMesh;
+	//m_pBody->Setup("./CH/ArgoniteFemaleMagician", "ArgoniteFemaleMagician.X");
 
-	D3DXMATRIX matR;
-	D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);
-	m_pBody->SetLocal(&matR);
+	//D3DXMATRIX matR;
+	//D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);
+	//m_pBody->SetLocal(&matR);
 
 	//무조건 몬스터 생성시 포지션 잡아줘야댐
 
@@ -32,7 +31,6 @@ cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 
 cArgoniteFemaleMagician::~cArgoniteFemaleMagician()
 {
-	SAFE_DELETE(m_pBody);
 }
 
 void cArgoniteFemaleMagician::Update()
@@ -42,7 +40,7 @@ void cArgoniteFemaleMagician::Update()
 	if (GetEnemyState() == ENEMY_DEATH)
 	{
 		SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.23f, GetPosition().z));
-		m_fDeathTime = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 1.7f;
+		//m_fDeathTime = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 1.7f;
 		//이동량만큼 월드매트릭스 수정
 		D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z); 
 	}
@@ -52,8 +50,8 @@ void cArgoniteFemaleMagician::Render()
 {
 	__super::Render();
 
-	if (m_pBody)
+	/*if (m_pBody)
 	{
 		m_pBody->Render();
-	}
+	}*/
 }

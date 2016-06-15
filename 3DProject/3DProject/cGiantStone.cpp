@@ -1,11 +1,10 @@
 #include "stdafx.h"
 #include "cGiantStone.h"
-#include "cEnemySkinMesh.h"
 
 cGiantStone::cGiantStone()
 {
-	m_pBody = new cEnemySkinMesh;
-	m_pBody->Setup("./CH/GiantStone", "GiantStone.X");
+	/*m_pBody = new cEnemySkinMesh;
+	m_pBody->Setup("./CH/GiantStone", "GiantStone.X");*/
 
 	D3DXMATRIXA16 matT;
 	D3DXMatrixTranslation(&matT, 0, 50, 0);
@@ -16,7 +15,6 @@ cGiantStone::cGiantStone()
 
 cGiantStone::~cGiantStone()
 {
-	SAFE_DELETE(m_pBody);
 }
 
 void cGiantStone::Update()
@@ -32,9 +30,4 @@ void cGiantStone::Update()
 void cGiantStone::Render()
 {
 	__super::Render();
-
-	if (m_pBody)
-	{
-		m_pBody->Render();
-	}
 }

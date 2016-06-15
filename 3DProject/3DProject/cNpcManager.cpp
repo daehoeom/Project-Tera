@@ -10,7 +10,7 @@ cNpcManager::cNpcManager()
 
 	//상점Npc
 	m_pNpc = new cNpc;
-	m_pNpc->Setup("./CH/NpcCastanic", "NpcCastanic");
+	m_pNpc->Setup("./CH/NpcCastanic/", "NpcCastanic");
 	D3DXMatrixTranslation(&world, -10.f, 0.f, 0.f);
 	m_pNpc->SetWorld(&world);
 	m_pNpc->SetType(eNpcType::NPC_SHOP);
@@ -18,7 +18,7 @@ cNpcManager::cNpcManager()
 
 	//퀘스트Npc
 	m_pNpc = new cNpc;
-	m_pNpc->Setup("./CH/NpcFemaleElf", "NpcFemaleElf");
+	m_pNpc->Setup("./CH/NpcFemaleElf/", "NpcFemaleElf");
 	D3DXMatrixTranslation(&world, 10.f, 0.f, 0.f);
 	m_pNpc->SetWorld(&world);
 	m_pNpc->SetType(eNpcType::NPC_QUEST);
@@ -26,7 +26,7 @@ cNpcManager::cNpcManager()
 
 	//대장간Npc
 	 m_pNpc = new cNpc;
-	m_pNpc->Setup("./CH/NpcPopori", "NpcPopori");
+	m_pNpc->Setup("./CH/NpcPopori/", "NpcPopori");
 	D3DXMATRIX matT;
 	D3DXMatrixTranslation(&matT, -1.5f, -7.f, 0.f);
 	m_pNpc->SetLocalHead(&(D3DXMATRIXA16)matT);
