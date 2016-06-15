@@ -11,8 +11,7 @@ cBuildingObject::cBuildingObject(
 	const std::string& objFilePath ) :
 	m_objLoader( new cObjLoader )
 {
-	m_objLoader->Load( 
-		(char*)objFilePath.c_str( ), m_groupRepo );
+	m_objLoader->Load( objFilePath.c_str( ), m_groupRepo );
 }
 
 cBuildingObject::~cBuildingObject( )
