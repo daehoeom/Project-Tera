@@ -10,7 +10,7 @@
 #include "cNpcManager.h"
 #include "cSkyBox.h"
 #include "cArgoniteKallashGuardLeader.h"
-
+#include "cGrid.h"
 
 TestScene::TestScene( 
 	const std::string& xmlPath )
@@ -25,9 +25,13 @@ TestScene::TestScene(
 	);
 	monster2->SetPosition({ 0.f, 0.f, -150.f });
 
-	cGameObjectManager::Get( )->AddObject(
-		"SkyBox", new cSkyBox
-	);
+	//cGameObjectManager::Get( )->AddObject(
+	//	"SkyBox", new cSkyBox
+	//);
+
+	cGameObjectManager::Get()->AddObject(
+		"Grid", new cGrid
+		);
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
