@@ -51,11 +51,7 @@ void cCamera::Update( )
 	m_vEye = D3DXVECTOR3(0, 0, -m_fDist);
 	D3DXMATRIXA16 matRotX, matRotY;
 	D3DXMatrixRotationX(&matRotX, m_fRotX);
-	if ( m_followTarget )
-	{
-		D3DXMatrixRotationY(&matRotY, 
-			m_followTarget->GetAngle( ).y + D3DXToRadian( 90 ));
-	}
+	D3DXMatrixRotationY(&matRotY, m_fRotY);
 	D3DXMATRIXA16 matRot = matRotX * matRotY;
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matRot);
 	
@@ -63,7 +59,6 @@ void cCamera::Update( )
 	{
 		m_vEye = m_vEye + m_followTarget->GetPosition( );
 		m_vLookAt = m_followTarget->GetPosition( );
-		m_vLookAt.y += m_cameraHeight;
 	}
 	D3DXMATRIXA16 matView;
 
@@ -91,7 +86,7 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			ptCurrMouse.x = LOWORD(lParam);
 			ptCurrMouse.y = HIWORD(lParam);
 			m_fRotX += (ptCurrMouse.y - m_ptPrevMouse.y) / 100.0f;
-			//m_fRotY += (ptCurrMouse.x - m_ptPrevMouse.x) / 100.0f;
+			m_fRotY += (ptCurrMouse.x - m_ptPrevMouse.x) / 100.0f;
 			m_ptPrevMouse = ptCurrMouse;
 			if (m_fRotX >= D3DX_PI / 2.0f - EPSILON)
 			{
