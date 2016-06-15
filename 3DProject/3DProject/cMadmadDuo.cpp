@@ -5,12 +5,11 @@ cMadmadDuo::cMadmadDuo()
 {
 	SetPosition(D3DXVECTOR3(-30, 0, 30));
 
-	//m_pBody = new cEnemySkinMesh;
-	//m_pBody->Setup("./CH/MadmadDuo", "MadmanDuo.X");
+	m_pBody = new cSkinnedMesh("./CH/MadmadDuo/", "MadmanDuo.X");
 
-	/*D3DXMATRIX matR;
+	D3DXMATRIX matR;
 	D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);
-	m_pBody->SetLocal(&matR);*/
+	m_pBody->SetLocal(&matR);
 
 	D3DXMATRIXA16 matT;
 	D3DXMatrixTranslation(&matT, 0, 15, 0);
@@ -25,19 +24,20 @@ cMadmadDuo::cMadmadDuo()
 
 cMadmadDuo::~cMadmadDuo()
 {
+	SAFE_DELETE(m_pBody);
 }
 
 void cMadmadDuo::Update()
 {
 	__super::Update();
 
-	//if (GetEnemyState() == ENEMY_DEATH)
-	//{
-	//	SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.1f, GetPosition().z));
-	//	m_fDeathTime = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 1.7f;
-	//	//이동량만큼 월드매트릭스 수정
-	//	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
-	//}
+	if (GetEnemyState() == ENEMY_DEATH)
+	{
+		SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.1f, GetPosition().z));
+		m_fDeathTime = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 1.7f;
+		//이동량만큼 월드매트릭스 수정
+		D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
+	}
 }
 
 void cMadmadDuo::Render()

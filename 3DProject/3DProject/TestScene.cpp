@@ -28,9 +28,6 @@ TestScene::TestScene(
 		"SkyBox", new cSkyBox
 	);
 
-	cGameObjectManager::Get()->AddObject(
-		"Npc", new cNpc("")
-		);
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
