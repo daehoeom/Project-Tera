@@ -105,7 +105,6 @@ void cPlayer::Update( )
 	__super::Update( );
 
 	SetUpdateState();
-
 	
 	KeyControl();
 	SetFSMState();
