@@ -12,12 +12,12 @@ cMainGame::cMainGame( )
 	SetupManagers();
 
 	g_player = new cPlayer;
-	//cCamera::Get( )->SetFollowingTarget( g_player );
+	cCamera::Get( )->SetFollowingTarget( g_player );
 
 	/*SOUNDMANAGER->addSound("배경음", "./BGM/War_Start_00.ogg");
 	SOUNDMANAGER->play("배경음", 1.f);*/
-	//cSceneManager::Get( )->LoadScene( 
-	//	new TestScene( "C:/Users/ggomdyu/Desktop/Scene.xml" ));
+	cSceneManager::Get( )->LoadScene( 
+		new TestScene( "C:/Users/ggomdyu/Desktop/Scene.xml" ));
 }
 
 cMainGame::~cMainGame( )
