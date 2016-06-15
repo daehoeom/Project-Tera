@@ -51,11 +51,7 @@ void cCamera::Update( )
 	m_vEye = D3DXVECTOR3(0, 0, -m_fDist);
 	D3DXMATRIXA16 matRotX, matRotY;
 	D3DXMatrixRotationX(&matRotX, m_fRotX);
-	if ( m_followTarget )
-	{
-		D3DXMatrixRotationY(&matRotY, 
-			m_followTarget->GetAngle( ).y + D3DXToRadian( 90 ));
-	}
+	D3DXMatrixRotationY(&matRotY, m_fRotY);
 	D3DXMATRIXA16 matRot = matRotX * matRotY;
 	D3DXVec3TransformCoord(&m_vEye, &m_vEye, &matRot);
 	
@@ -63,7 +59,6 @@ void cCamera::Update( )
 	{
 		m_vEye = m_vEye + m_followTarget->GetPosition( );
 		m_vLookAt = m_followTarget->GetPosition( );
-		m_vLookAt.y += m_cameraHeight;
 	}
 	D3DXMATRIXA16 matView;
 
