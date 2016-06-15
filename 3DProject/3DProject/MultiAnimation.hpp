@@ -119,6 +119,30 @@ VertexShader vsArray20[ 4 ] = {
 	compile vs_2_0 VertSkinning( 3 ),
 	compile vs_2_0 VertSkinning( 4 ) };
 
+//Shadow Map
+VS_OUT VS_Main(float4 _vPosition : POSITION,
+				float4 _vNormal : NORMAL,
+				float2 _TexUV : TEXCOORD0,
+				float3 _vTangent : TANGENT0)
+{
+	VS_OUTPUT Out = (VS_OUTPUT)0;
+
+	float3 vEyePos = g_vEyePos - _vPosition.xyz;
+	float3 vLightDir = -g_vLightDir.xyz;
+
+	Out.m_vPosition = mul(_vPosition, g_mWVP);
+	Out.m_vNormal = _vNormal;
+	Out.m_TexUV = _TexUV;
+
+	{
+		//DepthShadow
+		Out.m_vShadowMapUV = mul(_vPosition, g_mShadowMatrix);
+		Out.m_vLightDepth = mul(_vPosition, g_mLightWVP);
+		Out.m_vEyePos = vEyePos;
+	}
+
+	return Out;
+}
 
 //--------------------------------------------------------------------------------------
 // Techniques
