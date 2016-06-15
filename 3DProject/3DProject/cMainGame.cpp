@@ -70,8 +70,8 @@ void cMainGame::SetupManagers( )
 	cRandomUtil::Setup();
 	cTimeManager::Get( );
 	cKeyManager::Get( );
-	cGameObjectManager::Get( );
 	cCollisionManager::Get( );
+	cGameObjectManager::Get( );
 	cSoundManager::Get();
 	cSceneManager::Get();
 }

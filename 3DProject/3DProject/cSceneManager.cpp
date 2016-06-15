@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "cSceneManager.h"
 
+#include "cGameObjectManager.h"
+#include "cCollisionManager.h"
+
 cSceneManager::cSceneManager( ) :
 	m_currScene( nullptr )
 {
@@ -13,7 +16,15 @@ cSceneManager::~cSceneManager( )
 
 void cSceneManager::LoadScene( IScene * newScene )
 {
-	SAFE_DELETE( m_currScene );
+	if ( m_currScene )
+	{
+		cCollisionManager::Get( )->ClearAllObject( );
+		cGameObjectManager::Get( )->ResetAllObject( );
+
+		delete m_currScene;
+		m_currScene = nullptr;
+	}
+
 	m_currScene = newScene;
 }
 
