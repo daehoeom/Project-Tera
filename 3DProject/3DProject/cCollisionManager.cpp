@@ -159,7 +159,10 @@ void cCollisionManager::AddObject(
 void cCollisionManager::EraseObject( 
 	cCollisionObject* target )
 {
-	const uintptr_t key =
-		reinterpret_cast<uintptr_t>( target );
-	m_collisionMap.erase( key );
+	if ( target )
+	{
+		const uintptr_t key =
+			reinterpret_cast<uintptr_t>( target );
+		m_collisionMap.erase( key );
+	}
 }

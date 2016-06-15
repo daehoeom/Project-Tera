@@ -1,13 +1,15 @@
 #pragma once
+#include "cGameObject.h"
 
-
-class cGrid
+class cGrid : 
+	public cGameObject
 {
 public:
 	cGrid( int nLine = 30, float fInterval = 1.0f );
-	~cGrid(void);
+	virtual ~cGrid(void);
 
-	void Render();
+	virtual void Render( ) override;
+	virtual void Update() override;
 
 private:
 	LPDIRECT3DVERTEXBUFFER9		m_pVB;
