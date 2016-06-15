@@ -1,5 +1,5 @@
 #pragma once
-
+class cObjLoader;
 class cGroup;
 class cBuildingObject :
 	public cCollisionObject
@@ -17,6 +17,7 @@ public:
 	virtual void OnCollisionEnd( int colliderIndex, cCollisionObject* rhs );
 
 private:
+	cObjLoader* m_objLoader;
 	std::vector<cGroup*> m_groupRepo;
 };
 

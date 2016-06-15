@@ -2,11 +2,11 @@
 #include "cGroup.h"
 #include "cMtlTex.h"
 
+
 cGroup::cGroup(void)
 	: m_pMtlTex(NULL)
 {
 }
-
 
 cGroup::~cGroup(void)
 {

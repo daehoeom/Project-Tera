@@ -15,30 +15,29 @@
 TestScene::TestScene( 
 	const std::string& xmlPath )
 {
-
-	cGameObjectManager::Get( )->AddObject(
+	/*cGameObjectManager::Get( )->AddObject(
 		"Monster1", new cArgoniteKallashGuardLeader 
 	);
-
-	auto* monster2 = cGameObjectManager::Get( )->AddObject( 
-		"Monster2", new cArgoniteKallashGuardLeader 
-	);
-	monster2->SetPosition({ 0.f, 0.f, -150.f });
+*/
+	//auto* monster2 = cGameObjectManager::Get( )->AddObject( 
+	//	"Monster2", new cArgoniteKallashGuardLeader 
+	//);
+	//monster2->SetPosition({ 0.f, 0.f, -150.f });
 
 	//cGameObjectManager::Get( )->AddObject(
 	//	"SkyBox", new cSkyBox
 	//);
 
-	cGameObjectManager::Get()->AddObject(
+	/*cGameObjectManager::Get()->AddObject(
 		"Grid", new cGrid
 		);
-
+*/
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	m_pLoader = new cObjLoader;
 	m_pLoader->Load("./Map/Height.obj", m_vecGroup, &mat);*/
 
-	this->ReadXML( xmlPath );
+	//this->ReadXML( xmlPath );
 }
 
 TestScene::~TestScene( )
