@@ -8,6 +8,6 @@ protected:
 
 public:
 	cMtlTex(void);
-	~cMtlTex(void);
+	virtual ~cMtlTex(void);
 };
 
