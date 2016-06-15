@@ -24,7 +24,7 @@ cPlayer::cPlayer( ) :
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
-	this->SetPosition({ 0.f, 0.f, 100.f });
+	this->SetPosition({ 0.f, 0.f, 0.f });
 
 	//대기상태
 	/*m_pBody = new cBody;

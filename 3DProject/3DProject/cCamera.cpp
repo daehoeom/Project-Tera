@@ -91,7 +91,7 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			ptCurrMouse.x = LOWORD(lParam);
 			ptCurrMouse.y = HIWORD(lParam);
 			m_fRotX += (ptCurrMouse.y - m_ptPrevMouse.y) / 100.0f;
-			//m_fRotY += (ptCurrMouse.x - m_ptPrevMouse.x) / 100.0f;
+			m_fRotY += (ptCurrMouse.x - m_ptPrevMouse.x) / 100.0f;
 			m_ptPrevMouse = ptCurrMouse;
 			if (m_fRotX >= D3DX_PI / 2.0f - EPSILON)
 			{
