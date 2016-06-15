@@ -7,7 +7,6 @@ cSkinnedMesh::cSkinnedMesh(char* szFolder, char* szFilename)
 	, m_dwWorkingPaletteSize(0)
 	, m_pmWorkingPalette(NULL)
 	, m_pEffect(NULL)
-	, m_vPosition(0, 0, 0)
 {
 	cSkinnedMesh* pSkinnedMesh = g_pSkinnedMeshManager->GetSkinnedMesh(szFolder, szFilename);
 
@@ -27,6 +26,7 @@ cSkinnedMesh::cSkinnedMesh(char* szFolder, char* szFilename)
 	D3DXMatrixIdentity(&m_matHairTM);
 	D3DXMatrixIdentity(&m_matTailTM);
 	D3DXMatrixIdentity(&m_matLocal);
+	D3DXMatrixIdentity(&m_matWorld);
 	D3DXMatrixIdentity(&m_matWeaponHandTM);
 }
 
@@ -90,9 +90,8 @@ void cSkinnedMesh::UpdateAndRender()
 	if (m_pRootFrame)
 	{
 		D3DXMATRIXA16 mat;
-		D3DXMatrixTranslation(&mat, m_vPosition.x, m_vPosition.y, m_vPosition.z);
 
-		mat = mat * m_matLocal;
+		mat = m_matWorld * m_matLocal;
 
 		Update(m_pRootFrame, &mat);
 		Render(m_pRootFrame);

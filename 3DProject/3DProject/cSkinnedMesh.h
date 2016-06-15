@@ -19,10 +19,10 @@ private:
 	D3DXMATRIX					m_matTailTM;
 	D3DXMATRIX					m_matWeaponHandTM;
 	D3DXMATRIX					m_matLocal;
+	D3DXMATRIX					m_matWorld;
 
 	// 객체마다 생성
 	LPD3DXANIMATIONCONTROLLER	m_pAnimController;
-	D3DXVECTOR3					m_vPosition;
 
 public:
 	cSkinnedMesh(char* szFolder, char* szFilename);
@@ -33,10 +33,6 @@ public:
 
 	void SetRandomTrackPosition(); // 테스트용
 	void GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM);
-	void SetPosition(D3DXVECTOR3 v)
-	{
-		m_vPosition = v;
-	}
 
 	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
 	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }
@@ -52,6 +48,9 @@ public:
 
 	void SetLocal(D3DXMATRIX* local) { m_matLocal = *local; }
 	D3DXMATRIX GetLocal() { return m_matLocal; }
+
+	void SetWorld(D3DXMATRIX* World) { m_matLocal = *World; }
+	D3DXMATRIX GetWorld() { return m_matWorld; }
 
 	DOUBLE GetAniTrackPeriod(int nIndex);
 

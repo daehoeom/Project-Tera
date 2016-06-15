@@ -52,21 +52,18 @@ void cNpc::Setup(char* szFolder, char* szFile)
 	body = body + std::string("_Body.X");
 
 	cSkinnedMesh* pBody = new cSkinnedMesh(szFolder, (char*)body.c_str());
-	pBody->SetPosition(D3DXVECTOR3(0, 0, 0));
 	m_vecSkinnedMesh.push_back(pBody);
 
 	std::string head = (std::string)szFile;
 	head = head + std::string("_Head.X");
 
 	cSkinnedMesh* pHead = new cSkinnedMesh(szFolder, (char*)head.c_str());
-	pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
 	m_vecSkinnedMesh.push_back(pHead);
 
 	std::string hair = (std::string)szFile;
 	hair = hair + std::string("_Hair.X");
 
 	cSkinnedMesh* pHair = new cSkinnedMesh(szFolder, (char*)hair.c_str());
-	pHair->SetPosition(D3DXVECTOR3(0, 0, 0));
 	m_vecSkinnedMesh.push_back(pHair);
 
 	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 10.f));
@@ -75,8 +72,6 @@ void cNpc::Setup(char* szFolder, char* szFile)
 void cNpc::Update()
 {
 	__super::Update(); 
-
-	m_vecSkinnedMesh[0]->SetPosition(this->GetPosition());
 
 
 	D3DXMATRIXA16 matLocal;

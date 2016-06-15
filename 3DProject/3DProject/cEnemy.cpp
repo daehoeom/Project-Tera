@@ -116,7 +116,7 @@ void cEnemy::Update()
 		this->GetColliderRepo()[i]->SetPosition(vPos);
 	}
 
-	m_pBody->SetPosition(this->GetPosition());
+	m_pBody->SetWorld(&m_matWorld);
 }
 
 void cEnemy::Render()
@@ -258,6 +258,7 @@ void cEnemy::ActionState()
 				D3DXMatrixTranspose(&matR, &matR);
 
 				m_matWorld = matR * Move();
+				m_matWorld = m_matLocal * m_matWorld;
 			}
 		}
 	}
@@ -372,6 +373,7 @@ void cEnemy::ActionState()
 			matR *= matTemp;*/
 
 			m_matWorld = matR * Move();
+			m_matWorld = m_matLocal * m_matWorld;
 			
 			//일정 범위를 넘어섰거나, 플레이어와 충분히 거리가 벌려졌다면
 			if (abs(Length) > 600.f || abs(Distance) > 300.f)
