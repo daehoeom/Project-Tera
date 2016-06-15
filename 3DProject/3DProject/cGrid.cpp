@@ -86,3 +86,7 @@ void cGrid::Render()
 	g_pD3DDevice->SetStreamSource(0, m_pVB, 0, sizeof(ST_PC_VERTEX));
 	g_pD3DDevice->DrawPrimitive(D3DPT_LINELIST, 0, m_nNumLine);
 }
+
+void cGrid::Update( )
+{
+}
