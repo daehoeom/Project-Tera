@@ -23,6 +23,7 @@ cEnemy::cEnemy()
 
 cEnemy::~cEnemy()
 {
+	SAFE_DELETE( m_pBody );
 }
 
 void cEnemy::Update()
