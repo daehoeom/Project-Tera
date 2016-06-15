@@ -26,44 +26,19 @@ cPlayer::cPlayer( ) :
 	SetPlayerState(PLAYER_BATTLEIDLE);
 	this->SetPosition({ 0.f, 0.f, 0.f });
 
-	//대기상태
-	/*m_pBody = new cBody;
-	m_pBody->Setup("CH/Player", "Player_Body.X");
-
-	m_pFace = new cFace;
-	m_pFace->SetNeckTM(&m_pBody->GetNeckTM());
-	m_pFace->Setup("CH/Player", "Player_Head.X");
-
-	m_pHair = new cHair;
-	m_pHair->SetHairTM(&m_pBody->GetHairTM());
-	m_pHair->Setup("CH/Player", "Player_Hair.X");
-
-	m_pTail = new cTail;
-	m_pTail->SetTailTM(&m_pBody->GetTailTM());
-	m_pTail->Setup("CH/Player", "Player_Tail.X");
-
-	m_pHand = new cWeaponMesh;
-	m_pHand->SetWeapon(&m_pBody->GetWeaponHand());
-	m_pHand->Setup("CH/Player", "Lance.X");*/
-
 	cSkinnedMesh* pBody = new cSkinnedMesh("./CH/Player/", "Player_Body.X");
-	pBody->SetPosition(D3DXVECTOR3(0, 0, 0));
 	m_vecSkinnedMesh.push_back(pBody);
 
 	cSkinnedMesh* pHead = new cSkinnedMesh("./CH/Player/", "Player_Head.X");
-	pHead->SetPosition(D3DXVECTOR3(0, 0, 0));
 	m_vecSkinnedMesh.push_back(pHead);
 
 	cSkinnedMesh* pHair = new cSkinnedMesh("./CH/Player/", "Player_Hair.X");
-	pHair->SetPosition(D3DXVECTOR3(0, 0, 0));
 	m_vecSkinnedMesh.push_back(pHair);
 
 	cSkinnedMesh* pTail = new cSkinnedMesh("./CH/Player/", "Player_Tail.X");
-	pTail->SetPosition(D3DXVECTOR3(0, 0, 0));
 	m_vecSkinnedMesh.push_back(pTail);
 
 	cSkinnedMesh* pWeapon = new cSkinnedMesh("./CH/Player/", "Lance.X");
-	pWeapon->SetPosition(D3DXVECTOR3(0, 0, 0));
 	m_vecSkinnedMesh.push_back(pWeapon);
 
 	//콤보 클래스
@@ -134,11 +109,11 @@ void cPlayer::KeyControl()
 
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		this->Rotate({ 0.f, -0.1f, 0.f });
+		this->SetAngle(this->GetAngle() - D3DXVECTOR3(0, 0.01f, 0));
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
-		this->Rotate({ 0.f, 0.1f, 0.f });
+		this->SetAngle(this->GetAngle() + D3DXVECTOR3(0, 0.01f, 0));
 	}
 
 	m_vDirection = D3DXVECTOR3( 1, 0, 0 );
@@ -730,7 +705,11 @@ void cPlayer::SetUpdateState( )
 {
 	//플레이어의 현재 위치를 넣어줌
 	//몸통
-	m_vecSkinnedMesh[0]->SetPosition(this->GetPosition());
+	D3DXMATRIXA16 matT, matR, matWorld;
+	D3DXMatrixTranslation(&matT, this->GetPosition().x, this->GetPosition().y, this->GetPosition().z); 
+	D3DXMatrixRotationY(&matR, this->GetAngle().y);
+	matWorld = matR * matT;
+	m_vecSkinnedMesh[0]->SetWorld(&matWorld);
 	
 	//머리
 	m_vecSkinnedMesh[1]->SetLocal(&m_vecSkinnedMesh[0]->GetNeckTM());
@@ -749,7 +728,7 @@ void cPlayer::SetUpdateState( )
 
 	//무기 위치 셋팅하려고 만든거임 건들 ㄴㄴ
 	D3DXMATRIXA16 matLocal;
-	D3DXMatrixTranslation(&matLocal, 1, 60, 0);
+	D3DXMatrixTranslation(&matLocal, 1, 45, 0);
 	matLocal *= (D3DXMATRIXA16)m_vecSkinnedMesh[0]->GetWeaponTM();
 	m_playerWeapon->GetColliderRepo()[0]->SetWorld(&matLocal);
 }

@@ -25,9 +25,9 @@ TestScene::TestScene(
 	);
 	monster2->SetPosition({ 0.f, 0.f, -150.f });
 
-	//cGameObjectManager::Get( )->AddObject(
-	//	"SkyBox", new cSkyBox
-	//);
+	cGameObjectManager::Get( )->AddObject(
+		"SkyBox", new cSkyBox
+	);
 
 	cGameObjectManager::Get()->AddObject(
 		"Grid", new cGrid
