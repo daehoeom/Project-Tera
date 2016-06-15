@@ -13,7 +13,7 @@ class TXMLReader
 
 public:
 	explicit TXMLReader( const char* xmlPath );
-	virtual ~TXMLReader( );
+	~TXMLReader( );
 
 	using iterator = _NodeRepoTy::iterator;
 	using const_iterator = _NodeRepoTy::const_iterator;
