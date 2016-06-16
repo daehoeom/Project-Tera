@@ -21,12 +21,18 @@ void IColliseable::Update( )
 {
 	__super::Update( );
 
-	m_collider->Update( this->GetWorld( ));
+	if ( m_collider )
+	{
+		m_collider->Update( this->GetWorld( ));
+	}
 }
 
 void IColliseable::Render( )
 {
-	if ( m_isDebugRender )
+	__super::Render( );
+
+	if ( m_isDebugRender && 
+		m_collider )
 	{
 		m_collider->Render( );
 	}

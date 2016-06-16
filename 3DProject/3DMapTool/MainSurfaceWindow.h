@@ -2,6 +2,7 @@
 #include "AbstractWindow.h"
 #include "cObjLoader.h"
 
+
 class MainSurfaceWindow :
 	public AbstractWindow
 {

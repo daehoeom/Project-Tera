@@ -13,6 +13,8 @@
 #include "cCamera.h"
 #include "BoundingBox.h"
 #include "tinyxml2.h"
+#include "ObjRenderer.h"
+#include "XRenderer.h"
 
 #pragma warning( disable: 4996 )
 
@@ -22,12 +24,12 @@ namespace
 
 enum ExtensionTable
 {
+	kUnknown,
 	kX,
 	kXML,
 	kRaw8,
 	kRaw16,
 	kObj,
-	kUnknown,
 };
 
 ExtensionTable AnalyzeExtension( 
@@ -40,8 +42,11 @@ ExtensionTable AnalyzeExtension(
 		--i;
 	}
 
-	const std::string extension = 
-		filePath.substr( i+1, filePath.size( ));
+	std::string extension = filePath.substr( i+1, filePath.size( ));
+	for ( auto& charElem : extension )
+	{
+		charElem = std::tolower( charElem );
+	}
 
 	if ( extension == "x" )
 	{
@@ -218,6 +223,22 @@ void MainSurfaceWindow::OnDropFile(
 	switch ( extension )
 	{
 	case ExtensionTable::kX:
+		{
+			std::wstring str = L"object_";
+			str += std::to_wstring( m_createCount++ );
+		
+			IColliseable* newXObject = new cBuildingObject( str.c_str( ));
+			XRenderer* newXRenderer = new XRenderer( m_dropQueryPath.get( ));
+
+			newXObject->SetRenderer( newXRenderer );
+			newXObject->SetModelPath( m_dropQueryPath.get( ));
+			newXObject->SetCollider( new BoundingBox(
+				newXRenderer->GetMinVector( ),
+				newXRenderer->GetMaxVector( )
+			));
+
+			g_hierarchyWnd->AddListItem( str );
+		}
 		break;
 
 	case ExtensionTable::kXML:
@@ -229,8 +250,16 @@ void MainSurfaceWindow::OnDropFile(
 			std::wstring str = L"object_";
 			str += std::to_wstring( m_createCount++ );
 
-			newObject = new cBuildingObject( str.c_str( ),
-				m_dropQueryPath.get( ));
+			IColliseable* newObjObject = new cBuildingObject( str.c_str( ));
+			ObjRenderer* newObjRenderer = new ObjRenderer( m_dropQueryPath.get( )); 
+
+			newObjObject->SetRenderer( newObjRenderer );
+			newObjObject->SetModelPath( m_dropQueryPath.get( ));
+			newObjObject->SetCollider( new BoundingBox(
+				newObjRenderer->GetMinVector( ),
+				newObjRenderer->GetMaxVector( )
+			));
+
 			g_hierarchyWnd->AddListItem( str );
 		}
 		break;
@@ -326,23 +355,25 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 		// Type
 		switch ( selectedObject->GetIdenfier( ))
 		{
-		case ObjectIdenfier::kObj:
+		case ObjectIdenfier::kBuilding:
 			ofs << "	<Type>obj</Type>\n";
 			break;
 
-		case ObjectIdenfier::kX:
+		/*case ObjectIdenfier::kX:
 			ofs << "	<Type>x</Type>\n";
 			break;
-
+*/
 		case ObjectIdenfier::kRaw:
 			ofs << "	<Type>raw</Type>\n";
 			break;
 		}
 
 		// Model Path
-		if ( selectedObject->GetIdenfier( ) == ObjectIdenfier::kObj )
+		if ( selectedObject->GetIdenfier( ) == 
+			ObjectIdenfier::kBuilding )
 		{
-			auto* objObject = static_cast<cBuildingObject*>( selectedObject );
+			auto* objObject = static_cast<cBuildingObject*>( 
+				selectedObject );
 
 			sprintf_s( buf,
 				"	<ModelPath>%s</ModelPath>\n",
@@ -379,26 +410,34 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 		ofs << buf;
 
 		// Bounding Box
-		if ( selectedObject->GetIdenfier( ) == ObjectIdenfier::kObj )
+		if ( selectedObject->GetIdenfier( ) == 
+			ObjectIdenfier::kBuilding )
 		{
-			auto* objObject = static_cast<cBuildingObject*>( selectedObject );
-			auto* boundingBox = static_cast<BoundingBox*>( 
-				objObject->GetCollider( ));
+			auto* objObject = static_cast<cBuildingObject*>( 
+				selectedObject );
 			
-			sprintf_s( buf,
+			if ( typeid( objObject->GetCollider( )).hash_code() ==
+				typeid( BoundingBox ).hash_code( ))
+			{
+				auto* boundingBox = static_cast<BoundingBox*>( 
+					objObject->GetCollider( ));
+			
+				sprintf_s( buf,
 				"	<BoundingBox\n\
 		minX=""\"%f\" minY=""\"%f\" minZ=""\"%f\"\n\
 		maxX=""\"%f\" maxY=""\"%f\" maxZ=""\"%f\">\n\
 	</BoundingBox>\n",
-				boundingBox->GetMin( ).x,
-				boundingBox->GetMin( ).y,
-				boundingBox->GetMin( ).z,
-				boundingBox->GetMax( ).x,
-				boundingBox->GetMax( ).y,
-				boundingBox->GetMax( ).z
-			);
-			ofs << buf;
+					boundingBox->GetMin( ).x,
+					boundingBox->GetMin( ).y,
+					boundingBox->GetMin( ).z,
+					boundingBox->GetMax( ).x,
+					boundingBox->GetMax( ).y,
+					boundingBox->GetMax( ).z
+				);
+				ofs << buf;
+			}
 		}
+
 
 		ofs << "	<End></End>\n";
 
@@ -476,6 +515,7 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 	std::wstring objName;
 	D3DXVECTOR3 pos{0,0,0}, rot{0,0,0}, scale{0,0,0};
 	ICollider* collider = nullptr;
+	ExtensionTable extension = ExtensionTable::kUnknown;
 	ObjectIdenfier objID = ObjectIdenfier::kUnknown;
 	std::string modelPath;
 
@@ -485,11 +525,41 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 		{
 			switch ( objID )
 			{
-			case ObjectIdenfier::kObj:
-				++m_createCount;
-				newObject = new cBuildingObject( objName, modelPath, collider );
-				break;
-			case ObjectIdenfier::kX:
+			case ObjectIdenfier::kBuilding:
+				{
+					++m_createCount;
+					
+					IColliseable* newObjObject = new cBuildingObject( 
+						objName );
+					
+					IRenderer* renderer = nullptr;
+					switch ( extension )
+					{
+					case ExtensionTable::kObj:
+						renderer = new ObjRenderer( 
+							modelPath.c_str( ));
+						break;
+
+					case ExtensionTable::kX:
+						renderer = new XRenderer(
+							modelPath.c_str( ) );
+						break;
+
+					default:
+						MessageBox( GetFocus( ),
+							L"알려지지 않은 확장자에 대한 메쉬 임포트가 발생했습니다.",
+							L"WARNING!",
+							MB_OK | MB_ICONEXCLAMATION
+						);
+						break;
+					}
+
+					newObjObject->SetRenderer( renderer );
+					newObjObject->SetModelPath( modelPath.c_str( ));
+					newObjObject->SetCollider( collider );
+
+					newObject = newObjObject;
+				}
 				break;
 			}
 				
@@ -504,6 +574,10 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 			// Reset Items
 			newObject = nullptr;
 			collider = nullptr;
+			objName.clear( );
+			modelPath.clear( );
+			objID = ObjectIdenfier::kUnknown;
+			extension = ExtensionTable::kUnknown;
 		}
 		else if ( !strcmp( "ObjectName", xmlNodeElem->Value( )))
 		{
@@ -518,12 +592,9 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 			if ( !strcmp( xmlNodeElem->FirstChild( )->Value(), 
 				"obj" ))
 			{
-				objID = ObjectIdenfier::kObj;
-			}
-			else if ( !strcmp( xmlNodeElem->FirstChild( )->Value(),
-				"x" ))
-			{
-				objID = ObjectIdenfier::kX;
+				objID = ObjectIdenfier::kBuilding;
+				extension = AnalyzeExtension( 
+					xmlNodeElem->NextSibling( )->FirstChild( )->Value( ));
 			}
 		}
 		else if ( !strcmp( "ModelPath", xmlNodeElem->Value( ) ) )

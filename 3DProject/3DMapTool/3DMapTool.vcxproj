@@ -171,9 +171,11 @@
     <ClInclude Include="IPickable.h" />
     <ClInclude Include="IPicker.h" />
     <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="IRenderer.h" />
     <ClInclude Include="LightObject.h" />
     <ClInclude Include="MainSurfaceWindow.h" />
     <ClInclude Include="ObjObject.h" />
+    <ClInclude Include="ObjRenderer.h" />
     <ClInclude Include="PickingTile.h" />
     <ClInclude Include="PickUtil.h" />
     <ClInclude Include="Resource.h" />
@@ -182,10 +184,10 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StringUtil.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TerrainObject.h" />
     <ClInclude Include="TilePicker.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="TXMLReader.h" />
+    <ClInclude Include="XRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DMapTool.cpp" />
@@ -209,9 +211,11 @@
     <ClCompile Include="IPickable.cpp" />
     <ClCompile Include="IPicker.cpp" />
     <ClCompile Include="IRenderable.cpp" />
+    <ClCompile Include="IRenderer.cpp" />
     <ClCompile Include="LightObject.cpp" />
     <ClCompile Include="MainSurfaceWindow.cpp" />
     <ClCompile Include="ObjObject.cpp" />
+    <ClCompile Include="ObjRenderer.cpp" />
     <ClCompile Include="PickingTile.cpp" />
     <ClCompile Include="PickUtil.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -221,10 +225,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="StringUtil.cpp" />
-    <ClCompile Include="TerrainObject.cpp" />
     <ClCompile Include="TilePicker.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="TXMLReader.cpp" />
+    <ClCompile Include="XRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DMapTool.rc" />

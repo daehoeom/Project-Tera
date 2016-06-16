@@ -70,12 +70,6 @@
     <Filter Include="hpp\Utility">
       <UniqueIdentifier>{bd144f53-2313-4a0a-bb70-acefa05dca48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="cpp\Terrain">
-      <UniqueIdentifier>{9c9e2ba1-9910-4aed-9289-0af9ae407892}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="hpp\Terrain">
-      <UniqueIdentifier>{fd303ae4-a8ba-4520-ab52-1e2f02db2261}</UniqueIdentifier>
-    </Filter>
     <Filter Include="cpp\IO">
       <UniqueIdentifier>{96c8bd0e-ce8a-42d1-847b-188d9c61a520}</UniqueIdentifier>
     </Filter>
@@ -126,6 +120,18 @@
     </Filter>
     <Filter Include="hpp\Loader\Obj">
       <UniqueIdentifier>{38c03fd2-d70e-4229-975e-96c9da7dee97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Object\Renderer">
+      <UniqueIdentifier>{f0939f24-37d7-4884-b63d-6382fa4903ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cpp\Object\Renderer\Interface">
+      <UniqueIdentifier>{5a443a01-ef9e-40ae-951f-efb7905d681f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Renderer">
+      <UniqueIdentifier>{f4e7bc21-f32f-4c61-b914-79563a20a69f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="hpp\Object\Renderer\Interface">
+      <UniqueIdentifier>{255e0623-a63b-407f-9702-e3a40e1d1f7b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -204,9 +210,6 @@
     <ClInclude Include="3DMapTool.h">
       <Filter>hpp\Main</Filter>
     </ClInclude>
-    <ClInclude Include="TerrainObject.h">
-      <Filter>hpp\Terrain</Filter>
-    </ClInclude>
     <ClInclude Include="IO.h">
       <Filter>hpp\IO</Filter>
     </ClInclude>
@@ -245,6 +248,15 @@
     </ClInclude>
     <ClInclude Include="ICollider.h">
       <Filter>hpp\Object\Collider\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderer.h">
+      <Filter>hpp\Object\Renderer\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjRenderer.h">
+      <Filter>hpp\Object\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="XRenderer.h">
+      <Filter>hpp\Object\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -308,9 +320,6 @@
     <ClCompile Include="DirectInput.cpp">
       <Filter>cpp\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="TerrainObject.cpp">
-      <Filter>cpp\Terrain</Filter>
-    </ClCompile>
     <ClCompile Include="IO.cpp">
       <Filter>cpp\IO</Filter>
     </ClCompile>
@@ -343,6 +352,15 @@
     </ClCompile>
     <ClCompile Include="BoundingBox.cpp">
       <Filter>cpp\Object\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="IRenderer.cpp">
+      <Filter>cpp\Object\Renderer\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjRenderer.cpp">
+      <Filter>cpp\Object\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="XRenderer.cpp">
+      <Filter>cpp\Object\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

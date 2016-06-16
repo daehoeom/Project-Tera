@@ -4,8 +4,7 @@ enum ObjectIdenfier
 {
 	kLight,
 	kCamera,
-	kObj,
-	kX,
+	kBuilding,
 	kRaw,
 	kPickTile,
 	kUnknown,
