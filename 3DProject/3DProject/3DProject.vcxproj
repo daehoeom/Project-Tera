@@ -117,6 +117,7 @@
     <ClInclude Include="cPlayerWeapon.h" />
     <ClInclude Include="cProgressBar.h" />
     <ClInclude Include="cRandomUtil.h" />
+    <ClInclude Include="cShaderManager.h" />
     <ClInclude Include="cSkinnedMesh.h" />
     <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cSkyBox.h" />
@@ -137,6 +138,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StringUtil.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="TestScenePlane.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="TXMLReader.h" />
   </ItemGroup>
@@ -176,6 +178,7 @@
     <ClCompile Include="cPlayerWeapon.cpp" />
     <ClCompile Include="cProgressBar.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
+    <ClCompile Include="cShaderManager.cpp" />
     <ClCompile Include="cSkinnedMesh.cpp" />
     <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
@@ -196,6 +199,7 @@
     </ClCompile>
     <ClCompile Include="StringUtil.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="TestScenePlane.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="TXMLReader.cpp" />
   </ItemGroup>
