@@ -2,13 +2,7 @@
 #include "TestScenePlane.h"
 
 #include "cShaderManager.h"
-
-
-// ºûÀÇ À§Ä¡
-D3DXVECTOR4	gWorldLightPosition( 500.0f, 500.0f, -500.0f, 1.0f );
-// ºûÀÇ »ö»ó
-D3DXVECTOR4	gLightColor( 1.0f, 1.0f, 1.0f, 1.0f );
-
+#include "cLightObject.h"
 
 
 TestScenePlane::TestScenePlane( const char* objName ) :
@@ -16,9 +10,12 @@ TestScenePlane::TestScenePlane( const char* objName ) :
 	m_specularMap( nullptr ),
 	m_normalMap( nullptr ),
 	m_normalMappingShader( nullptr ),
-	m_owner( cGameObjectManager::Get( )->FindObject( objName ))
+	m_owner( cGameObjectManager::Get( )->FindObject( objName )),
+	m_lightObject( static_cast<cLightObject*>( cGameObjectManager::Get( )->FindObject( 
+		cLightObject::ms_lightName )))
 {
 	assert( m_owner );
+	assert( m_lightObject );
 
 	m_owner->SetActive( false );
 	m_owner->Scale({ 5.f, 5.f, 5.f });
@@ -57,10 +54,12 @@ void TestScenePlane::Render( )
 	m_normalMappingShader->SetMatrix("gWorldMatrix", &m_owner->GetWorld( ));
 	m_normalMappingShader->SetMatrix("gWorldViewProjectionMatrix",  &matWorldViewProjection);
 
-	m_normalMappingShader->SetVector("gWorldLightPosition", &gWorldLightPosition);
+	m_normalMappingShader->SetVector("gWorldLightPosition",
+		&D3DXVECTOR4( m_lightObject->GetPosition( ), 1.f ));
 	m_normalMappingShader->SetVector("gWorldCameraPosition", &D3DXVECTOR4( cCamera::Get( )->GetEye( ), 1.f ));
 
-	m_normalMappingShader->SetVector("gLightColor", &gLightColor);
+	m_normalMappingShader->SetVector("gLightColor", 
+		&m_lightObject->GetLightColor( ));
 	m_normalMappingShader->SetTexture("DiffuseMap_Tex", m_diffuseMap );
 	m_normalMappingShader->SetTexture("SpecularMap_Tex", m_specularMap);
 	m_normalMappingShader->SetTexture("NormalMap_Tex", m_normalMap);

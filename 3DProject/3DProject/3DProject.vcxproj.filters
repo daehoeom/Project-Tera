@@ -242,6 +242,7 @@
       <Filter>Scene\TestScene</Filter>
     </ClInclude>
     <ClInclude Include="TestScenePlane.h" />
+    <ClInclude Include="cLightObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -408,6 +409,7 @@
       <Filter>Scene\TestScene</Filter>
     </ClCompile>
     <ClCompile Include="TestScenePlane.cpp" />
+    <ClCompile Include="cLightObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">
