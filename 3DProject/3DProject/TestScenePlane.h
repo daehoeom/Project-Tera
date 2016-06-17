@@ -12,8 +12,8 @@ public:
 
 private:
 	cGameObject* m_owner;
-	LPD3DXEFFECT gpNormalMappingShader;
-	LPDIRECT3DTEXTURE9 gpStoneDM;
-	LPDIRECT3DTEXTURE9 gpStoneSM;
-	LPDIRECT3DTEXTURE9 gpStoneNM;
+	LPD3DXEFFECT m_normalMappingShader;
+	LPDIRECT3DTEXTURE9 m_diffuseMap;
+	LPDIRECT3DTEXTURE9 m_specularMap;
+	LPDIRECT3DTEXTURE9 m_normalMap;
 };

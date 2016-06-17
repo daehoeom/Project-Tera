@@ -12,10 +12,10 @@ D3DXVECTOR4	gLightColor( 1.0f, 1.0f, 1.0f, 1.0f );
 
 
 TestScenePlane::TestScenePlane( const char* objName ) :
-	gpStoneDM( nullptr ),
-	gpStoneSM( nullptr ),
-	gpStoneNM( nullptr ),
-	gpNormalMappingShader( nullptr ),
+	m_diffuseMap( nullptr ),
+	m_specularMap( nullptr ),
+	m_normalMap( nullptr ),
+	m_normalMappingShader( nullptr ),
 	m_owner( cGameObjectManager::Get( )->FindObject( objName ))
 {
 	assert( m_owner );
@@ -23,14 +23,14 @@ TestScenePlane::TestScenePlane( const char* objName ) :
 	m_owner->SetActive( false );
 	m_owner->Scale({ 5.f, 5.f, 5.f });
 	
-	gpNormalMappingShader = cShaderManager::Get( )->
+	m_normalMappingShader = cShaderManager::Get( )->
 		GetShader( "Shader/NormalMapping.fx" );
 	
-	gpStoneDM = cTextureManager::Get( )->GetTexture(
+	m_diffuseMap = cTextureManager::Get( )->GetTexture(
 		"C:/Users/ggomdyu/Desktop/obj/Free_Stonewall/StonePlaneDiffuse.jpg" );
-	gpStoneSM = cTextureManager::Get( )->GetTexture(
+	m_specularMap = cTextureManager::Get( )->GetTexture(
 		"C:/Users/ggomdyu/Desktop/obj/Free_Stonewall/StonePlaneSpecular.jpg" );
-	gpStoneNM = cTextureManager::Get( )->GetTexture(
+	m_normalMap = cTextureManager::Get( )->GetTexture(
 		"C:/Users/ggomdyu/Desktop/obj/Free_Stonewall/StonePlaneNormal.jpg" );
 }
 
@@ -54,24 +54,24 @@ void TestScenePlane::Render( )
 	D3DXMatrixMultiply(&matWorldViewProjection, &matWorldView, &cCamera::Get( )->GetProjection( ));
 
 	// 쉐이더 전역변수들을 설정
-	gpNormalMappingShader->SetMatrix("gWorldMatrix", &m_owner->GetWorld( ));
-	gpNormalMappingShader->SetMatrix("gWorldViewProjectionMatrix",  &matWorldViewProjection);
+	m_normalMappingShader->SetMatrix("gWorldMatrix", &m_owner->GetWorld( ));
+	m_normalMappingShader->SetMatrix("gWorldViewProjectionMatrix",  &matWorldViewProjection);
 
-	gpNormalMappingShader->SetVector("gWorldLightPosition", &gWorldLightPosition);
-	gpNormalMappingShader->SetVector("gWorldCameraPosition", &D3DXVECTOR4( cCamera::Get( )->GetEye( ), 1.f ));
+	m_normalMappingShader->SetVector("gWorldLightPosition", &gWorldLightPosition);
+	m_normalMappingShader->SetVector("gWorldCameraPosition", &D3DXVECTOR4( cCamera::Get( )->GetEye( ), 1.f ));
 
-	gpNormalMappingShader->SetVector("gLightColor", &gLightColor);
-	//gpNormalMappingShader->SetTexture("DiffuseMap_Tex", gpStoneDM );
-	gpNormalMappingShader->SetTexture("SpecularMap_Tex", gpStoneSM);
-	gpNormalMappingShader->SetTexture("NormalMap_Tex", gpStoneNM);
+	m_normalMappingShader->SetVector("gLightColor", &gLightColor);
+	m_normalMappingShader->SetTexture("DiffuseMap_Tex", m_diffuseMap );
+	m_normalMappingShader->SetTexture("SpecularMap_Tex", m_specularMap);
+	m_normalMappingShader->SetTexture("NormalMap_Tex", m_normalMap);
 
 	// 쉐이더를 시작한다.
 	UINT numPasses = 0;
-	gpNormalMappingShader->Begin(&numPasses, NULL);
+	m_normalMappingShader->Begin(&numPasses, NULL);
 	{
 		for (UINT i = 0; i < numPasses; ++i )
 		{
-			gpNormalMappingShader->BeginPass(i);
+			m_normalMappingShader->BeginPass(i);
 			{
 				// 구체를 그린다.
 				g_pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_NONE );
@@ -79,10 +79,10 @@ void TestScenePlane::Render( )
 				g_pD3DDevice->SetRenderState( D3DRS_CULLMODE, D3DCULL_CCW );
 
 			}
-			gpNormalMappingShader->EndPass();
+			m_normalMappingShader->EndPass();
 		}
 	}
-	gpNormalMappingShader->End();
+	m_normalMappingShader->End();
 }
 
 void TestScenePlane::Update( )
