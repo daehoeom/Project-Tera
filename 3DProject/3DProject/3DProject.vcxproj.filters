@@ -240,6 +240,7 @@
     <ClInclude Include="cUnitObject.h" />
     <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cSkinnedMesh.h" />
+    <ClInclude Include="cRenderTarget.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -398,6 +399,7 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="cRenderTarget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">
