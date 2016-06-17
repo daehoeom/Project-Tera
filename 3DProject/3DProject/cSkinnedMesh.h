@@ -13,6 +13,11 @@ private:
 	DWORD						m_dwWorkingPaletteSize;
 	D3DXMATRIX*					m_pmWorkingPalette;
 	LPD3DXEFFECT				m_pEffect;
+	
+	LPD3DXEFFECT				m_pApplyShadowShader;
+	LPD3DXEFFECT				m_pCreateShadowShader;
+	LPDIRECT3DTEXTURE9			m_pShadowRenderTarget;
+	LPDIRECT3DSURFACE9			m_pShadowDepthStencil;
 
 	D3DXMATRIX					m_matNeckTM;
 	D3DXMATRIX					m_matHairTM;
@@ -33,6 +38,7 @@ public:
 	~cSkinnedMesh(void);
 
 	void UpdateAndRender();
+	void UpdateAndShadowRender();
 	void SetAnimationIndex(int nIndex);
 
 	void SetRandomTrackPosition(); // 테스트용
@@ -64,6 +70,7 @@ private:
 	LPD3DXEFFECT LoadEffect(char* szFilename);
 	void Update(ST_BONE* pCurrent, D3DXMATRIXA16* pmatParent);
 	void Render(ST_BONE* pBone = NULL);
+	void ShadowRender(ST_BONE* pBone = NULL);
 	void SetupBoneMatrixPtrs(ST_BONE* pBone);
 	void Destroy();
 };
