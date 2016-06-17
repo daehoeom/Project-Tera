@@ -3,6 +3,7 @@
 
 #include "cCollisionManager.h"
 #include "cSceneManager.h"
+#include "cShaderManager.h"
 #include "TestScene.h"
 
 cPlayer* g_player = nullptr;
@@ -65,6 +66,7 @@ void cMainGame::SetupManagers( )
 	cDeviceManager::Get( );
 	// Must be called after cDeviceManager initialized
 	cTextureManager::Get( );
+	cShaderManager::Get( );
 	cCamera::Get( );
 	// Etc
 	cRandomUtil::Setup();

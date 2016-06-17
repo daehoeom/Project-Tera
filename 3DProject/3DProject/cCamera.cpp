@@ -30,9 +30,12 @@ void cCamera::SetupProjection(
 	RECT rc;
 	GetClientRect( g_hWnd, &rc );
 
-	D3DXMATRIXA16 matProj;
-	D3DXMatrixPerspectiveFovLH( &matProj, fovy, rc.right/( float )rc.bottom, nearZ, farZ );
-	g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &matProj );
+	D3DXMatrixIdentity( &m_matProjection );
+	D3DXMatrixPerspectiveFovLH( &m_matProjection, fovy, rc.right/( float )rc.bottom, nearZ, farZ );
+	g_pD3DDevice->SetTransform( D3DTS_PROJECTION, &m_matProjection );
+
+	m_matViewProjection = m_matView;
+	m_matViewProjection *= m_matProjection;
 }
 
 void cCamera::SetupView( 
@@ -41,9 +44,12 @@ void cCamera::SetupView(
 {
 	const D3DXVECTOR3 up( 0, 1, 0 );
 	
-	D3DXMATRIXA16 matView;
-	D3DXMatrixLookAtLH( &matView, &eye, &lookAt, &up );
-	g_pD3DDevice->SetTransform( D3DTS_VIEW, &matView );
+	D3DXMatrixIdentity( &m_matView );
+	D3DXMatrixLookAtLH( &m_matView, &eye, &lookAt, &up );
+	g_pD3DDevice->SetTransform( D3DTS_VIEW, &m_matView );
+
+	m_matViewProjection = m_matView;
+	m_matViewProjection *= m_matProjection;
 }
 
 void cCamera::Update( )
@@ -71,11 +77,13 @@ void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_RBUTTONDOWN:
+		SetCapture( hWnd );
 		m_isLButtonDown = true;
 		m_ptPrevMouse.x = LOWORD(lParam);
 		m_ptPrevMouse.y = HIWORD(lParam);
 		break;
 	case WM_RBUTTONUP:
+		ReleaseCapture( );
 		m_isLButtonDown = false;
 		break;
 	case WM_MOUSEMOVE:
