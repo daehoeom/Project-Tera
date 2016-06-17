@@ -17,10 +17,10 @@ void cGameObjectManager::Update()
 {
 	for ( auto& object : m_objMap )
 	{
-		//if ( object.second->IsActive( ))
-		//{
+		if ( object.second->IsActive( ))
+		{
 			object.second->Update( );
-		//}
+		}
 	}
 }
 
@@ -28,10 +28,10 @@ void cGameObjectManager::Render( )
 {
 	for ( auto& object : m_objMap )
 	{
-		//if ( object.second->IsActive( ))
-		//{
+		if ( object.second->IsActive( ))
+		{
 			object.second->Render( );
-		//}
+		}
 	}
 }
 

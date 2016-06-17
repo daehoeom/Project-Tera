@@ -70,7 +70,7 @@ inline _ObjectTy* cGameObjectManager::AddObject(
 inline cGameObject* cGameObjectManager::FindObject(
 	const std::string& key )
 {
-	return m_objMap[key];
+	return m_objMap.find( key )->second;
 }
 
 inline void cGameObjectManager::EraseObject(
