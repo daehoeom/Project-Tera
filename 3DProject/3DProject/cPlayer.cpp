@@ -112,11 +112,11 @@ void cPlayer::KeyControl()
 
 	if (KEYMANAGER->isStayKeyDown(VK_LEFT))
 	{
-		this->SetAngle(this->GetAngle() - D3DXVECTOR3(0, 0.01f, 0));
+		this->SetAngle(this->GetAngle() - D3DXVECTOR3(0, 0.1f, 0));
 	}
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
-		this->SetAngle(this->GetAngle() + D3DXVECTOR3(0, 0.01f, 0));
+		this->SetAngle(this->GetAngle() + D3DXVECTOR3(0, 0.1f, 0));
 	}
 
 	m_vDirection = D3DXVECTOR3( 1, 0, 0 );
