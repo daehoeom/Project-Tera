@@ -17,5 +17,7 @@ private:
 	LPDIRECT3DTEXTURE9 m_diffuseMap;
 	LPDIRECT3DTEXTURE9 m_specularMap;
 	LPDIRECT3DTEXTURE9 m_normalMap;
+
+	float		m_fHeightY;
 };
 

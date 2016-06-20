@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "DesertScenePlane.h"
-
 #include "Console.h"
 #include "cGroup.h"
 #include "cShaderManager.h"
@@ -12,6 +11,7 @@ DesertScenePlane::DesertScenePlane( const char* objName ) :
 	m_specularMap( nullptr ),
 	m_normalMap( nullptr ),
 	m_normalMappingShader( nullptr ),
+	m_fHeightY(0.f),
 	m_owner( static_cast<cBuildingObject*>( 
 		cGameObjectManager::Get( )->FindObject( objName )))
 {
@@ -32,6 +32,10 @@ DesertScenePlane::DesertScenePlane( const char* objName ) :
 
 DesertScenePlane::~DesertScenePlane( )
 {
+	SAFE_RELEASE(m_normalMappingShader);
+	SAFE_RELEASE(m_diffuseMap);
+	SAFE_RELEASE(m_specularMap);
+	SAFE_RELEASE(m_normalMap);
 }
 
 void DesertScenePlane::Render( )
@@ -128,6 +132,7 @@ void DesertScenePlane::Update( )
 			if ( collised == TRUE )
 			{
 				g_player->GetPosition( ).y = rayYPos - hitDist;
+				m_fHeightY = rayYPos - hitDist;
 				break;
 			}
 		}
