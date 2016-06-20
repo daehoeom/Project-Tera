@@ -29,7 +29,7 @@ TestScene::TestScene( ) :
 	m_loadThread( ReadXML, "./CH/SCENE.xml", &m_loadSuccess,
 		std::function<void( )>( std::bind( AdditionalWork, &m_plane )) ),
 	m_loadSuccess( 0 ),
-	m_loadingSprite( new cSprite( "C:/Users/ggomdyu/Desktop/documents-export-2016-06-20/LoadingImage63_Tex.tga" ))
+	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage63_Tex.tga" ))
 {
 	//cGameObjectManager::Get( )->AddObject(
 	//	"Monster1", new cArgoniteKallashGuardLeader 
