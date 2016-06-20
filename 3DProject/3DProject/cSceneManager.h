@@ -15,7 +15,7 @@ public:
 	void LoadScene( )
 	{
 		// Compile time assertion
-		static_assert( !std::is_convertible<IScene*, _SceneTy*>::value,
+		static_assert( std::is_base_of<IScene, _SceneTy>::value,
 			"cSceneManager::LoadScene only accept class which based on IScene." );
 
 		SAFE_DELETE( m_currScene )
