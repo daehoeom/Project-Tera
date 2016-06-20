@@ -18,11 +18,7 @@ public:
 		static_assert( !std::is_convertible<IScene*, _SceneTy*>::value,
 			"cSceneManager::LoadScene only accept class which based on IScene." );
 
-		if ( m_currScene )
-		{
-			delete m_currScene;
-			m_currScene = nullptr;
-		}
+		SAFE_DELETE( m_currScene )
 		
 		cGameObjectManager::Get( )->ResetAllObject( );
 		m_currScene = new _SceneTy;
