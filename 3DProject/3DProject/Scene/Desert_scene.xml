@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object_0>
+	<ObjectName>object_0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>C:\Users\ggomdyu\Desktop\obj\Palm_tree_01\Palm_tree_01.obj</ModelPath>
+	<Position x="-52.435806" y="330.000061" z="-36.585205"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="0.030000" y="0.030000" z="0.030000"></Scale>
+	<BoundingBox
+		minX="-556.940979" minY="-278.372009" minZ="-421.726013"
+		maxX="1591.994995" maxY="2846.686035" maxZ="1241.995972">
+	</BoundingBox>
+	<End></End>
+</object_0>
+<object_1>
+	<ObjectName>Desert_plane0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>C:\Users\ggomdyu\Desktop\obj\Desert\Desert_plane.obj</ModelPath>
+	<Position x="0.000000" y="0.000000" z="0.000000"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="30.000000" y="30.000000" z="30.000000"></Scale>
+	<End></End>
+</object_1>

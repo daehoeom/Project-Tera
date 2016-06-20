@@ -26,7 +26,7 @@ namespace
 
 TestScene::TestScene( ) :
 	m_plane( nullptr ),
-	m_loadThread( ReadXML, "./CH/SCENE.xml", &m_loadSuccess,
+	m_loadThread( ReadXML, "Scene/SCENE.xml", &m_loadSuccess,
 		std::function<void( )>( std::bind( AdditionalWork, &m_plane )) ),
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage63_Tex.tga" ))

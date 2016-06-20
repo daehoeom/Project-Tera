@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Box0>
+	<ObjectName>Box0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Box\box.obj</ModelPath>
+	<Position x="554.544373" y="8.000057" z="-196.146179"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="1.500000" y="1.500000" z="1.500000"></Scale>
+	<BoundingBox
+		minX="-6.000000" minY="-6.000000" minZ="-1.000000"
+		maxX="6.000000" maxY="6.000000" maxZ="11.000000">
+	</BoundingBox>
+	<End></End>
+</Box0>
+<Box1>
+	<ObjectName>Box1</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Box\box.obj</ModelPath>
+	<Position x="440.809082" y="7.999996" z="28.075920"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="1.500000" y="1.500000" z="1.500000"></Scale>
+	<BoundingBox
+		minX="-6.000000" minY="-6.000000" minZ="-1.000000"
+		maxX="6.000000" maxY="6.000000" maxZ="11.000000">
+	</BoundingBox>
+	<End></End>
+</Box1>
+<CastleWall0>
+	<ObjectName>CastleWall0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Castle2\Castle2.obj</ModelPath>
+	<Position x="249.107574" y="0.000061" z="-276.208191"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="100.000000" y="100.000000" z="100.000000"></Scale>
+	<!--<BoundingBox
+		minX="-8.335700" minY="-0.125000" minZ="-7.869700"
+		maxX="8.045700" maxY="2.018200" maxZ="8.023600">
+	</BoundingBox>-->
+	<End></End>
+</CastleWall0>
+<Chapel0>
+	<ObjectName>Chapel0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Chapel\chapel_obj.obj</ModelPath>
+	<Position x="-187.624908" y="0.000000" z="62.869308"></Position>
+	<Rotation x="0.000000" y="3.141592" z="0.000000"></Rotation>
+	<Scale x="1.000000" y="1.000000" z="1.000000"></Scale>
+	<BoundingBox
+		minX="-182.318100" minY="-2.195500" minZ="-145.110901"
+		maxX="182.318100" maxY="425.328613" maxZ="145.515900">
+	</BoundingBox>
+	<End></End>
+</Chapel0>
+<House0>
+	<ObjectName>House0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Medieval_house_2\Medieval_house_2.obj</ModelPath>
+	<Position x="506.969238" y="2.000000" z="91.652405"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="2.000000" y="2.000000" z="2.000000"></Scale>
+	<BoundingBox
+		minX="-28.051601" minY="-0.913900" minZ="-28.000000"
+		maxX="28.051899" maxY="86.066101" maxZ="28.000000">
+	</BoundingBox>
+	<End></End>
+</House0>
+<House1>
+	<ObjectName>House1</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Medieval_house_2\Medieval_house_2.obj</ModelPath>
+	<Position x="574.732910" y="-0.000122" z="-317.808655"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="2.000000" y="2.000000" z="2.000000"></Scale>
+	<BoundingBox
+		minX="-28.051601" minY="-0.913900" minZ="-28.000000"
+		maxX="28.051899" maxY="86.066101" maxZ="28.000000">
+	</BoundingBox>
+	<End></End>
+</House1>
+<House2>
+	<ObjectName>House2</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Medieval_house_2\Medieval_house_2.obj</ModelPath>
+	<Position x="659.425720" y="-0.000061" z="107.007874"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="2.000000" y="2.000000" z="2.000000"></Scale>
+	<BoundingBox
+		minX="-28.051601" minY="-0.913900" minZ="-28.000000"
+		maxX="28.051899" maxY="86.066101" maxZ="28.000000">
+	</BoundingBox>
+	<End></End>
+</House2>
+<House3>
+	<ObjectName>House3</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Medieval_house_2\Medieval_house_2.obj</ModelPath>
+	<Position x="708.799561" y="-0.000183" z="-273.928711"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="2.000000" y="2.000000" z="2.000000"></Scale>
+	<BoundingBox
+		minX="-28.051601" minY="-0.913900" minZ="-28.000000"
+		maxX="28.051899" maxY="86.066101" maxZ="28.000000">
+	</BoundingBox>
+	<End></End>
+</House3>
+<House4>
+	<ObjectName>House4</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Medieval_house_2\Medieval_house_2.obj</ModelPath>
+	<Position x="-107.197296" y="-0.000031" z="-582.748779"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="2.000000" y="2.000000" z="2.000000"></Scale>
+	<BoundingBox
+		minX="-28.051601" minY="-0.913900" minZ="-28.000000"
+		maxX="28.051899" maxY="86.066101" maxZ="28.000000">
+	</BoundingBox>
+	<End></End>
+</House4>
+<House5>
+	<ObjectName>House5</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Medieval_house_4\Medieval_house_4.obj</ModelPath>
+	<Position x="384.633606" y="58.999992" z="-565.990051"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="2.000000" y="2.000000" z="2.000000"></Scale>
+	<BoundingBox
+		minX="-108.846100" minY="-29.927099" minZ="-55.835701"
+		maxX="3.00000" maxY="139.473007" maxZ="63.751900">
+	</BoundingBox>
+	<End></End>
+</House5>
+<House6>
+	<ObjectName>House6</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Medieval_house_2\Medieval_house_2.obj</ModelPath>
+	<Position x="36.457672" y="-0.000061" z="-634.980896"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="2.000000" y="2.000000" z="2.000000"></Scale>
+	<BoundingBox
+		minX="-28.051601" minY="-0.913900" minZ="-28.000000"
+		maxX="28.051899" maxY="86.066101" maxZ="28.000000">
+	</BoundingBox>
+	<End></End>
+</House6>
+<House7>
+	<ObjectName>House7</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Medieval_house_2\Medieval_house_2.obj</ModelPath>
+	<Position x="-193.221588" y="-0.000305" z="-346.477142"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="2.000000" y="2.000000" z="2.000000"></Scale>
+	<BoundingBox
+		minX="-28.051601" minY="-0.913900" minZ="-28.000000"
+		maxX="28.051899" maxY="86.066101" maxZ="28.000000">
+	</BoundingBox>
+	<End></End>
+</House7>
+<Plane0>
+	<ObjectName>Plane0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Free_Stonewall\StonPlane.x</ModelPath>
+	<Position x="10.254700" y="0.000000" z="-550.555237"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="20.000000" y="1.000000" z="20.000000"></Scale>
+	<!--<BoundingBox
+		minX="-29.523701" minY="0.000000" minZ="-58.083000"
+		maxX="52.670601" maxY="1.000000" maxZ="27.388300">
+	</BoundingBox>-->
+	<End></End>
+</Plane0>
+<Well0>
+	<ObjectName>Well0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\TownScene\Well\Well.obj</ModelPath>
+	<Position x="348.405975" y="9.419993" z="-127.003418"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="20.000000" y="20.000000" z="20.000000"></Scale>
+	<BoundingBox
+		minX="-0.656500" minY="-0.466200" minZ="-0.566900"
+		maxX="0.480000" maxY="1.505800" maxZ="0.600000">
+	</BoundingBox>
+	<End></End>
+</Well0>
