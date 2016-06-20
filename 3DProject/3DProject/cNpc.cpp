@@ -5,6 +5,7 @@
 
 cNpc::cNpc()
 	: m_fAngle(0.f)
+	, m_vPos(0.f, 0.f, 0.f)
 {
 	D3DXMatrixIdentity(&m_matWorld);
 	D3DXMatrixIdentity(&m_matLocalHair);
@@ -17,37 +18,14 @@ cNpc::cNpc()
 
 cNpc::~cNpc()
 {
-	
+	for (size_t i = 0; i < m_vecSkinnedMesh.size(); i++)
+	{
+		SAFE_DELETE(m_vecSkinnedMesh[i]);
+	}
 }
 
 void cNpc::Setup(char* szFolder, char* szFile)
 {
-	//몸파일 등록
-	//m_pBody = new cBody;
-
-	//std::string body = (std::string)szFile;
-	//body = body + std::string("_Body.X");
-
-	//m_pBody->Setup(szFolder, (char*)body.c_str());
-
-	//m_pBody->SetWorld(&m_matWorld);
-
-	////헤어파일 등록
-	//m_pHair = new cHair;
-	//std::string hair = (std::string)szFile;
-	//hair = hair + std::string("_Hair.X");
-
-	//m_pHair->SetHairTM(&m_pBody->GetHairTM());
-	//m_pHair->Setup(szFolder, (char*)hair.c_str());
-
-	////얼굴파일 등록
-	//m_pFace = new cFace;
-	//std::string face = (std::string)szFile;
-	//face = face + std::string("_Head.X");
-
-	//m_pFace->SetNeckTM(&m_pBody->GetNeckTM());
-	//m_pFace->Setup(szFolder, (char*)face.c_str());
-
 	std::string body = (std::string)szFile;
 	body = body + std::string("_Body.X");
 
@@ -73,11 +51,21 @@ void cNpc::Update()
 {
 	__super::Update(); 
 
+	D3DXMatrixTranslation(&m_matWorld, m_vPos.x, m_vPos.y, m_vPos.z);
 
-	D3DXMATRIXA16 matLocal;
+	D3DXMATRIXA16 matLocal, matHair, matHead;
 	D3DXMatrixTranslation(&matLocal, 0, 20, 0);
 	matLocal = matLocal * m_matWorld;
 	this->GetColliderRepo()[0]->SetWorld(&matLocal);
+
+	m_vecSkinnedMesh[0]->SetWorld(&m_matWorld);
+
+	matHead = m_vecSkinnedMesh[0]->GetNeckTM() * m_matLocalHead;
+	matHair = m_vecSkinnedMesh[1]->GetHairTM() * m_matLocalHair;
+
+	m_vecSkinnedMesh[1]->SetLocal(&matHead);
+
+	m_vecSkinnedMesh[2]->SetLocal(&matHair);
 }
 
 void cNpc::Render()

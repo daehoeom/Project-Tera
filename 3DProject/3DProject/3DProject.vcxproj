@@ -119,6 +119,7 @@
     <ClInclude Include="cProgressBar.h" />
     <ClInclude Include="cRandomUtil.h" />
     <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="cShadowImage.h" />
     <ClInclude Include="cSkinnedMesh.h" />
     <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cSkyBox.h" />
@@ -183,6 +184,7 @@
     <ClCompile Include="cProgressBar.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="cShadowImage.cpp" />
     <ClCompile Include="cSkinnedMesh.cpp" />
     <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cSkyBox.cpp" />

@@ -3,6 +3,7 @@
 class cNpc;
 
 class cNpcManager 
+	: public cGameObject
 {
 	std::vector<cNpc*>	m_vecNpc;
 public:

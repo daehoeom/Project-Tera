@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "3DProject.h"
 #include "cMainGame.h"
+float AniTime = 2.f;
 
 #define MAX_LOADSTRING 100
 

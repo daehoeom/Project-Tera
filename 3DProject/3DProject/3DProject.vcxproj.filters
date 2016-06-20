@@ -244,6 +244,7 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="DesertScenePlane.h" />
+    <ClInclude Include="cShadowImage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -415,6 +416,7 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="DesertScenePlane.cpp" />
+    <ClCompile Include="cShadowImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">
