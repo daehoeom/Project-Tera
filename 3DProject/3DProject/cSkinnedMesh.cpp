@@ -115,7 +115,7 @@ void cSkinnedMesh::UpdateAndRender()
 
 	if (m_pAnimController)
 	{
-		m_pAnimController->AdvanceTime(g_pTimeManager->GetDeltaTime(), NULL);
+		m_pAnimController->AdvanceTime(0.0023, NULL);
 	}
 
 	if (m_pRootFrame)

@@ -1,10 +1,11 @@
 #include "stdafx.h"
 #include "DesertScene.h"
+#include "cEnemy.h"
 
-#include "cSkyBox.h"
-#include "cSprite.h"
 #include "cLightObject.h"
 #include "DesertScenePlane.h"
+#include "cSkyBox.h"
+#include "cEnemyManager.h"
 
 
 namespace
@@ -32,6 +33,7 @@ DesertScene::DesertScene( ) :
 	//monster2->SetPosition({ 0.f, 0.f, -150.f });
 
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(1) );
+	cGameObjectManager::Get()->AddObject("Monster", new cEnemyManager);
 	//cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
 	//
 

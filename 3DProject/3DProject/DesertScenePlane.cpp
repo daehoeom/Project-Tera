@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "DesertScenePlane.h"
-
 #include "Console.h"
 #include "cGroup.h"
 #include "cShaderManager.h"
@@ -9,10 +8,6 @@
 #include "cShaderManager.h"
 
 DesertScenePlane::DesertScenePlane( const char* objName ) :
-	m_fogShader( cShaderManager::Get( )->GetShader( "Shader/fog.fx" )),
-	m_fogTechHandle( m_fogShader->GetTechniqueByName( "Fog" )),
-	m_diffuseMap( cTextureManager::Get( )->GetTexture(
-		"C:/Users/ggomdyu/Desktop/obj/Desert/sand_tex.jpg" )),
 	m_owner( static_cast<cBuildingObject*>( 
 		cGameObjectManager::Get( )->FindObject( objName )))
 {
@@ -98,6 +93,7 @@ void DesertScenePlane::Update( )
 			if ( collised == TRUE )
 			{
 				g_player->GetPosition( ).y = rayYPos - hitDist;
+				m_fHeightY = rayYPos - hitDist;
 				break;
 			}
 		}

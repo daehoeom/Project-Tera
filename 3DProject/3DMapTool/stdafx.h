@@ -93,8 +93,9 @@ enum
 extern std::unique_ptr<MainSurfaceWindow> g_mainSurfaceWnd;
 extern std::unique_ptr<InspectorWindow> g_inspectorWnd;
 extern std::unique_ptr<HierarchyWindow> g_hierarchyWnd;
-
 extern bool g_wasSomethingChanged;
+
+extern float fAniTime;
 
 
 struct ST_SPHERE

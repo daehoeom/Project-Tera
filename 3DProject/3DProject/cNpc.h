@@ -18,6 +18,8 @@ public:
 	void SetLocalHead(D3DXMATRIXA16* mat) { m_matLocalHead = *mat; }
 	void SetWorld(D3DXMATRIXA16* mat) { m_matWorld = *mat; }
 
+	void SetPos(D3DXVECTOR3 vPos) { m_vPos = vPos; }
+
 	void SetType(eNpcType e) { m_sType = e; }
 	eNpcType GetType() { return m_sType; }
 
@@ -27,7 +29,8 @@ private:
 	D3DXMATRIXA16		m_matWorld;
 	D3DXMATRIX			m_matLocalHair;
 	D3DXMATRIX			m_matLocalHead;
-	
+	D3DXVECTOR3			m_vPos;
+
 	float				m_fAngle;
 
 	eNpcType			m_sType;

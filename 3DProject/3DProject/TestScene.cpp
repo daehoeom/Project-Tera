@@ -42,6 +42,7 @@ TestScene::TestScene( ) :
 
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(0) );
 	cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
+	cGameObjectManager::Get()->AddObject("Npc", new cNpcManager);
 
 	//loadThread.join( );
 

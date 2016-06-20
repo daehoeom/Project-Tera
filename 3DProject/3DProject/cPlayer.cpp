@@ -7,7 +7,7 @@
 #include "cEnemy.h"
 #include "cPlayerWeapon.h"
 #include "cSkinnedMesh.h"
-
+#include "cShadowImage.h"
 
 cPlayer::cPlayer( ) :
 	m_vDirection(D3DXVECTOR3(0, 0, 1))
@@ -18,9 +18,7 @@ cPlayer::cPlayer( ) :
 	, m_bIsAction(false)
 	, m_bPushBehind(false)
 	, m_pCombo(nullptr)
-	, m_pEffect(nullptr)
-	, m_pRenderTarget(nullptr)
-	, m_pDepthStencil(nullptr)
+	, m_pShadow(nullptr)
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
@@ -61,6 +59,8 @@ cPlayer::cPlayer( ) :
 	
 	SetAniTrack(PLAYER_BATTLEIDLE);
 	this->SetObjectType(ObjectType::ePlayer);
+
+	//m_pShadow = new cShadowImage(20, 20);
 }
 
 cPlayer::~cPlayer( )
@@ -72,10 +72,7 @@ cPlayer::~cPlayer( )
 
 	SAFE_DELETE(m_pCombo);
 	SAFE_DELETE(m_playerWeapon);
-
-	SAFE_RELEASE(m_pDepthStencil);
-	SAFE_RELEASE(m_pEffect);
-	SAFE_RELEASE(m_pRenderTarget);
+	//SAFE_DELETE(m_pShadow);
 }
 
 void cPlayer::Update( )
@@ -96,12 +93,16 @@ void cPlayer::Update( )
 		m_bIsAction = false;
 		SetPlayerState(PLAYER_DEATH);
 	}
+
+//	m_pShadow->Update(this->GetPosition());
 }
 
 void cPlayer::Render( )
 {
 	__super::Render( );
 	m_playerWeapon->Render( );
+
+	//m_pShadow->Render();
 
 	SetRenderState();
 }
@@ -384,7 +385,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
+				m_fPassTime += g_pTimeManager->GetDeltaTime();
 			}
 		}
 	}
@@ -411,7 +412,7 @@ void cPlayer::SetFSMState()
 
 			else if (m_fPassTime < m_fPeriod)
 			{
-				m_fPassTime += g_pTimeManager->GetDeltaTime() ;
+				m_fPassTime += g_pTimeManager->GetDeltaTime();
 			}
 		}
 	}

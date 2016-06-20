@@ -94,6 +94,7 @@
     <ClInclude Include="cCommandCombo.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="cEnemy.h" />
+    <ClInclude Include="cEnemyManager.h" />
     <ClInclude Include="cFrustumCulling.h" />
     <ClInclude Include="cGiantStone.h" />
     <ClInclude Include="cGrid.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="cProgressBar.h" />
     <ClInclude Include="cRandomUtil.h" />
     <ClInclude Include="cShaderManager.h" />
+    <ClInclude Include="cShadowImage.h" />
     <ClInclude Include="cSkinnedMesh.h" />
     <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cSkyBox.h" />
@@ -160,6 +162,7 @@
     <ClCompile Include="cCommandCombo.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cEnemy.cpp" />
+    <ClCompile Include="cEnemyManager.cpp" />
     <ClCompile Include="cFrustumCulling.cpp" />
     <ClCompile Include="cGiantStone.cpp" />
     <ClCompile Include="cGrid.cpp" />
@@ -184,6 +187,7 @@
     <ClCompile Include="cProgressBar.cpp" />
     <ClCompile Include="cRandomUtil.cpp" />
     <ClCompile Include="cShaderManager.cpp" />
+    <ClCompile Include="cShadowImage.cpp" />
     <ClCompile Include="cSkinnedMesh.cpp" />
     <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
