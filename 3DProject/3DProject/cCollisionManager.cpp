@@ -8,7 +8,8 @@
 #include "cCollisionObject.h"
 
 
-cCollisionManager::cCollisionManager( )
+cCollisionManager::cCollisionManager( ) :
+	m_isAutoUpdatable( false )
 {
 }
 
@@ -18,6 +19,11 @@ cCollisionManager::~cCollisionManager( )
 
 void cCollisionManager::Update( )
 {
+	if ( !m_isAutoUpdatable )
+	{
+		return;
+	}
+
 	for ( auto& elemOp1 : m_collisionMap )
 	{
 		if ( elemOp1.second->GetColliderRepo( ).size( ) == 0 )
@@ -146,6 +152,8 @@ void cCollisionManager::Update( )
 void cCollisionManager::AddObject(
 	cCollisionObject* target )
 {
+	std::unique_lock<std::mutex> m_lock( m_mutex );
+
 	const uintptr_t key =
 		reinterpret_cast<uintptr_t>( target );
 

@@ -123,6 +123,7 @@
     <ClInclude Include="cSkinnedMeshManager.h" />
     <ClInclude Include="cSkyBox.h" />
     <ClInclude Include="cSoundManager.h" />
+    <ClInclude Include="cSprite.h" />
     <ClInclude Include="cTextureManager.h" />
     <ClInclude Include="cTimeManager.h" />
     <ClInclude Include="cGameObject.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="cSkinnedMeshManager.cpp" />
     <ClCompile Include="cSkyBox.cpp" />
     <ClCompile Include="cSoundManager.cpp" />
+    <ClCompile Include="cSprite.cpp" />
     <ClCompile Include="cTextureManager.cpp" />
     <ClCompile Include="cTimeManager.cpp" />
     <ClCompile Include="cGameObject.cpp" />

@@ -15,6 +15,11 @@ cGameObjectManager::~cGameObjectManager()
 
 void cGameObjectManager::Update()
 {
+	if ( !m_isAutoUpdateRender )
+	{
+		return;
+	}
+
 	for ( auto& object : m_objMap )
 	{
 		if ( object.second->IsActive( ))
@@ -26,6 +31,11 @@ void cGameObjectManager::Update()
 
 void cGameObjectManager::Render( )
 {
+	if ( !m_isAutoUpdateRender )
+	{
+		return;
+	}
+	
 	for ( auto& object : m_objMap )
 	{
 		if ( object.second->IsActive( ))

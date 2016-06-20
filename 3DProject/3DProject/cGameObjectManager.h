@@ -18,6 +18,7 @@ AddObject는 추가된 객체의 포인터를 반환해서
 */
 
 #pragma once
+#include <mutex>
 #include "Singleton.h"
 #include "cGameObject.h"
 
@@ -34,6 +35,8 @@ public:
 public:
 	void Update( );
 	void Render( );
+	
+	void SetAutoUpdateRender( bool isAutoUpdateRender );
 
 public:
 	template <class _ObjectTy>
@@ -53,6 +56,8 @@ protected:
 	virtual ~cGameObjectManager();
 
 private:
+	bool m_isAutoUpdateRender;
+	std::mutex m_mutex;
 	ObjectMap m_objMap;
 };
 
@@ -61,6 +66,8 @@ inline _ObjectTy* cGameObjectManager::AddObject(
 	const std::string& name, 
 	_ObjectTy* obj )
 {
+	std::unique_lock<std::mutex> m_lock( m_mutex );
+
 	obj->SetName( name );
 	m_objMap.insert( std::make_pair( name, obj ));
 
@@ -95,4 +102,10 @@ inline cGameObjectManager::iterator cGameObjectManager::begin()
 inline cGameObjectManager::iterator cGameObjectManager::end()
 {
 	return m_objMap.end( );
+}
+
+inline void cGameObjectManager::SetAutoUpdateRender(
+	bool isAutoUpdateRender )
+{
+	m_isAutoUpdateRender = isAutoUpdateRender;
 }

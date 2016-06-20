@@ -4,6 +4,7 @@
 #include "cBoundingBox.h"
 #include "cBuildingObject.h"
 #include "TXMLReader.h"
+#include "cCollisionManager.h"
 
 
 IScene::IScene( )
@@ -14,8 +15,14 @@ IScene::~IScene( )
 {
 }
 
-void IScene::ReadXML( const std::string& xmlPath )
+void ReadXML( 
+	_In_ const std::string& xmlPath, 
+	_Out_ DWORD* loadSuccess,
+	std::function<void( )> additionWork )
 {
+	cGameObjectManager::Get( )->SetAutoUpdateRender( false );
+	cCollisionManager::Get( )->SetAutoUpdate( false );
+
 	// Begin reading XML
 	tgon::TXMLReader xmlReader( xmlPath.c_str( ));
 	if ( xmlReader.fail( ))
@@ -204,4 +211,10 @@ void IScene::ReadXML( const std::string& xmlPath )
 			}
 		}
 	}
+
+	additionWork( );
+	*loadSuccess = 1;
+
+	cGameObjectManager::Get( )->SetAutoUpdateRender( true );
+	cCollisionManager::Get( )->SetAutoUpdate( true );
 }

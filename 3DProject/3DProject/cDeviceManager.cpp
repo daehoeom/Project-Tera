@@ -52,6 +52,16 @@ cDeviceManager::cDeviceManager()
 			break;
 		}
 	}
+	
+	if ( FAILED( D3DXCreateSprite( m_pD3DDevice, &m_pD3DSprite ) ))
+	{
+		MessageBox( 
+			GetFocus(),
+			"Failed to invoke D3DXCreateSprite.",
+			"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
+	}
 
 	this->SetupLight( );
 }
@@ -59,9 +69,8 @@ cDeviceManager::cDeviceManager()
 
 cDeviceManager::~cDeviceManager()
 {
+	SAFE_RELEASE( m_pD3DSprite );
 	SAFE_RELEASE( m_pD3D );
-	//SAFE_RELEASE(m_pD3DDevice);
-
 
 	if ( m_pD3DDevice )
 	{

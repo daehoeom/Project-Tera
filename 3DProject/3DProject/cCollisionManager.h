@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include "Singleton.h"
 
 class cCollisionManager :
@@ -9,6 +10,7 @@ class cCollisionManager :
 
 public:
 	void Update( );
+	void SetAutoUpdate( bool isAutoUpdate );
 
 	void AddObject( cCollisionObject* target );
 	void EraseObject( cCollisionObject* target );
@@ -22,6 +24,8 @@ protected:
 	virtual ~cCollisionManager( );
 
 private:
+	std::mutex m_mutex;
+	bool m_isAutoUpdatable;
 	_CollisonMapTy m_collisionMap;
 };
 
@@ -33,4 +37,9 @@ inline cCollisionManager::iterator cCollisionManager::begin( )
 inline cCollisionManager::iterator cCollisionManager::end( )
 { 
 	return m_collisionMap.end( ); 
+}
+
+inline void cCollisionManager::SetAutoUpdate( bool isAutoUpdate )
+{
+	m_isAutoUpdatable = isAutoUpdate;
 }

@@ -10,7 +10,6 @@ public:
 	cSceneManager( );
 	virtual ~cSceneManager( );
 
-
 	template <typename _SceneTy>
 	void LoadScene( )
 	{
@@ -18,9 +17,14 @@ public:
 		static_assert( std::is_base_of<IScene, _SceneTy>::value,
 			"cSceneManager::LoadScene only accept class which based on IScene." );
 
-		SAFE_DELETE( m_currScene )
+		if ( m_currScene )
+		{
+			delete m_currScene;
+			m_currScene = nullptr;
+
+			cGameObjectManager::Get( )->ResetAllObject( );
+		}
 		
-		cGameObjectManager::Get( )->ResetAllObject( );
 		m_currScene = new _SceneTy;
 	}
 

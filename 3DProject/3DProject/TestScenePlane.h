@@ -1,15 +1,17 @@
 #pragma once
 #include "cGameObject.h"
 
+
 class cLightObject;
-class TestScenePlane
+class TestScenePlane :
+	public cGameObject
 {
 public:
 	explicit TestScenePlane( const char* objName );
 	virtual ~TestScenePlane( );
 
-	void Render( );
-	void Update( );
+	virtual void Render( ) override;
+	virtual void Update( ) override;
 
 private:
 	cGameObject* m_owner;
