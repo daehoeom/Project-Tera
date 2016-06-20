@@ -20,11 +20,11 @@ TestScenePlane::TestScenePlane( const char* objName ) :
 		GetShader( "Shader/NormalMapping.fx" );
 	
 	m_diffuseMap = cTextureManager::Get( )->GetTexture(
-		"C:/Users/ggomdyu/Desktop/obj/Free_Stonewall/StonePlaneDiffuse.jpg" );
+		"Resource/TownScene/Free_Stonewall/StonePlaneDiffuse.jpg" );
 	m_specularMap = cTextureManager::Get( )->GetTexture(
-		"C:/Users/ggomdyu/Desktop/obj/Free_Stonewall/StonePlaneSpecular.jpg" );
+		"Resource/TownScene/Free_Stonewall/StonePlaneSpecular.jpg" );
 	m_normalMap = cTextureManager::Get( )->GetTexture(
-		"C:/Users/ggomdyu/Desktop/obj/Free_Stonewall/StonePlaneNormal.jpg" );
+		"Resource/TownScene/Free_Stonewall/StonePlaneNormal.jpg" );
 }
 
 TestScenePlane::~TestScenePlane( )
