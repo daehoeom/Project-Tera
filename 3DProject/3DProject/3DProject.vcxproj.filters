@@ -58,9 +58,6 @@
       <Extensions>
       </Extensions>
     </Filter>
-    <Filter Include="Scene\TestScene">
-      <UniqueIdentifier>{c78b52d8-4b27-4bd3-b0b2-0d9d9f11ac3d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -238,11 +235,15 @@
     <ClInclude Include="cUnitObject.h">
       <Filter>Object\Abstract</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>Scene\TestScene</Filter>
-    </ClInclude>
     <ClInclude Include="TestScenePlane.h" />
     <ClInclude Include="cLightObject.h" />
+    <ClInclude Include="DesertScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DesertScenePlane.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -405,11 +406,15 @@
     <ClCompile Include="cUnitObject.cpp">
       <Filter>Object\Abstract</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>Scene\TestScene</Filter>
-    </ClCompile>
     <ClCompile Include="TestScenePlane.cpp" />
     <ClCompile Include="cLightObject.cpp" />
+    <ClCompile Include="DesertScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DesertScenePlane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

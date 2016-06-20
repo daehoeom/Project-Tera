@@ -6,6 +6,49 @@
 #include "cObjLoader.h"
 #include "cGroup.h"
 
+#include "cShaderManager.h"
+#include "cLightObject.h"
+#include "cGameObjectManager.h"
+
+
+//class ID3DXEffectGuard
+//{
+//public:
+//	ID3DXEffectGuard( ID3DXEffect* shader ) :
+//			m_shader( shader )
+//		{
+//		}
+//	~ID3DXEffectGuard( )
+//		{
+//			m_shader->EndPass( );
+//			m_shader->End( );
+//		}
+//
+//	HRESULT Begin( UINT* pPasses, DWORD Flags )
+//	{
+//		HRESULT result = S_FALSE;
+//		if ( m_shader )
+//		{
+//			result = m_shader->Begin( pPasses, Flags );
+//		}
+//
+//		return result;
+//	}
+//	HRESULT BeginPass( UINT Pass )
+//	{
+//		HRESULT result = S_FALSE;
+//		if ( m_shader )
+//		{
+//			result = m_shader->BeginPass( Pass );
+//		}
+//
+//		return result;
+//	}
+//
+//private:
+//	ID3DXEffect* m_shader;
+//};
+
 namespace
 {
 
@@ -60,8 +103,10 @@ ExtensionTable AnalyzeExtension(
 }
 
 
-ObjRenderer::ObjRenderer( 
-	const char* objFilePath )
+cObjRenderer::cObjRenderer( 
+	const char* objFilePath ):
+	m_effect( cShaderManager::Get( )->GetShader( 
+		"Shader/DiffuseSpecularLightinh.fx" ))
 {
 	cObjLoader loader;
 	loader.Load( objFilePath, m_groupRepo );
@@ -70,7 +115,7 @@ ObjRenderer::ObjRenderer(
 	m_max = loader.GetMaxVector( );
 }
 
-ObjRenderer::~ObjRenderer( )
+cObjRenderer::~cObjRenderer( )
 {
 	for ( auto& groupElem : m_groupRepo )
 	{
@@ -78,21 +123,41 @@ ObjRenderer::~ObjRenderer( )
 	}
 }
 
-void ObjRenderer::Render( )
+void cObjRenderer::Render( )
 {
 	assert( this->GetOwner( ));
 	
-	g_pD3DDevice->SetTransform( D3DTS_WORLD, 
-		&this->GetOwner( )->GetWorld( ) );
-	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING, TRUE );
+	m_effect->SetTechnique( "Lighting" );
 
-	for ( auto& groupElem : m_groupRepo )
+	m_effect->SetMatrix( "gWorldMatrix", &this->GetOwner( )->GetWorld( ));
+	m_effect->SetMatrix( "gViewMatrix", &cCamera::Get( )->GetView( ));
+	m_effect->SetMatrix( "gProjectionMatrix", &cCamera::Get( )->GetProjection( ) );
+
+	m_effect->SetVector( "gWorldLightPosition", 
+		&D3DXVECTOR4( g_lightObject->GetPosition( ), 1.f ));
+	m_effect->SetVector( "gWorldCameraPosition", 
+		&D3DXVECTOR4( cCamera::Get( )->GetEye( ), 1.f ));
+
+	UINT numPasses = 0;
+	m_effect->Begin( &numPasses, NULL );
 	{
-		groupElem->Render( );
+		for ( UINT i = 0; i < numPasses; ++i )
+		{
+			m_effect->BeginPass( i );
+			{
+				for ( auto& groupElem : m_groupRepo )
+				{
+					groupElem->Render( );
+				}
+			}
+			m_effect->EndPass( );
+		}
 	}
+	m_effect->End( );
 }
 
-XRenderer::XRenderer( 
+
+cXRenderer::cXRenderer( 
 	const char* xFilePath )
 {
 	if ( FAILED( D3DXLoadMeshFromXA( xFilePath, D3DXMESH_SYSTEMMEM, 
@@ -108,18 +173,14 @@ XRenderer::XRenderer(
 	this->SetupMinAndMax( );
 }
 
-XRenderer::~XRenderer( )
+cXRenderer::~cXRenderer( )
 {
 	SAFE_RELEASE( m_mesh );
 }
 
-void XRenderer::Render( )
+void cXRenderer::Render( )
 {
 	assert( this->GetOwner( ) );
-
-	g_pD3DDevice->SetRenderState( D3DRENDERSTATETYPE::D3DRS_LIGHTING, TRUE );
-	g_pD3DDevice->SetTransform( D3DTS_WORLD,
-		&this->GetOwner( )->GetWorld( ) );
 
 	if ( m_mesh )
 	{
@@ -130,7 +191,7 @@ void XRenderer::Render( )
 	}
 }
 
-void XRenderer::SetupMinAndMax( )
+void cXRenderer::SetupMinAndMax( )
 {
 	assert( m_mesh );
 
@@ -153,11 +214,11 @@ cBuildingObject::cBuildingObject(
 	switch ( AnalyzeExtension( objFilePath ))
 	{
 	case ExtensionTable::kObj:
-		m_renderer = new ObjRenderer( objFilePath.c_str( ));
+		m_renderer = new cObjRenderer( objFilePath.c_str( ));
 		break;
 
 	case ExtensionTable::kX:
-		m_renderer = new XRenderer( objFilePath.c_str( ));
+		m_renderer = new cXRenderer( objFilePath.c_str( ));
 		break;
 
 	default:
@@ -178,9 +239,12 @@ cBuildingObject::~cBuildingObject( )
 	SAFE_DELETE( m_renderer );
 }
 
+
+
 void cBuildingObject::Render( )
 {
 	__super::Render( );
+
 
 	if ( m_renderer )
 	{

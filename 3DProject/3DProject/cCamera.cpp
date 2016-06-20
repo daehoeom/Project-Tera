@@ -42,10 +42,8 @@ void cCamera::SetupView(
 	const D3DXVECTOR3& eye, 
 	const D3DXVECTOR3& lookAt )
 {
-	const D3DXVECTOR3 up( 0, 1, 0 );
-	
 	D3DXMatrixIdentity( &m_matView );
-	D3DXMatrixLookAtLH( &m_matView, &eye, &lookAt, &up );
+	D3DXMatrixLookAtLH( &m_matView, &eye, &lookAt, &m_vUp );
 	g_pD3DDevice->SetTransform( D3DTS_VIEW, &m_matView );
 
 	m_matViewProjection = m_matView;
@@ -66,10 +64,8 @@ void cCamera::Update( )
 		m_vEye = m_vEye + m_followTarget->GetPosition( );
 		m_vLookAt = m_followTarget->GetPosition( );
 	}
-	D3DXMATRIXA16 matView;
 
-	D3DXMatrixLookAtLH(&matView, &m_vEye, &m_vLookAt, &m_vUp);
-	g_pD3DDevice->SetTransform(D3DTS_VIEW, &matView);
+	this->SetupView( m_vEye, m_vLookAt );
 }
 
 void cCamera::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

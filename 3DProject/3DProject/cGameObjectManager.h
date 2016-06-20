@@ -70,7 +70,15 @@ inline _ObjectTy* cGameObjectManager::AddObject(
 inline cGameObject* cGameObjectManager::FindObject(
 	const std::string& key )
 {
-	return m_objMap.find( key )->second;
+	auto iter = m_objMap.find( key );
+	if ( iter != m_objMap.end( ) )
+	{
+		return iter->second;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 inline void cGameObjectManager::EraseObject(

@@ -3,14 +3,15 @@
 #include "cMtlTex.h"
 
 
+
 cGroup::cGroup(void)
 	: m_pMtlTex(NULL)
 {
 }
 
-cGroup::~cGroup(void)
+cGroup::~cGroup( void )
 {
-	SAFE_RELEASE(m_pMtlTex);
+	SAFE_RELEASE( m_pMtlTex );
 }
 
 void cGroup::Render()
@@ -21,10 +22,10 @@ void cGroup::Render()
 		g_pD3DDevice->SetTexture(0, m_pMtlTex->GetTexture());
 	}
 
-	g_pD3DDevice->SetFVF(ST_PNT_VERTEX::FVF);
+	g_pD3DDevice->SetFVF( ST_PNT_VERTEX::FVF );
 	g_pD3DDevice->DrawPrimitiveUP(
 		D3DPT_TRIANGLELIST,
-		m_vecVertex.size() / 3,
-		&m_vecVertex[0],
-		sizeof(ST_PNT_VERTEX));
+		m_vertices.size( ) / 3,
+		&m_vertices[0],
+		sizeof( ST_PNT_VERTEX ) );
 }

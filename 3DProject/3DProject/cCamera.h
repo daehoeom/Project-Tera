@@ -14,7 +14,7 @@ public:
 	const D3DXVECTOR3& GetUp( ) const { return m_vUp; }
 	const D3DXMATRIXA16& GetView( ) const { return m_matView; }
 	const D3DXMATRIXA16& GetProjection( ) const { return m_matProjection; }
-	const D3DXMATRIXA16& GetViewProjection( ) const { return m_matProjection; }
+	const D3DXMATRIXA16& GetViewProjection( ) const { return m_matViewProjection; }
 	void SetFollowingTarget( class cGameObject* );
 
 protected:

@@ -27,15 +27,18 @@ inline cGameObject* IRenderer::GetOwner( )
 	return m_owner;
 }
 
-
-class ObjRenderer :
+class cGroup;
+class cLightObject;
+class cObjRenderer :
 	public IRenderer
 {
 public:
-	explicit ObjRenderer( const char* objFilePath );
-	virtual ~ObjRenderer( );
+	explicit cObjRenderer( const char* objFilePath );
+	virtual ~cObjRenderer( );
 
 	virtual void Render( ) override;
+
+	const std::vector<cGroup*>& GetGroupRepo( ) const;
 
 public:
 	const D3DXVECTOR3& GetMinVector( ) const;
@@ -44,25 +47,31 @@ public:
 private:
 	D3DXVECTOR3 m_min;
 	D3DXVECTOR3 m_max;
-	std::vector<class cGroup*> m_groupRepo;
+	LPD3DXEFFECT m_effect;
+	std::vector<cGroup*> m_groupRepo;
 };
 
-inline const D3DXVECTOR3& ObjRenderer::GetMinVector( ) const
+inline const std::vector<cGroup*>& cObjRenderer::GetGroupRepo( ) const
+{
+	return m_groupRepo;
+}
+
+inline const D3DXVECTOR3& cObjRenderer::GetMinVector( ) const
 {
 	return m_min;
 }
 
-inline const D3DXVECTOR3& ObjRenderer::GetMaxVector( ) const
+inline const D3DXVECTOR3& cObjRenderer::GetMaxVector( ) const
 {
 	return m_max;
 }
 
-class XRenderer :
+class cXRenderer :
 	public IRenderer
 {
 public:
-	explicit XRenderer( const char* xFilePath );
-	virtual ~XRenderer( );
+	explicit cXRenderer( const char* xFilePath );
+	virtual ~cXRenderer( );
 
 	virtual void Render( );
 
@@ -82,17 +91,17 @@ private:
 	ID3DXMesh* m_mesh;
 };
 
-inline const D3DXVECTOR3& XRenderer::GetMinVector( ) const
+inline const D3DXVECTOR3& cXRenderer::GetMinVector( ) const
 {
 	return m_min;
 }
 
-inline const D3DXVECTOR3& XRenderer::GetMaxVector( ) const
+inline const D3DXVECTOR3& cXRenderer::GetMaxVector( ) const
 {
 	return m_max;
 }
 
-inline void XRenderer::SetMesh(
+inline void cXRenderer::SetMesh(
 	ID3DXMesh* mesh )
 {
 	SAFE_RELEASE( m_mesh );
@@ -100,7 +109,7 @@ inline void XRenderer::SetMesh(
 	this->SetupMinAndMax( );
 }
 
-inline ID3DXMesh* XRenderer::GetMesh( )
+inline ID3DXMesh* cXRenderer::GetMesh( )
 {
 	return m_mesh;
 }
@@ -114,6 +123,8 @@ public:
 	explicit cBuildingObject( const std::string& modelFilePath );
 	virtual ~cBuildingObject( );
 
+	IRenderer* GetRenderer( );
+
 public:
 	virtual void Render( ) override;
 	virtual void Update( ) override;
@@ -125,3 +136,8 @@ public:
 private:
 	IRenderer* m_renderer;
 };
+
+inline IRenderer * cBuildingObject::GetRenderer( )
+{
+	return m_renderer;
+}

@@ -45,7 +45,7 @@
 #include "cObject.h"
 #include "cObjectManager.h"
 #include "cPlayer.h"
-
+#include "cLightObject.h"
 
 #define EPSILON 0.0001f
 #define SAFE_RELEASE(p) {if (p) { (p)->Release(); (p) = NULL; }}
@@ -231,3 +231,4 @@ extern float fAniTime;
 
 extern HWND		g_hWnd;
 extern cPlayer* g_player;
+extern cLightObject* g_lightObject;

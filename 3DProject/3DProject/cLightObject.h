@@ -6,9 +6,6 @@ class cLightObject :
 	public cGameObject
 {
 public:
-	static const char* ms_lightName;
-
-public:
 	cLightObject( );
 	virtual ~cLightObject( );
 
