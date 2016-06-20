@@ -3,6 +3,7 @@
 
 #include "cLightObject.h"
 #include "DesertScenePlane.h"
+#include "cSkyBox.h"
 
 DesertScene::DesertScene( ) :
 	m_plane( nullptr )
@@ -18,7 +19,7 @@ DesertScene::DesertScene( ) :
 	//);
 	//monster2->SetPosition({ 0.f, 0.f, -150.f });
 
-	//cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox );
+	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(1) );
 	//cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
 	//
 	m_plane = new DesertScenePlane( "Desert_plane0" );

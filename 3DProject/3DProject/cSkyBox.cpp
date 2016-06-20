@@ -2,7 +2,7 @@
 #include "cSkyBox.h"
 
 
-cSkyBox::cSkyBox()
+cSkyBox::cSkyBox(int number)
 	: m_pVertexBuffer( nullptr )
 {
 	for ( size_t i = 0; i < _countof( m_pTexture ); ++i )
@@ -10,7 +10,11 @@ cSkyBox::cSkyBox()
 		m_pTexture[i] = nullptr;
 	}
 
-	this->Setup( );
+	if (number == 0)
+		this->Setup();
+
+	else if (number == 1)
+		this->Setup2();
 }
 
 
@@ -113,6 +117,98 @@ void cSkyBox::Setup()
 	D3DXCreateTextureFromFile(
 		g_pD3DDevice,
 		"./CH/SkyBox/Front.bmp",
+		&m_pTexture[5]);
+}
+
+void cSkyBox::Setup2()
+{
+	g_pD3DDevice->CreateVertexBuffer(24 * sizeof(ST_PT_VERTEX), D3DUSAGE_WRITEONLY,
+		ST_PT_VERTEX::FVF, D3DPOOL_MANAGED, &m_pVertexBuffer, NULL);
+
+	D3DXVECTOR3 vertex[8];
+	vertex[0] = D3DXVECTOR3(-1024.f, -1024.f, -1024.f);
+	vertex[1] = D3DXVECTOR3(-1024.f, -1024.f, 1024.0f);
+	vertex[2] = D3DXVECTOR3(1024.0f, -1024.0f, 1024.0f);
+	vertex[3] = D3DXVECTOR3(1024.0f, -1024.0f, -1024.0f);
+	vertex[4] = D3DXVECTOR3(-1024.0f, 1024.0f, -1024.0f);
+	vertex[5] = D3DXVECTOR3(-1024.0f, 1024.0f, 1024.0f);
+	vertex[6] = D3DXVECTOR3(1024.0f, 1024.0f, 1024.0f);
+	vertex[7] = D3DXVECTOR3(1024.0f, 1024.0f, -1024.0f);
+
+	//아래
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[1], D3DXVECTOR2(0.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[2], D3DXVECTOR2(1.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[0], D3DXVECTOR2(0.f, 1.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[3], D3DXVECTOR2(1.f, 1.f)));
+
+	//왼
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[4], D3DXVECTOR2(0.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[5], D3DXVECTOR2(1.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[0], D3DXVECTOR2(0.f, 1.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[1], D3DXVECTOR2(1.f, 1.f)));
+
+	//위
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[4], D3DXVECTOR2(0.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[7], D3DXVECTOR2(1.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[5], D3DXVECTOR2(0.f, 1.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[6], D3DXVECTOR2(1.f, 1.f)));
+
+	//오
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[6], D3DXVECTOR2(0.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[7], D3DXVECTOR2(1.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[2], D3DXVECTOR2(0.f, 1.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[3], D3DXVECTOR2(1.f, 1.f)));
+
+	//뒤
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[7], D3DXVECTOR2(0.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[4], D3DXVECTOR2(1.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[3], D3DXVECTOR2(0.f, 1.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[0], D3DXVECTOR2(1.f, 1.f)));
+
+	//앞
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[5], D3DXVECTOR2(0.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[6], D3DXVECTOR2(1.f, 0.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[1], D3DXVECTOR2(0.f, 1.f)));
+	m_vecVertex.push_back(ST_PT_VERTEX(vertex[2], D3DXVECTOR2(1.f, 1.f)));
+
+	ST_PT_VERTEX* vertices;
+	m_pVertexBuffer->Lock(0, 0, (void**)&vertices, 0);
+
+	for (size_t i = 0; i < m_vecVertex.size(); i++)
+	{
+		vertices[i] = m_vecVertex[i];
+	}
+
+	m_pVertexBuffer->Unlock();
+
+	D3DXCreateTextureFromFile(
+		g_pD3DDevice,
+		"./CH/SkyBox/Desert_Bottom.jpg",
+		&m_pTexture[0]);
+
+	D3DXCreateTextureFromFile(
+		g_pD3DDevice,
+		"./CH/SkyBox/Desert_Left.jpg",
+		&m_pTexture[1]);
+
+	D3DXCreateTextureFromFile(
+		g_pD3DDevice,
+		"./CH/SkyBox/Desert_Top.jpg",
+		&m_pTexture[2]);
+
+	D3DXCreateTextureFromFile(
+		g_pD3DDevice,
+		"./CH/SkyBox/Desert_Right.jpg",
+		&m_pTexture[3]);
+
+	D3DXCreateTextureFromFile(
+		g_pD3DDevice,
+		"./CH/SkyBox/Desert_Back.jpg",
+		&m_pTexture[4]);
+
+	D3DXCreateTextureFromFile(
+		g_pD3DDevice,
+		"./CH/SkyBox/Desert_Front.jpg",
 		&m_pTexture[5]);
 }
 
