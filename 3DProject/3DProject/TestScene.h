@@ -1,4 +1,5 @@
 #pragma once
+#include <thread>
 #include "IScene.h"
 
 class cBuildingObject;
@@ -10,6 +11,7 @@ class cGroup;
 class cNpcManager;
 class cArgoniteKallashGuardLeader;
 class TestScenePlane;
+class cSprite;
 
 class TestScene :
 	public IScene
@@ -22,5 +24,8 @@ public:
 	virtual void Update( ) override;
 
 private:
+	std::thread m_loadThread;
+	DWORD m_loadSuccess;
+	cSprite* m_loadingSprite;
 	TestScenePlane* m_plane;
 };

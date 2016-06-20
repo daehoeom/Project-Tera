@@ -13,12 +13,24 @@
 #include "cKeyManager.h"
 #include "DesertScene.h"
 #include "cSceneManager.h"
+#include "Console.h"
+#include "cSprite.h"
 
-
-TestScene::TestScene( )
+namespace
 {
-	this->ReadXML( "./CH/SCENE.xml" );
-	
+	void AdditionalWork( TestScenePlane** param )
+	{
+		*param = new TestScenePlane( "Plane0" );
+	}
+}
+
+TestScene::TestScene( ) :
+	m_plane( nullptr ),
+	m_loadThread( ReadXML, "./CH/SCENE.xml", &m_loadSuccess,
+		std::function<void( )>( std::bind( AdditionalWork, &m_plane )) ),
+	m_loadSuccess( 0 ),
+	m_loadingSprite( new cSprite( "C:/Users/ggomdyu/Desktop/documents-export-2016-06-20/LoadingImage63_Tex.tga" ))
+{
 	//cGameObjectManager::Get( )->AddObject(
 	//	"Monster1", new cArgoniteKallashGuardLeader 
 	//);
@@ -31,7 +43,8 @@ TestScene::TestScene( )
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(0) );
 	cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
 
-	m_plane = new TestScenePlane( "Plane0" );
+	//loadThread.join( );
+
 
 	/*D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
@@ -42,11 +55,24 @@ TestScene::TestScene( )
 
 TestScene::~TestScene( )
 {
+	m_loadThread.join( );
+
 	SAFE_DELETE( m_plane );
+	SAFE_DELETE( m_loadingSprite );
 }
 
 void TestScene::Render( )
 {
+	if ( !m_loadSuccess )
+	{
+		Log( "로딩을_알리는_메시지" );
+		if ( m_loadingSprite )
+		{
+			m_loadingSprite->Render( );
+		}
+		return;
+	}
+
 	if ( m_plane )
 	{
 		m_plane->Render( );
@@ -61,6 +87,11 @@ void TestScene::Render( )
 
 void TestScene::Update( )
 {
+	if ( !m_loadSuccess )
+	{
+		return;
+	}
+
 	if ( KEYMANAGER->isOnceKeyDown( VK_SPACE ) )
 	{
 		cSceneManager::Get( )->LoadScene<DesertScene>( );

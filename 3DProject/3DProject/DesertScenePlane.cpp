@@ -6,28 +6,19 @@
 #include "cShaderManager.h"
 #include "cLightObject.h"
 #include "cBuildingObject.h"
+#include "cShaderManager.h"
 
 DesertScenePlane::DesertScenePlane( const char* objName ) :
-	m_diffuseMap( nullptr ),
-	m_specularMap( nullptr ),
-	m_normalMap( nullptr ),
-	m_normalMappingShader( nullptr ),
+	m_fogShader( cShaderManager::Get( )->GetShader( "Shader/fog.fx" )),
+	m_fogTechHandle( m_fogShader->GetTechniqueByName( "Fog" )),
+	m_diffuseMap( cTextureManager::Get( )->GetTexture(
+		"C:/Users/ggomdyu/Desktop/obj/Desert/sand_tex.jpg" )),
 	m_owner( static_cast<cBuildingObject*>( 
 		cGameObjectManager::Get( )->FindObject( objName )))
 {
 	assert( m_owner );
 
 	m_owner->SetActive( false );
-	
-	m_normalMappingShader = cShaderManager::Get( )->
-		GetShader( "Shader/NormalMapping.fx" );
-	
-	m_diffuseMap = cTextureManager::Get( )->GetTexture(
-		"C:/Users/ggomdyu/Desktop/obj/Desert/sand_tex.jpg" );
-	m_specularMap = cTextureManager::Get( )->GetTexture(
-		"C:/Users/ggomdyu/Desktop/obj/Desert/sand02c_color_spec.jpg" );
-	m_normalMap = cTextureManager::Get( )->GetTexture(
-		"C:/Users/ggomdyu/Desktop/obj/Desert/sand02c_color_nrm.jpg" );
 }
 
 DesertScenePlane::~DesertScenePlane( )
@@ -36,57 +27,36 @@ DesertScenePlane::~DesertScenePlane( )
 
 void DesertScenePlane::Render( )
 {
-	// 뷰 행렬을 만든다.
-	// 월드/뷰/투영행렬을 미리 곱한다.
-	D3DXMATRIXA16 matWorldView;
-	D3DXMATRIXA16 matWorldViewProjection;
-	D3DXMatrixMultiply( &matWorldView, &m_owner->GetWorld( ), &cCamera::Get( )->GetView( ) );
-	D3DXMatrixMultiply( &matWorldViewProjection, &matWorldView, &cCamera::Get( )->GetProjection( ) );
+	m_fogShader->SetTechnique( m_fogTechHandle );
 
-	m_normalMappingShader->SetTechnique( "NormalMapping" );
-
-	// 쉐이더 전역변수들을 설정
-	m_normalMappingShader->SetMatrix( "gWorldMatrix", &m_owner->GetWorld( ) );
-	m_normalMappingShader->SetMatrix( "gWorldViewProjectionMatrix", &matWorldViewProjection );
-
-	m_normalMappingShader->SetVector( "gWorldLightPosition",
-		&D3DXVECTOR4( g_lightObject->GetPosition( ), 1.f ) );
-	m_normalMappingShader->SetVector( "gWorldCameraPosition", &D3DXVECTOR4( cCamera::Get( )->GetEye( ), 1.f ) );
-
-	m_normalMappingShader->SetVector( "gLightColor",
-		&g_lightObject->GetLightColor( ) );
-	m_normalMappingShader->SetTexture( "DiffuseMap_Tex", m_diffuseMap );
-	m_normalMappingShader->SetTexture( "SpecularMap_Tex", m_specularMap );
-	m_normalMappingShader->SetTexture( "NormalMap_Tex", m_normalMap );
-
-	// 쉐이더를 시작한다.
 	UINT numPasses = 0;
-	m_normalMappingShader->Begin( &numPasses, NULL );
+	m_fogShader->Begin( &numPasses, 0 );
+	
+	for ( int i = 0; i < numPasses; i++ )
 	{
-		for ( UINT i = 0; i < numPasses; ++i )
+		m_fogShader->BeginPass( i );
+
+		auto groupRepo = static_cast<cObjRenderer*>( m_owner->GetRenderer( ))
+			->GetGroupRepo( );
+
+		g_pD3DDevice->SetTransform( D3DTS_WORLD, &m_owner->GetWorld( ) );
+		g_pD3DDevice->SetTexture( 0, m_diffuseMap );
+
+		for ( auto groupElem : groupRepo )
 		{
-			m_normalMappingShader->BeginPass( i );
-			{
-				if ( m_owner )
-				{
-					m_owner->Render( );
-				}
-			}
-			m_normalMappingShader->EndPass( );
+			groupElem->Render( );
 		}
+
+		m_fogShader->EndPass( );
 	}
-	m_normalMappingShader->End( );
+	m_fogShader->End( );
+
 }
 
 void DesertScenePlane::Update( )
 {
-	if ( m_owner )
-	{
-		m_owner->Update( );
-	}
-
-	const auto& groupRepo = static_cast<cObjRenderer*>( m_owner->GetRenderer( ))
-		->GetGroupRepo( );
+	const auto& groupRepo = static_cast<cObjRenderer*>( 
+		m_owner->GetRenderer( ))->GetGroupRepo( );
 
 	BOOL collised = FALSE;
 	float hitDist = 0.f;

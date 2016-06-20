@@ -13,9 +13,8 @@ public:
 
 private:
 	cBuildingObject* m_owner;
-	LPD3DXEFFECT m_normalMappingShader;
+	LPD3DXEFFECT m_fogShader;
+	D3DXHANDLE m_fogTechHandle;
 	LPDIRECT3DTEXTURE9 m_diffuseMap;
-	LPDIRECT3DTEXTURE9 m_specularMap;
-	LPDIRECT3DTEXTURE9 m_normalMap;
 };
 
