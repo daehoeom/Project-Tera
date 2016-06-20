@@ -228,7 +228,7 @@ void MainSurfaceWindow::OnDropFile(
 			str += std::to_wstring( m_createCount++ );
 		
 			IColliseable* newXObject = new cBuildingObject( str.c_str( ));
-			XRenderer* newXRenderer = new XRenderer( m_dropQueryPath.get( ));
+			cXRenderer* newXRenderer = new cXRenderer( m_dropQueryPath.get( ));
 
 			newXObject->SetRenderer( newXRenderer );
 			newXObject->SetModelPath( m_dropQueryPath.get( ));
@@ -251,7 +251,7 @@ void MainSurfaceWindow::OnDropFile(
 			str += std::to_wstring( m_createCount++ );
 
 			IColliseable* newObjObject = new cBuildingObject( str.c_str( ));
-			ObjRenderer* newObjRenderer = new ObjRenderer( m_dropQueryPath.get( )); 
+			cObjRenderer* newObjRenderer = new cObjRenderer( m_dropQueryPath.get( )); 
 
 			newObjObject->SetRenderer( newObjRenderer );
 			newObjObject->SetModelPath( m_dropQueryPath.get( ));
@@ -416,8 +416,8 @@ bool MainSurfaceWindow::OnSaveAsClicked( )
 			auto* objObject = static_cast<cBuildingObject*>( 
 				selectedObject );
 			
-			if ( typeid( objObject->GetCollider( )).hash_code() ==
-				typeid( BoundingBox ).hash_code( ))
+			if ( objObject->GetCollider( ) /*typeid( objObject->GetCollider( )).hash_code() ==
+				typeid( BoundingBox ).hash_code( )*/)
 			{
 				auto* boundingBox = static_cast<BoundingBox*>( 
 					objObject->GetCollider( ));
@@ -536,12 +536,12 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 					switch ( extension )
 					{
 					case ExtensionTable::kObj:
-						renderer = new ObjRenderer( 
+						renderer = new cObjRenderer( 
 							modelPath.c_str( ));
 						break;
 
 					case ExtensionTable::kX:
-						renderer = new XRenderer(
+						renderer = new cXRenderer(
 							modelPath.c_str( ) );
 						break;
 

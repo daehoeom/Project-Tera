@@ -4,7 +4,7 @@
 #include "cDeviceManager.h"
 #include "IRenderable.h"
 
-XRenderer::XRenderer( 
+cXRenderer::cXRenderer( 
 	const char* xFilePath )
 {
 	if ( FAILED( D3DXLoadMeshFromXA( xFilePath, D3DXMESH_SYSTEMMEM, 
@@ -20,12 +20,12 @@ XRenderer::XRenderer(
 	this->SetupMinAndMax( );
 }
 
-XRenderer::~XRenderer( )
+cXRenderer::~cXRenderer( )
 {
 	SAFE_RELEASE( m_mesh );
 }
 
-void XRenderer::Render( )
+void cXRenderer::Render( )
 {
 	assert( this->GetOwner( ) );
 
@@ -41,7 +41,7 @@ void XRenderer::Render( )
 	}
 }
 
-void XRenderer::SetupMinAndMax( )
+void cXRenderer::SetupMinAndMax( )
 {
 	assert( m_mesh );
 

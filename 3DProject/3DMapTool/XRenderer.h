@@ -1,12 +1,12 @@
 #pragma once
 #include "IRenderer.h"
 
-class XRenderer :
+class cXRenderer :
 	public IRenderer
 {
 public:
-	explicit XRenderer( const char* xFilePath );
-	virtual ~XRenderer( );
+	explicit cXRenderer( const char* xFilePath );
+	virtual ~cXRenderer( );
 
 	virtual void Render( );
 
@@ -27,17 +27,17 @@ private:
 };
 
 
-inline const D3DXVECTOR3 & XRenderer::GetMinVector( ) const
+inline const D3DXVECTOR3 & cXRenderer::GetMinVector( ) const
 {
 	return m_min;
 }
 
-inline const D3DXVECTOR3 & XRenderer::GetMaxVector( ) const
+inline const D3DXVECTOR3 & cXRenderer::GetMaxVector( ) const
 {
 	return m_max;
 }
 
-inline void XRenderer::SetMesh(
+inline void cXRenderer::SetMesh(
 	ID3DXMesh* mesh )
 {
 	SAFE_RELEASE( m_mesh );
@@ -45,7 +45,7 @@ inline void XRenderer::SetMesh(
 	this->SetupMinAndMax( );
 }
 
-inline ID3DXMesh * XRenderer::GetMesh( )
+inline ID3DXMesh * cXRenderer::GetMesh( )
 {
 	return m_mesh;
 }

@@ -1,12 +1,12 @@
 #pragma once
 #include "IRenderer.h"
 
-class ObjRenderer :
+class cObjRenderer :
 	public IRenderer
 {
 public:
-	explicit ObjRenderer( const char* objFilePath );
-	virtual ~ObjRenderer( );
+	explicit cObjRenderer( const char* objFilePath );
+	virtual ~cObjRenderer( );
 
 	virtual void Render( );
 
@@ -20,12 +20,12 @@ private:
 	std::vector<class cGroup*> m_groupRepo;
 };
 
-inline const D3DXVECTOR3& ObjRenderer::GetMinVector( ) const
+inline const D3DXVECTOR3& cObjRenderer::GetMinVector( ) const
 {
 	return m_min;
 }
 
-inline const D3DXVECTOR3& ObjRenderer::GetMaxVector( ) const
+inline const D3DXVECTOR3& cObjRenderer::GetMaxVector( ) const
 {
 	return m_max;
 }

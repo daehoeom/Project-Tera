@@ -7,7 +7,7 @@
 #include "IRenderable.h"
 
 
-ObjRenderer::ObjRenderer( 
+cObjRenderer::cObjRenderer( 
 	const char* objFilePath )
 {
 	cObjLoader loader;
@@ -17,7 +17,7 @@ ObjRenderer::ObjRenderer(
 	m_max = loader.GetMaxVector( );
 }
 
-ObjRenderer::~ObjRenderer( )
+cObjRenderer::~cObjRenderer( )
 {
 	for ( auto& groupElem : m_groupRepo )
 	{
@@ -25,7 +25,7 @@ ObjRenderer::~ObjRenderer( )
 	}
 }
 
-void ObjRenderer::Render( )
+void cObjRenderer::Render( )
 {
 	assert( this->GetOwner( ));
 	
