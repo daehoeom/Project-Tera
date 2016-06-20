@@ -6,7 +6,7 @@
 #include "DesertScenePlane.h"
 #include "cSkyBox.h"
 #include "cEnemyManager.h"
-
+#include "cSprite.h"
 
 namespace
 {
@@ -51,14 +51,18 @@ DesertScene::~DesertScene( )
 
 void DesertScene::Update( )
 {
+	if ( !m_loadSuccess )
+	{
+		if ( m_loadingSprite )
+		{
+			m_loadingSprite->Update( );
+		}
+		return;
+	}
+
 	if ( m_plane )
 	{
 		m_plane->Update( );
-	}
-
-	if ( m_loadingSprite )
-	{
-		m_loadingSprite->Update( );
 	}
 
 	if ( g_player )
@@ -69,14 +73,18 @@ void DesertScene::Update( )
 
 void DesertScene::Render( )
 {
+	if ( !m_loadSuccess )
+	{
+		if ( m_loadingSprite )
+		{
+			m_loadingSprite->Render( );
+		}
+		return;
+	}
+
 	if ( m_plane )
 	{
 		m_plane->Render( );
-	}
-
-	if ( m_loadingSprite )
-	{
-		m_loadingSprite->Render( );
 	}
 
 	//플레이어 렌더

@@ -9,7 +9,8 @@
 
 DesertScenePlane::DesertScenePlane( const char* objName ) :
 	m_owner( static_cast<cBuildingObject*>( 
-		cGameObjectManager::Get( )->FindObject( objName )))
+		cGameObjectManager::Get( )->FindObject( objName ))),
+	m_fogShader( cShaderManager::Get( )->GetShader( "Shader/fog.fx" ))
 {
 	assert( m_owner );
 
