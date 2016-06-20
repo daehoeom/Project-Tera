@@ -4,6 +4,7 @@
 #include "cGroup.h"
 #include "cTextureManager.h"
 #include "StringUtil.h"
+#include "cGameObject.h"
 
 #pragma warning( disable: 4996 )
 
@@ -23,7 +24,7 @@ cObjLoader::~cObjLoader(void)
 }
 
 void cObjLoader::Load(
-	const char* szFullPath, 
+	const char* szFullPath,
 	std::vector<cGroup*>& vecGroup )
 {
 	std::vector<D3DXVECTOR3> vecV;
@@ -51,6 +52,7 @@ void cObjLoader::Load(
 		if ( !vecVertex.empty( ))
 		{
 			cGroup* pGroup = new cGroup;
+			//pGroup->SetOwner( groupOwner );
 			pGroup->SetMtlTex( m_mapMtlTex[sMtlName] );
 			pGroup->SetVertex( vecVertex );
 			vecGroup.push_back( pGroup );

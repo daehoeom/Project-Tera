@@ -5,25 +5,28 @@
 #include "cSceneManager.h"
 #include "cShaderManager.h"
 #include "TestScene.h"
+#include "DesertScene.h"
 
 cPlayer* g_player = nullptr;
+cLightObject* g_lightObject = nullptr;
 
 cMainGame::cMainGame( )
 {
 	SetupManagers();
 
 	g_player = new cPlayer;
+	g_lightObject = new cLightObject;
 	cCamera::Get( )->SetFollowingTarget( g_player );
 
 	/*SOUNDMANAGER->addSound("배경음", "./BGM/War_Start_00.ogg");
 	SOUNDMANAGER->play("배경음", 1.f);*/
-	cSceneManager::Get( )->LoadScene( 
-		new TestScene( "./CH/Scene.xml" ));
+	cSceneManager::Get( )->LoadScene( new DesertScene );
 }
 
 cMainGame::~cMainGame( )
 {
 	SAFE_DELETE( g_player );
+	SAFE_DELETE( g_lightObject );
 }
 
 void cMainGame::Update( )

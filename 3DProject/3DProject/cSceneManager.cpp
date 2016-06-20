@@ -18,9 +18,6 @@ void cSceneManager::LoadScene( IScene * newScene )
 {
 	if ( m_currScene )
 	{
-		cCollisionManager::Get( )->ClearAllObject( );
-		cGameObjectManager::Get( )->ResetAllObject( );
-
 		delete m_currScene;
 		m_currScene = nullptr;
 	}
