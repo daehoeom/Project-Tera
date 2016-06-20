@@ -2,7 +2,7 @@
 <object_0>
 	<ObjectName>object_0</ObjectName>
 	<Type>obj</Type>
-	<ModelPath>C:\Users\ggomdyu\Desktop\obj\Palm_tree_01\Palm_tree_01.obj</ModelPath>
+	<ModelPath>Resource\DesertScene\Palm_tree_01\Palm_tree_01.obj</ModelPath>
 	<Position x="-52.435806" y="330.000061" z="-36.585205"></Position>
 	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
 	<Scale x="0.030000" y="0.030000" z="0.030000"></Scale>
@@ -15,7 +15,7 @@
 <object_1>
 	<ObjectName>Desert_plane0</ObjectName>
 	<Type>obj</Type>
-	<ModelPath>C:\Users\ggomdyu\Desktop\obj\Desert\Desert_plane.obj</ModelPath>
+	<ModelPath>Resource\DesertScene\Desert\Desert_plane.obj</ModelPath>
 	<Position x="0.000000" y="0.000000" z="0.000000"></Position>
 	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
 	<Scale x="30.000000" y="30.000000" z="30.000000"></Scale>
