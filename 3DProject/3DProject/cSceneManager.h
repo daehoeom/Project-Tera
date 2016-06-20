@@ -1,4 +1,5 @@
 #pragma once
+#include <type_traits>
 #include "Singleton.h"
 #include "IScene.h"
 
@@ -9,7 +10,20 @@ public:
 	cSceneManager( );
 	virtual ~cSceneManager( );
 
-	void LoadScene( IScene* newScene );
+
+	template <typename _SceneTy>
+	void LoadScene( )
+	{
+		// Compile time assertion
+		static_assert( std::is_base_of<IScene, _SceneTy>::value,
+			"cSceneManager::LoadScene only accept class which based on IScene." );
+
+		SAFE_DELETE( m_currScene )
+		
+		cGameObjectManager::Get( )->ResetAllObject( );
+		m_currScene = new _SceneTy;
+	}
+
 	void Render( );
 	void Update( );
 	

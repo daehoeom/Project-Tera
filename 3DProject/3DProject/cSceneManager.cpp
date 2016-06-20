@@ -14,17 +14,6 @@ cSceneManager::~cSceneManager( )
 	SAFE_DELETE( m_currScene );
 }
 
-void cSceneManager::LoadScene( IScene * newScene )
-{
-	if ( m_currScene )
-	{
-		delete m_currScene;
-		m_currScene = nullptr;
-	}
-
-	m_currScene = newScene;
-}
-
 void cSceneManager::Render( )
 {
 	if ( m_currScene )

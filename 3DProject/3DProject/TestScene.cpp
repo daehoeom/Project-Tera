@@ -63,8 +63,7 @@ void TestScene::Update( )
 {
 	if ( KEYMANAGER->isOnceKeyDown( VK_SPACE ) )
 	{
-		cGameObjectManager::Get( )->ResetAllObject( );
-		cSceneManager::Get( )->LoadScene( new DesertScene );
+		cSceneManager::Get( )->LoadScene<DesertScene>( );
 		return;
 	}
 
