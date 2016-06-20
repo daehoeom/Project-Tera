@@ -10,7 +10,6 @@ cEnemy::cEnemy()
 	, m_vOrigin(0, 0, 0)
 	, m_vDirection(1, 0, 0)
 {
-	SetCurrHp(1000);
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 
@@ -19,7 +18,6 @@ cEnemy::cEnemy()
 	D3DXMatrixIdentity(&m_matLocal);
 	D3DXMatrixIdentity(&matT);
 }
-
 
 cEnemy::~cEnemy()
 {

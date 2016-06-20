@@ -62,6 +62,8 @@ protected:
 	int					n;
 	float				m_fAttackCurrDelay;
 	float				m_fAttackMaxTime;
+
+	std::vector<cEnemy*> m_vecEnemy;
 };
 
 inline void cEnemy::ResetAttackDelay( )

@@ -245,6 +245,7 @@
     </ClInclude>
     <ClInclude Include="DesertScenePlane.h" />
     <ClInclude Include="cShadowImage.h" />
+    <ClInclude Include="cEnemyManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -417,6 +418,7 @@
     </ClCompile>
     <ClCompile Include="DesertScenePlane.cpp" />
     <ClCompile Include="cShadowImage.cpp" />
+    <ClCompile Include="cEnemyManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">

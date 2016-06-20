@@ -94,6 +94,7 @@
     <ClInclude Include="cCommandCombo.h" />
     <ClInclude Include="cDeviceManager.h" />
     <ClInclude Include="cEnemy.h" />
+    <ClInclude Include="cEnemyManager.h" />
     <ClInclude Include="cFrustumCulling.h" />
     <ClInclude Include="cGiantStone.h" />
     <ClInclude Include="cGrid.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="cCommandCombo.cpp" />
     <ClCompile Include="cDeviceManager.cpp" />
     <ClCompile Include="cEnemy.cpp" />
+    <ClCompile Include="cEnemyManager.cpp" />
     <ClCompile Include="cFrustumCulling.cpp" />
     <ClCompile Include="cGiantStone.cpp" />
     <ClCompile Include="cGrid.cpp" />
