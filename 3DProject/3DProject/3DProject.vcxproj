@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3DProject.h" />
+    <ClInclude Include="c3DSprite.h" />
     <ClInclude Include="cAllocateHierarchy.h" />
     <ClInclude Include="cArgoniteFemaleMagician.h" />
     <ClInclude Include="cArgoniteKallashGuardLeader.h" />
@@ -149,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3DProject.cpp" />
+    <ClCompile Include="c3DSprite.cpp" />
     <ClCompile Include="cAllocateHierarchy.cpp" />
     <ClCompile Include="cArgoniteFemaleMagician.cpp" />
     <ClCompile Include="cArgoniteKallashGuardLeader.cpp" />
