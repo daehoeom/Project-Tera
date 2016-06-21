@@ -31,23 +31,9 @@ TestScene::TestScene( ) :
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage63_Tex.tga" ))
 {
-	//auto* monster2 = cGameObjectManager::Get( )->AddObject( 
-	//	"Monster2", new cArgoniteKallashGuardLeader 
-	//);
-	//monster2->SetPosition({ 0.f, 0.f, -150.f });
-
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(0) );
 	cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
 	cGameObjectManager::Get()->AddObject("Npc", new cNpcManager);
-
-	//loadThread.join( );
-
-
-	/*D3DXMATRIXA16 mat;
-	D3DXMatrixIdentity(&mat);
-	m_pLoader = new cObjLoader;
-	m_pLoader->Load("./Map/Height.obj", m_vecGroup, &mat);*/
-
 }
 
 TestScene::~TestScene( )

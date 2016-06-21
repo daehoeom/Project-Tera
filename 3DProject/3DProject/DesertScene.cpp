@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "DesertScene.h"
 #include "cEnemy.h"
-
 #include "cLightObject.h"
 #include "DesertScenePlane.h"
 #include "cSkyBox.h"
 #include "cArgoniteKallashGuardLeader.h"
+#include "cGiantStone.h"
+#include "cMadmadDuo.h"
+#include "cArgoniteFemaleMagician.h"
+#include "cPixie.h"
 #include "cSprite.h"
 
 
@@ -24,7 +27,7 @@ DesertScene::DesertScene( ) :
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.bmp" ))
 {
-	m_monsterRepo.push_back( new cArgoniteKallashGuardLeader );
+	m_monsterRepo.push_back(new cPixie);
 	m_monsterRepo[0]->SetPosition({ 100, 300, 100 });
 	m_monsterRepo[0]->SetEnemyOrigin(&m_monsterRepo[0]->GetPosition());
 
@@ -71,11 +74,13 @@ void DesertScene::Update( )
 	for ( auto enemyElem : m_monsterRepo )
 	{
 		enemyElem->Update( );
-		enemyElem->SetPosition({
-			enemyElem->GetPosition( ).x,
-			m_plane->GetHeight( enemyElem ),
-			enemyElem->GetPosition( ).z
-		});
+
+		//몬스터가 죽기 전까지는 Height맵 높이 값에 따라 Y축이 변동
+		if (enemyElem->GetEnemyState() != ENEMY_DEATH)
+		{
+			enemyElem->SetPosition({ enemyElem->GetPosition().x, m_plane->GetHeight(enemyElem),
+				enemyElem->GetPosition().z });
+		}
 	}
 }
 
