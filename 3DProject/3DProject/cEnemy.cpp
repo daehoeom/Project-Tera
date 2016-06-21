@@ -14,6 +14,8 @@ cEnemy::cEnemy()
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 
+	m_vOrigin = this->GetPosition();
+
 	this->SetObjectType(ObjectType::eMonster);
 
 	D3DXMatrixIdentity(&m_matLocal);

@@ -124,7 +124,6 @@ void cSkyBox::Setup2()
 {
 	g_pD3DDevice->CreateVertexBuffer(24 * sizeof(ST_PT_VERTEX), D3DUSAGE_WRITEONLY,
 		ST_PT_VERTEX::FVF, D3DPOOL_MANAGED, &m_pVertexBuffer, NULL);
-
 	D3DXVECTOR3 vertex[8];
 	vertex[0] = D3DXVECTOR3(-1024.f, -1024.f, -1024.f);
 	vertex[1] = D3DXVECTOR3(-1024.f, -1024.f, 1024.0f);
