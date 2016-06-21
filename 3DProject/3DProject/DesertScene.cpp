@@ -5,8 +5,9 @@
 #include "cLightObject.h"
 #include "DesertScenePlane.h"
 #include "cSkyBox.h"
-#include "cEnemyManager.h"
+#include "cArgoniteKallashGuardLeader.h"
 #include "cSprite.h"
+
 
 namespace
 {
@@ -23,30 +24,20 @@ DesertScene::DesertScene( ) :
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.bmp" ))
 {
-	//cGameObjectManager::Get( )->AddObject(
-	//	"Monster1", new cArgoniteKallashGuardLeader 
-	//);
+	m_monsterRepo.push_back( new cArgoniteKallashGuardLeader );
 
-	//auto* monster2 = cGameObjectManager::Get( )->AddObject( 
-	//	"Monster2", new cArgoniteKallashGuardLeader 
-	//);
-	//monster2->SetPosition({ 0.f, 0.f, -150.f });
-
-	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(1) );
-	cGameObjectManager::Get()->AddObject("Monster", new cEnemyManager);
-	//cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
-	//
-
-	/*D3DXMATRIXA16 mat;
-	D3DXMatrixIdentity(&mat);
-	m_pLoader = new cObjLoader;
-	m_pLoader->Load("./Map/Height.obj", m_vecGroup, &mat);*/
+	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox( 1 ));
 }
 
 DesertScene::~DesertScene( )
 {
 	m_loadThread.join( );
 	SAFE_DELETE( m_loadingSprite );
+
+	for ( auto enemyElem : m_monsterRepo )
+	{
+		SAFE_DELETE( enemyElem );
+	}
 }
 
 void DesertScene::Update( )
@@ -68,6 +59,21 @@ void DesertScene::Update( )
 	if ( g_player )
 	{
 		g_player->Update( );
+		g_player->SetPosition({
+			g_player->GetPosition( ).x,
+			m_plane->GetHeight( g_player ),
+			g_player->GetPosition( ).z
+		});
+	}
+
+	for ( auto enemyElem : m_monsterRepo )
+	{
+		enemyElem->Update( );
+		enemyElem->SetPosition({
+			enemyElem->GetPosition( ).x,
+			m_plane->GetHeight( enemyElem ),
+			enemyElem->GetPosition( ).z
+		});
 	}
 }
 
@@ -91,5 +97,10 @@ void DesertScene::Render( )
 	if ( g_player )
 	{
 		g_player->Render( );
+	}
+
+	for ( auto enemyElem : m_monsterRepo )
+	{
+		enemyElem->Render( );
 	}
 }
