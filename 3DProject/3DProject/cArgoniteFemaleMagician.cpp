@@ -3,6 +3,8 @@
 
 cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 {
+	m_sName = "ArgoniteFemaleMagician";
+
 	m_pBody = new cNpcSkinnedMesh("./CH/ArgoniteFemaleMagician/", "ArgoniteFemaleMagician.X");
 
 	D3DXMATRIX matR;

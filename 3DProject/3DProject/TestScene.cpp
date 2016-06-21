@@ -31,6 +31,9 @@ TestScene::TestScene( ) :
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage63_Tex.tga" ))
 {
+	SOUNDMANAGER->addSound("마을", "./Music/BGM(마을).ogg", true, true);
+	SOUNDMANAGER->play("마을", 1.f);
+
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(0) );
 	cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
 	cGameObjectManager::Get()->AddObject("Npc", new cNpcManager);
@@ -42,6 +45,7 @@ TestScene::~TestScene( )
 
 	SAFE_DELETE( m_plane );
 	SAFE_DELETE( m_loadingSprite );
+	SOUNDMANAGER->stop("마을");
 }
 
 void TestScene::Render( )

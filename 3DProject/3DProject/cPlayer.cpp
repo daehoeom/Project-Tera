@@ -60,7 +60,7 @@ cPlayer::cPlayer( ) :
 	SetAniTrack(PLAYER_BATTLEIDLE);
 	this->SetObjectType(ObjectType::ePlayer);
 
-	//m_pShadow = new cShadowImage(20, 20);
+	SOUNDMANAGER->addSound("플레이어공격", "./Music/플레이어(Attack).ogg", false, false);
 }
 
 cPlayer::~cPlayer( )
@@ -211,21 +211,29 @@ void cPlayer::KeyControl()
 		//평타를 한번도 하지 않았다면?
 		if (m_pCombo->GetCommand().size() == 0)
 		{
+			if (!SOUNDMANAGER->isPlaySound("플레이어공격"))
+				SOUNDMANAGER->play("플레이어공격", 1.f);
 			m_pCombo->Input(m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO1));
 		}
 
 		else if (m_pCombo->GetCommand().size() == 1)
 		{
+			if (!SOUNDMANAGER->isPlaySound("플레이어공격"))
+				SOUNDMANAGER->play("플레이어공격", 1.f);
 			m_pCombo->Input(m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO2));
 		}
 
 		else if (m_pCombo->GetCommand().size() == 2)
 		{
+			if (!SOUNDMANAGER->isPlaySound("플레이어공격"))
+				SOUNDMANAGER->play("플레이어공격", 1.f);
 			m_pCombo->Input(m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO3));
 		}
 
 		else if (m_pCombo->GetCommand().size() == 3)
 		{
+			if (!SOUNDMANAGER->isPlaySound("플레이어공격"))
+				SOUNDMANAGER->play("플레이어공격", 1.f);
 			m_pCombo->Input(m_vecSkinnedMesh[0]->GetAniTrackPeriod(PLAYER_COMBO4));
 		}
 	}

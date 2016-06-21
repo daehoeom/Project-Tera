@@ -7,6 +7,7 @@ cEnemy::cEnemy()
 	, m_fSpeed(0.5f)
 	, m_fAngle(0.f)
 	, m_bIsAction(false)
+	, m_bOncePlay(false)
 	, m_vOrigin(0, 0, 0)
 	, m_vDirection(1, 0, 0)
 {
@@ -168,6 +169,9 @@ void cEnemy::ActionState()
 		//이 행동에 대한 메시지를 방금 받았으면
 		if (!m_bIsAction)
 		{
+			std::string Name;
+			Name = m_sName + std::string("죽음");
+			SOUNDMANAGER->play(Name, 1.f);
 			m_bIsAction = true;
 			m_pBody->SetAnimationIndex(ENEMY_DEATH);
 			m_fPassTime = 0.f;
@@ -305,6 +309,10 @@ void cEnemy::ActionState()
 		
 		if (!m_bIsAction)
 		{
+			std::string Name;
+			Name = m_sName + std::string("공격");
+			SOUNDMANAGER->play(Name, 1.f);
+
 			m_bIsAction = true;
 			m_pBody->SetAnimationIndex(ENEMY_ATTACK);
 			m_fPeriod = m_pBody->GetAniTrackPeriod(ENEMY_ATTACK);

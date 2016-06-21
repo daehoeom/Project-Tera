@@ -3,6 +3,8 @@
 
 cMadmadDuo::cMadmadDuo()
 {
+	m_sName = "Madmad";
+
 	SetPosition(D3DXVECTOR3(-30, 0, 30));
 
 	m_pBody = new cNpcSkinnedMesh("./CH/MadmadDuo/", "MadmanDuo.X");

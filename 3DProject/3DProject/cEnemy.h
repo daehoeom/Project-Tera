@@ -54,6 +54,8 @@ protected:
 	D3DXVECTOR3			m_vDirection;
 	D3DXVECTOR3			m_vOrigin;	//몬스터가 생성된 초기 위치
 
+	std::string			m_sName;
+
 	float				m_fSpeed;
 	float				m_fAngle;
 	float				m_fPeriod;

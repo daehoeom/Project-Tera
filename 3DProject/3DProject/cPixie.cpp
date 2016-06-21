@@ -3,6 +3,8 @@
 
 cPixie::cPixie()
 {
+	m_sName = "Pixie";
+
 	m_pBody = new cNpcSkinnedMesh("./CH/Pixie/", "Pixie.X");
 
 	D3DXMatrixRotationY(&m_matLocal, D3DX_PI / 2.f);
@@ -35,6 +37,4 @@ void cPixie::Update()
 void cPixie::Render()
 {
 	__super::Render();
-
-	
 }

@@ -56,8 +56,6 @@ cSoundManager::~cSoundManager()
 //사운드 추가
 void cSoundManager::addSound(std::string keyName, std::string soundName, bool background /*= false*/, bool loop /*= false*/)
 {
-	int a = 0;
-
 	//루프 도니?
 	if (loop)
 	{

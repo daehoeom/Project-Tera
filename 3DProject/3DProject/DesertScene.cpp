@@ -27,7 +27,23 @@ DesertScene::DesertScene( ) :
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.bmp" ))
 {
-	m_monsterRepo.push_back(new cPixie);
+	SOUNDMANAGER->addSound("전투맵", "./Music/BGM(사막).ogg", true, true);
+	
+	SOUNDMANAGER->addSound("ArgoniteFemaleMagician공격", "./Music/ArgoniteFemaleMagician(Attack).ogg", false, false);
+	SOUNDMANAGER->addSound("ArgoniteFemaleMagician죽음", "./Music/ArgoniteFemaleMagician(Death).ogg", false, false);
+	
+	SOUNDMANAGER->addSound("ArgoniteKallashGuardLeader공격", "./Music/ArgoniteKallashGuardLeader(Attack).ogg", false, false);
+	SOUNDMANAGER->addSound("ArgoniteKallashGuardLeader죽음", "./Music/ArgoniteKallashGuardLeader(Death).ogg", false, false);
+
+	SOUNDMANAGER->addSound("Pixie공격", "./Music/Pixie(Attack).ogg", false, false);
+	SOUNDMANAGER->addSound("Pixie죽음", "./Music/Pixie(Death).ogg", false, false);
+
+	SOUNDMANAGER->addSound("Madmad공격", "./Music/Madman(Attack).ogg", false, false);
+	SOUNDMANAGER->addSound("Madmad죽음", "./Music/Madman(Death).ogg", false, false);
+
+	SOUNDMANAGER->play("전투맵", 1.f);
+
+	m_monsterRepo.push_back(new cMadmadDuo);
 	m_monsterRepo[0]->SetPosition({ 100, 300, 100 });
 	m_monsterRepo[0]->SetEnemyOrigin(&m_monsterRepo[0]->GetPosition());
 
@@ -43,6 +59,8 @@ DesertScene::~DesertScene( )
 	{
 		SAFE_DELETE( enemyElem );
 	}
+
+	SOUNDMANAGER->stop("전투맵");
 }
 
 void DesertScene::Update( )
