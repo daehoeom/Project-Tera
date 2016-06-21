@@ -37,7 +37,7 @@
 <object_3>
 	<ObjectName>object_3</ObjectName>
 	<Type>obj</Type>
-	<ModelPath>C:\Users\ggomdyu\Desktop\GitHub\3DProject\3DProject\Resource\DesertScene\Palm_tree_01\Palm_tree_01.obj</ModelPath>
+	<ModelPath>Resource\DesertScene\Palm_tree_01\Palm_tree_01.obj</ModelPath>
 	<Position x="-648.473022" y="258.000031" z="-239.323013"></Position>
 	<Rotation x="0.000000" y="1.570796" z="0.000000"></Rotation>
 	<Scale x="0.030000" y="0.030000" z="0.030000"></Scale>
@@ -50,7 +50,7 @@
 <object_4>
 	<ObjectName>object_4</ObjectName>
 	<Type>obj</Type>
-	<ModelPath>C:\Users\ggomdyu\Desktop\GitHub\3DProject\3DProject\Resource\DesertScene\Palm_tree_02\Palm_tree_02.obj</ModelPath>
+	<ModelPath>Resource\DesertScene\Palm_tree_02\Palm_tree_02.obj</ModelPath>
 	<Position x="-439.296387" y="300.000061" z="-417.633545"></Position>
 	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
 	<Scale x="0.300000" y="0.300000" z="0.300000"></Scale>
@@ -63,7 +63,7 @@
 <object_7>
 	<ObjectName>object_7</ObjectName>
 	<Type>obj</Type>
-	<ModelPath>C:\Users\ggomdyu\Desktop\GitHub\3DProject\3DProject\Resource\DesertScene\Cactus_0\Cactus.obj</ModelPath>
+	<ModelPath>Resource\DesertScene\Cactus_0\Cactus.obj</ModelPath>
 	<Position x="-596.183777" y="235.000244" z="106.127014"></Position>
 	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
 	<Scale x="0.300000" y="0.300000" z="0.300000"></Scale>
@@ -76,7 +76,7 @@
 <object_8>
 	<ObjectName>object_8</ObjectName>
 	<Type>obj</Type>
-	<ModelPath>C:\Users\ggomdyu\Desktop\GitHub\3DProject\3DProject\Resource\DesertScene\Cactus_0\Cactus.obj</ModelPath>
+	<ModelPath>Resource\DesertScene\Cactus_0\Cactus.obj</ModelPath>
 	<Position x="-384.076752" y="240.000000" z="-162.841064"></Position>
 	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
 	<Scale x="0.300000" y="0.300000" z="0.300000"></Scale>
