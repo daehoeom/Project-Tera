@@ -23,24 +23,8 @@ DesertScene::DesertScene( ) :
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.bmp" ))
 {
-	//cGameObjectManager::Get( )->AddObject(
-	//	"Monster1", new cArgoniteKallashGuardLeader 
-	//);
-
-	//auto* monster2 = cGameObjectManager::Get( )->AddObject( 
-	//	"Monster2", new cArgoniteKallashGuardLeader 
-	//);
-	//monster2->SetPosition({ 0.f, 0.f, -150.f });
-
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(1) );
 	cGameObjectManager::Get()->AddObject("Monster", new cEnemyManager);
-	//cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
-	//
-
-	/*D3DXMATRIXA16 mat;
-	D3DXMatrixIdentity(&mat);
-	m_pLoader = new cObjLoader;
-	m_pLoader->Load("./Map/Height.obj", m_vecGroup, &mat);*/
 }
 
 DesertScene::~DesertScene( )

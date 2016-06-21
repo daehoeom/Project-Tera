@@ -19,7 +19,7 @@ cMainGame::cMainGame( )
 
 	/*SOUNDMANAGER->addSound("배경음", "./BGM/War_Start_00.ogg");
 	SOUNDMANAGER->play("배경음", 1.f);*/
-	cSceneManager::Get( )->LoadScene<TestScene>( );
+	cSceneManager::Get( )->LoadScene<DesertScene>( );
 }
 
 cMainGame::~cMainGame( )

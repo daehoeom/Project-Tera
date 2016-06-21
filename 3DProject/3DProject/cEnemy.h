@@ -37,6 +37,8 @@ public:
 
 	void SetEnemyState( eEnemyState e );
 	eEnemyState GetEnemyState( );
+	void SetEnemyOrigin(D3DXVECTOR3* v);
+	D3DXVECTOR3 GetEnemyOrigin();
 	void ResetAttackDelay( );
 	bool IsAbleAttacked( );
 
@@ -84,4 +86,14 @@ inline void cEnemy::SetEnemyState( eEnemyState e )
 inline eEnemyState cEnemy::GetEnemyState( )
 {
 	return m_sEState;
+}
+
+inline void cEnemy::SetEnemyOrigin(D3DXVECTOR3* v)
+{
+	m_vOrigin = *v;
+}
+
+inline D3DXVECTOR3 cEnemy::GetEnemyOrigin()
+{
+	return m_vOrigin;
 }
