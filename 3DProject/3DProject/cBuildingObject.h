@@ -37,7 +37,6 @@ public:
 	virtual ~cObjRenderer( );
 
 	virtual void Render( ) override;
-
 	const std::vector<cGroup*>& GetGroupRepo( ) const;
 
 public:
@@ -133,8 +132,12 @@ public:
 	virtual void OnCollisionEnter( int colliderIndex, cCollisionObject* rhs );
 	virtual void OnCollisionEnd( int colliderIndex, cCollisionObject* rhs );
 
+	void ConstructFrustum(float screenDepth, D3DXMATRIX proj, D3DXMATRIX view);
+	bool CheckSphere(float x, float y, float z, float w);
+
 private:
 	IRenderer* m_renderer;
+	D3DXPLANE	m_aPlane[6];
 };
 
 inline IRenderer * cBuildingObject::GetRenderer( )

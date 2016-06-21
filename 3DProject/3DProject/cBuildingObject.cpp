@@ -10,45 +10,6 @@
 #include "cLightObject.h"
 #include "cGameObjectManager.h"
 
-
-//class ID3DXEffectGuard
-//{
-//public:
-//	ID3DXEffectGuard( ID3DXEffect* shader ) :
-//			m_shader( shader )
-//		{
-//		}
-//	~ID3DXEffectGuard( )
-//		{
-//			m_shader->EndPass( );
-//			m_shader->End( );
-//		}
-//
-//	HRESULT Begin( UINT* pPasses, DWORD Flags )
-//	{
-//		HRESULT result = S_FALSE;
-//		if ( m_shader )
-//		{
-//			result = m_shader->Begin( pPasses, Flags );
-//		}
-//
-//		return result;
-//	}
-//	HRESULT BeginPass( UINT Pass )
-//	{
-//		HRESULT result = S_FALSE;
-//		if ( m_shader )
-//		{
-//			result = m_shader->BeginPass( Pass );
-//		}
-//
-//		return result;
-//	}
-//
-//private:
-//	ID3DXEffect* m_shader;
-//};
-
 namespace
 {
 
@@ -248,7 +209,10 @@ void cBuildingObject::Render( )
 
 	if ( m_renderer )
 	{
-		m_renderer->Render( );
+		if (CheckSphere(this->GetPosition().x, this->GetPosition().y, this->GetPosition().z, 30.f))
+		{
+			m_renderer->Render();
+		}
 	}
 }
 
@@ -273,4 +237,62 @@ void cBuildingObject::OnCollisionEnd(
 	int colliderIndex, 
 	cCollisionObject * rhs )
 {
+}
+
+void cBuildingObject::ConstructFrustum(float screenDepth, D3DXMATRIX proj, D3DXMATRIX view)
+{
+	D3DXVECTOR3 v[8];
+
+	v[0] = D3DXVECTOR3(-1, -1, 0);
+	v[1] = D3DXVECTOR3(1, -1, 0);
+	v[2] = D3DXVECTOR3(-1, 1, 0);
+	v[3] = D3DXVECTOR3(1, 1, 0);
+	v[4] = D3DXVECTOR3(-1, -1, 1);
+	v[5] = D3DXVECTOR3(1, -1, 1);
+	v[6] = D3DXVECTOR3(-1, 1, 1);
+	v[7] = D3DXVECTOR3(1, 1, 1);
+
+	D3DXMATRIX matInv;
+
+	matInv = view * proj;
+	D3DXMatrixInverse(&matInv, NULL, &matInv);
+
+	D3DXVec3TransformCoord(&v[0], &v[0], &matInv);
+	D3DXVec3TransformCoord(&v[1], &v[1], &matInv);
+	D3DXVec3TransformCoord(&v[2], &v[2], &matInv);
+	D3DXVec3TransformCoord(&v[3], &v[3], &matInv);
+	D3DXVec3TransformCoord(&v[4], &v[4], &matInv);
+	D3DXVec3TransformCoord(&v[5], &v[5], &matInv);
+	D3DXVec3TransformCoord(&v[6], &v[6], &matInv);
+	D3DXVec3TransformCoord(&v[7], &v[7], &matInv);
+
+	//근평면
+	D3DXPlaneFromPoints(&m_aPlane[0], &v[1], &v[0], &v[2]);
+
+	//우평면
+	D3DXPlaneFromPoints(&m_aPlane[1], &v[5], &v[1], &v[3]);
+
+	//상평면
+	D3DXPlaneFromPoints(&m_aPlane[2], &v[3], &v[2], &v[6]);
+
+	//원평면
+	D3DXPlaneFromPoints(&m_aPlane[3], &v[4], &v[5], &v[7]);
+
+	//좌평면
+	D3DXPlaneFromPoints(&m_aPlane[4], &v[0], &v[4], &v[2]);
+
+	//하평면
+	D3DXPlaneFromPoints(&m_aPlane[5], &v[0], &v[1], &v[5]);
+}
+
+bool cBuildingObject::CheckSphere(float x, float y, float z, float radius)
+{
+	for (int i = 0; i < 6; i++)
+	{
+		if (D3DXPlaneDotCoord(&m_aPlane[i], &D3DXVECTOR3(x, y, z)) > radius)
+		{
+			return false;
+		}
+	}
+	return true;
 }
