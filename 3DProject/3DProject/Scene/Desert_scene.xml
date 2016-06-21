@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<Desert_plane0>
+	<ObjectName>Desert_plane0</ObjectName>
+	<Type>obj</Type>
+	<ModelPath>Resource\DesertScene\Desert\Desert_plane.obj</ModelPath>
+	<Position x="0.000000" y="0.000000" z="0.000000"></Position>
+	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="30.000000" y="30.000000" z="30.000000"></Scale>
+	<End></End>
+</Desert_plane0>
 <object_0>
 	<ObjectName>object_0</ObjectName>
 	<Type>obj</Type>
-	<ModelPath>C:\Users\ggomdyu\Desktop\obj\Palm_tree_01\Palm_tree_01.obj</ModelPath>
-	<Position x="-52.435806" y="330.000061" z="-36.585205"></Position>
+	<ModelPath>Resource\DesertScene\Palm_tree_01\Palm_tree_01.obj</ModelPath>
+	<Position x="91.480316" y="317.000122" z="84.808838"></Position>
 	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
 	<Scale x="0.030000" y="0.030000" z="0.030000"></Scale>
 	<BoundingBox
@@ -12,12 +21,16 @@
 	</BoundingBox>
 	<End></End>
 </object_0>
-<object_1>
-	<ObjectName>Desert_plane0</ObjectName>
+<object_2>
+	<ObjectName>object_2</ObjectName>
 	<Type>obj</Type>
-	<ModelPath>C:\Users\ggomdyu\Desktop\obj\Desert\Desert_plane.obj</ModelPath>
-	<Position x="0.000000" y="0.000000" z="0.000000"></Position>
+	<ModelPath>Resource\DesertScene\Pool\Pool.obj</ModelPath>
+	<Position x="93.229889" y="300.000305" z="86.456055"></Position>
 	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
-	<Scale x="30.000000" y="30.000000" z="30.000000"></Scale>
+	<Scale x="20.000000" y="1.000000" z="20.000000"></Scale>
+	<BoundingBox
+		minX="-103.996597" minY="-675.210205" minZ="-62.605099"
+		maxX="12.021800" maxY="8.000000" maxZ="11.839100">
+	</BoundingBox>
 	<End></End>
-</object_1>
+</object_2>
