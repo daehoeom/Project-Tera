@@ -31,11 +31,6 @@ TestScene::TestScene( ) :
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage63_Tex.tga" ))
 {
-
-	//cGameObjectManager::Get( )->AddObject(
-	//	"Monster1", new cArgoniteKallashGuardLeader 
-	//);
-
 	//auto* monster2 = cGameObjectManager::Get( )->AddObject( 
 	//	"Monster2", new cArgoniteKallashGuardLeader 
 	//);

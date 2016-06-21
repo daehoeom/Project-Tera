@@ -241,7 +241,6 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="DesertScenePlane.h" />
-    <ClInclude Include="cEnemyManager.h" />
     <ClInclude Include="cShadowImage.h" />
     <ClInclude Include="cSprite.h" />
     <ClInclude Include="cNpcSkinnedMesh.h" />
@@ -413,7 +412,6 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="DesertScenePlane.cpp" />
-    <ClCompile Include="cEnemyManager.cpp" />
     <ClCompile Include="cShadowImage.cpp" />
     <ClCompile Include="cSprite.cpp" />
     <ClCompile Include="cNpcSkinnedMesh.cpp" />

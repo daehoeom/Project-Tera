@@ -1,5 +1,6 @@
 #pragma once
 #include <thread>
+#include "cEnemy.h"
 #include "IScene.h"
 
 class cSprite;
@@ -19,5 +20,6 @@ private:
 	DWORD m_loadSuccess;
 	cSprite* m_loadingSprite;
 	DesertScenePlane* m_plane;
+	std::vector<cEnemy*> m_monsterRepo;
 };
 

@@ -21,6 +21,52 @@ DesertScenePlane::~DesertScenePlane( )
 {
 }
 
+float DesertScenePlane::GetHeight( 
+	cGameObject* target )
+{
+	const auto& groupRepo = static_cast<cObjRenderer*>( 
+		m_owner->GetRenderer( ))->GetGroupRepo( );
+
+	BOOL collised = FALSE;
+	float hitDist = 0.f;
+
+	for ( auto* groupElem : groupRepo )
+	{
+		const auto& vertices = groupElem->GetVertex( );
+		
+		for ( int i = 0; i < vertices.size( ); i += 3 )
+		{
+			const float rayYPos = 10000.f;
+			D3DXVECTOR3 rayPos( target->GetPosition( ).x, rayYPos,
+				target->GetPosition( ).z );
+
+			D3DXVECTOR3 v1;
+			D3DXVec3TransformCoord( &v1, &vertices[i].p, &m_owner->GetWorld( ));
+			D3DXVECTOR3 v2;
+			D3DXVec3TransformCoord( &v2, &vertices[i+1].p, &m_owner->GetWorld( ) );
+			D3DXVECTOR3 v3;
+			D3DXVec3TransformCoord( &v3, &vertices[i+2].p, &m_owner->GetWorld( ) );
+
+			collised = D3DXIntersectTri(
+				&v1,
+				&v2,
+				&v3,
+				&rayPos,
+				&D3DXVECTOR3( 0.f, -1.f, 0.f ),
+				nullptr,
+				nullptr,
+				&hitDist
+			);
+
+			if ( collised == TRUE )
+			{
+				target->GetPosition( ).y = rayYPos - hitDist;
+				return ( rayYPos-hitDist );
+			}
+		}
+	}
+}
+
 void DesertScenePlane::Render( )
 {
 	m_fogShader->SetTechnique( m_fogTechHandle );
@@ -51,52 +97,4 @@ void DesertScenePlane::Render( )
 
 void DesertScenePlane::Update( )
 {
-	const auto& groupRepo = static_cast<cObjRenderer*>( 
-		m_owner->GetRenderer( ))->GetGroupRepo( );
-
-	BOOL collised = FALSE;
-	float hitDist = 0.f;
-	bool drawn = false;
-
-	for ( auto* groupElem : groupRepo )
-	{
-		if ( collised == TRUE )
-		{
-			break;
-		}
-
-		const auto& vertices = groupElem->GetVertex( );
-		
-		for ( int i = 0; i < vertices.size( ); i += 3 )
-		{
-			const float rayYPos = 10000.f;
-			D3DXVECTOR3 rayPos( g_player->GetPosition( ).x, rayYPos,
-				g_player->GetPosition( ).z );
-
-			D3DXVECTOR3 v1;
-			D3DXVec3TransformCoord( &v1, &vertices[i].p, &m_owner->GetWorld( ));
-			D3DXVECTOR3 v2;
-			D3DXVec3TransformCoord( &v2, &vertices[i+1].p, &m_owner->GetWorld( ) );
-			D3DXVECTOR3 v3;
-			D3DXVec3TransformCoord( &v3, &vertices[i+2].p, &m_owner->GetWorld( ) );
-
-			collised = D3DXIntersectTri(
-				&v1,
-				&v2,
-				&v3,
-				&rayPos,
-				&D3DXVECTOR3( 0.f, -1.f, 0.f ),
-				nullptr,
-				nullptr,
-				&hitDist
-			);
-
-			if ( collised == TRUE )
-			{
-				g_player->GetPosition( ).y = rayYPos - hitDist;
-				m_fHeightY = rayYPos - hitDist;
-				break;
-			}
-		}
-	}
 }
