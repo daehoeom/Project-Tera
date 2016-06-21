@@ -10,6 +10,7 @@ cEnemy::cEnemy()
 	, m_vOrigin(0, 0, 0)
 	, m_vDirection(1, 0, 0)
 {
+	this->SetCurrHp(50);
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 
@@ -65,7 +66,7 @@ void cEnemy::Update()
 	}
 
 	//만약 몬스터의 위치가 플레이어와 가깝다면 공격모션
-	else if (abs(Distance) < 20.f && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
+	else if (abs(Distance) < 40.f && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_ATTACK)

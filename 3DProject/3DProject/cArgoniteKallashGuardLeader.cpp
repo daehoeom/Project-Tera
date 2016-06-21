@@ -3,7 +3,7 @@
 
 cArgoniteKallashGuardLeader::cArgoniteKallashGuardLeader()
 {
-	m_pBody = new cSkinnedMesh("./CH/ArgoniteKallashGuardLeader/", "ArgoniteKallashGuardLeader.X");
+	m_pBody = new cNpcSkinnedMesh("./CH/ArgoniteKallashGuardLeader/", "ArgoniteKallashGuardLeader.X");
 
 	D3DXMatrixRotationY(&m_matLocal, D3DX_PI / 2.f);
 	//m_pBody->SetLocal(&matR);

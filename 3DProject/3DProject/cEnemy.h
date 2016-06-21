@@ -2,7 +2,7 @@
 #include "cUnitObject.h"
 #include "cBoundingSphere.h"
 
-class cSkinnedMesh;
+class cNpcSkinnedMesh;
 
 enum eEnemyState
 {
@@ -43,7 +43,7 @@ public:
 protected:
 	eEnemyState m_sEState;
 
-	cSkinnedMesh*		m_pBody;
+	cNpcSkinnedMesh*	m_pBody;
 
 	D3DXMATRIXA16		m_matWorld;	//몬스터의 월드매트릭스
 	D3DXMATRIXA16		m_matLocal;

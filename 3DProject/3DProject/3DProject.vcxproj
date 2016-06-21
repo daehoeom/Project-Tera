@@ -102,12 +102,12 @@
     <ClInclude Include="cKeyManager.h" />
     <ClInclude Include="cLightObject.h" />
     <ClInclude Include="cLoadImage.h" />
-    <ClInclude Include="cLoadingScene.h" />
     <ClInclude Include="cMadmadDuo.h" />
     <ClInclude Include="cMainGame.h" />
     <ClInclude Include="cMtlTex.h" />
     <ClInclude Include="cNpc.h" />
     <ClInclude Include="cNpcManager.h" />
+    <ClInclude Include="cNpcSkinnedMesh.h" />
     <ClInclude Include="cObject.h" />
     <ClInclude Include="cObjectManager.h" />
     <ClInclude Include="cObjLoader.h" />
@@ -170,12 +170,12 @@
     <ClCompile Include="cKeyManager.cpp" />
     <ClCompile Include="cLightObject.cpp" />
     <ClCompile Include="cLoadImage.cpp" />
-    <ClCompile Include="cLoadingScene.cpp" />
     <ClCompile Include="cMadmadDuo.cpp" />
     <ClCompile Include="cMainGame.cpp" />
     <ClCompile Include="cMtlTex.cpp" />
     <ClCompile Include="cNpc.cpp" />
     <ClCompile Include="cNpcManager.cpp" />
+    <ClCompile Include="cNpcSkinnedMesh.cpp" />
     <ClCompile Include="cObject.cpp" />
     <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjLoader.cpp" />

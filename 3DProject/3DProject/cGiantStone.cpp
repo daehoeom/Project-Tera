@@ -3,7 +3,7 @@
 
 cGiantStone::cGiantStone()
 {
-	m_pBody = new cSkinnedMesh("./CH/GiantStone/", "GiantStone.X");
+	m_pBody = new cNpcSkinnedMesh("./CH/GiantStone/", "GiantStone.X");
 
 	D3DXMATRIXA16 matT;
 	D3DXMatrixTranslation(&matT, 0, 50, 0);

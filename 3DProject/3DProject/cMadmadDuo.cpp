@@ -5,7 +5,7 @@ cMadmadDuo::cMadmadDuo()
 {
 	SetPosition(D3DXVECTOR3(-30, 0, 30));
 
-	m_pBody = new cSkinnedMesh("./CH/MadmadDuo/", "MadmanDuo.X");
+	m_pBody = new cNpcSkinnedMesh("./CH/MadmadDuo/", "MadmanDuo.X");
 
 	D3DXMATRIX matR;
 	D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);

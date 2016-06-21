@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "cMainGame.h"
-
 #include "cCollisionManager.h"
 #include "cSceneManager.h"
 #include "cShaderManager.h"

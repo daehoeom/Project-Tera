@@ -24,7 +24,7 @@ void cSprite::Load( const char* spritePath )
 		D3DPOOL_MANAGED,
 		D3DX_FILTER_NONE,
 		D3DX_DEFAULT,
-		0,//D3DCOLOR_XRGB(255, 255, 255),
+		0,
 		&m_imgInfo,
 		NULL,
 		&m_texture
@@ -52,7 +52,7 @@ void cSprite::Update( )
 void cSprite::Render( )
 {
 	RECT rc;
-	SetRect( &rc, 0, 0, m_imgInfo.Width/* / 2*/, m_imgInfo.Height );
+	SetRect( &rc, 0, 0, m_imgInfo.Width, m_imgInfo.Height );
 
 	g_pD3DSprite->SetTransform( &this->GetWorld( ));
 	g_pD3DSprite->Begin( D3DXSPRITE_ALPHABLEND | D3DXSPRITE_SORT_TEXTURE );
@@ -62,5 +62,6 @@ void cSprite::Render( )
 		&D3DXVECTOR3( 0, 0, 0 ),
 		&D3DXVECTOR3( 0, 0, 0 ),
 		D3DCOLOR_XRGB( 255, 255, 255 ) );
+
 	g_pD3DSprite->End( );
 }

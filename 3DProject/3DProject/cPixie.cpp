@@ -3,7 +3,7 @@
 
 cPixie::cPixie()
 {
-	m_pBody = new cSkinnedMesh("./CH/Pixie/", "Pixie.X");
+	m_pBody = new cNpcSkinnedMesh("./CH/Pixie/", "Pixie.X");
 
 	D3DXMATRIX matR;
 	D3DXMatrixRotationY(&matR, D3DX_PI / 2.f);
