@@ -42,6 +42,9 @@ public:
 	void ResetAttackDelay( );
 	bool IsAbleAttacked( );
 
+	void ConstructFrustum(float screenDepth, D3DXMATRIX proj, D3DXMATRIX view);
+	bool CheckSphere(float x, float y, float z, float radius);
+
 protected:
 	eEnemyState m_sEState;
 
@@ -50,6 +53,7 @@ protected:
 	D3DXMATRIXA16		m_matWorld;	//몬스터의 월드매트릭스
 	D3DXMATRIXA16		m_matLocal;
 	D3DXMATRIXA16		matT;
+	D3DXPLANE			m_aPlane[6];
 
 	D3DXVECTOR3			m_vDirection;
 	D3DXVECTOR3			m_vOrigin;	//몬스터가 생성된 초기 위치

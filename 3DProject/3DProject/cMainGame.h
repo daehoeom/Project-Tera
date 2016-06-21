@@ -12,4 +12,10 @@ public:
 
 private:
 	void SetupManagers( );
+
+	LPD3DXFONT		m_pFont;
+
+	float			m_fFrameTime;
+	DWORD			m_dwFrameCount;
+	DWORD			m_dwFrameRate;
 };

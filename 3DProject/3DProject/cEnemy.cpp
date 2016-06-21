@@ -7,10 +7,14 @@ cEnemy::cEnemy()
 	, m_fSpeed(0.5f)
 	, m_fAngle(0.f)
 	, m_bIsAction(false)
-	, m_bOncePlay(false)
 	, m_vOrigin(0, 0, 0)
 	, m_vDirection(1, 0, 0)
 {
+	for (size_t i = 0; i < _countof(m_aPlane); i++)
+	{
+		m_aPlane[i] = D3DXPLANE(0, 0, 0, 0);
+	}
+
 	this->SetCurrHp(50);
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
@@ -119,15 +123,24 @@ void cEnemy::Update()
 	}
 
 	m_pBody->SetWorld(&m_matWorld);
+
+	D3DXMATRIX matProj, matView;
+	g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &matProj);
+	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
+
+	ConstructFrustum(1000.f, matProj, matView);
 }
 
 void cEnemy::Render()
 {
 	__super::Render();
 
-	if (m_pBody)
+	if (CheckSphere(this->GetPosition().x, this->GetPosition().y, this->GetPosition().z, 5.f))
 	{
-		m_pBody->UpdateAndRender();
+		if (m_pBody)
+		{
+			m_pBody->UpdateAndRender();
+		}
 	}
 }
 
@@ -240,7 +253,7 @@ void cEnemy::ActionState()
 
 		if (m_bIsAction)
 		{
-			if (abs(Length) < 40.f)
+			if (abs(Length) < 100.f)
 			{
 				//생성 위치에 도달했다면? 다시 IDLE 상태로 돌린다.
 				m_bIsAction = false;
@@ -248,7 +261,7 @@ void cEnemy::ActionState()
 			}
 
 			//아직 생성 위치에 돌아오지 않았다면 계속 이동할 것
-			else if (abs(Length) >= 40.f)
+			else if (abs(Length) >= 100.f)
 			{
 				D3DXMATRIX matR;
 
@@ -439,3 +452,60 @@ float cEnemy::RotateAngle()
 	return Angle;
 }
 
+void cEnemy::ConstructFrustum(float screenDepth, D3DXMATRIX proj, D3DXMATRIX view)
+{
+	D3DXVECTOR3 v[8];
+
+	v[0] = D3DXVECTOR3(-1, -1, 0);
+	v[1] = D3DXVECTOR3(1, -1, 0);
+	v[2] = D3DXVECTOR3(-1, 1, 0);
+	v[3] = D3DXVECTOR3(1, 1, 0);
+	v[4] = D3DXVECTOR3(-1, -1, 1);
+	v[5] = D3DXVECTOR3(1, -1, 1);
+	v[6] = D3DXVECTOR3(-1, 1, 1);
+	v[7] = D3DXVECTOR3(1, 1, 1);
+
+	D3DXMATRIX matInv;
+
+	matInv = view * proj;
+	D3DXMatrixInverse(&matInv, NULL, &matInv);
+
+	D3DXVec3TransformCoord(&v[0], &v[0], &matInv);
+	D3DXVec3TransformCoord(&v[1], &v[1], &matInv);
+	D3DXVec3TransformCoord(&v[2], &v[2], &matInv);
+	D3DXVec3TransformCoord(&v[3], &v[3], &matInv);
+	D3DXVec3TransformCoord(&v[4], &v[4], &matInv);
+	D3DXVec3TransformCoord(&v[5], &v[5], &matInv);
+	D3DXVec3TransformCoord(&v[6], &v[6], &matInv);
+	D3DXVec3TransformCoord(&v[7], &v[7], &matInv);
+
+	//근평면
+	D3DXPlaneFromPoints(&m_aPlane[0], &v[1], &v[0], &v[2]);
+
+	//우평면
+	D3DXPlaneFromPoints(&m_aPlane[1], &v[5], &v[1], &v[3]);
+
+	//상평면
+	D3DXPlaneFromPoints(&m_aPlane[2], &v[3], &v[2], &v[6]);
+
+	//원평면
+	D3DXPlaneFromPoints(&m_aPlane[3], &v[4], &v[5], &v[7]);
+
+	//좌평면
+	D3DXPlaneFromPoints(&m_aPlane[4], &v[0], &v[4], &v[2]);
+
+	//하평면
+	D3DXPlaneFromPoints(&m_aPlane[5], &v[0], &v[1], &v[5]);
+}
+
+bool cEnemy::CheckSphere(float x, float y, float z, float radius)
+{
+	for (int i = 0; i < 6; i++)
+	{
+		if (D3DXPlaneDotCoord(&m_aPlane[i], &D3DXVECTOR3(x, y, z)) > radius)
+		{
+			return false;
+		}
+	}
+	return true;
+}

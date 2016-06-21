@@ -47,6 +47,18 @@ DesertScene::DesertScene( ) :
 	m_monsterRepo[0]->SetPosition({ 100, 300, 100 });
 	m_monsterRepo[0]->SetEnemyOrigin(&m_monsterRepo[0]->GetPosition());
 
+	m_monsterRepo.push_back(new cArgoniteFemaleMagician);
+	m_monsterRepo[1]->SetPosition({ -300, 300, 80 });
+	m_monsterRepo[1]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
+
+	m_monsterRepo.push_back(new cArgoniteKallashGuardLeader);
+	m_monsterRepo[2]->SetPosition({ -100, 300, 30 });
+	m_monsterRepo[2]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
+
+	m_monsterRepo.push_back(new cPixie);
+	m_monsterRepo[3]->SetPosition({ 60, 300, 70 });
+	m_monsterRepo[3]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
+
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox( 1 ));
 }
 

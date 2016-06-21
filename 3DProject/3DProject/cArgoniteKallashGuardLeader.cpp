@@ -27,7 +27,7 @@ void cArgoniteKallashGuardLeader::Update()
 
 	if (GetEnemyState() == ENEMY_DEATH)
 	{
-		SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.1f, GetPosition().z));
+		SetPosition(D3DXVECTOR3(GetPosition().x, GetPosition().y - 0.2f, GetPosition().z));
 		m_fDeathTime = m_pBody->GetAniTrackPeriod(ENEMY_DEATH) - 0.4f;
 		//이동량만큼 월드매트릭스 수정
 		D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);

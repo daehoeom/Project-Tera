@@ -219,6 +219,12 @@ void cBuildingObject::Render( )
 void cBuildingObject::Update( )
 {
 	__super::Update( );
+
+	D3DXMATRIX matProj, matView;
+	g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &matProj);
+	g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
+
+	ConstructFrustum(1000.f, matProj, matView);
 }
 
 void cBuildingObject::OnCollisionStay( 
