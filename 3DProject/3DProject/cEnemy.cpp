@@ -236,7 +236,7 @@ void cEnemy::ActionState()
 
 		if (m_bIsAction)
 		{
-			if (abs(Length) < 1.f)
+			if (abs(Length) < 40.f)
 			{
 				//생성 위치에 도달했다면? 다시 IDLE 상태로 돌린다.
 				m_bIsAction = false;
@@ -244,7 +244,7 @@ void cEnemy::ActionState()
 			}
 
 			//아직 생성 위치에 돌아오지 않았다면 계속 이동할 것
-			else if (abs(Length) >= 1.f)
+			else if (abs(Length) >= 40.f)
 			{
 				D3DXMATRIX matR;
 

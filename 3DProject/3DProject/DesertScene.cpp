@@ -25,6 +25,8 @@ DesertScene::DesertScene( ) :
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.bmp" ))
 {
 	m_monsterRepo.push_back( new cArgoniteKallashGuardLeader );
+	m_monsterRepo[0]->SetPosition({ 100, 300, 100 });
+	m_monsterRepo[0]->SetEnemyOrigin(&m_monsterRepo[0]->GetPosition());
 
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox( 1 ));
 }
