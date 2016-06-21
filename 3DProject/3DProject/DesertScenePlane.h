@@ -11,6 +11,8 @@ public:
 	void Render( );
 	void Update( );
 
+	float GetHeight() { return m_fHeightY; }
+
 private:
 	cBuildingObject* m_owner;
 	LPD3DXEFFECT m_fogShader;
