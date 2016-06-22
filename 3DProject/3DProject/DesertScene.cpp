@@ -11,7 +11,6 @@
 #include "cPixie.h"
 #include "cSprite.h"
 
-
 namespace
 {
 	void AdditionalWork( DesertScenePlane** param )
@@ -20,7 +19,6 @@ namespace
 	}
 }
 
-cHPGaugeBar* hpBar;
 
 DesertScene::DesertScene( ) :
 	m_plane( nullptr ),
@@ -49,14 +47,6 @@ DesertScene::DesertScene( ) :
 	m_monsterRepo[0]->SetPosition({ 100, 300, 100 });
 	m_monsterRepo[0]->SetEnemyOrigin(&m_monsterRepo[0]->GetPosition());
 	
-	hpBar = cGameObjectManager::Get( )->AddObject( "cMadmadDuoHpBar0",
-		new cHPGaugeBar( 
-			"CH/UIImage/HPBar_0.png",
-			"CH/UIImage/HPBar_1.png" ) );
-	hpBar->SetOwner( m_monsterRepo[0] );
-	hpBar->SetScale({ 103.f, 15.f, 1.f } );
-	hpBar->Move( { 0.f, 70.f, 0.f } );
-
 	//m_monsterRepo.push_back(new cArgoniteFemaleMagician);
 	//m_monsterRepo[1]->SetPosition({ -300, 300, 80 });
 	//m_monsterRepo[1]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
@@ -128,14 +118,10 @@ void DesertScene::Update( )
 				enemyElem->GetPosition().z });
 		}
 	}
-
-	hpBar->Update( );
 }
 
 void DesertScene::Render( )
 {
-	hpBar->Render( );
-
 	if ( !m_loadSuccess )
 	{
 		if ( m_loadingSprite )

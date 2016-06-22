@@ -19,6 +19,7 @@ enum eEnemyState
 	ENEMY_NOTHING
 };
 
+class cHPGaugeBar;
 class cEnemy :
 	public cUnitObject
 {
@@ -47,6 +48,7 @@ public:
 	bool CheckSphere(float x, float y, float z, float radius);
 
 protected:
+	cHPGaugeBar* m_enemyHPBar;
 	eEnemyState m_sEState;
 
 	cNpcSkinnedMesh*	m_pBody;

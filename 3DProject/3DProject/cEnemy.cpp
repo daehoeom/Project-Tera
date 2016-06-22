@@ -2,6 +2,7 @@
 #include "cEnemy.h"
 #include "Console.h"
 #include "cParticle_Death.h"
+#include "cHPGaugeBar.h"
 
 cEnemy::cEnemy()
 	: n(0)
@@ -13,6 +14,7 @@ cEnemy::cEnemy()
 	, m_pParticle(nullptr)
 	, m_pBody(nullptr)
 	, m_CollisionTime(0.f)
+	, m_enemyHPBar( new cHPGaugeBar( "CH/UIImage/HPBar_0.png", "CH/UIImage/HPBar_1.png" ))
 {
 	for (size_t i = 0; i < _countof(m_aPlane); i++)
 	{
@@ -32,12 +34,18 @@ cEnemy::cEnemy()
 
 	D3DXMatrixIdentity(&m_matLocal);
 	D3DXMatrixIdentity(&matT);
+
+	m_enemyHPBar->SetOwner( this );
+	m_enemyHPBar->SetScale( { 103.f, 15.f, 1.f } );
+	m_enemyHPBar->Move( { 0.f, 70.f, 0.f } );
+
 }
 
 cEnemy::~cEnemy()
 {
 	SAFE_DELETE(m_pParticle);
 	SAFE_DELETE( m_pBody );
+	SAFE_DELETE( m_enemyHPBar );
 }
 
 void cEnemy::Update()
@@ -53,6 +61,12 @@ void cEnemy::Update()
 	if (m_fAttackCurrDelay >= m_fAttackMaxTime)
 	{
 		m_fAttackCurrDelay = m_fAttackMaxTime;
+	}
+
+	
+	if ( m_enemyHPBar )
+	{
+		m_enemyHPBar->Update( );
 	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
@@ -156,6 +170,11 @@ void cEnemy::Update()
 void cEnemy::Render()
 {
 	__super::Render();
+
+	if ( m_enemyHPBar )
+	{
+		m_enemyHPBar->Render( );
+	}
 
 	if (CheckSphere(this->GetPosition().x, this->GetPosition().y, this->GetPosition().z, 5.f))
 	{
