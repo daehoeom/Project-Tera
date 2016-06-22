@@ -10,10 +10,7 @@ cSkinnedMesh::cSkinnedMesh(char* szFolder, char* szFilename)
 	, m_isBleding(false)
 	, m_fPassedBlendTime(0.f)
 	, m_fBlendTime(0.2f)
-	, m_pShadowDepthStencil(nullptr)
-	, m_pCreateShadowShader(nullptr)
-	, m_pShadowRenderTarget(nullptr)
-	, m_pApplyShadowShader(nullptr)
+	, m_pTex(nullptr)
 {
 	cSkinnedMesh* pSkinnedMesh = g_pSkinnedMeshManager->GetSkinnedMesh(szFolder, szFilename);
 
@@ -49,6 +46,7 @@ cSkinnedMesh::cSkinnedMesh()
 cSkinnedMesh::~cSkinnedMesh()
 {
 	this->Destroy( );
+
 }
 
 void cSkinnedMesh::Load(char* szDirectory, char* szFilename)
@@ -115,46 +113,6 @@ void cSkinnedMesh::UpdateAndRender()
 
 	if (m_pAnimController)
 	{
-		m_pAnimController->AdvanceTime(0.0023, NULL);
-	}
-
-	if (m_pRootFrame)
-	{
-		D3DXMATRIXA16 mat;
-
-		mat = m_matWorld * m_matLocal;
-
-		Update(m_pRootFrame, &mat);
-		Render(m_pRootFrame);
-	}
-
-	GetNeckWorld(m_pRootFrame, nullptr);
-}
-
-void cSkinnedMesh::UpdateAndShadowRender()
-{
-	if (m_isBleding)
-	{
-		m_fPassedBlendTime += g_pTimeManager->GetDeltaTime();
-
-		if (m_fPassedBlendTime > m_fBlendTime)
-		{
-			m_isBleding = false;
-			m_pAnimController->SetTrackWeight(0, 1.f);
-			m_pAnimController->SetTrackEnable(1, false);
-			m_fPassedBlendTime = 0.f;
-		}
-
-		else
-		{
-			float fWeight = m_fPassedBlendTime / m_fBlendTime;
-			m_pAnimController->SetTrackWeight(0, fWeight);
-			m_pAnimController->SetTrackWeight(1, 1.f - fWeight);
-		}
-	}
-
-	if (m_pAnimController)
-	{
 		m_pAnimController->AdvanceTime(g_pTimeManager->GetDeltaTime(), NULL);
 	}
 
@@ -165,7 +123,7 @@ void cSkinnedMesh::UpdateAndShadowRender()
 		mat = m_matWorld * m_matLocal;
 
 		Update(m_pRootFrame, &mat);
-		ShadowRender(m_pRootFrame);
+		Render(m_pRootFrame);
 	}
 
 	GetNeckWorld(m_pRootFrame, nullptr);
@@ -195,6 +153,7 @@ void cSkinnedMesh::Render(ST_BONE* pBone)
 		D3DXMatrixInverse(&mInvView, 0, &mView);
 		D3DXVECTOR3 vEye = D3DXVECTOR3(0, 0, 0);
 		D3DXVec3TransformCoord(&vEye, &vEye, &mInvView);
+
 
 		// for each palette
 		for (DWORD dwAttrib = 0; dwAttrib < pBoneMesh->dwNumAttrGroups; ++dwAttrib)
@@ -230,6 +189,8 @@ void cSkinnedMesh::Render(ST_BONE* pBone)
 			// set the current number of bones; this tells the effect which shader to use
 			m_pEffect->SetInt("CurNumBones", pBoneMesh->dwMaxNumFaceInfls - 1);
 
+			m_pEffect->SetTexture("g_specScene", m_pTex);
+
 			// set the technique we use to draw
 			m_pEffect->SetTechnique("Skinning20");
 
@@ -243,6 +204,7 @@ void cSkinnedMesh::Render(ST_BONE* pBone)
 				pBoneMesh->pWorkingMesh->DrawSubset(dwAttrib);
 				m_pEffect->EndPass();
 			}
+
 			m_pEffect->End();
 		}
 	}
@@ -258,112 +220,6 @@ void cSkinnedMesh::Render(ST_BONE* pBone)
 		Render((ST_BONE*)pBone->pFrameFirstChild);
 	}
 }
-
-void cSkinnedMesh::ShadowRender(ST_BONE* pBone)
-{
-//	assert(pBone);
-//
-//	// 각 프레임의 메시 컨테이너에 있는 pSkinInfo를 이용하여 영향받는 모든 
-//	// 프레임의 매트릭스를 ppBoneMatrixPtrs에 연결한다.
-//	if (pBone->pMeshContainer)
-//	{
-//		ST_BONE_MESH* pBoneMesh = (ST_BONE_MESH*)pBone->pMeshContainer;
-//
-//		// get bone combinations
-//		LPD3DXBONECOMBINATION pBoneCombos =
-//			(LPD3DXBONECOMBINATION)(pBoneMesh->pBufBoneCombos->GetBufferPointer());
-//
-//		D3DXMATRIXA16 matViewProj, matView, matProj;
-//		g_pD3DDevice->GetTransform(D3DTS_VIEW, &matView);
-//		g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &matProj);
-//		matViewProj = matView * matProj;
-//		
-//		D3DXMATRIXA16 mView, mInvView;
-//		g_pD3DDevice->GetTransform(D3DTS_VIEW, &mView);
-//		D3DXMatrixInverse(&mInvView, 0, &mView);
-//		D3DXVECTOR3 vEye = D3DXVECTOR3(0, 0, 0);
-//		D3DXVec3TransformCoord(&vEye, &vEye, &mInvView);
-//
-//		// for each palette
-//		for (DWORD dwAttrib = 0; dwAttrib < pBoneMesh->dwNumAttrGroups; ++dwAttrib)
-//		{
-//			// set each transform into the palette
-//			for (DWORD dwPalEntry = 0; dwPalEntry < pBoneMesh->dwNumPaletteEntries; ++dwPalEntry)
-//			{
-//				DWORD dwMatrixIndex = pBoneCombos[dwAttrib].BoneId[dwPalEntry];
-//				if (dwMatrixIndex != UINT_MAX
-//				{
-//					m_pmWorkingPalette[dwPalEntry] =
-//						pBoneMesh->pBoneOffsetMatrices[dwMatrixIndex] *
-//						(*pBoneMesh->ppBoneMatrixPtrs[dwMatrixIndex]);
-//				}
-//			}
-//
-//			// set the matrix palette into the effect
-//			m_pApplyShadowShader->SetMatrixArray("amPalette",
-//				m_pmWorkingPalette,
-//				pBoneMesh->dwNumPaletteEntries);
-//
-//			D3DXVECTOR3 lightDir(500, 500, -500);
-//
-//			D3DXMATRIX matLightView, matLightProj;
-//
-//			g_pD3DDevice->GetTransform(D3DTS_VIEW, &matLightView);
-//			g_pD3DDevice->GetTransform(D3DTS_PROJECTION, &matLightProj);
-//
-//			D3DXMATRIX mx;
-//			D3DXMatrixMultiply(&mx, &(D3DXMATRIX)matView, &(D3DXMATRIX)matProj);
-//			m_pApplyShadowShader->SetMatrix("g_mViewProj", &mx);
-//
-//			D3DXVECTOR3		vDrt = lightDir;
-//			m_pApplyShadowShader->SetVector("lhtDir", &D3DXVECTOR4(vDrt, 1.0f));
-//			m_pApplyShadowShader->SetVector("lightDiffuse", &D3DXVECTOR4(1.0f, 0.0f, 0.0f, 1.0f));
-//			m_pApplyShadowShader->SetVector("MaterialAmbient", &D3DXVECTOR4(0.0f, 0.0f, 0.0f, 0.0f));
-//			m_pApplyShadowShader->SetVector("MaterialDiffuse", &D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f));
-//
-//			m_pApplyShadowShader->SetTexture("ShadowTexture_Tex", NULL);
-//			m_pApplyShadowShader->SetMatrix("gLightViewMatrix", &matLightView);
-//			m_pApplyShadowShader->SetMatrix("gLightProjMatrix", &matLightProj);
-//			m_pApplyShadowShader->SetFloat("gBias", 0.f);
-//			m_pApplyShadowShader->SetFloat("gIntensity", 0.f);
-//
-//			// we're pretty much ignoring the materials we got from the x-file; just set
-//			// the texture here
-//			m_pApplyShadowShader->SetTexture("g_txScene", pBoneMesh->vecTexture[pBoneCombos[dwAttrib].AttribId]);
-//
-//			// set the current number of bones; this tells the effect which shader to use
-//			m_pApplyShadowShader->SetInt("CurNumBones", pBoneMesh->dwMaxNumFaceInfls - 1);
-//
-//			// set the technique we use to draw
-//			m_pApplyShadowShader->SetTechnique("Skinning20");
-//
-//			UINT uiPasses, uiPass;
-//
-//			// run through each pass and draw
-//			m_pApplyShadowShader->Begin(&uiPasses, 0);
-//			for (uiPass = 0; uiPass < uiPasses; ++uiPass)
-//			{
-//				m_pApplyShadowShader->BeginPass(uiPass);
-//				pBoneMesh->pWorkingMesh->DrawSubset(dwAttrib);
-//				m_pApplyShadowShader->EndPass();
-//			}
-//			m_pApplyShadowShader->End();
-//		}
-//
-//	}
-//
-//	//재귀적으로 모든 프레임에 대해서 실행.
-//	if (pBone->pFrameSibling)
-//	{
-//		ShadowRender((ST_BONE*)pBone->pFrameSibling);
-//	}
-//
-//	if (pBone->pFrameFirstChild)
-//	{
-//		ShadowRender((ST_BONE*)pBone->pFrameFirstChild);
-//	}
-}
-
 
 LPD3DXEFFECT cSkinnedMesh::LoadEffect(char* szFilename)
 {
@@ -511,10 +367,7 @@ void cSkinnedMesh::Destroy()
 	D3DXFrameDestroy((LPD3DXFRAME)m_pRootFrame, &ah);
 	SAFE_DELETE_ARRAY(m_pmWorkingPalette);
 	SAFE_RELEASE(m_pEffect);
-	SAFE_RELEASE(m_pCreateShadowShader);
-	SAFE_RELEASE(m_pShadowDepthStencil);
-	SAFE_RELEASE(m_pShadowRenderTarget);
-	SAFE_RELEASE(m_pApplyShadowShader);
+	SAFE_RELEASE(m_pTex);
 }
 
 void cSkinnedMesh::SetRandomTrackPosition()

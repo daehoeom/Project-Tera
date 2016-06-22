@@ -9,7 +9,7 @@ protected:
 	float								m_fSize;			//파티클 크기
 	LPDIRECT3DTEXTURE9					m_pTexture;			//파티클 텍스처
 	LPDIRECT3DVERTEXBUFFER9				m_pVertexBuffer;	//파티클 버텍스 버퍼
-	std::list<ParticleAttribute>		m_lParticles;		//전체 파티클 리스트
+	std::vector<ParticleAttribute>		m_lParticles;		//전체 파티클 리스트
 
 	//아래 3개는 파티클을 좀 더 효율적으로 그리기 위한 변수
 	DWORD								m_dwVbSize;			//버텍스 버퍼 크기

@@ -10,7 +10,6 @@
 #include "cArgoniteFemaleMagician.h"
 #include "cPixie.h"
 #include "cSprite.h"
-#include "cHPGaugeBar.h"
 
 
 namespace
@@ -71,6 +70,7 @@ DesertScene::DesertScene( ) :
 	//m_monsterRepo[3]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
 
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox( 1 ));
+
 }
 
 DesertScene::~DesertScene( )

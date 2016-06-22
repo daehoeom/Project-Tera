@@ -15,11 +15,6 @@ private:
 	D3DXMATRIX*					m_pmWorkingPalette;
 	LPD3DXEFFECT				m_pEffect;
 
-	LPD3DXEFFECT				m_pApplyShadowShader;
-	LPD3DXEFFECT				m_pCreateShadowShader;
-	LPDIRECT3DTEXTURE9			m_pShadowRenderTarget;
-	LPDIRECT3DSURFACE9			m_pShadowDepthStencil;
-
 	D3DXMATRIX					m_matNeckTM;
 	D3DXMATRIX					m_matHairTM;
 	D3DXMATRIX					m_matTailTM;
@@ -33,6 +28,9 @@ private:
 	bool						m_isBleding;
 	float						m_fPassedBlendTime;
 	float						m_fBlendTime;
+	float						m_fDiffColor;
+
+	LPDIRECT3DTEXTURE9			m_pTex;
 
 public:
 	cNpcSkinnedMesh(char* szFolder, char* szFilename);
@@ -43,6 +41,9 @@ public:
 
 	void SetRandomTrackPosition(); // 테스트용
 	void GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM);
+
+	void SetSpecTex(LPDIRECT3DTEXTURE9 tex) { m_pTex = tex; }
+	LPDIRECT3DTEXTURE9 GetSpecTex() { return m_pTex; }
 
 	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
 	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }
@@ -61,6 +62,9 @@ public:
 
 	void SetWorld(D3DXMATRIX* World) { m_matLocal = *World; }
 	D3DXMATRIX GetWorld() { return m_matWorld; }
+
+	void SetDiffColor(float color) { m_fDiffColor = color; }
+	float GetDiffColor() { return m_fDiffColor; }
 
 	DOUBLE GetAniTrackPeriod(int nIndex);
 

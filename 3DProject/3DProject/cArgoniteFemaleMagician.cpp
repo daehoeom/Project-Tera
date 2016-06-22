@@ -7,6 +7,8 @@ cArgoniteFemaleMagician::cArgoniteFemaleMagician()
 
 	m_pBody = new cNpcSkinnedMesh("./CH/ArgoniteFemaleMagician/", "ArgoniteFemaleMagician.X");
 
+	m_pBody->SetSpecTex(g_pTextureManager->GetTexture("./CH/ArgoniteFemaleMagician/ArgoniteFemaleMagician_spec.tga"));
+
 	D3DXMATRIX matR;
 	D3DXMatrixRotationY(&m_matLocal, D3DX_PI / 2.f);
 

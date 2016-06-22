@@ -17,7 +17,7 @@ cParticle_Base::cParticle_Base()
 cParticle_Base::~cParticle_Base()
 {
 	SAFE_RELEASE(m_pVertexBuffer);
-	SAFE_RELEASE(m_pTexture);
+	m_pTexture = nullptr;
 	m_lParticles.clear();
 }
 

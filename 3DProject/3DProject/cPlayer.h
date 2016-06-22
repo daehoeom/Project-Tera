@@ -6,7 +6,6 @@
 
 class cSkinnedMesh;
 class cPlayerWeapon;
-class cShadowImage;
 
 enum ePlayerState
 {
@@ -55,13 +54,13 @@ private:
 	
 	std::vector<cSkinnedMesh*> m_vecSkinnedMesh;
 	cPlayerWeapon*	m_playerWeapon;
+
 	cCommandCombo*	m_pCombo;
 
 	D3DXMATRIXA16	m_matWorld;
 	D3DXVECTOR3		m_vDirection;
 	
 	//물체 그림자
-	cShadowImage*	m_pShadow;
 
 	float			m_fSpeed;
 	float			m_fPassTime;

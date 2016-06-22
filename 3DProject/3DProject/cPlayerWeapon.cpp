@@ -54,6 +54,7 @@ void cPlayerWeapon::OnCollisionEnter(
 				{
 					Log( "ATTACKED!" );
 					monster->SetCurrHp( monster->GetCurrHp( )-100 );
+					monster->SetCollision(true);
 					monster->ResetAttackDelay( );
 				}
 			}
