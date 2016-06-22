@@ -36,7 +36,7 @@ cEnemy::cEnemy()
 	D3DXMatrixIdentity(&matT);
 
 	m_enemyHPBar->SetOwner( this );
-	m_enemyHPBar->SetScale( { 103.f, 15.f, 1.f } );
+	m_enemyHPBar->SetScale( { 103.f/6, 15.f/6, 1.f } );
 	m_enemyHPBar->Move( { 0.f, 70.f, 0.f } );
 
 }
