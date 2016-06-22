@@ -40,7 +40,7 @@ void cObjLoader::Load(
 	{
 		MessageBox( 
 			GetFocus( ),
-			"obj 파일이 존재하지 않습니다.",
+			( std::string( "obj 파일이 존재하지 않습니다. ( " ) + szFullPath + std::string( " )" )).c_str( ),
 			"WARNING!",
 			MB_OK | MB_ICONEXCLAMATION
 		);
