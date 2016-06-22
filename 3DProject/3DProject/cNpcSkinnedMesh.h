@@ -15,11 +15,6 @@ private:
 	D3DXMATRIX*					m_pmWorkingPalette;
 	LPD3DXEFFECT				m_pEffect;
 
-	LPD3DXEFFECT				m_pApplyShadowShader;
-	LPD3DXEFFECT				m_pCreateShadowShader;
-	LPDIRECT3DTEXTURE9			m_pShadowRenderTarget;
-	LPDIRECT3DSURFACE9			m_pShadowDepthStencil;
-
 	D3DXMATRIX					m_matNeckTM;
 	D3DXMATRIX					m_matHairTM;
 	D3DXMATRIX					m_matTailTM;
@@ -34,6 +29,8 @@ private:
 	float						m_fPassedBlendTime;
 	float						m_fBlendTime;
 
+	LPDIRECT3DTEXTURE9			m_pTex;
+
 public:
 	cNpcSkinnedMesh(char* szFolder, char* szFilename);
 	~cNpcSkinnedMesh();
@@ -43,6 +40,9 @@ public:
 
 	void SetRandomTrackPosition(); // 테스트용
 	void GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM);
+
+	void SetSpecTex(LPDIRECT3DTEXTURE9 tex) { m_pTex = tex; }
+	LPDIRECT3DTEXTURE9 GetSpecTex() { return m_pTex; }
 
 	void SetNeckTM(D3DXMATRIX* neck) { m_matNeckTM = *neck; }
 	D3DXMATRIX GetNeckTM() { return m_matNeckTM; }

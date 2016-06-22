@@ -7,6 +7,8 @@ cPixie::cPixie()
 
 	m_pBody = new cNpcSkinnedMesh("./CH/Pixie/", "Pixie.X");
 
+	m_pBody->SetSpecTex(g_pTextureManager->GetTexture("./CH/Pixie/Pixie_spec.tga"));
+
 	D3DXMatrixRotationY(&m_matLocal, D3DX_PI / 2.f);
 
 	D3DXMATRIXA16 matT;

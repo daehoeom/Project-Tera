@@ -11,10 +11,7 @@ cNpcSkinnedMesh::cNpcSkinnedMesh(char* szFolder, char* szFilename)
 	, m_isBleding(false)
 	, m_fPassedBlendTime(0.f)
 	, m_fBlendTime(0.2f)
-	, m_pShadowDepthStencil(nullptr)
-	, m_pCreateShadowShader(nullptr)
-	, m_pShadowRenderTarget(nullptr)
-	, m_pApplyShadowShader(nullptr)
+	, m_pTex(nullptr)
 {
 	cNpcSkinnedMesh* pSkinnedMesh = g_pSkinnedMeshManager->GetNpcSkinnedMesh(szFolder, szFilename);
 
@@ -188,6 +185,8 @@ void cNpcSkinnedMesh::Render(ST_BONE* pBone)
 			// we're pretty much ignoring the materials we got from the x-file; just set
 			// the texture here
 			m_pEffect->SetTexture("g_txScene", pBoneMesh->vecTexture[pBoneCombos[dwAttrib].AttribId]);
+
+			m_pEffect->SetTexture("g_specScene", m_pTex);
 
 			// set the current number of bones; this tells the effect which shader to use
 			m_pEffect->SetInt("CurNumBones", pBoneMesh->dwMaxNumFaceInfls - 1);
@@ -367,10 +366,7 @@ void cNpcSkinnedMesh::Destroy()
 	D3DXFrameDestroy((LPD3DXFRAME)m_pRootFrame, &ah);
 	SAFE_DELETE_ARRAY(m_pmWorkingPalette);
 	SAFE_RELEASE(m_pEffect);
-	SAFE_RELEASE(m_pCreateShadowShader);
-	SAFE_RELEASE(m_pShadowDepthStencil);
-	SAFE_RELEASE(m_pShadowRenderTarget);
-	SAFE_RELEASE(m_pApplyShadowShader);
+	SAFE_RELEASE(m_pTex);
 }
 
 void cNpcSkinnedMesh::SetRandomTrackPosition()

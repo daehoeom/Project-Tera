@@ -9,6 +9,8 @@ cMadmadDuo::cMadmadDuo()
 
 	m_pBody = new cNpcSkinnedMesh("./CH/MadmadDuo/", "MadmanDuo.X");
 
+	m_pBody->SetSpecTex(g_pTextureManager->GetTexture("./CH/MadmadDuo/MadmanDuo01_spec.tga"));
+
 	D3DXMatrixRotationY(&m_matLocal, D3DX_PI / 2.f);
 
 	D3DXMATRIXA16 matT;

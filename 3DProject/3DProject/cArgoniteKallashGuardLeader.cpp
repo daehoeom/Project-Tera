@@ -7,6 +7,8 @@ cArgoniteKallashGuardLeader::cArgoniteKallashGuardLeader()
 
 	m_pBody = new cNpcSkinnedMesh("./CH/ArgoniteKallashGuardLeader/", "ArgoniteKallashGuardLeader.X");
 
+	m_pBody->SetSpecTex(g_pTextureManager->GetTexture("./CH/ArgoniteKallashGuardLeader/ArgoniteKallashGuardLeader_spec.tga"));
+
 	D3DXMatrixRotationY(&m_matLocal, D3DX_PI / 2.f);
 
 	D3DXMATRIXA16 matT;

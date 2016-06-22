@@ -761,11 +761,6 @@ void cPlayer::SetRenderState()
 {
 	for (size_t i = 0; i < m_vecSkinnedMesh.size(); i++)
 	{
-		m_vecSkinnedMesh[i]->UpdateAndShadowRender();
-	}
-
-	for (size_t i = 0; i < m_vecSkinnedMesh.size(); i++)
-	{
 		m_vecSkinnedMesh[i]->UpdateAndRender();
 	}
 }
