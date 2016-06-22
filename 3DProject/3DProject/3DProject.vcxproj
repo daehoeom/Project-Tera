@@ -113,6 +113,7 @@
     <ClInclude Include="cObjLoader.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="cParticle_Base.h" />
+    <ClInclude Include="cParticle_Death.h" />
     <ClInclude Include="cParticle_Firework.h" />
     <ClInclude Include="cPixie.h" />
     <ClInclude Include="cPlayer.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="cObjectManager.cpp" />
     <ClCompile Include="cObjLoader.cpp" />
     <ClCompile Include="cParticle_Base.cpp" />
+    <ClCompile Include="cParticle_Death.cpp" />
     <ClCompile Include="cParticle_Firework.cpp" />
     <ClCompile Include="cPixie.cpp" />
     <ClCompile Include="cPlayer.cpp" />

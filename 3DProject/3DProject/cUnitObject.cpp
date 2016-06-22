@@ -5,7 +5,8 @@
 cUnitObject::cUnitObject( ) :
 	m_nMaxHp( 1000 ),
 	m_nCurrHp( 1000 ),
-	m_isDead( false )
+	m_isDead( false ),
+	m_bCollision(false)
 {
 }
 

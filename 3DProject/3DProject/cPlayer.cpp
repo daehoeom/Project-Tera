@@ -4,10 +4,8 @@
 #include "cBoundingSphere.h"
 #include "cBoundingBox.h"
 #include "Console.h"
-#include "cEnemy.h"
 #include "cPlayerWeapon.h"
 #include "cSkinnedMesh.h"
-#include "cShadowImage.h"
 
 cPlayer::cPlayer( ) :
 	m_vDirection(D3DXVECTOR3(0, 0, 1))
@@ -18,7 +16,6 @@ cPlayer::cPlayer( ) :
 	, m_bIsAction(false)
 	, m_bPushBehind(false)
 	, m_pCombo(nullptr)
-	, m_pShadow(nullptr)
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
@@ -56,7 +53,7 @@ cPlayer::cPlayer( ) :
 		matLocal,
 		this
 	);
-	
+
 	SetAniTrack(PLAYER_BATTLEIDLE);
 	this->SetObjectType(ObjectType::ePlayer);
 
@@ -72,7 +69,6 @@ cPlayer::~cPlayer( )
 
 	SAFE_DELETE(m_pCombo);
 	SAFE_DELETE(m_playerWeapon);
-	//SAFE_DELETE(m_pShadow);
 }
 
 void cPlayer::Update( )
@@ -94,7 +90,6 @@ void cPlayer::Update( )
 		SetPlayerState(PLAYER_DEATH);
 	}
 
-//	m_pShadow->Update(this->GetPosition());
 }
 
 void cPlayer::Render( )

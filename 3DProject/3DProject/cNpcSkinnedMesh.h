@@ -28,6 +28,7 @@ private:
 	bool						m_isBleding;
 	float						m_fPassedBlendTime;
 	float						m_fBlendTime;
+	float						m_fDiffColor;
 
 	LPDIRECT3DTEXTURE9			m_pTex;
 
@@ -61,6 +62,9 @@ public:
 
 	void SetWorld(D3DXMATRIX* World) { m_matLocal = *World; }
 	D3DXMATRIX GetWorld() { return m_matWorld; }
+
+	void SetDiffColor(float color) { m_fDiffColor = color; }
+	float GetDiffColor() { return m_fDiffColor; }
 
 	DOUBLE GetAniTrackPeriod(int nIndex);
 

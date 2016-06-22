@@ -3,6 +3,7 @@
 #include "cBoundingSphere.h"
 
 class cNpcSkinnedMesh;
+class cParticle_Death;
 
 enum eEnemyState
 {
@@ -49,6 +50,7 @@ protected:
 	eEnemyState m_sEState;
 
 	cNpcSkinnedMesh*	m_pBody;
+	cParticle_Death*	m_pParticle;
 
 	D3DXMATRIXA16		m_matWorld;	//몬스터의 월드매트릭스
 	D3DXMATRIXA16		m_matLocal;
@@ -64,6 +66,7 @@ protected:
 	float				m_fAngle;
 	float				m_fPeriod;
 	float				m_fPassTime;
+	float				m_CollisionTime;
 	float				m_fDeathTime;	//죽는 시간은 몬스터마다 달라서 설정해줌
 	bool				m_bIsAction;
 

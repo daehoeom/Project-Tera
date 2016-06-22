@@ -12,6 +12,7 @@ cNpcSkinnedMesh::cNpcSkinnedMesh(char* szFolder, char* szFilename)
 	, m_fPassedBlendTime(0.f)
 	, m_fBlendTime(0.2f)
 	, m_pTex(nullptr)
+	, m_fDiffColor(1.f)
 {
 	cNpcSkinnedMesh* pSkinnedMesh = g_pSkinnedMeshManager->GetNpcSkinnedMesh(szFolder, szFilename);
 
@@ -180,7 +181,7 @@ void cNpcSkinnedMesh::Render(ST_BONE* pBone)
 			m_pEffect->SetVector("vWorldLightPos", &D3DXVECTOR4(500.0f, 500.0f, -500.0f, 1.0f));
 			m_pEffect->SetVector("vWorldCameraPos", &D3DXVECTOR4(vEye, 1.0f));
 			m_pEffect->SetVector("vMaterialAmbient", &D3DXVECTOR4(0.53f, 0.53f, 0.53f, 0.53f));
-			m_pEffect->SetVector("vMaterialDiffuse", &D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f));
+			m_pEffect->SetVector("vMaterialDiffuse", &(D3DXVECTOR4(1.0f, 1.0f, 1.0f, 1.0f) * m_fDiffColor));
 
 			// we're pretty much ignoring the materials we got from the x-file; just set
 			// the texture here

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "cEnemy.h"
 #include "Console.h"
+#include "cParticle_Death.h"
 
 cEnemy::cEnemy()
 	: n(0)
@@ -9,6 +10,9 @@ cEnemy::cEnemy()
 	, m_bIsAction(false)
 	, m_vOrigin(0, 0, 0)
 	, m_vDirection(1, 0, 0)
+	, m_pParticle(nullptr)
+	, m_pBody(nullptr)
+	, m_CollisionTime(0.f)
 {
 	for (size_t i = 0; i < _countof(m_aPlane); i++)
 	{
@@ -23,12 +27,16 @@ cEnemy::cEnemy()
 
 	this->SetObjectType(ObjectType::eMonster);
 
+	m_pParticle = new cParticle_Death;
+	m_pParticle->Setup("./CH/Shadow/Noise.tga");
+
 	D3DXMatrixIdentity(&m_matLocal);
 	D3DXMatrixIdentity(&matT);
 }
 
 cEnemy::~cEnemy()
 {
+	SAFE_DELETE(m_pParticle);
 	SAFE_DELETE( m_pBody );
 }
 
@@ -112,6 +120,20 @@ void cEnemy::Update()
 		}
 	}
 
+	if (this->GetCollision())
+	{
+		m_CollisionTime += g_pTimeManager->GetDeltaTime();
+
+		m_pBody->SetDiffColor(2.f);
+
+		if (m_CollisionTime > 0.4f)
+		{
+			m_pBody->SetDiffColor(1.f);
+			this->SetCollision(false);
+			m_CollisionTime = 0.f;
+		}
+	}
+
 	ActionState();
 	
 	for (size_t i = 0; i < this->GetColliderRepo().size(); i++)
@@ -140,6 +162,14 @@ void cEnemy::Render()
 		if (m_pBody)
 		{
 			m_pBody->UpdateAndRender();
+		}
+	}
+
+	if (this->GetEnemyState() == ENEMY_DEATHWAIT && m_bIsAction)
+	{
+		if (!m_pParticle->IsDead())
+		{
+			m_pParticle->Render();
 		}
 	}
 }
@@ -215,13 +245,16 @@ void cEnemy::ActionState()
 		//이 행동에 대한 메시지를 방금 받았으면
 		if (!m_bIsAction)
 		{
+			m_pParticle->SetParticle(this->GetPosition());
 			m_pBody->SetAnimationIndex(ENEMY_DEATHWAIT);
 			m_bIsAction = true;
-			m_fPeriod = m_pBody->GetAniTrackPeriod(ENEMY_DEATHWAIT);
+			m_fPeriod = m_pBody->GetAniTrackPeriod(ENEMY_DEATHWAIT) + 10.f;
 		}
 
 		if (m_bIsAction)
 		{
+			m_pParticle->Update();
+
 			if (m_fPassTime > m_fPeriod)
 			{
 				m_bIsAction = false;
