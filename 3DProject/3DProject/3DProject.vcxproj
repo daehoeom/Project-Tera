@@ -132,6 +132,7 @@
     <ClInclude Include="cUnitObject.h" />
     <ClInclude Include="DesertScene.h" />
     <ClInclude Include="DesertScenePlane.h" />
+    <ClInclude Include="cHPGaugeBar.h" />
     <ClInclude Include="ICollider.h" />
     <ClInclude Include="cGameObjectManager.h" />
     <ClInclude Include="IScene.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="cUnitObject.cpp" />
     <ClCompile Include="DesertScene.cpp" />
     <ClCompile Include="DesertScenePlane.cpp" />
+    <ClCompile Include="cHPGaugeBar.cpp" />
     <ClCompile Include="ICollider.cpp" />
     <ClCompile Include="cGameObjectManager.cpp" />
     <ClCompile Include="IScene.cpp" />

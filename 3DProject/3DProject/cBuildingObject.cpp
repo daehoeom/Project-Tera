@@ -124,8 +124,8 @@ cXRenderer::cXRenderer(
 	if ( FAILED( D3DXLoadMeshFromXA( xFilePath, D3DXMESH_SYSTEMMEM, 
 			g_pD3DDevice, NULL, NULL, NULL, &m_mtrlCount, &m_mesh )))
 	{
-		MessageBox( GetFocus( ),
-			"Failed to invoke D3DXLoadMeshFromXA.",
+		MessageBoxA( GetFocus( ),
+			( std::string( "Failed to load x file. ( " ) + xFilePath + std::string( " )" )).c_str( ),
 			"WARNING!",
 			MB_OK | MB_ICONEXCLAMATION 
 		);

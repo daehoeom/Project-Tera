@@ -11,6 +11,10 @@ public:
 	virtual void Render( ) override;
 	virtual void Update( ) override;
 
+protected:
+	void PrevRender( );
+	void PostRender( );
+
 public:
 	IDirect3DVertexBuffer9* GetVertexBuffer( );
 	IDirect3DIndexBuffer9* GetIndexBuffer( );
@@ -24,7 +28,6 @@ private:
 private:
 	IDirect3DVertexBuffer9* m_vb;
 	IDirect3DIndexBuffer9* m_ib;
-
 	LPDIRECT3DTEXTURE9 m_texture = nullptr;
 	D3DXIMAGE_INFO m_imgInfo;
 	RECT m_rtDrawArea;
@@ -45,13 +48,24 @@ inline LPDIRECT3DTEXTURE9 c3DSprite::GetTexture( )
 	return m_texture;
 }
 
-class cBuilboard3DSprite :
+class cBillboard3DSprite :
 	public c3DSprite
 {
 public:
-	explicit cBuilboard3DSprite( const char* spritePath );
-	virtual ~cBuilboard3DSprite( );
+	explicit cBillboard3DSprite( const char* spritePath );
+	virtual ~cBillboard3DSprite( );
 
+	virtual void Update( ) override;
 	virtual void Render( ) override;
+	
+public:
+	const D3DXMATRIXA16& GetBillBoardMatrix( ) const;
+
+private:
+	D3DXMATRIXA16 m_matBillboard;
 };
 
+inline const D3DXMATRIXA16 & cBillboard3DSprite::GetBillBoardMatrix( ) const
+{
+	return m_matBillboard;
+}

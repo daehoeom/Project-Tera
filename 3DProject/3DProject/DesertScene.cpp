@@ -10,6 +10,7 @@
 #include "cArgoniteFemaleMagician.h"
 #include "cPixie.h"
 #include "cSprite.h"
+#include "cHPGaugeBar.h"
 
 
 namespace
@@ -20,12 +21,14 @@ namespace
 	}
 }
 
+cHPGaugeBar* hpBar;
+
 DesertScene::DesertScene( ) :
 	m_plane( nullptr ),
 	m_loadThread( ReadXML, "Scene/Desert_scene.xml", &m_loadSuccess,
 		std::function<void( )>( std::bind( AdditionalWork, &m_plane ))),
 	m_loadSuccess( 0 ),
-	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.bmp" ))
+	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.tga" ))
 {
 	SOUNDMANAGER->addSound("ÀüÅõ¸Ê", "./Music/BGM(»ç¸·).ogg", true, true);
 	
@@ -43,21 +46,29 @@ DesertScene::DesertScene( ) :
 
 	SOUNDMANAGER->play("ÀüÅõ¸Ê", 1.f);
 
-	m_monsterRepo.push_back(new cMadmadDuo);
+	m_monsterRepo.push_back( new cMadmadDuo );
 	m_monsterRepo[0]->SetPosition({ 100, 300, 100 });
 	m_monsterRepo[0]->SetEnemyOrigin(&m_monsterRepo[0]->GetPosition());
+	
+	hpBar = cGameObjectManager::Get( )->AddObject( "cMadmadDuoHpBar0",
+		new cHPGaugeBar( 
+			"CH/UIImage/HPBar_0.png",
+			"CH/UIImage/HPBar_1.png" ) );
+	hpBar->SetOwner( m_monsterRepo[0] );
+	hpBar->SetScale({ 103.f, 15.f, 1.f } );
+	hpBar->Move( { 0.f, 70.f, 0.f } );
 
-	m_monsterRepo.push_back(new cArgoniteFemaleMagician);
-	m_monsterRepo[1]->SetPosition({ -300, 300, 80 });
-	m_monsterRepo[1]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
-
-	m_monsterRepo.push_back(new cArgoniteKallashGuardLeader);
-	m_monsterRepo[2]->SetPosition({ -100, 300, 30 });
-	m_monsterRepo[2]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
-
-	m_monsterRepo.push_back(new cPixie);
-	m_monsterRepo[3]->SetPosition({ 60, 300, 70 });
-	m_monsterRepo[3]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
+	//m_monsterRepo.push_back(new cArgoniteFemaleMagician);
+	//m_monsterRepo[1]->SetPosition({ -300, 300, 80 });
+	//m_monsterRepo[1]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
+	//
+	//m_monsterRepo.push_back(new cArgoniteKallashGuardLeader);
+	//m_monsterRepo[2]->SetPosition({ -100, 300, 30 });
+	//m_monsterRepo[2]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
+	//
+	//m_monsterRepo.push_back(new cPixie);
+	//m_monsterRepo[3]->SetPosition({ 60, 300, 70 });
+	//m_monsterRepo[3]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
 
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox( 1 ));
 }
@@ -86,6 +97,7 @@ void DesertScene::Update( )
 		return;
 	}
 
+
 	if ( m_plane )
 	{
 		m_plane->Update( );
@@ -94,11 +106,15 @@ void DesertScene::Update( )
 	if ( g_player )
 	{
 		g_player->Update( );
-		g_player->SetPosition({
-			g_player->GetPosition( ).x,
-			m_plane->GetHeight( g_player ),
-			g_player->GetPosition( ).z
-		});
+
+		if ( m_plane )
+		{
+			g_player->SetPosition({
+				g_player->GetPosition( ).x,
+				m_plane->GetHeight( g_player ),
+				g_player->GetPosition( ).z
+			});
+		}
 	}
 
 	for ( auto enemyElem : m_monsterRepo )
@@ -112,10 +128,14 @@ void DesertScene::Update( )
 				enemyElem->GetPosition().z });
 		}
 	}
+
+	hpBar->Update( );
 }
 
 void DesertScene::Render( )
 {
+	hpBar->Render( );
+
 	if ( !m_loadSuccess )
 	{
 		if ( m_loadingSprite )

@@ -33,8 +33,10 @@ void cSprite::Load( const char* spritePath )
 
 	if ( FAILED( hr ) )
 	{
-		MessageBox( GetFocus( ), "Failed to invoke D3DXCreateTextureFromFileEx.",
-			"WARNING!", MB_OK );
+		MessageBox( GetFocus( ), 
+			( std::string( "Failed to load sprite. (" ) + spritePath + std::string( " )" )).c_str( ),
+			"WARNING!", 
+			MB_OK );
 		return;
 	}
 }

@@ -15,7 +15,7 @@ cEnemy::cEnemy()
 		m_aPlane[i] = D3DXPLANE(0, 0, 0, 0);
 	}
 
-	this->SetCurrHp(50);
+	//this->SetCurrHp(50);
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 
