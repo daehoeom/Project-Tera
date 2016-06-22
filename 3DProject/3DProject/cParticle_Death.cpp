@@ -17,7 +17,7 @@ void cParticle_Death::SetParticle(D3DXVECTOR3 vPos)
 
 	m_fSize = 10.f;
 
-	for (int i = 0; i < 3000; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		AddParticle();
 	}
@@ -50,7 +50,7 @@ void cParticle_Death::ResetParticle(ParticleAttribute& attribute)
 
 	attribute.pos.y = m_vPosition.y + 20;
 
-	attribute.velocity.x = cRandomUtil::GetFloat(1.0f, -1.f) * cRandomUtil::GetFloat(10.f, 2.7f);
+	attribute.velocity.x = cRandomUtil::GetFloat(1.0f, -1.f) * cRandomUtil::GetFloat(20.f, 2.7f);
 	attribute.velocity.y = 0;
 	attribute.velocity.z = cRandomUtil::GetFloat(1.0f, -1.f) * cRandomUtil::GetFloat(10.f, 2.7f);
 

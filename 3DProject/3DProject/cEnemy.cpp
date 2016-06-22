@@ -124,7 +124,7 @@ void cEnemy::Update()
 	{
 		m_CollisionTime += g_pTimeManager->GetDeltaTime();
 
-		m_pBody->SetDiffColor(2.f);
+		m_pBody->SetDiffColor(3.f);
 
 		if (m_CollisionTime > 0.4f)
 		{
