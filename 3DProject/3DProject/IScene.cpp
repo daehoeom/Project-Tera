@@ -37,29 +37,57 @@ void ReadXML(
 	ICollider* collider = nullptr;
 	std::string objName;
 	std::string modelPath;
+	ObjectType objType;
 	D3DXVECTOR3 pos{ 0,0,0 }, rot{ 0,0,0 }, scale{ 0,0,0 };
 
 	for ( const auto& xmlNodeElem : xmlReader )
 	{
 		if ( !strcmp( "End", xmlNodeElem->Value( )))
 		{
-			cBuildingObject* newObject = new cBuildingObject( 
-				modelPath );
-			cGameObjectManager::Get( )->AddObject( objName, newObject );
-
-			if ( collider )
+			if ( objType == ObjectType::eBuilding )
 			{
-				newObject->AddCollider( collider );
+				cBuildingObject* newObject = 
+					new cBuildingObject( modelPath );
+				cGameObjectManager::Get( )->AddObject( 
+					objName, 
+					newObject 
+				);
+
+				if ( collider )
+				{
+					newObject->AddCollider( collider );
+				}
+				newObject->SetPosition( pos );
+				newObject->SetAngle( rot );
+				newObject->SetScale( scale );
 			}
-			newObject->SetPosition( pos );
-			newObject->SetAngle( rot );
-			newObject->SetScale( scale );
+			else if ( objType == ObjectType::ePlane )
+			{
+				cPlaneObject* newObject =
+					new cPlaneObject( modelPath );
+				cGameObjectManager::Get( )->AddObject( objName, newObject );
+				
+				newObject->SetPosition( pos );
+				newObject->SetAngle( rot );
+				newObject->SetScale( scale );
+			}
 
 			// Reset Items
-			newObject = nullptr;
 			collider = nullptr;
+			objType = ObjectType::eUnknown;
 			objName.clear( );
 			modelPath.clear( );
+		}
+		else if ( !strcmp( "Type", xmlNodeElem->Value( )))
+		{
+			if ( !strcmp( "obj", xmlNodeElem->FirstChild( )->Value( )))
+			{
+				objType = ObjectType::eBuilding;
+			}
+			else if ( !strcmp( "plane", xmlNodeElem->FirstChild( )->Value( )))
+			{
+				objType = ObjectType::ePlane;
+			}
 		}
 		else if ( !strcmp( "ObjectName", xmlNodeElem->Value( )))
 		{

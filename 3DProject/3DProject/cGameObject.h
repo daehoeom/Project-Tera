@@ -4,6 +4,7 @@ enum class ObjectType
 {
 	eUnknown,
 	ePlayer,
+	ePlane,
 	eMonster,
 	eBuilding,
 	eNpc,

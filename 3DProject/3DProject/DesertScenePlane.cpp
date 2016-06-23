@@ -8,7 +8,7 @@
 #include "cShaderManager.h"
 
 DesertScenePlane::DesertScenePlane( const char* objName ) :
-	m_owner( static_cast<cBuildingObject*>( 
+	m_owner( static_cast<cPlaneObject*>( 
 		cGameObjectManager::Get( )->FindObject( objName ))),
 	m_fogShader( cShaderManager::Get( )->GetShader( "Shader/fog.fx" ))
 {
@@ -65,6 +65,8 @@ float DesertScenePlane::GetHeight(
 			}
 		}
 	}
+
+	return 0.f;
 }
 
 void DesertScenePlane::Render( )
