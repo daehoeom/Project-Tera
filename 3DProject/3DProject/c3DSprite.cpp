@@ -3,7 +3,7 @@
 
 #include "cCamera.h"
 #include "cDeviceManager.h"
-
+#include "cShaderManager.h"
 
 c3DSprite::c3DSprite( 
 	const char* spritePath )
@@ -20,6 +20,8 @@ c3DSprite::~c3DSprite( )
 
 void c3DSprite::Render( )
 {
+	this->PrevRender( );
+
 	g_pD3DDevice->SetTexture( 0, m_texture );
 	g_pD3DDevice->SetTransform( D3DTS_WORLD, &this->GetWorld( ));
 	g_pD3DDevice->SetStreamSource( 0, m_vb, 0, sizeof( ST_PNT_VERTEX ));
@@ -33,10 +35,24 @@ void c3DSprite::Render( )
 		0,
 		2
 	);
+
+	this->PostRender( );
 }
 
 void c3DSprite::Update( )
 {
+}
+
+void c3DSprite::PrevRender( )
+{
+	g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, FALSE );
+	g_pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+}
+
+void c3DSprite::PostRender( )
+{
+	g_pD3DDevice->SetRenderState( D3DRS_LIGHTING, TRUE );
+	g_pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, FALSE );
 }
 
 void c3DSprite::Load( 
@@ -122,32 +138,43 @@ void c3DSprite::SetupIndices( )
 
 }
 
-cBuilboard3DSprite::cBuilboard3DSprite( 
+cBillboard3DSprite::cBillboard3DSprite( 
 	const char * spritePath ) :
 	c3DSprite( spritePath )
 {
 }
 
-cBuilboard3DSprite::~cBuilboard3DSprite( )
+cBillboard3DSprite::~cBillboard3DSprite( )
 {
 }
 
-void cBuilboard3DSprite::Render( )
+void cBillboard3DSprite::Update( )
 {
-	D3DXMATRIXA16 matBuillboard = cCamera::Get( )->GetView( );
-	D3DXMatrixInverse( &matBuillboard, nullptr, &matBuillboard );
-	matBuillboard._41 = 0.f;
-	matBuillboard._42 = 0.f;
-	matBuillboard._43 = 0.f;
+	m_matBillboard = cCamera::Get( )->GetView( );
+	D3DXMatrixInverse( &m_matBillboard, nullptr, &m_matBillboard );
+	m_matBillboard._41 = this->GetPosition( ).x;
+	m_matBillboard._42 = this->GetPosition( ).y;
+	m_matBillboard._43 = this->GetPosition( ).z;
 
-	matBuillboard = this->GetWorld( ) * matBuillboard;
+	D3DXMATRIXA16 matScale;
+	D3DXMatrixScaling( &matScale,
+		this->GetScale( ).x,
+		this->GetScale( ).y,
+		this->GetScale( ).z );
 
-	/*matBuillboard._41 = this->GetWorld( )._41;
-	matBuillboard._42 = this->GetWorld( )._42;
-	matBuillboard._43 = this->GetWorld( )._43;*/
+	m_matBillboard = matScale * m_matBillboard;
+}
+
+void cBillboard3DSprite::Render( )
+{
+	this->PrevRender( );
+
+	g_pD3DDevice->SetRenderState( D3DRS_ALPHABLENDENABLE, TRUE );
+	g_pD3DDevice->SetRenderState( D3DRS_SRCBLEND, D3DBLEND_SRCALPHA );
+	g_pD3DDevice->SetRenderState( D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA );
 
 	g_pD3DDevice->SetTexture( 0, this->GetTexture() );
-	g_pD3DDevice->SetTransform( D3DTS_WORLD, &matBuillboard );
+	g_pD3DDevice->SetTransform( D3DTS_WORLD, &m_matBillboard );
 	g_pD3DDevice->SetStreamSource( 0, this->GetVertexBuffer( ), 0, sizeof( ST_PNT_VERTEX ));
 	g_pD3DDevice->SetIndices( this->GetIndexBuffer( ) );
 	g_pD3DDevice->SetFVF( ST_PNT_VERTEX::FVF );
@@ -159,4 +186,6 @@ void cBuilboard3DSprite::Render( )
 		0,
 		2
 	);
+
+	this->PostRender( );
 }

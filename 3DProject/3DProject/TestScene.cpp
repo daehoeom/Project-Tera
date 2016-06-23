@@ -25,10 +25,7 @@ namespace
 	}
 }
 
-c3DSprite* sptr = nullptr;
-
-
-
+cBillboard3DSprite* hpBar;
 TestScene::TestScene( ) :
 	m_plane( nullptr ),
 	m_loadThread( ReadXML, "Scene/SCENE.xml", &m_loadSuccess,
@@ -39,11 +36,6 @@ TestScene::TestScene( ) :
 	SOUNDMANAGER->addSound("마을", "./Music/BGM(마을).ogg", true, true);
 	SOUNDMANAGER->play("마을", 1.f);
 
-	sptr = new cBuilboard3DSprite( "C:/Users/Administrator/Desktop/4c4a31811a20e227e317ffe34cec35c4.jpg" );
-	sptr->SetScale( { 200.f, 200.f, 1.f } );
-	sptr->SetPosition( { 100.f, 0.f, 100.f } );
-
-
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox(0) );
 	cGameObjectManager::Get( )->AddObject( "Grid", new cGrid );
 	cGameObjectManager::Get()->AddObject("Npc", new cNpcManager);
@@ -52,8 +44,6 @@ TestScene::TestScene( ) :
 TestScene::~TestScene( )
 {
 	m_loadThread.join( );
-
-	SAFE_DELETE( sptr );
 
 	SAFE_DELETE( m_plane );
 	SAFE_DELETE( m_loadingSprite );
@@ -82,9 +72,6 @@ void TestScene::Render( )
 	{
 		g_player->Render();
 	}
-
-	sptr->Render( );
-
 }
 
 void TestScene::Update( )

@@ -2,6 +2,7 @@
 #include "cEnemy.h"
 #include "Console.h"
 #include "cParticle_Death.h"
+#include "cHPGaugeBar.h"
 
 cEnemy::cEnemy()
 	: n(0)
@@ -13,14 +14,14 @@ cEnemy::cEnemy()
 	, m_pParticle(nullptr)
 	, m_pBody(nullptr)
 	, m_CollisionTime(0.f)
-	, m_fRange(0.f)
+	, m_enemyHPBar( new cHPGaugeBar( "CH/UIImage/HPBar_0.png", "CH/UIImage/HPBar_1.png" ))
 {
 	for (size_t i = 0; i < _countof(m_aPlane); i++)
 	{
 		m_aPlane[i] = D3DXPLANE(0, 0, 0, 0);
 	}
 
-	this->SetCurrHp(50);
+	//this->SetCurrHp(50);
 	SetEnemyState(ENEMY_IDLE);
 	D3DXMatrixTranslation(&m_matWorld, GetPosition().x, GetPosition().y, GetPosition().z);
 
@@ -33,12 +34,18 @@ cEnemy::cEnemy()
 
 	D3DXMatrixIdentity(&m_matLocal);
 	D3DXMatrixIdentity(&matT);
+
+	m_enemyHPBar->SetOwner( this );
+	m_enemyHPBar->SetScale( { 103.f/6, 15.f/6, 1.f } );
+	m_enemyHPBar->Move( { 0.f, 70.f, 0.f } );
+
 }
 
 cEnemy::~cEnemy()
 {
 	SAFE_DELETE(m_pParticle);
 	SAFE_DELETE( m_pBody );
+	SAFE_DELETE( m_enemyHPBar );
 }
 
 void cEnemy::Update()
@@ -54,6 +61,22 @@ void cEnemy::Update()
 	if (m_fAttackCurrDelay >= m_fAttackMaxTime)
 	{
 		m_fAttackCurrDelay = m_fAttackMaxTime;
+	}
+
+	
+	if ( m_enemyHPBar )
+	{
+		m_enemyHPBar->Update( );
+	}
+
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		this->SetCurrHp(50);
+		SetEnemyState(ENEMY_IDLE);
+		this->SetDead(false);
+		m_bIsAction = true;
+		m_fPassTime = 0.f;
+		m_fPeriod = 0.f;
 	}
 
 	//몬스터의 HP가 0인데 아직 죽음 처리가 안되었다면
@@ -72,7 +95,7 @@ void cEnemy::Update()
 	}
 
 	//만약 몬스터의 위치가 플레이어와 가깝다면 공격모션
-	else if (abs(Distance) < m_fRange  && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
+	else if (abs(Distance) < 40.f && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_ATTACK)
@@ -147,6 +170,11 @@ void cEnemy::Update()
 void cEnemy::Render()
 {
 	__super::Render();
+
+	if ( m_enemyHPBar )
+	{
+		m_enemyHPBar->Render( );
+	}
 
 	if (CheckSphere(this->GetPosition().x, this->GetPosition().y, this->GetPosition().z, 5.f))
 	{
@@ -252,7 +280,6 @@ void cEnemy::ActionState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetEnemyState(ENEMY_NOTHING);
-				this->SetActive(false);
 			}
 
 			else if (m_fPassTime < m_fPeriod)
@@ -382,7 +409,10 @@ void cEnemy::ActionState()
 		}
 	}
 		break;
-
+	case ENEMY_SKILL1:
+		break;
+	case ENEMY_SKILL2:
+		break;
 	case ENEMY_CHASE:
 	{
 		//만약 몬스터가 지정 범위를 벗어나지 않았다면 플레이어를 쫒아간다.
@@ -443,6 +473,16 @@ D3DXMATRIXA16 cEnemy::Move()
 
 void cEnemy::OnCollisionStay(cCollisionObject* rhs)
 {
+	//if (rhs->GetCollisionType() == CollisionType::ePlayer && !this->GetCollision())
+	//{
+	//	if (GetEnemyState() == ENEMY_ATTACK)
+	//	{
+	//		Log("충돌하였음");
+	//		this->SetCollision(true);
+	//		rhs->SetCurrHp(rhs->GetCurrHp() - 100);
+	//		int a = 0;
+	//	}
+	//}
 }
 
 D3DXMATRIXA16 cEnemy::Rotate()

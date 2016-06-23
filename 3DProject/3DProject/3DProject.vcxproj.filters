@@ -245,7 +245,6 @@
     <ClInclude Include="cSprite.h" />
     <ClInclude Include="cNpcSkinnedMesh.h" />
     <ClInclude Include="c3DSprite.h" />
-    <ClInclude Include="cParticle_Death.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cTextureManager.cpp">
@@ -418,7 +417,6 @@
     <ClCompile Include="cSprite.cpp" />
     <ClCompile Include="cNpcSkinnedMesh.cpp" />
     <ClCompile Include="c3DSprite.cpp" />
-    <ClCompile Include="cParticle_Death.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3DProject.rc">
