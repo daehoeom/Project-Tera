@@ -10,7 +10,7 @@ class cPlayerWeapon;
 enum ePlayerState
 {
 	PLAYER_BATTLEIDLE = 5,
-	PLAYER_RUN = 46,
+	PLAYER_RUN = 47,
 	PLAYER_TUMBLING = 6,
 	PLAYER_SKILL1 = 26,			//강하게 내려찍기
 	PLAYER_SKILL2 = 0,			//슬래쉬
@@ -22,6 +22,13 @@ enum ePlayerState
 	PLAYER_COMBO4 = 17,			//플레이어 콤보4
 	PLAYER_DEATH = 25,			//플레이어 데스
 	PLAYER_DEATHWAIT = 24,		//플레이어 데스웨잇
+};
+
+enum ePlayerAmor
+{
+	PLAYER_AMOR1,
+	PLAYER_AMOR2,
+	PLAYER_AMOR3,
 };
 
 class cPlayer : 
@@ -43,15 +50,21 @@ public:
 	void SetPlayerState( ePlayerState p );
 	ePlayerState GetPlayerState( );
 
+	void SetPlayerAmorState(ePlayerAmor a);
+	ePlayerAmor GetPlayerAmorState();
+
 	void SetUpdateState();	//상태에 따라 업데이트를 다르게 진행
 	void SetRenderState();	//상태에 따라 렌더를 다르게 진행
 	void SetFSMState();
 	void KeyControl();
 	void SetAniTrack(int nIndex);
+	void ChangeAmor();
 
 private:
 	ePlayerState	m_sPState;
-	
+	ePlayerAmor		m_sAmor;
+
+	cSkinnedMesh*	m_pAmor[3];
 	std::vector<cSkinnedMesh*> m_vecSkinnedMesh;
 	cPlayerWeapon*	m_playerWeapon;
 
@@ -80,4 +93,14 @@ inline void cPlayer::SetPlayerState(ePlayerState p)
 inline ePlayerState cPlayer::GetPlayerState()
 {
 	return m_sPState;
+}
+
+inline void cPlayer::SetPlayerAmorState(ePlayerAmor a)
+{
+	m_sAmor = a;
+}
+
+inline ePlayerAmor cPlayer::GetPlayerAmorState()
+{
+	return m_sAmor;
 }

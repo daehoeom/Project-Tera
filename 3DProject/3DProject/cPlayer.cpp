@@ -16,13 +16,19 @@ cPlayer::cPlayer( ) :
 	, m_bIsAction(false)
 	, m_bPushBehind(false)
 	, m_pCombo(nullptr)
+	, m_sAmor(PLAYER_AMOR1)
 	, n(0)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
 	this->SetPosition({ 0.f, 0.f, 0.f });
 
-	cSkinnedMesh* pBody = new cSkinnedMesh("./CH/Player/", "Player_Body.X");
-	m_vecSkinnedMesh.push_back(pBody);
+	m_pAmor[0] = new cSkinnedMesh("./CH/Player/", "Player_Body.X");
+
+	m_pAmor[1] = new cSkinnedMesh("./CH/Player/", "Player_Body2.X");
+
+	m_pAmor[2] = new cSkinnedMesh("./CH/Player/", "Player_Body3.X");
+
+	m_vecSkinnedMesh.push_back(m_pAmor[0]);
 
 	cSkinnedMesh* pHead = new cSkinnedMesh("./CH/Player/", "Player_Head.X");
 	m_vecSkinnedMesh.push_back(pHead);
@@ -62,7 +68,13 @@ cPlayer::cPlayer( ) :
 
 cPlayer::~cPlayer( )
 {
-	for (size_t i = 0; i < m_vecSkinnedMesh.size(); i++)
+	for (size_t i = 0; i < _countof(m_pAmor); i++)
+	{
+		SAFE_DELETE(m_pAmor[i]);
+	}
+
+	//아머는 이미 삭제
+	for (size_t i = 1; i < m_vecSkinnedMesh.size(); i++)
 	{
 		SAFE_DELETE(m_vecSkinnedMesh[i]);
 	}
@@ -90,6 +102,12 @@ void cPlayer::Update( )
 		SetPlayerState(PLAYER_DEATH);
 	}
 
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		m_sAmor = PLAYER_AMOR2;
+	}
+
+	ChangeAmor();
 }
 
 void cPlayer::Render( )
@@ -725,16 +743,16 @@ void cPlayer::SetUpdateState( )
 	//플레이어의 현재 위치를 넣어줌
 	//몸통
 	D3DXMATRIXA16 matT, matR, matWorld;
-	D3DXMatrixTranslation(&matT, this->GetPosition().x, this->GetPosition().y, this->GetPosition().z); 
+	D3DXMatrixTranslation(&matT, this->GetPosition().x, this->GetPosition().y, this->GetPosition().z);
 	D3DXMatrixRotationY(&matR, this->GetAngle().y);
 	matWorld = matR * matT;
 	m_vecSkinnedMesh[0]->SetWorld(&matWorld);
-	
+
 	//머리
-	m_vecSkinnedMesh[1]->SetLocal(&m_vecSkinnedMesh[0]->GetNeckTM());
+	m_vecSkinnedMesh[1]->SetLocal(&(m_vecSkinnedMesh[0]->GetNeckTM()));
 
 	//헤어
-	m_vecSkinnedMesh[2]->SetLocal(&m_vecSkinnedMesh[1]->GetHairTM());
+	m_vecSkinnedMesh[2]->SetLocal(&m_vecSkinnedMesh[0]->GetHairTM());
 
 	//꼬리
 	m_vecSkinnedMesh[3]->SetLocal(&m_vecSkinnedMesh[0]->GetTailTM());
@@ -765,5 +783,23 @@ void cPlayer::SetAniTrack(int nIndex)
 	for (size_t i = 0; i < m_vecSkinnedMesh.size(); i++)
 	{
 		m_vecSkinnedMesh[i]->SetAnimationIndex(nIndex);
+	}
+}
+
+void cPlayer::ChangeAmor()
+{
+	if (m_sAmor == PLAYER_AMOR1)
+	{
+		m_vecSkinnedMesh[0] = m_pAmor[0];
+	}
+
+	else if (m_sAmor == PLAYER_AMOR2)
+	{
+		m_vecSkinnedMesh[0] = m_pAmor[1];
+	}
+
+	else if (m_sAmor == PLAYER_AMOR2)
+	{
+		m_vecSkinnedMesh[0] = m_pAmor[2];
 	}
 }

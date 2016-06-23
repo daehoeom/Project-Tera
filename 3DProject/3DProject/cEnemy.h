@@ -69,6 +69,7 @@ protected:
 	float				m_fPeriod;
 	float				m_fPassTime;
 	float				m_CollisionTime;
+	float				m_fRange;
 	float				m_fDeathTime;	//죽는 시간은 몬스터마다 달라서 설정해줌
 	bool				m_bIsAction;
 
