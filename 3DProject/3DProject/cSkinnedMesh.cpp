@@ -386,7 +386,7 @@ void cSkinnedMesh::GetNeckWorld(D3DXFRAME* pFrame, D3DXMATRIX* pParentTM)
 		m_matNeckTM = pBone->CombinedTransformationMatrix;
 		int a = 0;
 	}
-	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Dummy_Face"))
+	else if (pBone->Name != nullptr && std::string(pBone->Name) == std::string("Bip01-Head"))
 	{
 		pBone->CombinedTransformationMatrix = pBone->TransformationMatrix * (*pParentTM);
 		m_matHairTM = pBone->CombinedTransformationMatrix;

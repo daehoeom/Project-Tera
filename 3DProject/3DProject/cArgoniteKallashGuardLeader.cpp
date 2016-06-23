@@ -15,6 +15,8 @@ cArgoniteKallashGuardLeader::cArgoniteKallashGuardLeader()
 	D3DXMatrixTranslation(&matT, 0, 30, 0);
 	this->AddCollider(new cBoundingSphere(D3DXVECTOR3(0, 0, 0), 30.f));
 	this->GetColliderRepo()[0]->SetLocal(&matT);
+
+	m_fRange = 30.f;
 }
 
 

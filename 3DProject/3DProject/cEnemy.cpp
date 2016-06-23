@@ -13,6 +13,7 @@ cEnemy::cEnemy()
 	, m_pParticle(nullptr)
 	, m_pBody(nullptr)
 	, m_CollisionTime(0.f)
+	, m_fRange(0.f)
 {
 	for (size_t i = 0; i < _countof(m_aPlane); i++)
 	{
@@ -55,16 +56,6 @@ void cEnemy::Update()
 		m_fAttackCurrDelay = m_fAttackMaxTime;
 	}
 
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
-		this->SetCurrHp(50);
-		SetEnemyState(ENEMY_IDLE);
-		this->SetDead(false);
-		m_bIsAction = true;
-		m_fPassTime = 0.f;
-		m_fPeriod = 0.f;
-	}
-
 	//몬스터의 HP가 0인데 아직 죽음 처리가 안되었다면
 	if (GetCurrHp() < 0.f && !this->IsDead())
 	{
@@ -81,7 +72,7 @@ void cEnemy::Update()
 	}
 
 	//만약 몬스터의 위치가 플레이어와 가깝다면 공격모션
-	else if (abs(Distance) < 40.f && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
+	else if (abs(Distance) < m_fRange  && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_ATTACK)
@@ -261,6 +252,7 @@ void cEnemy::ActionState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetEnemyState(ENEMY_NOTHING);
+				this->SetActive(false);
 			}
 
 			else if (m_fPassTime < m_fPeriod)
@@ -390,10 +382,7 @@ void cEnemy::ActionState()
 		}
 	}
 		break;
-	case ENEMY_SKILL1:
-		break;
-	case ENEMY_SKILL2:
-		break;
+
 	case ENEMY_CHASE:
 	{
 		//만약 몬스터가 지정 범위를 벗어나지 않았다면 플레이어를 쫒아간다.
@@ -454,16 +443,6 @@ D3DXMATRIXA16 cEnemy::Move()
 
 void cEnemy::OnCollisionStay(cCollisionObject* rhs)
 {
-	//if (rhs->GetCollisionType() == CollisionType::ePlayer && !this->GetCollision())
-	//{
-	//	if (GetEnemyState() == ENEMY_ATTACK)
-	//	{
-	//		Log("충돌하였음");
-	//		this->SetCollision(true);
-	//		rhs->SetCurrHp(rhs->GetCurrHp() - 100);
-	//		int a = 0;
-	//	}
-	//}
 }
 
 D3DXMATRIXA16 cEnemy::Rotate()
