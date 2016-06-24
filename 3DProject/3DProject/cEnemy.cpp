@@ -98,9 +98,13 @@ void cEnemy::Update()
 		{
 			SetEnemyState(ENEMY_ATTACK);
 
+			g_player->SetCurrHp( g_player->GetCurrHp( ) - 30 );
+			Log( "몬스터 ", this->GetName( ).c_str( ), "가 플레이어[HP:", g_player->GetCurrHp( ),"]를 공격 on ENEMY_CHASE\n" );
+
 			//실행 중인 행동을 중지하고 현재상태의 행동을 할 것
 			m_bIsAction = false;
 		}
+
 	}
 
 	//몬스터가 일정 범위를 넘어가면 다시 되돌아 올 것
@@ -387,6 +391,9 @@ void cEnemy::ActionState()
 				m_bIsAction = false;
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
+
+				g_player->SetCurrHp( g_player->GetCurrHp( )-30 );
+				Log( "몬스터 ", this->GetName( ).c_str( ), "가 플레이어[HP:", g_player->GetCurrHp( ), "]를 공격 on ENEMY_CHASE\n" );
 
 				if (abs(Distance) < 20.f)
 				{
