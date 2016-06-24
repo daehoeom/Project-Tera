@@ -14,7 +14,7 @@ cEnemy::cEnemy()
 	, m_pParticle(nullptr)
 	, m_pBody(nullptr)
 	, m_CollisionTime(0.f)
-	, m_enemyHPBar( new cHPGaugeBar( "CH/UIImage/HPBar_0.png", "CH/UIImage/HPBar_1.png" ))
+	, m_enemyHPBar(new cHPGaugeBar("CH/UIImage/HPBar_0.png", "CH/UIImage/HPBar_1.png"))
 {
 	for (size_t i = 0; i < _countof(m_aPlane); i++)
 	{
@@ -52,6 +52,8 @@ void cEnemy::Update()
 {
 	__super::Update();
 
+	m_enemyHPBar->Update();
+
 	//몬스터가 움직일 수 있는 일정 범위
 	float Length = D3DXVec3Length(&(GetPosition() - m_vOrigin));
 	//몬스터와 플레이어의 사이 거리 
@@ -61,12 +63,6 @@ void cEnemy::Update()
 	if (m_fAttackCurrDelay >= m_fAttackMaxTime)
 	{
 		m_fAttackCurrDelay = m_fAttackMaxTime;
-	}
-
-	
-	if ( m_enemyHPBar )
-	{
-		m_enemyHPBar->Update( );
 	}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
@@ -95,7 +91,7 @@ void cEnemy::Update()
 	}
 
 	//만약 몬스터의 위치가 플레이어와 가깝다면 공격모션
-	else if (abs(Distance) < 40.f && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
+	else if (abs(Distance) - 11.f < m_fRange && !this->IsDead() && GetEnemyState() != ENEMY_BACKPOSITION)
 	{
 		//해당 이벤트가 실행 중이 아님
 		if (GetEnemyState() != ENEMY_ATTACK)
@@ -134,7 +130,7 @@ void cEnemy::Update()
 		}
 	}
 
-	if (this->GetCollision())
+	if (this->GetCollision() && !this->IsDead())
 	{
 		m_CollisionTime += g_pTimeManager->GetDeltaTime();
 
@@ -280,6 +276,7 @@ void cEnemy::ActionState()
 				m_fPassTime = 0.f;
 				m_fPeriod = 0.f;
 				SetEnemyState(ENEMY_NOTHING);
+				this->SetActive(false);
 			}
 
 			else if (m_fPassTime < m_fPeriod)
@@ -409,10 +406,7 @@ void cEnemy::ActionState()
 		}
 	}
 		break;
-	case ENEMY_SKILL1:
-		break;
-	case ENEMY_SKILL2:
-		break;
+
 	case ENEMY_CHASE:
 	{
 		//만약 몬스터가 지정 범위를 벗어나지 않았다면 플레이어를 쫒아간다.
@@ -473,16 +467,6 @@ D3DXMATRIXA16 cEnemy::Move()
 
 void cEnemy::OnCollisionStay(cCollisionObject* rhs)
 {
-	//if (rhs->GetCollisionType() == CollisionType::ePlayer && !this->GetCollision())
-	//{
-	//	if (GetEnemyState() == ENEMY_ATTACK)
-	//	{
-	//		Log("충돌하였음");
-	//		this->SetCollision(true);
-	//		rhs->SetCurrHp(rhs->GetCurrHp() - 100);
-	//		int a = 0;
-	//	}
-	//}
 }
 
 D3DXMATRIXA16 cEnemy::Rotate()

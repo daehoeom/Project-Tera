@@ -4,6 +4,7 @@
 
 #define TUMBLINGRANGE 150.f
 
+class cPlayerUI;
 class cSkinnedMesh;
 class cPlayerWeapon;
 
@@ -22,13 +23,6 @@ enum ePlayerState
 	PLAYER_COMBO4 = 17,			//플레이어 콤보4
 	PLAYER_DEATH = 25,			//플레이어 데스
 	PLAYER_DEATHWAIT = 24,		//플레이어 데스웨잇
-};
-
-enum ePlayerAmor
-{
-	PLAYER_AMOR1,
-	PLAYER_AMOR2,
-	PLAYER_AMOR3,
 };
 
 class cPlayer : 
@@ -50,9 +44,6 @@ public:
 	void SetPlayerState( ePlayerState p );
 	ePlayerState GetPlayerState( );
 
-	void SetPlayerAmorState(ePlayerAmor a);
-	ePlayerAmor GetPlayerAmorState();
-
 	void SetUpdateState();	//상태에 따라 업데이트를 다르게 진행
 	void SetRenderState();	//상태에 따라 렌더를 다르게 진행
 	void SetFSMState();
@@ -62,12 +53,11 @@ public:
 
 private:
 	ePlayerState	m_sPState;
-	ePlayerAmor		m_sAmor;
 
 	cSkinnedMesh*	m_pAmor[3];
 	std::vector<cSkinnedMesh*> m_vecSkinnedMesh;
 	cPlayerWeapon*	m_playerWeapon;
-
+	cPlayerUI*		m_pUI;
 	cCommandCombo*	m_pCombo;
 
 	D3DXMATRIXA16	m_matWorld;
@@ -82,7 +72,6 @@ private:
 	bool			m_bIsAction;
 	bool			m_bAlive;
 	bool			m_bPushBehind;
-	float			n;
 };
 
 inline void cPlayer::SetPlayerState(ePlayerState p)
@@ -95,12 +84,3 @@ inline ePlayerState cPlayer::GetPlayerState()
 	return m_sPState;
 }
 
-inline void cPlayer::SetPlayerAmorState(ePlayerAmor a)
-{
-	m_sAmor = a;
-}
-
-inline ePlayerAmor cPlayer::GetPlayerAmorState()
-{
-	return m_sAmor;
-}

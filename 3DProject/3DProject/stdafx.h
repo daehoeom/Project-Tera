@@ -232,3 +232,4 @@ extern float fAniTime;
 extern HWND		g_hWnd;
 extern cPlayer* g_player;
 extern cLightObject* g_lightObject;
+extern POINT	ptPrev;

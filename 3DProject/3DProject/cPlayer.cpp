@@ -6,6 +6,9 @@
 #include "Console.h"
 #include "cPlayerWeapon.h"
 #include "cSkinnedMesh.h"
+#include "cPlayerUI.h"
+#include "cUIObject.h"
+#include "cEquipWindow.h"
 
 cPlayer::cPlayer( ) :
 	m_vDirection(D3DXVECTOR3(0, 0, 1))
@@ -16,8 +19,7 @@ cPlayer::cPlayer( ) :
 	, m_bIsAction(false)
 	, m_bPushBehind(false)
 	, m_pCombo(nullptr)
-	, m_sAmor(PLAYER_AMOR1)
-	, n(0)
+	, m_pUI(nullptr)
 {
 	SetPlayerState(PLAYER_BATTLEIDLE);
 	this->SetPosition({ 0.f, 0.f, 0.f });
@@ -64,6 +66,8 @@ cPlayer::cPlayer( ) :
 	this->SetObjectType(ObjectType::ePlayer);
 
 	SOUNDMANAGER->addSound("플레이어공격", "./Music/플레이어(Attack).ogg", false, false);
+
+	m_pUI = new cPlayerUI;
 }
 
 cPlayer::~cPlayer( )
@@ -79,6 +83,7 @@ cPlayer::~cPlayer( )
 		SAFE_DELETE(m_vecSkinnedMesh[i]);
 	}
 
+	SAFE_DELETE(m_pUI);
 	SAFE_DELETE(m_pCombo);
 	SAFE_DELETE(m_playerWeapon);
 }
@@ -102,10 +107,7 @@ void cPlayer::Update( )
 		SetPlayerState(PLAYER_DEATH);
 	}
 
-	if (GetAsyncKeyState(VK_SPACE))
-	{
-		m_sAmor = PLAYER_AMOR2;
-	}
+	m_pUI->Update();
 
 	ChangeAmor();
 }
@@ -115,7 +117,7 @@ void cPlayer::Render( )
 	__super::Render( );
 	m_playerWeapon->Render( );
 
-	//m_pShadow->Render();
+	m_pUI->Render();
 
 	SetRenderState();
 }
@@ -788,17 +790,17 @@ void cPlayer::SetAniTrack(int nIndex)
 
 void cPlayer::ChangeAmor()
 {
-	if (m_sAmor == PLAYER_AMOR1)
+	if (m_pUI->GetEquipState()->GetRoot()->GetChild()[2]->GetButtonTag() == E_TAG_ITEM1)
 	{
 		m_vecSkinnedMesh[0] = m_pAmor[0];
 	}
 
-	else if (m_sAmor == PLAYER_AMOR2)
+	else if (m_pUI->GetEquipState()->GetRoot()->GetChild()[2]->GetButtonTag() == E_TAG_ITEM2)
 	{
 		m_vecSkinnedMesh[0] = m_pAmor[1];
 	}
 
-	else if (m_sAmor == PLAYER_AMOR2)
+	else if (m_pUI->GetEquipState()->GetRoot()->GetChild()[2]->GetButtonTag() == E_TAG_ITEM3)
 	{
 		m_vecSkinnedMesh[0] = m_pAmor[2];
 	}

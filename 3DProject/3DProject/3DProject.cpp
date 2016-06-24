@@ -19,9 +19,7 @@ TCHAR szTitle[MAX_LOADSTRING];					// 제목 표시줄 텍스트입니다.
 TCHAR szWindowClass[MAX_LOADSTRING];			// 기본 창 클래스 이름입니다.
 HWND g_hWnd;
 std::unique_ptr<cMainGame>	g_pMainGame;
-
-//애니메이션 타임
-float fAniTime = 2.f;
+POINT	ptPrev = { 0, 0 };
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -198,6 +196,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			PostMessage(hWnd, WM_DESTROY, 0, 0);
 			break;
 		}
+		break;
+	case WM_LBUTTONDOWN:
+		ptPrev.x = LOWORD(lParam);
+		ptPrev.y = HIWORD(lParam);
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
