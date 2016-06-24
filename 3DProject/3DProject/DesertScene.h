@@ -5,6 +5,7 @@
 
 class cSprite;
 class DesertScenePlane;
+class DesertSceneOasis;
 class DesertScene :
 	public IScene
 {
@@ -17,9 +18,10 @@ public:
 
 private:
 	std::thread m_loadThread;
+	DesertScenePlane* m_plane;
+	DesertSceneOasis* m_oasis;
 	DWORD m_loadSuccess;
 	cSprite* m_loadingSprite;
-	DesertScenePlane* m_plane;
 	std::vector<cEnemy*> m_monsterRepo;
 };
 

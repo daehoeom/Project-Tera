@@ -9,21 +9,25 @@
 #include "cMadmadDuo.h"
 #include "cArgoniteFemaleMagician.h"
 #include "cPixie.h"
+#include "DesertSceneOasis.h"
 #include "cSprite.h"
 
 namespace
 {
-	void AdditionalWork( DesertScenePlane** param )
+	void AdditionalWork( 
+		DesertScenePlane** param,
+		DesertSceneOasis** param2 )
 	{
-		*param = new DesertScenePlane( "Desert_plane0" );
+		*param = new DesertScenePlane;
+		*param2 = new DesertSceneOasis;
 	}
 }
 
-
 DesertScene::DesertScene( ) :
 	m_plane( nullptr ),
+	m_oasis( nullptr ),
 	m_loadThread( ReadXML, "Scene/Desert_scene.xml", &m_loadSuccess,
-		std::function<void( )>( std::bind( AdditionalWork, &m_plane ))),
+		std::function<void( )>( std::bind( AdditionalWork, &m_plane, &m_oasis ))),
 	m_loadSuccess( 0 ),
 	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.tga" ))
 {
@@ -60,13 +64,14 @@ DesertScene::DesertScene( ) :
 	//m_monsterRepo[3]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
 
 	cGameObjectManager::Get( )->AddObject( "SkyBox", new cSkyBox( 1 ));
-
 }
 
 DesertScene::~DesertScene( )
 {
 	m_loadThread.join( );
 	SAFE_DELETE( m_loadingSprite );
+	SAFE_DELETE( m_oasis );
+	SAFE_DELETE( m_plane );
 
 	for ( auto enemyElem : m_monsterRepo )
 	{
@@ -87,6 +92,10 @@ void DesertScene::Update( )
 		return;
 	}
 
+	if ( m_oasis )
+	{
+		m_oasis->Update( );
+	}
 
 	if ( m_plane )
 	{
@@ -134,6 +143,11 @@ void DesertScene::Render( )
 	if ( m_plane )
 	{
 		m_plane->Render( );
+	}
+
+	if ( m_oasis )
+	{
+		m_oasis->Render( );
 	}
 
 	//플레이어 렌더
