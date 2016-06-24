@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Desert_plane0>
 	<ObjectName>Desert_plane0</ObjectName>
-	<Type>obj</Type>
+	<Type>plane</Type>
 	<ModelPath>Resource\DesertScene\Desert\Desert_plane.obj</ModelPath>
 	<Position x="0.000000" y="0.000000" z="0.000000"></Position>
 	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>

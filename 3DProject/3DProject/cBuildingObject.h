@@ -115,6 +115,23 @@ inline ID3DXMesh* cXRenderer::GetMesh( )
 
 class cObjLoader;
 class cGroup;
+class cPlaneObject :
+	public cGameObject // 원래는 cRenderObject에서 상속받아야함..
+{
+public:
+	explicit cPlaneObject( const std::string& modelFilePath );
+	virtual ~cPlaneObject( );
+
+	IRenderer* GetRenderer( );
+
+public:
+	virtual void Render( ) override;
+	virtual void Update( ) override;
+
+private:
+	IRenderer* m_renderer;
+};
+
 class cBuildingObject :
 	public cCollisionObject
 {

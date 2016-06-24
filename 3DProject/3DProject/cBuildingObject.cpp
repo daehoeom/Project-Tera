@@ -238,3 +238,54 @@ void cBuildingObject::OnCollisionEnd(
 	cCollisionObject * rhs )
 {
 }
+
+cPlaneObject::cPlaneObject( const std::string & modelFilePath ) :
+	m_renderer( nullptr )
+{
+	switch ( AnalyzeExtension( modelFilePath ))
+	{
+	case ExtensionTable::kObj:
+		m_renderer = new cObjRenderer( modelFilePath.c_str( ));
+		break;
+
+	case ExtensionTable::kX:
+		m_renderer = new cXRenderer( modelFilePath.c_str( ));
+		break;
+
+	default:
+		MessageBox(
+			GetFocus( ),
+			"Failed to analyze extension.",
+			"WARNING!",
+			MB_OK | MB_ICONEXCLAMATION
+		);
+		break;
+	}
+
+	m_renderer->SetOwner( this );
+}
+
+cPlaneObject::~cPlaneObject( )
+{
+	SAFE_DELETE( m_renderer );
+}
+
+IRenderer* cPlaneObject::GetRenderer( )
+{
+	return m_renderer;
+}
+
+void cPlaneObject::Render( )
+{
+	__super::Render( );
+	
+	if ( m_renderer )
+	{
+		m_renderer->Render( );
+	}
+}
+
+void cPlaneObject::Update( )
+{
+	__super::Update( );
+}

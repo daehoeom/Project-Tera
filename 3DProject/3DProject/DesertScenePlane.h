@@ -1,7 +1,7 @@
 #pragma once
 
 class cGameObject;
-class cBuildingObject;
+class cPlaneObject;
 class cLightObject;
 class DesertScenePlane
 {
@@ -15,7 +15,7 @@ public:
 	float GetHeight( cGameObject* );
 
 private:
-	cBuildingObject* m_owner;
+	cPlaneObject* m_owner;
 	LPD3DXEFFECT m_fogShader;
 	D3DXHANDLE m_fogTechHandle;
 	LPDIRECT3DTEXTURE9 m_diffuseMap;
