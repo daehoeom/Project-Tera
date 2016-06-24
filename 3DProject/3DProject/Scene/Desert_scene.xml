@@ -22,16 +22,12 @@
 	<End></End>
 </object_0>
 <object_2>
-	<ObjectName>object_2</ObjectName>
-	<Type>obj</Type>
-	<ModelPath>Resource\DesertScene\Pool\Pool.obj</ModelPath>
-	<Position x="-532.067505" y="230.000519" z="-359.772766"></Position>
-	<Rotation x="0.000000" y="0.000000" z="0.000000"></Rotation>
-	<Scale x="35.000000" y="1.000000" z="40.000000"></Scale>
-	<BoundingBox
-		minX="0.000000" minY="0.000000" minZ="0.000000"
-		maxX="0.000000" maxY="0.000000" maxZ="0.000000">
-	</BoundingBox>
+	<ObjectName>OasisPool0</ObjectName>
+	<Type>plane</Type>
+	<ModelPath>Resource\DesertScene\Pool\Pool.X</ModelPath>
+	<Position x="-516.677185" y="230.000519" z="-403.074036"></Position>
+	<Rotation x="1.570796" y="0.000000" z="0.000000"></Rotation>
+	<Scale x="5.000000" y="6.500000" z="1.000000"></Scale>
 	<End></End>
 </object_2>
 <object_3>

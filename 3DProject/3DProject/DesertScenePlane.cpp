@@ -7,9 +7,9 @@
 #include "cBuildingObject.h"
 #include "cShaderManager.h"
 
-DesertScenePlane::DesertScenePlane( const char* objName ) :
+DesertScenePlane::DesertScenePlane( ) :
 	m_owner( static_cast<cPlaneObject*>( 
-		cGameObjectManager::Get( )->FindObject( objName ))),
+		cGameObjectManager::Get( )->FindObject( "Desert_plane0" ))),
 	m_fogShader( cShaderManager::Get( )->GetShader( "Shader/fog.fx" ))
 {
 	assert( m_owner );

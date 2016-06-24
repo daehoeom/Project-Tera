@@ -6,7 +6,7 @@ class cLightObject;
 class DesertScenePlane
 {
 public:
-	explicit DesertScenePlane( const char* objName );
+	DesertScenePlane( );
 	~DesertScenePlane( );
 
 	void Render( );
