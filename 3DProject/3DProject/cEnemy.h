@@ -43,6 +43,7 @@ public:
 	D3DXVECTOR3 GetEnemyOrigin();
 	void ResetAttackDelay( );
 	bool IsAbleAttacked( );
+	bool IsCulled( ) const;
 
 	void ConstructFrustum(float screenDepth, D3DXMATRIX proj, D3DXMATRIX view);
 	bool CheckSphere(float x, float y, float z, float radius);
@@ -72,6 +73,7 @@ protected:
 	float				m_fRange;
 	float				m_fDeathTime;	//죽는 시간은 몬스터마다 달라서 설정해줌
 	bool				m_bIsAction;
+	bool				m_isCulled;
 
 	int					n;
 	float				m_fAttackCurrDelay;
@@ -108,4 +110,9 @@ inline void cEnemy::SetEnemyOrigin(D3DXVECTOR3* v)
 inline D3DXVECTOR3 cEnemy::GetEnemyOrigin()
 {
 	return m_vOrigin;
+}
+
+inline bool cEnemy::IsCulled( ) const
+{
+	return m_isCulled;
 }

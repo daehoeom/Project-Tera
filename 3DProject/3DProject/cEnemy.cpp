@@ -13,6 +13,7 @@ cEnemy::cEnemy()
 	, m_vDirection(1, 0, 0)
 	, m_pParticle(nullptr)
 	, m_pBody(nullptr)
+	, m_isCulled( false )
 	, m_CollisionTime(0.f)
 	, m_enemyHPBar(new cHPGaugeBar("CH/UIImage/HPBar_0.png", "CH/UIImage/HPBar_1.png"))
 {
@@ -176,12 +177,17 @@ void cEnemy::Render()
 		m_enemyHPBar->Render( );
 	}
 
-	if (CheckSphere(this->GetPosition().x, this->GetPosition().y, this->GetPosition().z, 5.f))
+	if ( CheckSphere(this->GetPosition().x, this->GetPosition().y, this->GetPosition().z, 5.f))
 	{
+		m_isCulled = false;
 		if (m_pBody)
 		{
 			m_pBody->UpdateAndRender();
 		}
+	}
+	else
+	{
+		m_isCulled = true;
 	}
 
 	if (this->GetEnemyState() == ENEMY_DEATHWAIT && m_bIsAction)

@@ -11,6 +11,7 @@
 #include "cPixie.h"
 #include "DesertSceneOasis.h"
 #include "cSprite.h"
+#include "Console.h"
 
 namespace
 {
@@ -47,10 +48,42 @@ DesertScene::DesertScene( ) :
 
 	SOUNDMANAGER->play("전투맵", 1.f);
 
+
+	// A 지점
 	m_monsterRepo.push_back( new cMadmadDuo );
-	m_monsterRepo[0]->SetPosition({ 100, 300, 100 });
-	m_monsterRepo[0]->SetEnemyOrigin(&m_monsterRepo[0]->GetPosition());
+	m_monsterRepo.back( )->SetPosition({ -700.8f, 400.f, -773.2f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
+	m_monsterRepo.push_back( new cMadmadDuo );
+	m_monsterRepo.back( )->SetPosition({ -609.16f, 400.f, -890.23f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
+	m_monsterRepo.push_back( new cMadmadDuo );
+	m_monsterRepo.back( )->SetPosition({ -571.92f, 400.f, -758.72f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
 	
+	// B 지점
+	m_monsterRepo.push_back( new cMadmadDuo );
+	m_monsterRepo.back( )->SetPosition({ -106.92f, 400.f, 702.17f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
+	m_monsterRepo.push_back( new cMadmadDuo );
+	m_monsterRepo.back( )->SetPosition({ -260.9f, 400.f, 630.6f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
+	m_monsterRepo.push_back( new cMadmadDuo );
+	m_monsterRepo.back( )->SetPosition({ -160.1f, 400.f, 523.64f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
+	
+	// C 지점
+	m_monsterRepo.push_back( new cMadmadDuo );
+	m_monsterRepo.back( )->SetPosition({ 483.17f, 400.f, -676.85f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
+	m_monsterRepo.push_back( new cMadmadDuo );
+	m_monsterRepo.back( )->SetPosition({ 550.137f, 400.f, -557.44f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
+	m_monsterRepo.push_back( new cMadmadDuo );
+	m_monsterRepo.back( )->SetPosition({ 388.45f, 400.f, -548.3f });
+	m_monsterRepo.back( )->SetEnemyOrigin( &m_monsterRepo.back( )->GetPosition() );
+	
+
+
 	//m_monsterRepo.push_back(new cArgoniteFemaleMagician);
 	//m_monsterRepo[1]->SetPosition({ -300, 300, 80 });
 	//m_monsterRepo[1]->SetEnemyOrigin(&m_monsterRepo[1]->GetPosition());
@@ -120,11 +153,25 @@ void DesertScene::Update( )
 	{
 		enemyElem->Update( );
 
-		//몬스터가 죽기 전까지는 Height맵 높이 값에 따라 Y축이 변동
-		if (enemyElem->GetEnemyState() != ENEMY_DEATH)
+		if ( !enemyElem->IsCulled( ) )
 		{
-			enemyElem->SetPosition({ enemyElem->GetPosition().x, m_plane->GetHeight(enemyElem),
-				enemyElem->GetPosition().z });
+
+			//몬스터가 죽기 전까지는 Height맵 높이 값에 따라 Y축이 변동
+			if (enemyElem->GetEnemyState() != ENEMY_DEATH)
+			{
+				enemyElem->SetPosition({ enemyElem->GetPosition().x, m_plane->GetHeight(enemyElem),
+					enemyElem->GetPosition().z });
+			}
+		}
+		else
+		{
+			/*static int a = 1;
+			Log( a++, "\n" );
+
+			if ( a > 6 )
+			{
+				a = 1;
+			}*/
 		}
 	}
 }
