@@ -590,7 +590,9 @@ void MainSurfaceWindow::OnLoadSceneClicked(
 		else if ( !strcmp( "Type", xmlNodeElem->Value( )))
 		{
 			if ( !strcmp( xmlNodeElem->FirstChild( )->Value(), 
-				"obj" ))
+				"obj" ) ||
+				!strcmp( xmlNodeElem->FirstChild( )->Value( ),
+					"plane" ))
 			{
 				objID = ObjectIdenfier::kBuilding;
 				extension = AnalyzeExtension( 
