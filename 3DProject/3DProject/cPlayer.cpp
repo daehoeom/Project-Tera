@@ -9,10 +9,12 @@
 #include "cPlayerUI.h"
 #include "cUIObject.h"
 #include "cEquipWindow.h"
+#include "cPlayerGauge.h"
 
 cPlayer::cPlayer( ) :
 	m_vDirection(D3DXVECTOR3(0, 0, 1))
 	, m_fSpeed(2.f)
+	, m_nMana(1000.f)
 	, m_fPassTime(0.f)
 	, m_fPeriod(0.f)
 	, m_bAlive(true)
@@ -770,6 +772,11 @@ void cPlayer::SetUpdateState( )
 	D3DXMatrixTranslation(&matLocal, 1, 45, 0);
 	matLocal *= (D3DXMATRIXA16)m_vecSkinnedMesh[0]->GetWeaponTM();
 	m_playerWeapon->GetColliderRepo()[0]->SetWorld(&matLocal);
+
+	//플레이어 체력 관리
+	m_pUI->GetGauge()->SetEnergy(this->GetCurrHp());
+	m_pUI->GetGauge()->SetMana(m_nMana);
+
 }
 
 void cPlayer::SetRenderState()

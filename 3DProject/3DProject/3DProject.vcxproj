@@ -119,6 +119,8 @@
     <ClInclude Include="cParticle_Firework.h" />
     <ClInclude Include="cPixie.h" />
     <ClInclude Include="cPlayer.h" />
+    <ClInclude Include="cPlayerGauge.h" />
+    <ClInclude Include="cPlayerSkill.h" />
     <ClInclude Include="cPlayerUI.h" />
     <ClInclude Include="cPlayerWeapon.h" />
     <ClInclude Include="cProgressBar.h" />
@@ -196,6 +198,8 @@
     <ClCompile Include="cParticle_Firework.cpp" />
     <ClCompile Include="cPixie.cpp" />
     <ClCompile Include="cPlayer.cpp" />
+    <ClCompile Include="cPlayerGauge.cpp" />
+    <ClCompile Include="cPlayerSkill.cpp" />
     <ClCompile Include="cPlayerUI.cpp" />
     <ClCompile Include="cPlayerWeapon.cpp" />
     <ClCompile Include="cProgressBar.cpp" />

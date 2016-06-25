@@ -30,7 +30,7 @@ DesertScene::DesertScene( ) :
 	m_loadThread( ReadXML, "Scene/Desert_scene.xml", &m_loadSuccess,
 		std::function<void( )>( std::bind( AdditionalWork, &m_plane, &m_oasis ))),
 	m_loadSuccess( 0 ),
-	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage1.tga" ))
+	m_loadingSprite( new cSprite( "CH/LoadingImage/LoadingImage73_Tex.tga" ))
 {
 	SOUNDMANAGER->addSound("전투맵", "./Music/BGM(사막).ogg", true, true);
 	
