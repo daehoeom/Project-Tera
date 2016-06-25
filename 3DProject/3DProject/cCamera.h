@@ -26,6 +26,7 @@ private:
 	void SetupView( const D3DXVECTOR3& eye, const D3DXVECTOR3& lookAt );
 
 private:
+	D3DXVECTOR3		m_vOldEye;
 	D3DXVECTOR3		m_vEye;
 	D3DXVECTOR3		m_vUp;
 	D3DXVECTOR3		m_vLookAt;
@@ -34,9 +35,9 @@ private:
 	D3DXMATRIXA16	m_matViewProjection;
 
 	const float		m_cameraHeight;
+	float			m_fDist;
 	float			m_fRotX;
 	float			m_fRotY;
-	float			m_fDist;
 	cGameObject*	m_followTarget;
 	
 	bool			m_isLButtonDown;
