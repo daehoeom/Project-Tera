@@ -13,8 +13,8 @@ enum eButtonTag
 class cUIObject : public cObject
 {
 protected:
-	D3DXMATRIXA16	m_matWorld;
 	cUIObject*		m_pParent;
+	D3DXMATRIXA16	m_matWorld;
 	int				m_nWidth;
 	int				m_nHeight;
 
@@ -28,6 +28,7 @@ public:
 	cUIObject();
 	~cUIObject();
 
+	virtual void SetWorld(D3DXMATRIXA16* world) { m_matWorld = *world; }
 	virtual void SetSize(int width, int height);
 	virtual void AddChild(cUIObject* pChild);
 	virtual void Update();

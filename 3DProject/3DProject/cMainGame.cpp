@@ -20,9 +20,7 @@ cMainGame::cMainGame( )
 	g_player = new cPlayer;
 	g_lightObject = new cLightObject;
 	cCamera::Get( )->SetFollowingTarget( g_player );
-
-	/*SOUNDMANAGER->addSound("배경음", "./BGM/War_Start_00.ogg");
-	SOUNDMANAGER->play("배경음", 1.f);*/
+	
 	cSceneManager::Get( )->LoadScene<DesertScene>( );
 
 	D3DXFONT_DESC fd;

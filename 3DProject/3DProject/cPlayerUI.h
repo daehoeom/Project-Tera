@@ -2,12 +2,16 @@
 
 class cInventory;
 class cEquipWindow;
+class cPlayerGauge;
+class cPlayerSkill;
 
 class cPlayerUI
 {
 	cInventory*	m_pInven;
-	SYNTHESIZE(cEquipWindow*, m_pEquip, EquipState);
+	cPlayerSkill*	m_pSkill;
 
+	SYNTHESIZE(cEquipWindow*, m_pEquip, EquipState);
+	SYNTHESIZE(cPlayerGauge*, m_pGauge, Gauge);
 public:
 	cPlayerUI();
 	~cPlayerUI();

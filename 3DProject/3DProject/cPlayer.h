@@ -63,6 +63,8 @@ private:
 	D3DXMATRIXA16	m_matWorld;
 	D3DXVECTOR3		m_vDirection;
 	
+	int				m_nMana;
+
 	//물체 그림자
 
 	float			m_fSpeed;
